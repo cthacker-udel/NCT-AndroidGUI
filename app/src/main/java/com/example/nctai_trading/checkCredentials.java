@@ -35,6 +35,8 @@ public class checkCredentials {
             MongoClient client = null;
             if (StringUtils.isNotBlank(password) && StringUtils.isNotBlank(username)) {
                 // looking user <--- dictionary in python stores user data
+                // comment2
+                System.out.println(1+2);
                client = (MongoClient) new com.mongodb.MongoClient(new MongoClientURI("mongodb://" + username + ":" + password + "@localhost/data"));
                return true;
             }
