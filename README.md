@@ -1,0 +1,5 @@
+# NCT-AndroidGUI
+CAMERON THACKER - NCT ANDROID GUI
+
+
+# TO GET TO APP PAGES GO TO app/src/main/res/layout
