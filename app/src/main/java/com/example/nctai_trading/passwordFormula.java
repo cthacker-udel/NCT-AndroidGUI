@@ -7,7 +7,7 @@ class passwordFormula {
     private String salt;
     //private MessageDigest md;
     //private byte[] digest;
-    private String md5Hex;
+    private String passwordFormula;
 
     public passwordFormula(){
         super();
@@ -19,8 +19,8 @@ class passwordFormula {
         //this.md.update((password+salt).getBytes());
         //this.digest = md.digest();
         //hashValidator = DatatypeConverter.printHexBinary(digest).toUpperCase();
-        this.md5Hex = DigestUtils.md5Hex(password + salt).toUpperCase();
-        return md5Hex;
+        this.passwordFormula = DigestUtils.md5Hex(password + salt);
+        return passwordFormula;
     }
 
 

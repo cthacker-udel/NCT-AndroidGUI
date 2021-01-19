@@ -26,6 +26,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.*;
+
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.ValidationOptions;
 import java.lang.reflect.*;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
                  */
 
-                if(passwordContent.trim().length() < 1 || !checkCredentials.checkForNumbers(passwordContent) || !checkCredentials.checkForSymbols(passwordContent) || !checkCredentials.checkForUpperCase(passwordContent)){ // TODO: [IMPORTANT : MAIN LOGIN PAGE] || password is not password on file
+                if(passwordContent.trim().length() < 1 ){//|| !checkCredentials.checkForNumbers(passwordContent) || !checkCredentials.checkForSymbols(passwordContent) || !checkCredentials.checkForUpperCase(passwordContent)){ // TODO: [IMPORTANT : MAIN LOGIN PAGE] || password is not password on file
                     passwordAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -113,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 Email validation
 
                  */
+
+
 
                 Matcher matcher = emailValidator.matcher(emailContent);
                 if(!matcher.matches() || !checkCredentials.quickEmailValidator(emailContent)) {
@@ -158,8 +162,11 @@ public class MainActivity extends AppCompatActivity {
 
                 method.setAccessible(true);
 
+                // make sure
+
                 try {
-                    String hashedPassword = method.invoke(passwordFormulaInstance,passwordContent).toString();
+                    Object invokeResult = method.invoke(passwordFormulaInstance,passwordContent);
+                    String hashedPassword = invokeResult.toString();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
@@ -168,25 +175,30 @@ public class MainActivity extends AppCompatActivity {
 
                 MongoCredential credential = MongoCredential.createCredential(emailContent,"test",passwordContent.toCharArray());
 
-                MongoClient client = new MongoClient("mongodb+srv://admin:competetowin1313@cluster0.bikbt.mongodb.net/test?retryWrites=true&w=majority");
+                //MongoClient client = new MongoClient("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+
+                MongoClient client = new MongoClient("mongodb+srv://admin:CompeteToWin*13@cluster0.bikbt.mongodb.net/test?retryWrites=true&w=majority");
 
                 MongoDatabase database = client.getDatabase("test");
 
+                // declare internet permission in android manifest
+
                 //database.runCommand((Command<BsonDocument>)"{ping:1}").wait();
                 // line 177 fails
+                //MongoIterable<String> databaseIterator = database.listCollectionNames();
                 //for(String name: database.listCollectionNames()){
                 //    System.out.println(name);
                 //}
-                //MongoCollection<Document>  coll = database.getCollection("user");
-                //FindIterable<Document> i = coll.find();
-                // stops on line MongoCursor<Document> cursor = i.iterator(), might need to edit client host string
+                MongoCollection<Document>  coll = database.getCollection("user");
+                FindIterable<Document> i = coll.find();
+                MongoCursor<Document> cursor = i.iterator();
                 //MongoCursor<Document> cursor = i.iterator();
-                //try{
-                //    System.out.println(cursor.next().toJson());
-                //}
-                //finally{
-                //    cursor.close();
-                //}
+                try{
+                    System.out.println(cursor.next().toJson());
+                }
+                finally{
+                    cursor.close();
+                }
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
                 mainPage.putExtra("PasswordContent",passwordContent);
                 mainPage.putExtra("EmailContent",emailContent);
