@@ -43,4 +43,5 @@ dependencies {
     implementation 'org.mongodb:mongo-java-driver:3.12.7'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'commons-codec:commons-codec:20041127.091804'
+    //implementation 'org.mongodb:mongodb-driver-core:4.2.0-beta1'
 }
