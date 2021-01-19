@@ -11,6 +11,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -57,5 +58,10 @@ public class checkCredentials {
             // only get here if db.listCollectionNames().first() caused a timeout
             return false;
         }
+    }
+    public static boolean quickEmailValidator(String email){
+        boolean allowLocal = true;
+        boolean isValid = EmailValidator.getInstance(allowLocal).isValid(email);
+        return isValid;
     }
 }
