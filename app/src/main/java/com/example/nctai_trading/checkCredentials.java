@@ -1,5 +1,9 @@
 package com.example.nctai_trading;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCommandException;
 import com.mongodb.MongoCredential;
@@ -16,6 +20,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 
 public class checkCredentials {
 
@@ -26,6 +31,24 @@ public class checkCredentials {
         String database = "test";
 
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean checkForSymbols(String password){
+        String symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ ";
+        return IntStream.range(0,password.length()).mapToObj(e -> password.charAt(e)).filter(e -> symbols.contains(Character.toString(e))).count() == 0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean checkForUpperCase(String password){
+        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return IntStream.range(0,password.length()).mapToObj(e -> password.charAt(e)).filter(e -> upperCase.contains(Character.toString(e))).count() >= 1;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static boolean checkForNumbers(String password){
+        String digits = "0123456789";
+        return IntStream.range(0,password.length()).mapToObj(e -> password.charAt(e)).filter(e -> digits.contains(Character.toString(e))).count() >= 1;
     }
 
     public static boolean mongoCheckPassword(String password,String username){

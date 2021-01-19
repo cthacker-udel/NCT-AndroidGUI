@@ -1,13 +1,20 @@
 package com.example.nctai_trading;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientSettings;
@@ -46,29 +53,91 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // ALERT BUTTONS
+
+        AlertDialog.Builder passwordAlert = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder emailAlert = new AlertDialog.Builder(this);
+
+        passwordAlert.setTitle("Invalid password");
+
+        emailAlert.setTitle("Invalid email");
+
+        passwordAlert.setMessage("Password must be between 1-25 Characters, no spaces, no symbols, must contain atleast one number, and one uppercase letter");
+
+        emailAlert.setMessage("Email must be valid");
+
+        // ALERT BUTTONS
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signInButton = findViewById(R.id.signInButton);
         email = findViewById(R.id.mainPageEmail);
-        password = findViewById(R.id.mainPageEmail);
+        password = findViewById(R.id.mainPagePassword);
         Pattern emailValidator = Pattern.compile("^(.+)@(.+)$");
         createAnAccount = findViewById(R.id.mainActivityCreateAnAccount);
         signInButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v){
 
                 String emailContent = email.getText().toString().trim();
 
-                String passwordContent = password.getText().toString().trim();
+                String passwordContent = password.getText().toString();
+
+                /*
+
+                @author - Cameron Thacker
+                @version - 1.0
+                Password validator
+
+                 */
+
+                if(passwordContent.trim().length() < 1 || !checkCredentials.checkForNumbers(passwordContent) || !checkCredentials.checkForSymbols(passwordContent) || !checkCredentials.checkForUpperCase(passwordContent)){ // TODO: [IMPORTANT : MAIN LOGIN PAGE] || password is not password on file
+                    passwordAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please edit your password",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    passwordAlert.setCancelable(true);
+                    passwordAlert.create().show();
+                    return;
+                }
+
+                /*
+
+                @author - Cameron Thacker
+                @version 1.0
+                Email validation
+
+                 */
+
+                Matcher matcher = emailValidator.matcher(emailContent);
+                if(!matcher.matches() || !checkCredentials.quickEmailValidator(emailContent)) {
+                    emailAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please edit your email",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    emailAlert.setCancelable(true);
+                    emailAlert.create().show();
+                    return;
+                }
+
+
 
                 //MongoClientSettings settings = MongoClientSettings.builder().applyToSslSettings(builder -> builder.enabled(false)).build();
 
                 ///MongoClient client = (MongoClient) MongoClients.create(settings);
                 Class c = null;
                 Method method = null;
+                com.example.nctai_trading.passwordFormula passwordFormulaInstance = new passwordFormula();
 
                 try {
-                    c = Class.forName("passwordFormula");
+                    c = Class.forName("com.example.nctai_trading.passwordFormula");
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -82,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 try {
-                    method = c.getDeclaredMethod("passwordHasher",null);
+                    method = c.getDeclaredMethod("passwordHasher",new Class[]{String.class});
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 method.setAccessible(true);
 
                 try {
-                    String hashedPassword = (String) method.invoke(passwordContent,null);
+                    String hashedPassword = method.invoke(passwordFormulaInstance,passwordContent).toString();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
@@ -104,9 +173,10 @@ public class MainActivity extends AppCompatActivity {
                 MongoDatabase database = client.getDatabase("test");
 
                 //database.runCommand((Command<BsonDocument>)"{ping:1}").wait();
-                for(String name: database.listCollectionNames()){
-                    System.out.println(name);
-                }
+                // line 177 fails
+                //for(String name: database.listCollectionNames()){
+                //    System.out.println(name);
+                //}
                 //MongoCollection<Document>  coll = database.getCollection("user");
                 //FindIterable<Document> i = coll.find();
                 // stops on line MongoCursor<Document> cursor = i.iterator(), might need to edit client host string
@@ -117,16 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 //finally{
                 //    cursor.close();
                 //}
-                Matcher matcher = emailValidator.matcher(emailContent);
-                if(!matcher.matches()) {
-                    // TODO: [MAIN LOGIN PAGE] display error message if email is incorrect
-                    ;
-                }
-
-                if(passwordContent.length() < 1){ // TODO: [IMPORTANT : MAIN LOGIN PAGE] || password is not password on file
-                    // TODO: [MAIN LOGIN PAGE] display error message if password is incorrect
-                    ;
-                }
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
                 mainPage.putExtra("PasswordContent",passwordContent);
                 mainPage.putExtra("EmailContent",emailContent);
@@ -142,5 +202,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(toSignUpPage);
             }
         });
+    }
+
+    public void passwordAlert(View v){
+
     }
 }
