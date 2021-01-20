@@ -16,9 +16,9 @@ import java.util.Locale;
 
 public class donationPage extends AppCompatActivity {
 
-    // TODO: [DONATION PAGE] Implement select country scroller functionality
-    // TODO: [DONATION PAGE] Implement select cause scroller functionality
-    // TODO: [DONATION PAGE] Implement select donation amount
+    // TODO: [DONATION PAGE][Completed] Implement select country scroller functionality
+    // TODO: [DONATION PAGE][Completed] Implement select cause scroller functionality
+    // TODO: [DONATION PAGE][Completed] Implement select donation amount
     // TODO: [DONATION PAGE] Implement donate button functionality
 
     Spinner donateCountrySpinner;

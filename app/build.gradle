@@ -12,13 +12,16 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -30,6 +33,8 @@ android {
 
 dependencies {
 
+    implementation 'com.android.support:multidex:1.0.3'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -40,8 +45,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-validator:commons-validator:1.7'
-    implementation 'org.mongodb:mongo-java-driver:3.12.7'
+    //implementation 'org.mongodb:mongo-java-driver:3.12.7'
+    implementation 'org.mongodb:mongodb-driver-sync:4.1.1'
+    implementation 'org.mongodb:mongodb-driver-legacy:4.1.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'commons-codec:commons-codec:20041127.091804'
     //implementation 'org.mongodb:mongodb-driver-core:4.2.0-beta1'
+    implementation 'com.google.code.gson:gson:2.7'
+    implementation "org.igniterealtime.smack:smack-android-extensions:4.1.0"
+    implementation "org.igniterealtime.smack:smack-experimental:4.1.0"
+    implementation "org.igniterealtime.smack:smack-tcp:4.1.0"
 }

@@ -4,17 +4,23 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientSettings;
@@ -36,6 +42,8 @@ import org.bson.BsonDocument;
 import org.bson.Document;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.*;
 
@@ -45,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     TextView createAnAccount;
+    ListView lstView;
+    Button btnAdd, btnEdit, btnDelete;
+    EditText edtUser;
+    User userSelected=null;
+    List<User> users = new ArrayList<User>();
 
 
     private String hashedPassword;
@@ -55,6 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        lstView = (ListView)findViewById(R.id.lstView);
+        btnAdd = (Button)findViewById(R.id.btnAdd);
+        btnDelete = (Button)findViewById(R.id.btnDelete);
+        btnEdit = (Button)findViewById(R.id.btnEdit);
+        edtUser = (EditText)findViewById(R.id.edtUsername);
+
+        // Load data whern app opened
+
+        //new GetData().execute(Common.getAddressAPI());
+
+
+
 
         // ALERT BUTTONS
 
@@ -173,13 +199,41 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                MongoCredential credential = MongoCredential.createCredential(emailContent,"test",passwordContent.toCharArray());
+                //MongoClientURI uri = new MongoClientURI(
+                //        "mongodb+srv://admin:CompeteToWin*13@cluster0.jhtaz.mongodb.net/test?retryWrites=true&w=majority");
+
+                //MongoClient mongoClient = new MongoClient(uri);
+                //MongoDatabase database = mongoClient.getDatabase("user");
+
+
+                //ConnectionString connString = new ConnectionString(
+                //        "mongodb+srv://admin:CompeteToWin*13@cluster0.jhtaz.mongodb.net/test?retryWrites=true&w=majority"
+                //);
+                //MongoClientSettings settings = MongoClientSettings.builder()
+                //        .applyConnectionString(connString)
+                //        .retryWrites(true)
+                //        .build();
+                //MongoClient mongoClient = (MongoClient) MongoClients.create(settings);
+                //MongoDatabase database = mongoClient.getDatabase("test");
+
+                //ConnectionString connString = new ConnectionString(
+                //        "mongodb+srv://admin :CompeteToWin*13@cluster0.bikbt.mongodb.net/test?w=majority"
+                //);
+
+                //MongoClientSettings settings = MongoClientSettings.builder()
+                //        .applyConnectionString(connString)
+                //        .retryWrites(true)
+                //        .build();
+
+                //MongoClient mongoClient = (MongoClient) MongoClients.create(settings);
+
+                //MongoCredential credential = MongoCredential.createCredential(emailContent,"test",passwordContent.toCharArray());
 
                 //MongoClient client = new MongoClient("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
 
-                MongoClient client = new MongoClient("mongodb+srv://admin:CompeteToWin*13@cluster0.bikbt.mongodb.net/test?retryWrites=true&w=majority");
+                //MongoClient client = new MongoClient("mongodb+srv://admin:CompeteToWin*13@cluster0.bikbt.mongodb.net/test?w=majority");
 
-                MongoDatabase database = client.getDatabase("test");
+                //MongoDatabase database = client.getDatabase("test");
 
                 // declare internet permission in android manifest
 
@@ -189,16 +243,16 @@ public class MainActivity extends AppCompatActivity {
                 //for(String name: database.listCollectionNames()){
                 //    System.out.println(name);
                 //}
-                MongoCollection<Document>  coll = database.getCollection("user");
-                FindIterable<Document> i = coll.find();
-                MongoCursor<Document> cursor = i.iterator();
+                //MongoCollection<Document>  coll = database.getCollection("user");
+                //FindIterable<Document> i = coll.find();
                 //MongoCursor<Document> cursor = i.iterator();
-                try{
-                    System.out.println(cursor.next().toJson());
-                }
-                finally{
-                    cursor.close();
-                }
+                //MongoCursor<Document> cursor = i.iterator();
+                //try{
+                //    System.out.println(cursor.next().toJson());
+                //}
+                //finally{
+                //    cursor.close();
+                //}
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
                 mainPage.putExtra("PasswordContent",passwordContent);
                 mainPage.putExtra("EmailContent",emailContent);
@@ -215,6 +269,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    /*
+    // function process data
+    class GetData extends AsyncTask<String,Void,String>{
+        ProgressDialog pd = new ProgressDialog(MainActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Pre process
+            pd.setTitle("Plesae wait...");
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            // Running process...
+            String stream = null;
+            String urlString = params[0];
+
+            HTTPDataHandler http = new HTTPDataHandler();
+            stream = http.GetHTTPDAta(urlString);
+            return stream;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            // Done process
+
+            //We will use Gson to parse Json to Class
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<User>>(){}.getType();
+            users=gson.fromJson(s,listType); // parse to List
+            CustomAdapter adapter = new CustomAdapter(getApplicationContext(),users); // Create adapter
+            lstView.setAdapter(adapter); // set Adapter to ListView
+            // error is happening above
+            pd.dismiss();
+        }
+
+    }
+    */
 
     public void passwordAlert(View v){
 
