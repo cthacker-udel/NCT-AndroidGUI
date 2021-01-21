@@ -331,10 +331,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 */
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
-                mainPage.putExtra("PasswordContent",passwordContent);
-                mainPage.putExtra("EmailContent",emailContent);
-                boolean emailValidFirst = checkCredentials.quickEmailValidator(emailContent);
-                boolean passwordvalid = checkCredentials.mongoCheckPassword(passwordContent,emailContent);
+                //boolean emailValidFirst = checkCredentials.quickEmailValidator(emailContent);
+                //boolean passwordvalid = checkCredentials.mongoCheckPassword(passwordContent,emailContent);
                 startActivity(mainPage);
             }
         });
