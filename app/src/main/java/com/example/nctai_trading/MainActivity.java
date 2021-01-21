@@ -234,9 +234,6 @@ public class MainActivity extends AppCompatActivity {
                 MongoClient mongoClient = new MongoClient(uri);
                 MongoDatabase database = mongoClient.getDatabase("test");
 
-                MongoIterable<String> databaseIterator = database.listCollectionNames();
-                //databaseIterator.forEach((Block<? super String>) System.out::println);
-
                 MongoCollection<Document> coll = null;
                 for(String name: database.listCollectionNames()){
                     if(name.equals("user")){
