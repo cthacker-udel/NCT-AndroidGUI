@@ -299,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
                     correctUsernameAndWrongPassword.create().show();
                     return;
                 }
+                // javascript REST API
                 /*
                 MongoCursor<Document> cursor = i.iterator();
                 try{
