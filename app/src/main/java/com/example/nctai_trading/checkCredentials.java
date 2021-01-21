@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCommandException;
 import com.mongodb.MongoCredential;
@@ -11,8 +12,6 @@ import com.mongodb.MongoSecurityException;
 import com.mongodb.MongoSocketOpenException;
 import com.mongodb.MongoTimeoutException;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;

@@ -40,14 +40,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation files('libs\\commons-net-3.7.2.jar')
     implementation files('libs\\commons-net-3.7.2-sources.jar')
+    implementation files('libs\\mongo-java-driver-3.4.0-SNAPSHOT.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-validator:commons-validator:1.7'
     //implementation 'org.mongodb:mongo-java-driver:3.12.7'
-    implementation 'org.mongodb:mongodb-driver-sync:4.1.1'
-    implementation 'org.mongodb:mongodb-driver-legacy:4.1.1'
+    //implementation 'org.mongodb:mongodb-driver-sync:4.1.1'
+    //implementation 'org.mongodb:mongodb-driver-legacy:4.1.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'commons-codec:commons-codec:20041127.091804'
     //implementation 'org.mongodb:mongodb-driver-core:4.2.0-beta1'

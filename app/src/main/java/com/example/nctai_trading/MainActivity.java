@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,14 +21,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
 import com.mongodb.ConnectionString;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -40,6 +42,7 @@ import java.lang.reflect.*;
 
 import org.bson.BsonDocument;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 
 import java.util.ArrayList;
@@ -59,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
     User userSelected=null;
     List<User> users = new ArrayList<User>();
 
-
-    private String hashedPassword;
+    private String hashedPassword = "";
+    private Object invokeObject;
 
     // TODO: [MAIN ACTIVITY] Implement sign in button functionality
     // TODO: [MAIN ACTIVITY] Implement reset password functionality
@@ -75,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         btnEdit = (Button)findViewById(R.id.btnEdit);
         edtUser = (EditText)findViewById(R.id.edtUsername);
 
+
+        if(android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         // Load data whern app opened
 
         //new GetData().execute(Common.getAddressAPI());
@@ -88,13 +97,31 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder emailAlert = new AlertDialog.Builder(this);
 
+        AlertDialog.Builder wrongUsernameAndPassword = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder wrongUsernameAndCorrectPassword = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder correctUsernameAndWrongPassword = new AlertDialog.Builder(this);
+
         passwordAlert.setTitle("Invalid password");
 
         emailAlert.setTitle("Invalid email");
 
+        wrongUsernameAndPassword.setTitle("Invalid Username and Password");
+
+        wrongUsernameAndCorrectPassword.setTitle("Invalid username");
+
+        correctUsernameAndWrongPassword.setTitle("Invalid password");
+
         passwordAlert.setMessage("Password must be between 1-25 Characters, no spaces, no symbols, must contain atleast one number, and one uppercase letter");
 
         emailAlert.setMessage("Email must be valid");
+
+        wrongUsernameAndPassword.setMessage("Email and Password are incorrect, please enter again");
+
+        wrongUsernameAndCorrectPassword.setMessage("Email was incorrect");
+
+        correctUsernameAndWrongPassword.setMessage("Password was incorrect");
 
         // ALERT BUTTONS
 
@@ -109,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v){
+
+                boolean correctUsername = false;
+                boolean correctPassword = false;
 
                 String emailContent = email.getText().toString().trim();
 
@@ -159,9 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                //MongoClientSettings settings = MongoClientSettings.builder().applyToSslSettings(builder -> builder.enabled(false)).build();
 
-                ///MongoClient client = (MongoClient) MongoClients.create(settings);
                 Class c = null;
                 Method method = null;
                 com.example.nctai_trading.passwordFormula passwordFormulaInstance = new passwordFormula();
@@ -191,68 +219,117 @@ public class MainActivity extends AppCompatActivity {
                 // make sure
 
                 try {
-                    Object invokeResult = method.invoke(passwordFormulaInstance,passwordContent);
-                    String hashedPassword = invokeResult.toString();
+                    MainActivity.this.invokeObject = method.invoke(passwordFormulaInstance,passwordContent);
+                    MainActivity.this.hashedPassword = MainActivity.this.invokeObject.toString();
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
 
-                //MongoClientURI uri = new MongoClientURI(
-                //        "mongodb+srv://admin:CompeteToWin*13@cluster0.jhtaz.mongodb.net/test?retryWrites=true&w=majority");
+                // MONGO CONNECTION FINALLY
 
-                //MongoClient mongoClient = new MongoClient(uri);
-                //MongoDatabase database = mongoClient.getDatabase("user");
+                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
 
+                MongoClient mongoClient = new MongoClient(uri);
+                MongoDatabase database = mongoClient.getDatabase("test");
 
-                //ConnectionString connString = new ConnectionString(
-                //        "mongodb+srv://admin:CompeteToWin*13@cluster0.jhtaz.mongodb.net/test?retryWrites=true&w=majority"
-                //);
-                //MongoClientSettings settings = MongoClientSettings.builder()
-                //        .applyConnectionString(connString)
-                //        .retryWrites(true)
-                //        .build();
-                //MongoClient mongoClient = (MongoClient) MongoClients.create(settings);
-                //MongoDatabase database = mongoClient.getDatabase("test");
+                MongoIterable<String> databaseIterator = database.listCollectionNames();
+                //databaseIterator.forEach((Block<? super String>) System.out::println);
 
-                //ConnectionString connString = new ConnectionString(
-                //        "mongodb+srv://admin :CompeteToWin*13@cluster0.bikbt.mongodb.net/test?w=majority"
-                //);
-
-                //MongoClientSettings settings = MongoClientSettings.builder()
-                //        .applyConnectionString(connString)
-                //        .retryWrites(true)
-                //        .build();
-
-                //MongoClient mongoClient = (MongoClient) MongoClients.create(settings);
-
-                //MongoCredential credential = MongoCredential.createCredential(emailContent,"test",passwordContent.toCharArray());
-
-                //MongoClient client = new MongoClient("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
-
-                //MongoClient client = new MongoClient("mongodb+srv://admin:CompeteToWin*13@cluster0.bikbt.mongodb.net/test?w=majority");
-
-                //MongoDatabase database = client.getDatabase("test");
-
-                // declare internet permission in android manifest
-
-                //database.runCommand((Command<BsonDocument>)"{ping:1}").wait();
-                // line 177 fails
-                //MongoIterable<String> databaseIterator = database.listCollectionNames();
-                //for(String name: database.listCollectionNames()){
-                //    System.out.println(name);
-                //}
-                //MongoCollection<Document>  coll = database.getCollection("user");
+                MongoCollection<Document> coll = null;
+                for(String name: database.listCollectionNames()){
+                    if(name.equals("user")){
+                        coll = database.getCollection(name);
+                        break;
+                    }
+                }
                 //FindIterable<Document> i = coll.find();
-                //MongoCursor<Document> cursor = i.iterator();
-                //MongoCursor<Document> cursor = i.iterator();
-                //try{
-                //    System.out.println(cursor.next().toJson());
-                //}
-                //finally{
-                //    cursor.close();
-                //}
+                BasicDBObject emailQuery = new BasicDBObject();
+                emailQuery.put("email",emailContent);
+                FindIterable<Document> emailID = coll.find(emailQuery);
+                Document emailResult = emailID.first();
+                if(emailResult == null){ // no email found
+                    correctUsername = false;
+                }
+                if(emailResult != null){
+                    correctUsername = true;
+                }
+                BasicDBObject passQuery = new BasicDBObject();
+                passQuery.put("password",MainActivity.this.hashedPassword);
+                FindIterable<Document> passID = coll.find(passQuery);
+                Document passResult = passID.first();
+                if(passResult == null){
+                    correctPassword = false;
+                }
+                if(passResult != null){
+                    correctPassword = true;
+                }
+
+                if(!correctUsername && !correctPassword){
+                    wrongUsernameAndPassword.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please edit your password and email",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    wrongUsernameAndPassword.setCancelable(true);
+                    wrongUsernameAndPassword.create().show();
+                    return;
+                }
+                if(!correctUsername && correctPassword){
+                    wrongUsernameAndCorrectPassword.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please edit your email",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    wrongUsernameAndCorrectPassword.setCancelable(true);
+                    wrongUsernameAndCorrectPassword.create().show();
+                    return;
+                }
+                if(correctUsername && !correctPassword){
+                    correctUsernameAndWrongPassword.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please edit your password",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    correctUsernameAndWrongPassword.setCancelable(true);
+                    correctUsernameAndWrongPassword.create().show();
+                    return;
+                }
+                /*
+                MongoCursor<Document> cursor = i.iterator();
+                try{
+                    while(cursor.hasNext()) {
+                        System.out.println(cursor.next().toJson());
+                        ObjectId foundEmail = cursor.next().getObjectId("email");
+                        ObjectId foundPass = cursor.next().getObjectId("password");
+                        if(foundEmail.toString().equals(emailContent) && foundPass.toString().equals(hashedPassword)){
+                            correctUsername = true;
+                            correctPassword = true;
+                            break;
+                        }
+                        else if(foundEmail.toString().equals(emailContent) && !foundPass.toString().equals(hashedPassword)){
+                            correctUsername = true;
+                            correctPassword = false;
+                            break;
+                        }
+                        else if(!foundEmail.toString().equals(emailContent) && foundPass.toString().equals(hashedPassword)){
+                            correctUsername = false;
+                            correctPassword = true;
+                            break;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                }
+                finally{
+                    cursor.close();
+                }
+                */
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
                 mainPage.putExtra("PasswordContent",passwordContent);
                 mainPage.putExtra("EmailContent",emailContent);
