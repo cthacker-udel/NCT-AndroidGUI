@@ -43,7 +43,7 @@ public class mainPage extends AppCompatActivity {
         mainPageSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TODO [VIC] Implement binance code
             }
         });
 
