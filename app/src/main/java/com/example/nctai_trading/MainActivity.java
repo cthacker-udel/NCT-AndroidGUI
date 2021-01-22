@@ -311,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
+                //mainPage.putExtra("email",emailContent);
                 startActivity(mainPage);
             }
         });

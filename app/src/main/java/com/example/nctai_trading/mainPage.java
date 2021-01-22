@@ -16,6 +16,7 @@ public class mainPage extends AppCompatActivity {
     ImageView imageView;
     Button mainPageSignInBtn;
     Button mainPageARBtn;
+    //String passedEmail = getIntent().getStringExtra("email");
 
     // TODO: [MAIN PAGE] Implement sign/stop listening functionality
     // TODO: [MAIN PAGE] Implement edit credentials -
