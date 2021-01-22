@@ -187,7 +187,14 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
+                /*
 
+                @author - Cameron Thacker
+
+                Invocation of password hashing algorithm in Android through private method means
+
+
+                 */
 
 
                 Class c = null;
@@ -227,6 +234,14 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                /*
+
+                @author - Cameron Thacker
+
+                Mongo Connection to Database and email and password verification
+
+                 */
+
                 // MONGO CONNECTION FINALLY
 
                 MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
@@ -241,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                //FindIterable<Document> i = coll.find();
                 BasicDBObject emailQuery = new BasicDBObject();
                 emailQuery.put("email",emailContent);
                 FindIterable<Document> emailID = coll.find(emailQuery);
@@ -296,41 +310,7 @@ public class MainActivity extends AppCompatActivity {
                     correctUsernameAndWrongPassword.create().show();
                     return;
                 }
-                // javascript REST API
-                /*
-                MongoCursor<Document> cursor = i.iterator();
-                try{
-                    while(cursor.hasNext()) {
-                        System.out.println(cursor.next().toJson());
-                        ObjectId foundEmail = cursor.next().getObjectId("email");
-                        ObjectId foundPass = cursor.next().getObjectId("password");
-                        if(foundEmail.toString().equals(emailContent) && foundPass.toString().equals(hashedPassword)){
-                            correctUsername = true;
-                            correctPassword = true;
-                            break;
-                        }
-                        else if(foundEmail.toString().equals(emailContent) && !foundPass.toString().equals(hashedPassword)){
-                            correctUsername = true;
-                            correctPassword = false;
-                            break;
-                        }
-                        else if(!foundEmail.toString().equals(emailContent) && foundPass.toString().equals(hashedPassword)){
-                            correctUsername = false;
-                            correctPassword = true;
-                            break;
-                        }
-                        else{
-                            continue;
-                        }
-                    }
-                }
-                finally{
-                    cursor.close();
-                }
-                */
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
-                //boolean emailValidFirst = checkCredentials.quickEmailValidator(emailContent);
-                //boolean passwordvalid = checkCredentials.mongoCheckPassword(passwordContent,emailContent);
                 startActivity(mainPage);
             }
         });
@@ -341,50 +321,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(toSignUpPage);
             }
         });
-    }
-    /*
-    // function process data
-    class GetData extends AsyncTask<String,Void,String>{
-        ProgressDialog pd = new ProgressDialog(MainActivity.this);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Pre process
-            pd.setTitle("Plesae wait...");
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            // Running process...
-            String stream = null;
-            String urlString = params[0];
-
-            HTTPDataHandler http = new HTTPDataHandler();
-            stream = http.GetHTTPDAta(urlString);
-            return stream;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            // Done process
-
-            //We will use Gson to parse Json to Class
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<User>>(){}.getType();
-            users=gson.fromJson(s,listType); // parse to List
-            CustomAdapter adapter = new CustomAdapter(getApplicationContext(),users); // Create adapter
-            lstView.setAdapter(adapter); // set Adapter to ListView
-            // error is happening above
-            pd.dismiss();
-        }
-
-    }
-    */
-
-    public void passwordAlert(View v){
-
     }
 }
