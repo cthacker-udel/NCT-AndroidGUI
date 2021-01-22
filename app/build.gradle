@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.nctai_trading"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -61,4 +61,5 @@ dependencies {
     implementation "org.igniterealtime.smack:smack-android-extensions:4.1.0"
     implementation "org.igniterealtime.smack:smack-experimental:4.1.0"
     implementation "org.igniterealtime.smack:smack-tcp:4.1.0"
+    implementation "com.squareup.sdk.in-app-payments:card-entry:1.4.0"
 }
