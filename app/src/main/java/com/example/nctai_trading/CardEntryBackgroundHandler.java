@@ -12,6 +12,7 @@ public class CardEntryBackgroundHandler implements CardNonceBackgroundHandler {
     public CardEntryActivityCommand handleEnteredCardInBackground(CardDetails cardDetails) {
         try{
             // TODO: Call backend service
+            //
             throw new IOException("Thrown IOException");
             // MyBackendServiceResponse response = myBackendService(cardDetails.getNonce());
             /*

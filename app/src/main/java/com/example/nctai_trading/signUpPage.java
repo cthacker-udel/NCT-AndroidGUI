@@ -19,6 +19,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import net.sargue.mailgun.Configuration;
+import net.sargue.mailgun.Mail;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -283,6 +286,19 @@ public class signUpPage extends AppCompatActivity {
                 createdUser.append("email",emailContent);
                 createdUser.append("password",hashedPassword);
                 createdUser.append("wallet",new ObjectId());
+
+                Configuration configuration = new Configuration()
+                        .domain("nextcapitaltech.com")
+                        .apiKey("key-XXXXXX")
+                        .from("Test account", "nextcapital@nextcapitaltech.com");
+
+                Mail.using(configuration)
+                        .to(emailContent)
+                        .subject("Next Capital Tech Verification Email")
+                        .text("Verification code : ######")
+                        .build()
+                        .send();
+
 
                 // createdUser.append("emailVerify", false);
                 // updated username when credentials are created

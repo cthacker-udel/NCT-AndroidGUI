@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/enterDiscountCodeText"
         android:layout_width="175dp"
         android:layout_height="40dp"
         android:layout_marginStart="24dp"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/checkDiscountCodeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -67,7 +67,7 @@
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/checkDiscountCodeButton" />
 
     <Button
         android:id="@+id/payByCardBtn"

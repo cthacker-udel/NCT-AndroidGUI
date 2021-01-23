@@ -13,6 +13,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import org.bson.BSONObject;
+import org.bson.Document;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -22,6 +32,10 @@ public class termsOfServicePage extends AppCompatActivity {
     Spinner termsOfServiceNCTPermissionSpinner;
     TextView textView;
     ScrollView termsOfServiceScrollView;
+    String passedEmail;
+    String termSelected;
+    String permissionSelected;
+
 
 
     LinkedList<String> profitFeeTermList = new LinkedList<>();
@@ -36,6 +50,9 @@ public class termsOfServicePage extends AppCompatActivity {
         //scrollView = findViewById(R.id.termsOfServiceScrollView);
         //scrollView.addView(findViewById(R.id.termsOfServiceTextView));
         agreeToTermsOfServiceButton = findViewById(R.id.termsOfServiceAgreeBtn);
+
+        this.passedEmail = "";
+
         // make sure that all options have been selected, there are values present, besides the default, then continue
         /*
         // TODO: [TERMS OF SERVICE PAGE] Implement check methods for terms of service
@@ -111,6 +128,27 @@ public class termsOfServicePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // return to payment option page
+
+                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+
+                MongoClient mongoClient = new MongoClient(uri);
+                MongoDatabase database = mongoClient.getDatabase("test");
+
+                MongoCollection<Document> coll = database.getCollection("user");
+
+                BasicDBObject emailQuery = new BasicDBObject();
+                emailQuery.put("email",passedEmail);
+                FindIterable<Document> emailID = coll.find(emailQuery);
+                BasicDBObject document = new BasicDBObject();
+                document.putAll((BSONObject)emailQuery);
+
+                termSelected = termsOfServiceProfitFeeSpinner.getSelectedItem().toString();
+                permissionSelected = termsOfServiceNCTPermissionSpinner.getSelectedItem().toString();
+
+                document.put("Permission",permissionSelected);
+                document.put("Term",termSelected);
+                document.put("terms_agreed",true);
+
                 Intent toPaymentOptionPage = new Intent(getApplicationContext(),paymentOptionPage.class);
                 startActivity(toPaymentOptionPage);
             }

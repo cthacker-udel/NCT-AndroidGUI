@@ -1,13 +1,28 @@
 package com.example.nctai_trading;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import org.bson.BSONObject;
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +36,8 @@ public class donationPage extends AppCompatActivity {
     // TODO: [DONATION PAGE][Completed] Implement select donation amount
     // TODO: [DONATION PAGE] Implement donate button functionality
 
+    String passedEmail = "";//getIntent().getStringExtra("email");
+
     Spinner donateCountrySpinner;
     Spinner donateCauseSpinner;
     Spinner donateAmountSpinner;
@@ -28,6 +45,10 @@ public class donationPage extends AppCompatActivity {
     ArrayList<String> countries = new ArrayList<>();
     LinkedList<String> causes = new LinkedList<>();
     LinkedList<String> amounts = new LinkedList<>();
+    Button donateButton;
+    String countrySelected;
+    String causeSelected;
+    String amountSelected;
 
 
     @Override
@@ -38,6 +59,14 @@ public class donationPage extends AppCompatActivity {
         donateCountrySpinner = findViewById(R.id.donationCountryScroller);
         donateCauseSpinner = findViewById(R.id.donationCauseScroller);
         donateAmountSpinner = findViewById(R.id.donationAmountScroller);
+
+        AlertDialog.Builder donateAlert = new AlertDialog.Builder(donationPage.this);
+
+        donateAlert.setTitle("Donation complete");
+
+        donateAlert.setMessage("Your donation has been completed");
+
+        donateButton = findViewById(R.id.donateButton);
 
         countryCodes = Locale.getISOCountries();
         for(String countryCode: countryCodes){
@@ -100,6 +129,41 @@ public class donationPage extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        donateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                causeSelected = donateCauseSpinner.getSelectedItem().toString();
+                countrySelected = donateCountrySpinner.getSelectedItem().toString();
+                amountSelected = donateAmountSpinner.getSelectedItem().toString().replaceAll("%","");
+
+                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+
+                MongoClient mongoClient = new MongoClient(uri);
+                MongoDatabase database = mongoClient.getDatabase("test");
+
+                MongoCollection<Document> coll = database.getCollection("user");
+
+                BasicDBObject emailQuery = new BasicDBObject();
+                emailQuery.put("email",passedEmail);
+                FindIterable<Document> emailID = coll.find(emailQuery);
+                BasicDBObject document = new BasicDBObject();
+                document.putAll((BSONObject)emailQuery);
+
+                document.append("donation_details", new Object[]{new Document("country",countrySelected),new Document("cause",causeSelected), new Document("percentage",amountSelected)});
+                donateAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(donationPage.this,"Donation completed, returning to main page..", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                donateAlert.setCancelable(true);
+                donateAlert.create().show();
+                Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                startActivity(toMainPage);
             }
         });
 

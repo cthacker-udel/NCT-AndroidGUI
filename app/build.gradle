@@ -35,6 +35,10 @@ dependencies {
 
     def retrofit_version = '2.4.0'
 
+    configurations {
+        all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
+    }
+
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
@@ -62,4 +66,5 @@ dependencies {
     implementation "org.igniterealtime.smack:smack-experimental:4.1.0"
     implementation "org.igniterealtime.smack:smack-tcp:4.1.0"
     implementation "com.squareup.sdk.in-app-payments:card-entry:1.4.0"
+    implementation 'net.sargue:mailgun:1.9.2'
 }
