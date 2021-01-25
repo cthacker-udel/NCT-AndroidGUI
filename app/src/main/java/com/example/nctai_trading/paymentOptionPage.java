@@ -44,7 +44,7 @@ public class paymentOptionPage extends AppCompatActivity {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 
-    private GooglePayChargeClient googlePayChargeClient;
+    //private GooglePayChargeClient googlePayChargeClient;
 
     // TODO: [PAYMENT OPTION PAGE] Implement check discount code button feature
     // TODO: [PAYMENT OPTION PAGE] Implement pay by crypto button feature

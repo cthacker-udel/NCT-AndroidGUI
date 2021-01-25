@@ -4,6 +4,7 @@
     <string name="hintEmail">Enter your email</string>
     <string name="hintPassword">Enter your password</string>
     <string name="binanceKeys">Enter Binance Keys</string>
+    <string name="signInButton">Sign In</string>
     <string name="startStopListening">Start/Stop Listening</string>
     <string name="paymentOptions">Payment Options</string>
     <string name="editCredentials">Edit Credentials</string>
