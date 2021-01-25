@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".binanceKeys">
 
     <EditText
         android:id="@+id/binanceKeysSecretApiKey"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="15dp"
         android:ems="10"
         android:hint="@string/secretKeyHint"
@@ -26,7 +28,8 @@
         android:id="@+id/binanceKeysApiKey"
         android:layout_width="200dp"
         android:layout_height="45dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="57dp"
         android:ems="10"
         android:hint="@string/apiKeyHint"
         android:inputType="textPersonName"
@@ -41,19 +44,21 @@
         android:id="@+id/textView35"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
-        android:text="Enter API Key"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="70dp"
+        android:text="Enter API Key :"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
     <TextView
         android:id="@+id/textView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:text="Enter Secret Key"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="105dp"
+        android:text="Enter Secret Key :"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
@@ -61,8 +66,9 @@
         android:id="@+id/textView37"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="45dp"
         android:text="Enter Binance Credentials"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,10 +77,21 @@
         android:id="@+id/binanceKeysBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="125dp"
         android:text="Close and Apply"
+        app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/binanceKeysSecretApiKey" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binanceKeysBtn"
+        app:srcCompat="@drawable/nct_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
