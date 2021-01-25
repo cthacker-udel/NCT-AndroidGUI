@@ -57,11 +57,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <Button
-        android:id="@+id/mainPageSignInButton"
+        android:id="@+id/mainPageBinanceKeysButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/signInButton"
+        android:text="@string/binanceKeys"
         android:textColor="@color/white"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPageSignInButton"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageBinanceKeysButton"
         tools:text="@string/startStopListening" />
 
     <Button

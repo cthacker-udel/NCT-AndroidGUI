@@ -29,8 +29,10 @@ public class mainPage extends AppCompatActivity {
         paymentOptionBtn = findViewById(R.id.mainPagePaymentOptionButton);
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
-        mainPageSignInBtn = findViewById(R.id.mainPageSignInButton);
+        mainPageSignInBtn = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
+
+        // sign in double check to make sure they have a binance key, api key and the secret key, if one of them is wrong then throw a prompt
 
         paymentOptionBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,9 @@ import org.bson.Document;
 import sqip.Card;
 import sqip.CardDetails;
 import sqip.CardEntry;
+import sqip.InAppPaymentsSdk;
+import sqip.GooglePay;
+
 
 public class paymentOptionPage extends AppCompatActivity {
 
@@ -34,6 +39,12 @@ public class paymentOptionPage extends AppCompatActivity {
     String passedEmail;
     EditText discountCodeCheckText;
     String discountCode;
+
+    private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 1;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    private GooglePayChargeClient googlePayChargeClient;
 
     // TODO: [PAYMENT OPTION PAGE] Implement check discount code button feature
     // TODO: [PAYMENT OPTION PAGE] Implement pay by crypto button feature
@@ -68,8 +79,12 @@ public class paymentOptionPage extends AppCompatActivity {
 
         payByCardBtn.setOnClickListener((view) ->
         {
-            CardEntry.startCardEntryActivity(paymentOptionPage.this,true,
-            CardEntry.DEFAULT_CARD_ENTRY_REQUEST_CODE);
+            if(InAppPaymentsSdk.INSTANCE.getSquareApplicationId().equals("REPLACE_ME")){
+                return;
+            }
+            else{
+                return;
+            }
         });
 
         backToHomePageBtn.setOnClickListener(new View.OnClickListener() {
