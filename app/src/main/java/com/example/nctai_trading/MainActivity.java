@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     EditText edtUser;
     User userSelected=null;
     List<User> users = new ArrayList<User>();
+    boolean bothKeysNotCreated;
 
     private String hashedPassword = "";
     private Object invokeObject;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         btnDelete = (Button)findViewById(R.id.btnDelete);
         btnEdit = (Button)findViewById(R.id.btnEdit);
         edtUser = (EditText)findViewById(R.id.edtUsername);
+        bothKeysNotCreated = false;
 
 
         if(android.os.Build.VERSION.SDK_INT > 9) {
@@ -88,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
         //new GetData().execute(Common.getAddressAPI());
 
+        // Shared Preferences
 
+        SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
+
+        String apiKey = sharedPreferences.getString("apiKey","defaultApiKey");
+
+        String secretKey = sharedPreferences.getString("secretKey","defaultSecretKey");
 
 
         // ALERT BUTTONS
@@ -103,6 +112,12 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder correctUsernameAndWrongPassword = new AlertDialog.Builder(this);
 
+        AlertDialog.Builder userContainsApiKey = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder userContainsSecretKey = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder userContainsApiKeyAndSecretKey = new AlertDialog.Builder(this);
+
         passwordAlert.setTitle("Invalid password");
 
         emailAlert.setTitle("Invalid email");
@@ -113,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
         correctUsernameAndWrongPassword.setTitle("Invalid password");
 
+        userContainsApiKey.setTitle("Api Key Error");
+
+        userContainsSecretKey.setTitle("Secret Key Error");
+
+        userContainsApiKeyAndSecretKey.setTitle("Api Key and Secret Key Error");
+
         passwordAlert.setMessage("Password must be between 1-25 Characters, no spaces, no symbols, must contain atleast one number, and one uppercase letter");
 
         emailAlert.setMessage("Email must be valid");
@@ -122,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
         wrongUsernameAndCorrectPassword.setMessage("Email was incorrect");
 
         correctUsernameAndWrongPassword.setMessage("Password was incorrect");
+
+        userContainsApiKey.setMessage("Please set Api Key : Enter Binance Keys -> Api Key -> Close and Apply");
+
+        userContainsSecretKey.setMessage("Please set Secret Key: Enter Binance Keys -> Secret Key -> Close and Apply");
+
+        userContainsApiKeyAndSecretKey.setMessage("Please set Secret Key and Api Key : Enter Binance Keys -> Api Key & Secret Key -> Close and Apply");
 
         // ALERT BUTTONS
 
@@ -310,6 +337,47 @@ public class MainActivity extends AppCompatActivity {
                     correctUsernameAndWrongPassword.create().show();
                     return;
                 }
+
+                /*
+
+                @author Cameron Thacker
+
+                Shared Preferences validator for api key and secret key
+
+                 */
+
+                if(apiKey.equals("defaultApiKey") && secretKey.equals("defaultSecretKey") && !bothKeysNotCreated){
+                    userContainsApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please add api key and secret key",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsApiKeyAndSecretKey.setCancelable(true);
+                    userContainsApiKeyAndSecretKey.create().show();
+                    bothKeysNotCreated = true;
+                }
+                if(apiKey.equals("defaultApiKey") && !bothKeysNotCreated) {
+                    userContainsApiKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this, "Please add api key", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsApiKey.setCancelable(true);
+                    userContainsApiKey.create().show();
+                }
+                if(secretKey.equals("defaultSecretKey") && !bothKeysNotCreated){
+                    userContainsSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please add secret key",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsSecretKey.setCancelable(true);
+                    userContainsSecretKey.create().show();
+                }
+
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
                 //mainPage.putExtra("email",emailContent);
                 startActivity(mainPage);

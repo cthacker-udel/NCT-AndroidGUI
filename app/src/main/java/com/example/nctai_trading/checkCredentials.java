@@ -1,5 +1,6 @@
 package com.example.nctai_trading;
 
+
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -20,6 +21,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class checkCredentials {
 
