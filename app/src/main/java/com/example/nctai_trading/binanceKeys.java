@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,8 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
+
+import java.util.Map;
 
 public class binanceKeys extends AppCompatActivity {
 
@@ -48,17 +51,25 @@ public class binanceKeys extends AppCompatActivity {
             public void onClick(View v) {
                 secretKeyText = secretKey.getText().toString();
                 apiKeyText = apiKey.getText().toString();
-                SharedPreferences.Editor sharedPreferences = getEditor();
+                //SharedPreferences.Editor sharedPreferences = getEditor();
+                SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
                 // setters
-                sharedPreferences.putString("apiKey",apiKeyText);
-                sharedPreferences.putString("secretKey",secretKeyText);
+                editor.putString("apiKey",apiKeyText);
+                editor.putString("secretKey",secretKeyText);
+                editor.commit();
+
                 // getters
                 getSharedPreferences("apiKey",MODE_PRIVATE);
                 getSharedPreferences("secretKey",MODE_PRIVATE);
+
+                // examples ^^
                 SharedPreferences theApiKeyText = getSharedPreferences("apiKey",MODE_PRIVATE);
-                System.out.println(theApiKeyText.toString());
+                System.out.println(theApiKeyText.getString("apiKey",""));
                 SharedPreferences theSecretKeyText = getSharedPreferences("secretKey",MODE_PRIVATE);
                 System.out.println(theSecretKeyText);
+                Map<String,?> map = theApiKeyText.getAll();
             }
         });
 
