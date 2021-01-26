@@ -52,12 +52,13 @@ public class binanceKeys extends AppCompatActivity {
                 secretKeyText = secretKey.getText().toString();
                 apiKeyText = apiKey.getText().toString();
                 //SharedPreferences.Editor sharedPreferences = getEditor();
-                SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 // setters
                 editor.putString("apiKey",apiKeyText);
                 editor.putString("secretKey",secretKeyText);
+                editor.apply();
                 editor.commit();
 
                 // getters
@@ -65,11 +66,10 @@ public class binanceKeys extends AppCompatActivity {
                 getSharedPreferences("secretKey",MODE_PRIVATE);
 
                 // examples ^^
-                SharedPreferences theApiKeyText = getSharedPreferences("apiKey",MODE_PRIVATE);
-                System.out.println(theApiKeyText.getString("apiKey",""));
-                SharedPreferences theSecretKeyText = getSharedPreferences("secretKey",MODE_PRIVATE);
-                System.out.println(theSecretKeyText);
-                Map<String,?> map = theApiKeyText.getAll();
+                SharedPreferences theApiKeyText = getSharedPreferences("test",MODE_PRIVATE);
+                System.out.println(theApiKeyText.getString("apiKey","default value api key"));
+                SharedPreferences theSecretKeyText = getSharedPreferences("test",MODE_PRIVATE);
+                System.out.println(theSecretKeyText.getString("secretKey","default value secret key"));
             }
         });
 
