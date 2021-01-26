@@ -2,6 +2,7 @@ package com.example.nctai_trading;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -43,27 +44,20 @@ public class binanceKeys extends AppCompatActivity {
             public void onClick(View v) {
                 secretKeyText = secretKey.getText().toString();
                 apiKeyText = apiKey.getText().toString();
-                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
-
-                MongoClient mongoClient = new MongoClient(uri);
-                MongoDatabase database = mongoClient.getDatabase("test");
-                MongoCollection<Document> collection = database.getCollection("user");
-
-                BasicDBObject emailQuery = new BasicDBObject();
-                emailQuery.put("email","passedEmail");
-                FindIterable<Document> document = collection.find(emailQuery);
-                MongoCursor<Document> cursor = document.iterator();
-                while(cursor.hasNext()){
-                    // figure out how to 1) Check if apiKey and secretKey exist in document and 2) assign foundApiKey and foundSecretKey
-                    // are equal to entered apiKey and secretKey
-                    // add apikey and secret key to database
-                    // and pull it out
-                    System.out.println(((Document)cursor.next()).get("apiKey"));
-                    System.out.println(((Document)cursor.next()).get("secretKey"));
-                }
-
+                SharedPreferences.Editor sharedPreferences = getEditor();
+                // setters
+                sharedPreferences.putString("apiKey",apiKeyText);
+                sharedPreferences.putString("secretKey",secretKeyText);
+                // getters
+                getSharedPreferences("apiKey",MODE_PRIVATE);
+                getSharedPreferences("secretKey",MODE_PRIVATE);
             }
         });
 
+    }
+    public SharedPreferences.Editor getEditor(){
+        SharedPreferences object = null;
+        SharedPreferences.Editor editor = object.edit();
+        return editor;
     }
 }
