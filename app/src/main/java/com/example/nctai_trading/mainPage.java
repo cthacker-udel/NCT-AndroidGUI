@@ -16,6 +16,7 @@ public class mainPage extends AppCompatActivity {
     ImageView imageView;
     Button mainPageSignInBtn;
     Button mainPageARBtn;
+    Button mainPageBinanceKeys;
     //String passedEmail = getIntent().getStringExtra("email");
 
     // TODO: [MAIN PAGE] Implement sign/stop listening functionality
@@ -31,6 +32,7 @@ public class mainPage extends AppCompatActivity {
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
         mainPageSignInBtn = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
+        mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
 
         // sign in double check to make sure they have a binance key, api key and the secret key, if one of them is wrong then throw a prompt
 
@@ -70,6 +72,14 @@ public class mainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toARPage = new Intent(getApplicationContext(),ARPage.class);
                 startActivity(toARPage);
+            }
+        });
+
+        mainPageBinanceKeys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toBinanceKeysPage = new Intent(getApplicationContext(),binanceKeys.class);
+                startActivity(toBinanceKeysPage);
             }
         });
 

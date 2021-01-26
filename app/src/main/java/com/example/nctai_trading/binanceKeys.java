@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
@@ -31,6 +32,8 @@ public class binanceKeys extends AppCompatActivity {
     String foundApiKey;
     String foundSecretKey;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,7 @@ public class binanceKeys extends AppCompatActivity {
         closeAndApplyBtn = findViewById(R.id.binanceKeysBtn);
         secretKey = findViewById(R.id.binanceKeysSecretApiKey);
         apiKey = findViewById(R.id.binanceKeysApiKey);
+
 
         closeAndApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +55,10 @@ public class binanceKeys extends AppCompatActivity {
                 // getters
                 getSharedPreferences("apiKey",MODE_PRIVATE);
                 getSharedPreferences("secretKey",MODE_PRIVATE);
+                SharedPreferences theApiKeyText = getSharedPreferences("apiKey",MODE_PRIVATE);
+                System.out.println(theApiKeyText.toString());
+                SharedPreferences theSecretKeyText = getSharedPreferences("secretKey",MODE_PRIVATE);
+                System.out.println(theSecretKeyText);
             }
         });
 
