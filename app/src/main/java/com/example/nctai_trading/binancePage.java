@@ -74,7 +74,7 @@ public class binancePage extends AppCompatActivity {
         binancePageSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
+
                     BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secretKey);
                     client = factory.newRestClient();
 
@@ -83,11 +83,6 @@ public class binancePage extends AppCompatActivity {
                     client.ping();
                     System.out.println(client.getServerTime());
                     binancePageSignInBtn.setText("Login Success!");
-                }
-                catch(Exception e){
-                    binancePageSignInBtn.setText("Login Error");
-                    return;
-                }
             }
         });
 
