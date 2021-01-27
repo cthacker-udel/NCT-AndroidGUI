@@ -69,15 +69,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/coinBaseKeysButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/startStopListening"
+        android:text="Enter Coinbase Keys"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainPageBinanceKeysButton"
-        tools:text="@string/startStopListening" />
+        tools:text="Enter Coinbase Keys" />
 
     <Button
         android:id="@+id/mainPagePaymentOptionButton"
@@ -87,7 +87,7 @@
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton"
         tools:text="@string/paymentOptions" />
 
     <Button
@@ -132,4 +132,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alternateInvestmentButton" />
+
+    <Button
+        android:id="@+id/mainPageStartStopListening"
+        android:layout_width="wrap_content"
+        app:backgroundTint="@android:color/darker_gray"
+        android:layout_height="wrap_content"
+        android:text="Start/Stop Listening"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageARButton" />
+
+    <TextView
+        android:id="@+id/textView38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="30dp"
+        android:text="Next Capital Tech LLC"
+        android:textColor="@color/white"
+        android:alpha=".5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageStartStopListening" />
 </androidx.constraintlayout.widget.ConstraintLayout>

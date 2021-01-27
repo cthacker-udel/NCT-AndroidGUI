@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     User userSelected=null;
     List<User> users = new ArrayList<User>();
     boolean bothKeysNotCreated;
+    boolean bothCoinBaseKeysNotCreated;
 
     private String hashedPassword = "";
     private Object invokeObject;
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         btnEdit = (Button)findViewById(R.id.btnEdit);
         edtUser = (EditText)findViewById(R.id.edtUsername);
         bothKeysNotCreated = false;
+        bothCoinBaseKeysNotCreated = false;
 
 
         if(android.os.Build.VERSION.SDK_INT > 9) {
@@ -95,9 +97,13 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
 
-        String apiKey = sharedPreferences.getString("apiKey","defaultApiKey");
+        String apiKey = sharedPreferences.getString("binanceApiKey","defaultBinanceApiKey");
 
-        String secretKey = sharedPreferences.getString("secretKey","defaultSecretKey");
+        String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
+
+        String coinBaseApiKey = sharedPreferences.getString("coinBaseApiKey","defaultCoinBaseApiKey");
+
+        String coinBaseSecretKey = sharedPreferences.getString("coinBaseSecretKey","defaultCoinBaseSecretKey");
 
 
         // ALERT BUTTONS
@@ -118,6 +124,12 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder userContainsApiKeyAndSecretKey = new AlertDialog.Builder(this);
 
+        AlertDialog.Builder userContainsCoinBaseApiKey = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder userContainsCoinBaseSecretKey = new AlertDialog.Builder(this);
+
+        AlertDialog.Builder userContainsCoinBaseApiKeyAndSecretKey = new AlertDialog.Builder(this);
+
         passwordAlert.setTitle("Invalid password");
 
         emailAlert.setTitle("Invalid email");
@@ -134,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
         userContainsApiKeyAndSecretKey.setTitle("Api Key and Secret Key Error");
 
+        userContainsCoinBaseApiKey.setTitle("CoinBase Api Key Error");
+
+        userContainsCoinBaseSecretKey.setTitle("CoinBase Secret Key Error");
+
+        userContainsCoinBaseApiKeyAndSecretKey.setTitle("CoinBase Api Key and Secret Key Error");
+
         passwordAlert.setMessage("Password must be between 1-25 Characters, no spaces, no symbols, must contain atleast one number, and one uppercase letter");
 
         emailAlert.setMessage("Email must be valid");
@@ -149,6 +167,12 @@ public class MainActivity extends AppCompatActivity {
         userContainsSecretKey.setMessage("Please set Secret Key: Enter Binance Keys -> Secret Key -> Close and Apply");
 
         userContainsApiKeyAndSecretKey.setMessage("Please set Secret Key and Api Key : Enter Binance Keys -> Api Key & Secret Key -> Close and Apply");
+
+        userContainsCoinBaseApiKey.setMessage("Please set coinbase api key");
+
+        userContainsCoinBaseSecretKey.setMessage("Please set coinbase secret key");
+
+        userContainsCoinBaseApiKeyAndSecretKey.setMessage("Please set coinbase api and secret key");
 
         // ALERT BUTTONS
 
@@ -346,36 +370,68 @@ public class MainActivity extends AppCompatActivity {
 
                  */
 
-                if(apiKey.equals("defaultApiKey") && secretKey.equals("defaultSecretKey") && !bothKeysNotCreated){
+                if(apiKey.equals("defaultBinanceApiKey") && secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
                     userContainsApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add api key and secret key",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"Please add binance api key and secret key",Toast.LENGTH_SHORT).show();
                         }
                     });
                     userContainsApiKeyAndSecretKey.setCancelable(true);
                     userContainsApiKeyAndSecretKey.create().show();
                     bothKeysNotCreated = true;
                 }
-                if(apiKey.equals("defaultApiKey") && !bothKeysNotCreated) {
+                if(apiKey.equals("defaultBinanceApiKey") && !bothKeysNotCreated) {
                     userContainsApiKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this, "Please add api key", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Please add binance api key", Toast.LENGTH_SHORT).show();
                         }
                     });
                     userContainsApiKey.setCancelable(true);
                     userContainsApiKey.create().show();
                 }
-                if(secretKey.equals("defaultSecretKey") && !bothKeysNotCreated){
+                if(secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
                     userContainsSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add secret key",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,"Please add binance secret key",Toast.LENGTH_SHORT).show();
                         }
                     });
                     userContainsSecretKey.setCancelable(true);
                     userContainsSecretKey.create().show();
+                }
+
+                if(coinBaseApiKey.equals("defaultCoinBaseApiKey") && coinBaseSecretKey.equals("defaultCoinBaseSecretKey") && !bothCoinBaseKeysNotCreated){
+                    userContainsCoinBaseApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please add coinbase api key and secret key",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsCoinBaseApiKeyAndSecretKey.setCancelable(true);
+                    userContainsCoinBaseApiKeyAndSecretKey.create().show();
+                    bothCoinBaseKeysNotCreated = true;
+                }
+                if(coinBaseApiKey.equals("defaultCoinBaseApiKey") && !bothCoinBaseKeysNotCreated){
+                    userContainsCoinBaseApiKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please add coinbase api key",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsCoinBaseApiKey.setCancelable(true);
+                    userContainsCoinBaseApiKey.create().show();
+                }
+                if(coinBaseApiKey.equals("defaultCoinBaseSecretKey") && !bothCoinBaseKeysNotCreated){
+                    userContainsCoinBaseSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please add coinbase secret key",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    userContainsCoinBaseSecretKey.setCancelable(true);
+                    userContainsCoinBaseSecretKey.create().show();
                 }
 
                 Intent mainPage = new Intent(getApplicationContext(),mainPage.class);

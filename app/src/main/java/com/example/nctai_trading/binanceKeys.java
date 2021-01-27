@@ -1,7 +1,9 @@
 package com.example.nctai_trading;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
@@ -45,6 +48,10 @@ public class binanceKeys extends AppCompatActivity {
         secretKey = findViewById(R.id.binanceKeysSecretApiKey);
         apiKey = findViewById(R.id.binanceKeysApiKey);
 
+        AlertDialog.Builder binanceKeysAlert = new AlertDialog.Builder(this);
+        binanceKeysAlert.setTitle("Binance Keys Alert");
+        binanceKeysAlert.setMessage("The binance api key and secret key have been applied");
+
 
         closeAndApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,8 +63,8 @@ public class binanceKeys extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 // setters
-                editor.putString("apiKey",apiKeyText);
-                editor.putString("secretKey",secretKeyText);
+                editor.putString("binanceApiKey",apiKeyText);
+                editor.putString("binanceSecretKey",secretKeyText);
                 editor.apply();
                 editor.commit();
 
@@ -67,9 +74,18 @@ public class binanceKeys extends AppCompatActivity {
 
                 // examples ^^
                 SharedPreferences theApiKeyText = getSharedPreferences("test",MODE_PRIVATE);
-                System.out.println(theApiKeyText.getString("apiKey","default value api key"));
+                System.out.println(theApiKeyText.getString("binanceApiKey","default value api key"));
                 SharedPreferences theSecretKeyText = getSharedPreferences("test",MODE_PRIVATE);
-                System.out.println(theSecretKeyText.getString("secretKey","default value secret key"));
+                System.out.println(theSecretKeyText.getString("binanceSecretKey","default value secret key"));
+
+                binanceKeysAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(binanceKeys.this,"The entered keys have been applied",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                binanceKeysAlert.setCancelable(true);
+                binanceKeysAlert.create().show();
             }
         });
 

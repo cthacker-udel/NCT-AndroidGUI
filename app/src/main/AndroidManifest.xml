@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NCTAITrading">
-        <activity android:name=".binanceKeys"></activity>
+        <activity android:name=".coinBaseKeys"></activity>
+        <activity android:name=".binanceKeys" />
         <activity android:name=".ARPage" />
         <activity android:name=".alternateInvestments" />
         <activity android:name=".donationPage" />
