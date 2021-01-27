@@ -56,9 +56,33 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Display [Price : Quantity] of Currency"
+        app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/binancePageScroller" />
+
+    <TextView
+        android:id="@+id/binancePageAccountView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Account Balance"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binancePagePriceAndQuantity" />
+
+    <Button
+        android:id="@+id/binancePageAccountBalanceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Display Account Balance"
+        app:backgroundTint="@color/cardview_dark_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binancePageAccountView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,13 +14,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Scroller;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
+import com.binance.api.client.domain.account.Account;
+import com.binance.api.client.domain.account.AssetBalance;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,6 +45,10 @@ public class binancePage extends AppCompatActivity {
 
     boolean userSignedIn;
 
+    Button displayAccountBalance;
+
+    TextView accountBalanceView;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +62,8 @@ public class binancePage extends AppCompatActivity {
         displayCurrencyAmountAndQuantity = findViewById(R.id.binancePageScroller);
         binancePageSignInBtn = findViewById(R.id.binancePageSignInBtn);
         displayPriceAndQuantity = findViewById(R.id.binancePagePriceAndQuantity);
+        displayAccountBalance = findViewById(R.id.binancePageAccountBalanceButton);
+        accountBalanceView = findViewById(R.id.binancePageAccountView);
 
         AlertDialog.Builder currencyError = new AlertDialog.Builder(this);
 
@@ -85,6 +96,24 @@ public class binancePage extends AppCompatActivity {
                     client.ping();
                     System.out.println(client.getServerTime());
                     binancePageSignInBtn.setText("Login Success!");
+            }
+        });
+
+        displayAccountBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+                client = factory.newRestClient();
+
+                Account account = client.getAccount();
+                double totalBalance = 0;
+                DecimalFormat format = new DecimalFormat("##.##");
+                format.setRoundingMode(RoundingMode.HALF_UP);
+                List<AssetBalance> balances = account.getBalances();
+                for(AssetBalance eachBalance: balances){
+                    totalBalance += Double.parseDouble(eachBalance.getAsset());
+                }
+                accountBalanceView.setText(format.format(totalBalance));
             }
         });
 
