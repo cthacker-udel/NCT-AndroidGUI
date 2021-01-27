@@ -21,11 +21,13 @@ import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.account.AssetBalance;
+import com.binance.api.client.domain.account.Trade;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +51,10 @@ public class binancePage extends AppCompatActivity {
 
     TextView accountBalanceView;
 
+    Button displayAccountTransactions;
+
+    TextView accountTradesTextView;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ public class binancePage extends AppCompatActivity {
         displayPriceAndQuantity = findViewById(R.id.binancePagePriceAndQuantity);
         displayAccountBalance = findViewById(R.id.binancePageAccountBalanceButton);
         accountBalanceView = findViewById(R.id.binancePageAccountView);
+        displayAccountTransactions = findViewById(R.id.binancePageDisplayAccountTransactions);
+        accountTradesTextView = findViewById(R.id.binancePageScrollViewText);
 
         AlertDialog.Builder currencyError = new AlertDialog.Builder(this);
 
@@ -115,7 +123,7 @@ public class binancePage extends AppCompatActivity {
                 for(AssetBalance eachBalance: balances){
                     totalBalance += Double.parseDouble(eachBalance.getAsset());
                 }
-                accountBalanceView.setText(format.format(totalBalance));
+                accountBalanceView.setText(String.format("$%s",format.format(totalBalance)));
             }
         });
 
@@ -146,6 +154,24 @@ public class binancePage extends AppCompatActivity {
                 catch(Exception e){
                     return;
                 }
+            }
+        });
+
+        displayAccountTransactions.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+                client = factory.newRestClient();
+                currencies = currencyInfo.currencyList();
+                List<Trade> trades = client.getMyTrades(currencies.get(displayCurrencyAmountAndQuantity.getSelectedItem().toString()));
+                ArrayList<String> tradeList = new ArrayList<>();
+                for(Trade eachTrade: trades){
+                    tradeList.add(String.format("Price : %s \n Quantity : %s \n--------------------",eachTrade.getPrice(),eachTrade.getQty()));
+                }
+                accountBalanceView.setText(String.join("\n",tradeList));
+
+
             }
         });
 
