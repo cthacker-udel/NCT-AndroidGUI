@@ -23,11 +23,6 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.BSONObject;
 import org.bson.Document;
 
-import sqip.Card;
-import sqip.CardDetails;
-import sqip.CardEntry;
-import sqip.InAppPaymentsSdk;
-import sqip.GooglePay;
 
 
 public class paymentOptionPage extends AppCompatActivity {
@@ -77,15 +72,15 @@ public class paymentOptionPage extends AppCompatActivity {
             }
         });
 
-        payByCardBtn.setOnClickListener((view) ->
-        {
-            if(InAppPaymentsSdk.INSTANCE.getSquareApplicationId().equals("REPLACE_ME")){
-                return;
-            }
-            else{
-                return;
-            }
-        });
+        //payByCardBtn.setOnClickListener((view) ->
+        //{
+        //    if(InAppPaymentsSdk.INSTANCE.getSquareApplicationId().equals("REPLACE_ME")){
+        //        return;
+        //    }
+        //    else{
+        //        return;
+        //    }
+        //});
 
         backToHomePageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,19 +137,18 @@ public class paymentOptionPage extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        CardEntry.handleActivityResult(data,result -> {
-            if(result.isSuccess()){
-                CardDetails cardResult = result.getSuccessValue();
-                Card card = cardResult.getCard();
-                String nonce = cardResult.getNonce();
-            }
-            else if(result.isCanceled()){
-                Toast.makeText(paymentOptionPage.this,"Canceled",Toast.LENGTH_SHORT).show();
-            }
-        });
+    //@Override
+    //protected void onActivityResult(int requestCode,int resultCode, Intent data) {
+    //    super.onActivityResult(requestCode, resultCode, data);
+    //    CardEntry.handleActivityResult(data,result -> {
+    //        if(result.isSuccess()){
+    //            CardDetails cardResult = result.getSuccessValue();
+    //            Card card = cardResult.getCard();
+    //            String nonce = cardResult.getNonce();
+    //        }
+    //        else if(result.isCanceled()){
+    //            Toast.makeText(paymentOptionPage.this,"Canceled",Toast.LENGTH_SHORT).show();
+    //        }
+    //    });
 
-    }
 }

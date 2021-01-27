@@ -34,38 +34,25 @@ android {
 repositories {
     google()
     jcenter()
-    maven {
-        url 'https://sdk.squareup.com/public/android'
-    }
 }
 
 dependencies {
 
+    // binance
+
+    implementation 'com.github.binance-exchange:binance-java-api:69f56f5fcf'
+
+    // misc
 
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    def inAppPaymentsSdkVersion = '1.4.0'
-    implementation "com.squareup.sdk.in-app-payments:card-entry:$inAppPaymentsSdkVersion"
-    implementation "com.squareup.sdk.in-app-payments:google-pay:$inAppPaymentsSdkVersion"
-    def supportLibraryVersion = '28.0.0'
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    implementation "com.android.support:design:$supportLibraryVersion"
-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    // Play Services Wallet 16.0.1 was published with dependencies on maps & identities 16.0.0.
 
     configurations {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
     }
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-    //implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
-    implementation 'com.squareup:square:8.1.0.20210121'
-
-    implementation "com.android.support:design:$supportLibraryVersion"
-    implementation 'com.google.android.gms:play-services-wallet:18.1.2'
     implementation 'com.android.support:support-annotations:28.0.0'
 
     implementation 'com.android.support:multidex:1.0.3'
@@ -80,12 +67,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-validator:commons-validator:1.7'
-    //implementation 'org.mongodb:mongo-java-driver:3.12.7'
-    //implementation 'org.mongodb:mongodb-driver-sync:4.1.1'
-    //implementation 'org.mongodb:mongodb-driver-legacy:4.1.1'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'commons-codec:commons-codec:20041127.091804'
-    //implementation 'org.mongodb:mongodb-driver-core:4.2.0-beta1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation "org.igniterealtime.smack:smack-android-extensions:4.1.0"
     implementation "org.igniterealtime.smack:smack-experimental:4.1.0"

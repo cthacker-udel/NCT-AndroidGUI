@@ -8,6 +8,19 @@
     tools:context=".termsOfServicePage">
 
     <TextView
+        android:id="@+id/textView50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="95dp"
+        android:alpha=".5"
+        android:text="Next Capital Tech LLC"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/termsOfServiceAgreeBtn" />
+
+    <TextView
         android:id="@+id/termsOfServiceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
