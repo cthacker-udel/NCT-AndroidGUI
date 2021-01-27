@@ -99,6 +99,8 @@ public class binancePage extends AppCompatActivity {
             }
         });
 
+        // display account balance
+
         displayAccountBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
