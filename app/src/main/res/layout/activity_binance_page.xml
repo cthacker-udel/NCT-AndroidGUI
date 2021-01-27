@@ -7,6 +7,16 @@
     android:background="@color/black"
     tools:context=".binancePage">
 
+    <Spinner
+        android:id="@+id/binancePageScroller"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binancePageSignInBtn" />
+
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="120"
@@ -44,21 +54,11 @@
         android:id="@+id/binancePagePriceAndQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="Display [Price : Quantity] of Currency"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binancePageAutoCompletePriceQuantity" />
+        app:layout_constraintTop_toBottomOf="@+id/binancePageScroller" />
 
-    <AutoCompleteTextView
-        android:id="@+id/binancePageAutoCompletePriceQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Enter currency to be checked here"
-        android:textColorHint="#7F7F79"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binancePageSignInBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Scroller;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.binance.api.client.BinanceApiClientFactory;
@@ -30,7 +32,7 @@ public class binancePage extends AppCompatActivity {
 
     String[] currenciesNames;
 
-    AutoCompleteTextView displayCurrencyAmountAndQuantity;
+    Spinner displayCurrencyAmountAndQuantity;
 
     Button displayPriceAndQuantity;
 
@@ -48,7 +50,7 @@ public class binancePage extends AppCompatActivity {
 
         currenciesNames = currencies.values().stream().toArray(String[]::new);
 
-        displayCurrencyAmountAndQuantity = findViewById(R.id.binancePageAutoCompletePriceQuantity);
+        displayCurrencyAmountAndQuantity = findViewById(R.id.binancePageScroller);
         binancePageSignInBtn = findViewById(R.id.binancePageSignInBtn);
         displayPriceAndQuantity = findViewById(R.id.binancePagePriceAndQuantity);
 
@@ -89,7 +91,7 @@ public class binancePage extends AppCompatActivity {
         displayPriceAndQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String autoCompletePriceAndQuantityText = displayCurrencyAmountAndQuantity.getText().toString().toLowerCase();
+                String autoCompletePriceAndQuantityText = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
                 try{
                     String formattedAutoCompletePriceAndQuantityText = autoCompletePriceAndQuantityText.substring(0,1).toUpperCase() + autoCompletePriceAndQuantityText.substring(1);
                     if(!currencies.values().contains(formattedAutoCompletePriceAndQuantityText)){
