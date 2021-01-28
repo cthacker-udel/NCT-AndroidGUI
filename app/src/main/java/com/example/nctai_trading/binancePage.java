@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.binance.api.client.BinanceApiAsyncRestClient;
+import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
@@ -24,6 +26,7 @@ import com.binance.api.client.domain.account.AssetBalance;
 import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
 import com.binance.api.client.domain.account.request.AllOrdersRequest;
+import com.binance.api.client.domain.account.request.OrderRequest;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 
@@ -117,6 +120,7 @@ public class binancePage extends AppCompatActivity {
             public void onClick(View v) {
                 BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
                 client = factory.newRestClient();
+                BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
 
                 List<Order> LTCBTCorderList = client.getAllOrders(new AllOrdersRequest("LTCBTC"));
 
@@ -134,6 +138,17 @@ public class binancePage extends AppCompatActivity {
 
                 Account account = client.getAccount();
 
+                // ACCOUNT DETAILS
+
+                List<Order> openOrders = client.getOpenOrders(new OrderRequest("BTC"));
+
+                ArrayList<String> openOrdersList = new ArrayList<>();
+                openOrdersList.add("--------OPEN ORDERS--------");
+                for(Order eachOrder: openOrders){
+                    openOrdersList.add(String.format("%s, %s, %s, %s",eachOrder.getOrderId(),eachOrder.getPrice(),eachOrder.getOrigQty(),eachOrder.getExecutedQty()));
+                }
+                String formattedOpenOrders = String.join("\n-----------\n",openOrdersList);
+
                 List<AssetBalance> acctAssetBalances =  account.getBalances();
                 ArrayList<String> acctAssetList = new ArrayList<String>();
 
@@ -146,6 +161,15 @@ public class binancePage extends AppCompatActivity {
 
                 String formattedAssets = String.join("\n -------- \n", acctAssetList);
 
+                ArrayList<String> accountDetails = new ArrayList<>();
+
+                accountDetails.add("---------ACCOUNT DETAILS---------");
+                accountDetails.add(account.isCanTrade()? "Can Trade: True": "Can Trade: False");
+                accountDetails.add(account.isCanWithdraw()? "Can Withdraw: True": "Can Withdraw: False");
+                accountDetails.add(account.isCanDeposit()? "Can Deposit: True": "Can Deposit: False");
+                accountDetails.add(String.format("Update Time : %d",account.getUpdateTime()));
+
+                String formattedAccountDetails = String.format("\n---------\n",accountDetails);
 
                 double totalBalance = 0;
                 DecimalFormat format = new DecimalFormat("##.##");
