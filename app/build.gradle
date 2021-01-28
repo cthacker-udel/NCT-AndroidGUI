@@ -47,6 +47,10 @@ dependencies {
 
     implementation 'com.github.binance-exchange:binance-java-api:69f56f5fcf'
 
+    // coinbase
+
+    implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
+
     // misc
 
     implementation 'org.jetbrains:annotations:15.0'
