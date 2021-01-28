@@ -1,11 +1,13 @@
 package com.example.nctai_trading;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,10 @@ import android.widget.Toast;
 
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
+
+import java.util.UUID;
+
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
 
 public class mainPage extends AppCompatActivity {
 
@@ -26,6 +32,9 @@ public class mainPage extends AppCompatActivity {
     Button mainPageBinanceKeys;
     Button mainPageBinanceSignInBtn;
     Button mainPageListeningBtn;
+    int userContainsKeysError;
+    boolean userContainsBinanceKeysError;
+    boolean userContainsCoinBaseKeysError;
 
     //String passedEmail = getIntent().getStringExtra("email");
 
@@ -89,12 +98,35 @@ public class mainPage extends AppCompatActivity {
         });
 
         mainPageListeningBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 if(apiKey.equals("defaultBinanceApiKey") || secretKey.equals("defaultBinanceSecretKey")){
-                    Toast.makeText(mainPage.this,"Please update binance keys",Toast.LENGTH_SHORT).show();
+                    userContainsKeysError++;
+                    userContainsBinanceKeysError = true;
+                }
+                if(coinBaseApiKey.equals("defualtCoinBaseApiKey") || coinBaseSecretKey.equals("defaultCoinBaseSecretKey")){
+                    userContainsKeysError++;
+                    userContainsCoinBaseKeysError = true;
+                }
+                if(userContainsKeysError == 2){
+                    Toast.makeText(mainPage.this,"Please add coinbase or binance api keys",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                else if(userContainsKeysError == 1){
+                    if(userContainsBinanceKeysError){
+                        Toast.makeText(mainPage.this,"Please add binance api keys",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    else{
+                        Toast.makeText(mainPage.this,"Please add coinbase keys",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else{
+                    ParticleCloudSDK.init(mainPage.this);
+                }
+
             }
         });
 

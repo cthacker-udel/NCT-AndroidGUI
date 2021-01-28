@@ -38,6 +38,10 @@ repositories {
 
 dependencies {
 
+    // particle
+
+    implementation 'io.particle:cloudsdk:0.5.1'
+
     // binance
 
     implementation 'com.github.binance-exchange:binance-java-api:69f56f5fcf'

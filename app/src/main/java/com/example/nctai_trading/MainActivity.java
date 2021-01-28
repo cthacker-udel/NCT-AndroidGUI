@@ -51,6 +51,9 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.*;
 
+import io.particle.android.sdk.cloud.ParticleCloud;
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
+
 public class MainActivity extends AppCompatActivity {
 
     Button signInButton;
@@ -74,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ParticleCloudSDK.init(this);
 
         lstView = (ListView)findViewById(R.id.lstView);
         btnAdd = (Button)findViewById(R.id.btnAdd);
@@ -176,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
         // ALERT BUTTONS
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signInButton = findViewById(R.id.signInButton);
         email = findViewById(R.id.mainPageEmail);
