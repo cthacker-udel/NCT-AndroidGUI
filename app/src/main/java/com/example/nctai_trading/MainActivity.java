@@ -53,6 +53,7 @@ import java.util.regex.*;
 
 import io.particle.android.sdk.cloud.ParticleCloud;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
+import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ParticleCloudSDK.init(this);
+        ParticleDeviceSetupLibrary.initWithSetupOnly(this);
 
         lstView = (ListView)findViewById(R.id.lstView);
         btnAdd = (Button)findViewById(R.id.btnAdd);
