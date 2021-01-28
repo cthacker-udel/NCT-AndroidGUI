@@ -49,7 +49,7 @@ dependencies {
 
     // coinbase
 
-    implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
+    // implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
 
     // misc
 

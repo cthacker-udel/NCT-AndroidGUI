@@ -21,7 +21,9 @@ import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.account.AssetBalance;
+import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.account.Trade;
+import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 
@@ -110,12 +112,41 @@ public class binancePage extends AppCompatActivity {
         // display account balance
 
         displayAccountBalance.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
                 client = factory.newRestClient();
 
+                List<Order> LTCBTCorderList = client.getAllOrders(new AllOrdersRequest("LTCBTC"));
+
+                ArrayList<String> ordersList = new ArrayList<String>();
+
+                for (Order each : LTCBTCorderList){
+                    each.getOrderId();
+                    each.getPrice();
+                    each.getOrigQty();
+                    each.getExecutedQty();
+                    // orderid, symbol, price, origqty, executedqty -- 2, LTCBTC, 10.0, 100, 200.
+                    ordersList.add(String.format("%s, %s, %s, %s, %s", each.getOrderId(), each.getPrice(), each.getOrigQty(), each.getExecutedQty()) );
+                }
+                String formattedOrders = String.join("\n -------- \n", ordersList);
+
                 Account account = client.getAccount();
+
+                List<AssetBalance> acctAssetBalances =  account.getBalances();
+                ArrayList<String> acctAssetList = new ArrayList<String>();
+
+                for (AssetBalance each : acctAssetBalances) {
+                  String acctAsset = each.getAsset();
+                  System.out.println(each.getAsset());
+                  acctAssetList.add(each.getAsset());
+
+                }
+
+                String formattedAssets = String.join("\n -------- \n", acctAssetList);
+
+
                 double totalBalance = 0;
                 DecimalFormat format = new DecimalFormat("##.##");
                 format.setRoundingMode(RoundingMode.HALF_UP);

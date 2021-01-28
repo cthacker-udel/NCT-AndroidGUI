@@ -1,3 +1,4 @@
+/*
 package com.example.nctai_trading;
 
 import android.content.Context;
@@ -78,3 +79,4 @@ public class CoinbaseOAuth {
         return Integer.toString(result);
     }
 }
+*/
