@@ -25,6 +25,7 @@ public class mainPage extends AppCompatActivity {
     Button mainPageARBtn;
     Button mainPageBinanceKeys;
     Button mainPageBinanceSignInBtn;
+    Button mainPageListeningBtn;
 
     //String passedEmail = getIntent().getStringExtra("email");
 
@@ -43,6 +44,7 @@ public class mainPage extends AppCompatActivity {
         mainPageARBtn = findViewById(R.id.mainPageARButton);
         mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
+        mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
 
         // alert dialog
 
@@ -83,6 +85,16 @@ public class mainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toPaymentOptionPage = new Intent(getApplicationContext(),paymentOptionPage.class);
                 startActivity(toPaymentOptionPage);
+            }
+        });
+
+        mainPageListeningBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(apiKey.equals("defaultBinanceApiKey") || secretKey.equals("defaultBinanceSecretKey")){
+                    Toast.makeText(mainPage.this,"Please update binance keys",Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
 
