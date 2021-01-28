@@ -242,8 +242,8 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="120"
-        android:layout_height="120"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         app:layout_constraintBottom_toTopOf="@+id/textView15"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
