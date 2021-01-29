@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
     List<User> users = new ArrayList<User>();
     boolean bothKeysNotCreated;
     boolean bothCoinBaseKeysNotCreated;
+    boolean binanceApiKeyError;
+    boolean binanceSecretKeyError;
+    boolean coinBaseApiKeyError;
+    boolean coinBaseSecretKeyError;
 
     private String hashedPassword = "";
     private Object invokeObject;
@@ -138,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder userContainsCoinBaseApiKeyAndSecretKey = new AlertDialog.Builder(this);
 
+        AlertDialog.Builder userContainsBothKeys = new AlertDialog.Builder(this);
+
         passwordAlert.setTitle("Invalid password");
 
         emailAlert.setTitle("Invalid email");
@@ -160,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
         userContainsCoinBaseApiKeyAndSecretKey.setTitle("CoinBase Api Key and Secret Key Error");
 
+        userContainsBothKeys.setTitle("Coinbase and Binance Error");
+
         passwordAlert.setMessage("Password must be between 1-25 Characters, no spaces, no symbols, must contain atleast one number, and one uppercase letter");
 
         emailAlert.setMessage("Email must be valid");
@@ -181,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
         userContainsCoinBaseSecretKey.setMessage("Please set coinbase secret key");
 
         userContainsCoinBaseApiKeyAndSecretKey.setMessage("Please set coinbase api and secret key");
+
+        userContainsBothKeys.setMessage("Please update both coinbase and binance api keys and secret keys");
 
         // ALERT BUTTONS
 
@@ -378,72 +388,160 @@ public class MainActivity extends AppCompatActivity {
                  */
 
                 if(apiKey.equals("defaultBinanceApiKey") && secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
+                    bothKeysNotCreated = true;
+                }
+                if(bothKeysNotCreated){
                     userContainsApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add binance api key and secret key",Toast.LENGTH_SHORT).show();
+                            Intent toMainPageBothBinanceKeys = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBothBinanceKeys);
                         }
                     });
-                    userContainsApiKeyAndSecretKey.setCancelable(true);
+                    userContainsApiKeyAndSecretKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
                     userContainsApiKeyAndSecretKey.create().show();
-                    bothKeysNotCreated = true;
                 }
                 if(apiKey.equals("defaultBinanceApiKey") && !bothKeysNotCreated) {
+                    binanceApiKeyError = true;
+                }
+                if(binanceApiKeyError){
                     userContainsApiKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this, "Please add binance api key", Toast.LENGTH_SHORT).show();
+                            Intent toMainPageBinanceApiKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBinanceApiKeyError);
                         }
                     });
-                    userContainsApiKey.setCancelable(true);
+                    userContainsApiKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageBinanceApiKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBinanceApiKeyError);
+                        }
+                    });
                     userContainsApiKey.create().show();
                 }
                 if(secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
+                    binanceSecretKeyError = true;
+                }
+                if(binanceSecretKeyError){
                     userContainsSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add binance secret key",Toast.LENGTH_SHORT).show();
+                            Intent toMainPageBinanceSecretKey = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBinanceSecretKey);
                         }
                     });
-                    userContainsSecretKey.setCancelable(true);
+                    userContainsSecretKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageBinanceSecretKey = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBinanceSecretKey);
+                        }
+                    });
                     userContainsSecretKey.create().show();
                 }
 
                 if(coinBaseApiKey.equals("defaultCoinBaseApiKey") && coinBaseSecretKey.equals("defaultCoinBaseSecretKey") && !bothCoinBaseKeysNotCreated){
+                    bothCoinBaseKeysNotCreated = true;
+                }
+                if(bothKeysNotCreated && bothCoinBaseKeysNotCreated){
+                    userContainsBothKeys.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageBothKeys = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBothKeys);
+                        }
+                    });
+                    userContainsBothKeys.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageBothKeys = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageBothKeys);
+                        }
+                    });
+                    userContainsBothKeys.create().show();
+                }
+                if(bothCoinBaseKeysNotCreated){
                     userContainsCoinBaseApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add coinbase api key and secret key",Toast.LENGTH_SHORT).show();
+                            Intent toMainPageCoinbaseBothKeys = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinbaseBothKeys);
                         }
                     });
-                    userContainsCoinBaseApiKeyAndSecretKey.setCancelable(true);
+                    userContainsCoinBaseApiKeyAndSecretKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageCoinbaseBothKeys = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinbaseBothKeys);
+                        }
+                    });
                     userContainsCoinBaseApiKeyAndSecretKey.create().show();
-                    bothCoinBaseKeysNotCreated = true;
                 }
                 if(coinBaseApiKey.equals("defaultCoinBaseApiKey") && !bothCoinBaseKeysNotCreated){
+                    coinBaseApiKeyError = true;
+                }
+                if(coinBaseApiKeyError){
                     userContainsCoinBaseApiKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add coinbase api key",Toast.LENGTH_SHORT).show();
+                            Intent toMainPageCoinBaseApiKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinBaseApiKeyError);
                         }
                     });
-                    userContainsCoinBaseApiKey.setCancelable(true);
+                    userContainsCoinBaseApiKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageCoinBaseApiKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinBaseApiKeyError);
+                        }
+                    });
                     userContainsCoinBaseApiKey.create().show();
                 }
-                if(coinBaseApiKey.equals("defaultCoinBaseSecretKey") && !bothCoinBaseKeysNotCreated){
+                if(coinBaseSecretKey.equals("defaultCoinBaseSecretKey") && !bothCoinBaseKeysNotCreated){
                     userContainsCoinBaseSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this,"Please add coinbase secret key",Toast.LENGTH_SHORT).show();
+                            edtUser.setVisibility(View.VISIBLE);
                         }
                     });
-                    userContainsCoinBaseSecretKey.setCancelable(true);
+                    userContainsCoinBaseSecretKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    userContainsCoinBaseSecretKey.create().show();
+                    coinBaseSecretKeyError = true;
+                }
+                if(coinBaseSecretKeyError){
+                    userContainsCoinBaseSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageCoinBaseSecretKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinBaseSecretKeyError);
+                        }
+                    });
+                    userContainsCoinBaseSecretKey.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent toMainPageCoinBaseSecretKeyError = new Intent(getApplicationContext(),mainPage.class);
+                            startActivity(toMainPageCoinBaseSecretKeyError);
+                        }
+                    });
                     userContainsCoinBaseSecretKey.create().show();
                 }
-
-                Intent mainPage = new Intent(getApplicationContext(),mainPage.class);
-                //mainPage.putExtra("email",emailContent);
-                startActivity(mainPage);
+                if(!coinBaseSecretKeyError && !coinBaseApiKeyError && !binanceSecretKeyError && !binanceApiKeyError && !bothCoinBaseKeysNotCreated && !bothKeysNotCreated) {
+                    Intent mainPage = new Intent(getApplicationContext(), mainPage.class);
+                    //mainPage.putExtra("email",emailContent);
+                    startActivity(mainPage);
+                }
             }
         });
         createAnAccount.setOnClickListener(new View.OnClickListener() {
