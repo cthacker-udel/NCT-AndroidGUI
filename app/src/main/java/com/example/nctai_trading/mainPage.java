@@ -125,6 +125,63 @@ public class mainPage extends AppCompatActivity {
                 }
                 else{
                     ParticleCloudSDK.init(mainPage.this);
+                    Cloud particleCloud = new Cloud("3bdfa0e2739b955a2664c371a4a8cdba056645f6",true,false);
+                    DeviceEvent nn13buy = new DeviceEvent() {
+                        @Override
+                        public void event(Event e) {
+                            e.deviceName = "nn13buy";
+                        }
+
+                        @Override
+                        public UUID uuid() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forDeviceId() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forDeviceName() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forEventName() {
+                            return null;
+                        }
+                    };
+                    DeviceEvent nn13sell = new DeviceEvent() {
+                        @Override
+                        public void event(Event e) {
+                            e.deviceName = "nn13sell";
+                        }
+
+                        @Override
+                        public UUID uuid() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forDeviceId() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forDeviceName() {
+                            return null;
+                        }
+
+                        @Override
+                        public String forEventName() {
+                            return null;
+                        }
+                    };
+                    particleCloud.subscribe(nn13buy);
+                    particleCloud.subscribe(nn13sell);
+                    particleCloud.callF("devicename","sell","binanceapi and secret key");
+                    particleCloud.callF("devicename","buy","binanceapi and secret key");
                 }
 
             }
