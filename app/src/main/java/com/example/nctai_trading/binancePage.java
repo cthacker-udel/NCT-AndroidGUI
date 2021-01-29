@@ -103,6 +103,18 @@ public class binancePage extends AppCompatActivity {
 
         String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
 
+        // not IP, either API Key <--
+
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+
+        BinanceApiRestClient client = factory.newRestClient();
+
+        client.ping();
+
+        // Permissions
+
+        System.out.println(client.getAccount().getBalances().size());
+
         showAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,9 +162,6 @@ public class binancePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                    BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey, secretKey);
-                    client = factory.newRestClient();
-
                     // test client
 
                     client.ping();
@@ -167,8 +176,6 @@ public class binancePage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
-                client = factory.newRestClient();
                 BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
 
                 List<Order> LTCBTCorderList = client.getAllOrders(new AllOrdersRequest("LTCBTC"));
@@ -265,8 +272,6 @@ public class binancePage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
-                client = factory.newRestClient();
                 currencies = currencyInfo.currencyList();
                 List<Trade> trades = client.getMyTrades(currencies.get(currentSelectedItem));
                 ArrayList<String> tradeList = new ArrayList<>();

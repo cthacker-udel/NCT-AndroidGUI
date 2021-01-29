@@ -35,6 +35,7 @@ public class currencyInfo {
         currencyList.put("Filecoin","FIL");
         currencyList.put("Balancer","BAL");
         currencyList.put("Augur","REP");
+        currencyList.put("Dogecoin","DOGE");
         return currencyList;
     }
 

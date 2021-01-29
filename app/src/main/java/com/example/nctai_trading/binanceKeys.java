@@ -65,8 +65,11 @@ public class binanceKeys extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 // setters
-                editor.putString("binanceApiKey",apiKeyText);
-                editor.putString("binanceSecretKey",secretKeyText);
+                // temp test
+                editor.putString("binanceApiKey","Z3lgtQfNxbtH1hB31HIvvijPSHjxZKpesD4crQddYWX5wjMurYbJSO08v6C20cZy");
+                editor.putString("binanceSecretKey","t2S9wDcQCWLrgj7N2GpFcRrQ5307Nrg6Xuvv0nQmBtxOUtxiC4WoMfSdaVjGpcKd");
+                //editor.putString("binanceApiKey",apiKeyText);
+                //editor.putString("binanceSecretKey",secretKeyText);
                 editor.apply();
                 editor.commit();
 
