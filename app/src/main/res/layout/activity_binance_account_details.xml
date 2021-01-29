@@ -50,103 +50,74 @@
         app:layout_constraintStart_toEndOf="@+id/textView53"
         app:layout_constraintTop_toBottomOf="@+id/textView51" />
 
-    <TextView
-        android:id="@+id/textView55"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="30dp"
-        android:text="Can Withdraw?"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView53" />
-
-    <TextView
-        android:id="@+id/binanceAccountDetailsCanWithdraw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="30dp"
-        android:text="EX: Yes"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/textView55"
-        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsAccountID" />
-
-    <TextView
-        android:id="@+id/textView57"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="30dp"
-        android:text="Can Deposit?"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView55" />
-
-    <TextView
-        android:id="@+id/binanceAccountDetailsCanDeposit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
-        android:text="EX: YES"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/textView57"
-        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsCanWithdraw" />
-
-    <TextView
-        android:id="@+id/textView59"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:text="Account Total Balance :"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView57" />
-
-    <TextView
-        android:id="@+id/binanceAccountDetailsAccountBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="30dp"
-        android:text="EX: $44.40"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/textView59"
-        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsCanDeposit" />
-
     <Spinner
         android:id="@+id/binanceAccountDetailsCurencySelector"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView59" />
+        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsAccountID" />
 
     <TextView
         android:id="@+id/textView62"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="15dp"
         android:text="Display Account Balance of Currency"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView59" />
+        app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
     <TextView
         android:id="@+id/binanceAccountDetailsAccountBalanceOfCurrency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="15dp"
         android:text="EX: $224"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/binanceAccountDetailsCurencySelector"
-        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsAccountBalance" />
+        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsAccountID" />
+
+    <TextView
+        android:id="@+id/binanceAccountDetailsAccountBalanceHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Account Balance"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsCurencySelector" />
+
+    <ScrollView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binanceAccountDetailsAccountBalanceHeader">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/binanaceAccountDetailsScrollViewText"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:textColor="@color/white"
+                tools:text="@string/binancePageScrollViewContent" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

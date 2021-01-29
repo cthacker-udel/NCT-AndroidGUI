@@ -3,6 +3,7 @@ package com.example.nctai_trading;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -12,15 +13,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
+import com.binance.api.client.domain.account.Order;
+import com.binance.api.client.domain.account.Trade;
+import com.binance.api.client.domain.account.request.AllOrdersRequest;
+import com.binance.api.client.domain.general.ExchangeInfo;
+import com.binance.api.client.domain.general.SymbolInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BinanceAccountDetails extends AppCompatActivity {
 
     TextView accountId;
-    TextView accountWithdraw;
-    TextView accountDeposit;
     TextView accountBalance;
     Spinner currencySelectorBinanceAccountDetailsPage;
+    TextView accountDetailsScrollText;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -28,15 +37,24 @@ public class BinanceAccountDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_binance_account_details);
         accountId = findViewById(R.id.binanceAccountDetailsAccountID);
-        accountWithdraw = findViewById(R.id.binanceAccountDetailsCanWithdraw);
-        accountDeposit = findViewById(R.id.binanceAccountDetailsCanDeposit);
-        accountBalance = findViewById(R.id.binanceAccountDetailsAccountBalance);
+        accountBalance = findViewById(R.id.binanceAccountDetailsAccountBalanceOfCurrency);
         currencySelectorBinanceAccountDetailsPage = findViewById(R.id.binanceAccountDetailsCurencySelector);
+        accountDetailsScrollText = findViewById(R.id.binanceAccountDetailsScrollViewText);
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line);
+        SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
+
+        String apiKey = sharedPreferences.getString("binanceApiKey","defaultBinanceApiKey");
+
+        String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
+
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+        BinanceApiRestClient client = factory.newRestClient();
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         adapter2.add("-- Please select currency --");
         adapter2.addAll(currencyInfo.currencyList().values().stream().toArray(String[]::new));
         currencySelectorBinanceAccountDetailsPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(currencySelectorBinanceAccountDetailsPage.getSelectedItem().toString().equals("-- Please select currency --")){
@@ -44,7 +62,22 @@ public class BinanceAccountDetails extends AppCompatActivity {
                     return;
                 }
                 else{
-
+                    String selectedCurrency = currencySelectorBinanceAccountDetailsPage.getSelectedItem().toString();
+                    List<Trade> listTrades = client.getMyTrades(currencyInfo.currencyList().get(selectedCurrency));
+                    ArrayList<String> tradeList = new ArrayList<>();
+                    for(Trade eachTrade: listTrades){
+                        eachTrade.getTime();
+                        eachTrade.getPrice();
+                        eachTrade.getQty();
+                        tradeList.add(String.format("Price : %s , Quantity : %s , Time %d",eachTrade.getPrice(),eachTrade.getQty(),eachTrade.getTime()));
+                    }
+                    accountDetailsScrollText.setText(String.join("\n----------\n",tradeList));
+                    List<Order> orderList = client.getAllOrders(new AllOrdersRequest(selectedCurrency));
+                    double sumOfOrders = 0;
+                    for(Order eachOrder: orderList){
+                        sumOfOrders += (Double.parseDouble(eachOrder.getPrice()) * Double.parseDouble(eachOrder.getExecutedQty()));
+                    }
+                    accountBalance.setText(String.valueOf(sumOfOrders));
                 }
             }
 

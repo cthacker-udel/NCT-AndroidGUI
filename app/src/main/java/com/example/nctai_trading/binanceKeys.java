@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -48,6 +49,7 @@ public class binanceKeys extends AppCompatActivity {
         secretKey = findViewById(R.id.binanceKeysSecretApiKey);
         apiKey = findViewById(R.id.binanceKeysApiKey);
 
+
         AlertDialog.Builder binanceKeysAlert = new AlertDialog.Builder(this);
         binanceKeysAlert.setTitle("Binance Keys Alert");
         binanceKeysAlert.setMessage("The binance api key and secret key have been applied");
@@ -86,6 +88,8 @@ public class binanceKeys extends AppCompatActivity {
                 });
                 binanceKeysAlert.setCancelable(true);
                 binanceKeysAlert.create().show();
+                Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                startActivity(toMainPage);
             }
         });
 

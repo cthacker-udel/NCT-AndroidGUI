@@ -5,21 +5,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binance.api.client.BinanceApiAsyncRestClient;
-import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.account.Account;
@@ -63,6 +61,8 @@ public class binancePage extends AppCompatActivity {
 
     String currentSelectedItem;
 
+    Button showAccountInfo;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,8 @@ public class binancePage extends AppCompatActivity {
         displayAccountBalance = findViewById(R.id.binancePageAccountBalanceButton);
         accountBalanceView = findViewById(R.id.binancePageAccountView);
         displayAccountTransactions = findViewById(R.id.binancePageDisplayAccountTransactions);
-        accountTradesTextView = findViewById(R.id.binancePageScrollViewText);
+        accountTradesTextView = findViewById(R.id.binanceAccountDetailsScrollViewText);
+        showAccountInfo = findViewById(R.id.binanceAccountDetailsAccountShowButton);
 
         AlertDialog.Builder currencyError = new AlertDialog.Builder(this);
 
@@ -101,7 +102,16 @@ public class binancePage extends AppCompatActivity {
 
         String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
 
+        showAccountInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),binanceKeys.class);
+                startActivity(intent);
+            }
+        });
+
         displayCurrencyAmountAndQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
@@ -116,6 +126,12 @@ public class binancePage extends AppCompatActivity {
                     OrderBookEntry firstAskEntry = asks.get(0);
                     displayPriceAndQuantity.setText(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
                     //System.out.println(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
+                    List<Trade> trades = client.getMyTrades(currencies.get(currentSelectedItem));
+                    ArrayList<String> tradeList = new ArrayList<>();
+                    for(Trade eachTrade: trades){
+                        tradeList.add(String.format("Price : %s \n Quantity : %s \n--------------------",eachTrade.getPrice(),eachTrade.getQty()));
+                    }
+                    accountBalanceView.setText(String.join("\n",tradeList));
                 }
             }
 

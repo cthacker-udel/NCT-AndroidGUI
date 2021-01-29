@@ -114,7 +114,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/binancePageScrollViewText"
+                android:id="@+id/binanceAccountDetailsScrollViewText"
                 android:layout_width="250dp"
                 android:layout_height="100dp"
                 android:textColor="@color/white"
@@ -149,12 +149,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/binanceAccountDetailsAccountSignInButton"
+        android:id="@+id/binanceAccountDetailsAccountShowButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="175dp"
         android:layout_marginTop="15dp"
-        android:text="Sign In"
+        android:text="Show"
         app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
