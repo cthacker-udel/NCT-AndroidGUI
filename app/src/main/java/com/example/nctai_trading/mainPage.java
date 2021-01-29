@@ -32,6 +32,7 @@ public class mainPage extends AppCompatActivity {
     Button mainPageBinanceKeys;
     Button mainPageBinanceSignInBtn;
     Button mainPageListeningBtn;
+    Button mainPageCoinbaseKeys;
     int userContainsKeysError;
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
@@ -54,6 +55,7 @@ public class mainPage extends AppCompatActivity {
         mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
+        mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
 
         // alert dialog
 
@@ -223,6 +225,14 @@ public class mainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toBinanceKeysPage = new Intent(getApplicationContext(),binanceKeys.class);
                 startActivity(toBinanceKeysPage);
+            }
+        });
+
+        mainPageCoinbaseKeys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toCoinBaseKeysPage = new Intent(getApplicationContext(),coinBaseKeys.class);
+                startActivity(toCoinBaseKeysPage);
             }
         });
 

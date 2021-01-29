@@ -52,7 +52,8 @@ public class BinanceAccountDetails extends AppCompatActivity {
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         adapter2.add("-- Please select currency --");
-        adapter2.addAll(currencyInfo.currencyList().values().stream().toArray(String[]::new));
+        adapter2.addAll(currencyInfo.currencyList().keySet().stream().toArray(String[]::new));
+        currencySelectorBinanceAccountDetailsPage.setAdapter(adapter2);
         currencySelectorBinanceAccountDetailsPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override

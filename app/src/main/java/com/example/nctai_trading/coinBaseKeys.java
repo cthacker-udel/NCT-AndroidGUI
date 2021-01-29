@@ -23,7 +23,7 @@ public class coinBaseKeys extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_base_keys);
-        coinBaseBtn = findViewById(R.id.coinBaseKeysButton);
+        coinBaseBtn = findViewById(R.id.coinBaseKeysButton2);
         coinBaseApiKeyEditText = findViewById(R.id.coinbaseKeysApiKey);
         coinBaseSecretKeyEditText = findViewById(R.id.coinBaseSecretKeyEditText);
 

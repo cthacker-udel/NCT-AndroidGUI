@@ -1,11 +1,12 @@
 package com.example.nctai_trading;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class currencyInfo {
 
-    public static HashMap<String,String> currencyList(){
-        HashMap<String,String> currencyList = new HashMap<>();
+    public static TreeMap<String,String> currencyList(){
+        TreeMap<String,String> currencyList = new TreeMap<>();
         currencyList.put("Bitcoin","BTC");
         currencyList.put("Ethereum","ETH");
         currencyList.put("The Graph","GRT");

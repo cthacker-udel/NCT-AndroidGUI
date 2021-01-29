@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <Button
-        android:id="@+id/coinBaseKeysButton"
+        android:id="@+id/coinBaseKeysButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Coinbase Keys"
@@ -83,28 +83,33 @@
         android:id="@+id/mainPagePaymentOptionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="185dp"
         android:text="@string/paymentOptions"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton"
+        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton2"
         tools:text="@string/paymentOptions" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="185dp"
+        android:layout_marginTop="5dp"
         android:text="@string/editCredentials"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPagePaymentOptionButton"
+        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton2"
         tools:text="@string/editCredentials" />
 
     <Button
         android:id="@+id/donationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="245dp"
         android:text="@string/donation"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,39 +121,43 @@
         android:id="@+id/alternateInvestmentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="130dp"
         android:text="@string/alternativeInvestments"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/donationButton"
+        app:layout_constraintTop_toBottomOf="@+id/mainPagePaymentOptionButton"
         tools:text="@string/alternativeInvestments" />
 
     <Button
         android:id="@+id/mainPageARButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="175dp"
         android:text="Augmented Reality"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alternateInvestmentButton" />
 
     <Button
         android:id="@+id/mainPageStartStopListening"
         android:layout_width="wrap_content"
-        app:backgroundTint="@android:color/darker_gray"
         android:layout_height="wrap_content"
-        android:text="Start/Stop Listening"
+        android:layout_marginStart="200dp"
+        android:text="Start/Stop AI"
+        app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPageARButton" />
+        app:layout_constraintTop_toBottomOf="@+id/donationButton" />
 
     <TextView
         android:id="@+id/textView38"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="250dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="190dp"
         android:alpha=".5"
         android:text="Next Capital Tech LLC"
         android:textColor="@color/white"

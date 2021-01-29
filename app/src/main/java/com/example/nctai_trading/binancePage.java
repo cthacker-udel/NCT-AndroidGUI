@@ -34,12 +34,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class binancePage extends AppCompatActivity {
 
     Button binancePageSignInBtn;
 
-    private HashMap<String,String> currencies;
+    private TreeMap<String,String> currencies;
 
     String[] currenciesNames;
 
@@ -71,7 +72,7 @@ public class binancePage extends AppCompatActivity {
 
         currencies = currencyInfo.currencyList();
 
-        currenciesNames = currencies.values().stream().toArray(String[]::new);
+        currenciesNames = currencies.keySet().stream().toArray(String[]::new);
 
         displayCurrencyAmountAndQuantity = findViewById(R.id.binancePageScroller);
         binancePageSignInBtn = findViewById(R.id.binancePageSignInBtn);
@@ -105,7 +106,7 @@ public class binancePage extends AppCompatActivity {
         showAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),binanceKeys.class);
+                Intent intent = new Intent(getApplicationContext(),BinanceAccountDetails.class);
                 startActivity(intent);
             }
         });
@@ -121,6 +122,8 @@ public class binancePage extends AppCompatActivity {
                 }
                 else{
                     currentSelectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
+                    // error message below, probably because client has not been instantiated properly, requires proper keys
+                    // spinner functions correctly
                     OrderBook orderBook = client.getOrderBook(currencies.get(currentSelectedItem),10);
                     List<OrderBookEntry> asks = orderBook.getAsks();
                     OrderBookEntry firstAskEntry = asks.get(0);
@@ -234,7 +237,7 @@ public class binancePage extends AppCompatActivity {
                 String autoCompletePriceAndQuantityText = currentSelectedItem;
                 try{
                     String formattedAutoCompletePriceAndQuantityText = autoCompletePriceAndQuantityText.substring(0,1).toUpperCase() + autoCompletePriceAndQuantityText.substring(1);
-                    if(!currencies.values().contains(formattedAutoCompletePriceAndQuantityText)){
+                    if(!currencies.keySet().contains(formattedAutoCompletePriceAndQuantityText)){
                         currencyError.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
