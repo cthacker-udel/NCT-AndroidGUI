@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="175dp"
+        android:layout_marginEnd="175dp"
         android:text="Binance"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/white"
@@ -45,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="175dp"
         android:text="Sign In"
         app:backgroundTint="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,5 +134,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/binancePageAccountBalanceButton" />
+
+    <TextView
+        android:id="@+id/textView54"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="175dp"
+        android:text="Account Details"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/binanceAccountDetailsAccountSignInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="15dp"
+        android:text="Sign In"
+        app:backgroundTint="@color/cardview_dark_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView54" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -60,6 +61,8 @@ public class binancePage extends AppCompatActivity {
 
     TextView accountTradesTextView;
 
+    String currentSelectedItem;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,9 @@ public class binancePage extends AppCompatActivity {
 
         userSignedIn = false;
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,currenciesNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line);
+        adapter.add("--- select currency ---");
+        adapter.addAll(currenciesNames);
 
         displayCurrencyAmountAndQuantity.setAdapter(adapter);
 
@@ -95,6 +100,31 @@ public class binancePage extends AppCompatActivity {
         String apiKey = sharedPreferences.getString("binanceApiKey","defaultBinanceApiKey");
 
         String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
+
+        displayCurrencyAmountAndQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
+                if(selectedItem.equals("--- select currency ---")){
+                    Toast.makeText(binancePage.this,"Please select an currency",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else{
+                    currentSelectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
+                    OrderBook orderBook = client.getOrderBook(currencies.get(currentSelectedItem),10);
+                    List<OrderBookEntry> asks = orderBook.getAsks();
+                    OrderBookEntry firstAskEntry = asks.get(0);
+                    displayPriceAndQuantity.setText(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
+                    //System.out.println(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(binancePage.this,"Please select an currency",Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
 
 
         binancePageSignInBtn.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +215,7 @@ public class binancePage extends AppCompatActivity {
         displayPriceAndQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String autoCompletePriceAndQuantityText = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
+                String autoCompletePriceAndQuantityText = currentSelectedItem;
                 try{
                     String formattedAutoCompletePriceAndQuantityText = autoCompletePriceAndQuantityText.substring(0,1).toUpperCase() + autoCompletePriceAndQuantityText.substring(1);
                     if(!currencies.values().contains(formattedAutoCompletePriceAndQuantityText)){
@@ -219,7 +249,7 @@ public class binancePage extends AppCompatActivity {
                 BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
                 client = factory.newRestClient();
                 currencies = currencyInfo.currencyList();
-                List<Trade> trades = client.getMyTrades(currencies.get(displayCurrencyAmountAndQuantity.getSelectedItem().toString()));
+                List<Trade> trades = client.getMyTrades(currencies.get(currentSelectedItem));
                 ArrayList<String> tradeList = new ArrayList<>();
                 for(Trade eachTrade: trades){
                     tradeList.add(String.format("Price : %s \n Quantity : %s \n--------------------",eachTrade.getPrice(),eachTrade.getQty()));
