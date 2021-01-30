@@ -53,6 +53,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -135,17 +136,34 @@ public class binancePage extends AppCompatActivity {
 
         //BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
 
+        // I noticed that the android binanceUS is only formatted to allow trades to the v3 account, none others, only allow account details of v3, none others such as in the account link its api/V3/
+
         //client2.getPrice("BTC", BinanceApiCallback -> {});
 
-        String baseUrl = "https://api.binance.us/api/v3/order";
+        String baseUrl = "https://api.binance.us/api/v3/account";
+
+        // need proper account url that generates the signature
 
         try {
-            URL url = new URL("https://api.binance.us/api/v3/order");
+            URL url = new URL("https://api.binance.us/api/v3/account");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).build();
+
+        getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
+
+        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount();
+        try {
+            Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
+            com.example.nctai_trading.Account result = responseAccount.body();
+            System.out.println(result.getBalances());
+            System.out.println(result.getAccountType());
+            System.out.println(result.getMakerCommission());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // we can use unirest for serverspeed and get requests, and use retrofit for post requests like buy and sell
 

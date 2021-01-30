@@ -59,7 +59,11 @@ dependencies {
 
     // unirest
 
-    implementation 'com.konghq:unirest-java:3.11.09'
+    //implementation 'com.konghq:unirest-java:3.11.09'
+
+    // gson
+
+    implementation 'com.google.code.gson:gson:2.8.6'
 
 
     // misc
@@ -89,7 +93,6 @@ dependencies {
     implementation 'commons-validator:commons-validator:1.7'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation 'commons-codec:commons-codec:20041127.091804'
-    implementation 'com.google.code.gson:gson:2.8.5'
     implementation "org.igniterealtime.smack:smack-android-extensions:4.1.0"
     implementation "org.igniterealtime.smack:smack-experimental:4.1.0"
     implementation "org.igniterealtime.smack:smack-tcp:4.1.0"
