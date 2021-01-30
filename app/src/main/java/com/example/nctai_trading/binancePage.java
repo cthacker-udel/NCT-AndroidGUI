@@ -52,6 +52,10 @@ import java.util.TreeMap;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 import retrofit2.http.Url;
 
 public class binancePage extends AppCompatActivity {
@@ -141,15 +145,20 @@ public class binancePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+
+        // we can use unirest for serverspeed and get requests, and use retrofit for post requests like buy and sell
+
+
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            //HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             // Now it's "open", we can set the request method, headers etc.
-            connection.setRequestProperty("accept", "application/json");
+            //connection.setRequestProperty("accept", "application/json");
 
             // This line makes the request
-            InputStream responseStream = connection.getInputStream();
+            //InputStream responseStream = connection.getInputStream();
 
-            System.out.println(responseStream);
+            //System.out.println(responseStream);
         /*
             'https://api.binance.us/api/v3/order'
 
@@ -178,7 +187,7 @@ public class binancePage extends AppCompatActivity {
             ArrayList<String> signatureList = new ArrayList<>();
 
             for(String eachKey: hashMap.keySet()){
-                signatureList.add(String.format("%b=%b",eachKey,hashMap.get(eachKey)));
+                signatureList.add(String.format("%s=%s",String.valueOf(eachKey),String.valueOf(hashMap.get(eachKey))));
             }
 
             signature = String.join("&",signatureList);
@@ -193,7 +202,7 @@ public class binancePage extends AppCompatActivity {
 
             // how to use hmac new in java, and what to do with the third parameter in hmac but in java
 
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             e.printStackTrace();
         }
 

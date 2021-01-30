@@ -51,11 +51,22 @@ dependencies {
 
     // implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
 
+    //retrofit
+
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+
+    // unirest
+
+    implementation 'com.konghq:unirest-java:3.11.09'
+
+
     // misc
 
     implementation 'org.jetbrains:annotations:15.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.2'
-    implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'androidx.navigation:navigation-fragment:2.3.3'
+    implementation 'androidx.navigation:navigation-ui:2.3.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     configurations {
@@ -71,7 +82,7 @@ dependencies {
     implementation files('libs/commons-net-3.7.2.jar')
     implementation files('libs/commons-net-3.7.2-sources.jar')
     implementation files('libs/mongo-java-driver-3.4.0-SNAPSHOT.jar')
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
