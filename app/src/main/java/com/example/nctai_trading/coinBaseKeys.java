@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -51,11 +52,12 @@ public class coinBaseKeys extends AppCompatActivity {
                 coinBaseAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(coinBaseKeys.this,"The CoinBase api key and secret key have been applied",Toast.LENGTH_SHORT).show();
+                        Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                        startActivity(toMainPage);
                     }
                 });
-                coinBaseAlert.setCancelable(true);
                 coinBaseAlert.create().show();
+                return;
             }
         });
 
