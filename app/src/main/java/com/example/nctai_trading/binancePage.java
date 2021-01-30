@@ -18,8 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.binance.api.client.BinanceApiAsyncRestClient;
+import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.BinanceApiRestClient;
+import com.binance.api.client.BinanceApiWebSocketClient;
 import com.binance.api.client.domain.account.Account;
 import com.binance.api.client.domain.account.AssetBalance;
 import com.binance.api.client.domain.account.Order;
@@ -28,13 +30,21 @@ import com.binance.api.client.domain.account.request.AllOrdersRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
+
+import retrofit2.http.Url;
 
 public class binancePage extends AppCompatActivity {
 
@@ -63,6 +73,8 @@ public class binancePage extends AppCompatActivity {
     String currentSelectedItem;
 
     Button showAccountInfo;
+
+    URL url;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -109,11 +121,77 @@ public class binancePage extends AppCompatActivity {
 
         BinanceApiRestClient client = factory.newRestClient();
 
-        client.ping();
+        //BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
+
+        //client2.getPrice("BTC", BinanceApiCallback -> {});
+
+        String baseUrl = "https://api.binance.us/api/v3/order";
+
+        try {
+            URL url = new URL("https://api.binance.us/api/v3/order");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            // Now it's "open", we can set the request method, headers etc.
+            connection.setRequestProperty("accept", "application/json");
+
+            // This line makes the request
+            InputStream responseStream = connection.getInputStream();
+
+            System.out.println(responseStream);
+        /*
+            'https://api.binance.us/api/v3/order'
+
+                    dictionary of values ['data': 'afafsaf', 'side': 'direction'
+        'type': 'market', 'quantity': currquant,'timestamp': dateimte.now, 'recvwindow': 10000];
+
+            with that dictionary of values they are passing it into a generate signature method
+                    and wihtin that method they are first doing '{}={}'=LTCBTC
+                    [LTC=USDT,SIDE=DIRECTION,TYPE=MARKET,QUANTITY=CURR_QUANT,TIMESTAMP=CURRTIME,RECVWINDOW=10000]
+            JOIN METHOD '&' ----> LTC=USDT&SIDE=DIRECTION&TYPE=MARKET&QUANTITY=CURR_QUANT&TIMESTAMP=CURRTIME&RECVWINDOW=10000
+                    after the join method they are creating an instance of hmac and then hexdigesting it
+                    the instance of hmac takes the secretkey encoded, the joinedstring encoded, and encodes using sha256\
+
+            afterwards they are simply just making a new key named signature and replacing it with the generatesignature result
+
+         */
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("data","dataexample");
+            hashMap.put("side","sideexample");
+            hashMap.put("type","typeexample");
+            hashMap.put("quantity",1111111);
+            hashMap.put("timestamp","figureouthowtomaketimestamp");
+            hashMap.put("recvwindow",10000);
+
+            String signature = "";
+            ArrayList<String> signatureList = new ArrayList<>();
+
+            for(String eachKey: hashMap.keySet()){
+                signatureList.add(String.format("%b=%b",eachKey,hashMap.get(eachKey)));
+            }
+
+            signature = String.join("&",signatureList);
+            byte[] secretKeyByteArray = secretKey.getBytes();
+            // how to use hmac new in java, and what to do with the third parameter in hmac but in java
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        //System.out.println(client2);
+
+        System.out.println(client.getServerTime());
 
         // Permissions
 
-        System.out.println(client.getAccount().getBalances().size());
+        System.out.println(client);
+
+        //System.out.println(client.getAccount().getAssetBalance("BTC").getFree());
+        System.out.println(client.getAccount().getBalances());
 
         showAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override

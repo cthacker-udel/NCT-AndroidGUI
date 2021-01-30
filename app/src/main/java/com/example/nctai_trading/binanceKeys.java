@@ -66,8 +66,8 @@ public class binanceKeys extends AppCompatActivity {
 
                 // setters
                 // temp test
-                editor.putString("binanceApiKey","Z3lgtQfNxbtH1hB31HIvvijPSHjxZKpesD4crQddYWX5wjMurYbJSO08v6C20cZy");
-                editor.putString("binanceSecretKey","t2S9wDcQCWLrgj7N2GpFcRrQ5307Nrg6Xuvv0nQmBtxOUtxiC4WoMfSdaVjGpcKd");
+                editor.putString("binanceApiKey","htyenIoeQKFaAxpAEfo6SJvXPguZPPREnZ431YHh1fMjCPgx8cwuaF4d4IMWimdq");
+                editor.putString("binanceSecretKey","RGjp6S0I1JQrzwUFGw0rLVvBMqHEvKnn8etPC82MwKVskhLKvLNd2QUYC8b6mVxs");
                 //editor.putString("binanceApiKey",apiKeyText);
                 //editor.putString("binanceSecretKey",secretKeyText);
                 editor.apply();
