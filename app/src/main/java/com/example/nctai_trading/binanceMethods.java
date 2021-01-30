@@ -85,6 +85,8 @@ public class binanceMethods {
 
         getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
 
+        ///   ONLY PROBLEM IS THE GENERATE SIGNATURE METHOD
+
         Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(queryString);
         try {
             Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
