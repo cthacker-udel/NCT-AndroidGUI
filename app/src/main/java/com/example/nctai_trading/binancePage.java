@@ -32,17 +32,25 @@ import com.binance.api.client.domain.market.OrderBook;
 import com.binance.api.client.domain.market.OrderBookEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 import retrofit2.http.Url;
 
@@ -76,7 +84,7 @@ public class binancePage extends AppCompatActivity {
 
     URL url;
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,10 +182,18 @@ public class binancePage extends AppCompatActivity {
             }
 
             signature = String.join("&",signatureList);
-            byte[] secretKeyByteArray = secretKey.getBytes();
+            String utf8EncodedSecretKey = new String(secretKey.getBytes(), StandardCharsets.UTF_8);
+            SecretKeySpec keySpec = new SecretKeySpec(utf8EncodedSecretKey.getBytes(), "HmacSHA256");
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(keySpec);
+            String utf8EncodedSignature = new String(signature.getBytes(),StandardCharsets.UTF_8);
+            byte[] digest = mac.doFinal(utf8EncodedSignature.getBytes());
+            // returns the hashed url
+            System.out.println(DigestUtils.shaHex(digest));
+
             // how to use hmac new in java, and what to do with the third parameter in hmac but in java
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             e.printStackTrace();
         }
 
