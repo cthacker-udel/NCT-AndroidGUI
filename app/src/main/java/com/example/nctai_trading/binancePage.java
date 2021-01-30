@@ -140,7 +140,7 @@ public class binancePage extends AppCompatActivity {
 
         //client2.getPrice("BTC", BinanceApiCallback -> {});
 
-        String baseUrl = "https://api.binance.us/api/v3/account";
+        String baseUrl = "https://api.binance.us/api/v3/account/";
 
         // need proper account url that generates the signature
 
@@ -150,20 +150,32 @@ public class binancePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).build();
+        binanceMethods methods = new binanceMethods();
 
-        getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
-
-        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount();
         try {
-            Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
-            com.example.nctai_trading.Account result = responseAccount.body();
-            System.out.println(result.getBalances());
-            System.out.println(result.getAccountType());
-            System.out.println(result.getMakerCommission());
+            methods.generateAccountInformation();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
+
+        //Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).build();
+
+        //getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
+
+        //Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount();
+        //try {
+        //    Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
+        //    com.example.nctai_trading.Account result = responseAccount.body();
+        //    System.out.println(result.getBalances());
+        //    System.out.println(result.getAccountType());
+        //    System.out.println(result.getMakerCommission());
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
 
         // we can use unirest for serverspeed and get requests, and use retrofit for post requests like buy and sell
 

@@ -7,9 +7,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface getAccountInfo {
 
-    @GET("/api/v3/account")
-    Call<Account> getAccount();
+    @GET("/api/v3/account/{queryString}")
+    Call<Account> getAccount(@Path("queryString") String queryString);
 }
