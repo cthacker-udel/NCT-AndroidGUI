@@ -30,7 +30,7 @@ public class Account {
     private Boolean canDeposit;
     @SerializedName("updateTime")
     @Expose
-    private Integer updateTime;
+    private Long updateTime;
     @SerializedName("accountType")
     @Expose
     private String accountType;
@@ -97,11 +97,11 @@ public class Account {
         this.canDeposit = canDeposit;
     }
 
-    public Integer getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Integer updateTime) {
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -4,10 +4,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.gson.JsonObject;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.spongycastle.crypto.Digest;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,10 +16,12 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -26,19 +29,53 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class binanceMethods {
 
-    public String baseUrl = "https://api.binance.us";
-    public String secretKey = "mM57MtfNnRG1UrrZs6uGbKNNx1VIU7UktgwqPxelhXkI0cqjXaSCTOvXZY8vMTxj";
-    public String apiKey = "lISh9SeQdCT1HGPeo3Z6p8jWAsOJ6tmjoG7LeMsMNGCGBT0HRhfyfEvHJdjn49IG";
+    public static String baseUrl = "https://api.binance.us";
+    public static String secretKey = "mM57MtfNnRG1UrrZs6uGbKNNx1VIU7UktgwqPxelhXkI0cqjXaSCTOvXZY8vMTxj";
+    public static String apiKey = "lISh9SeQdCT1HGPeo3Z6p8jWAsOJ6tmjoG7LeMsMNGCGBT0HRhfyfEvHJdjn49IG";
+
+    public static OkHttpClient defaultHttpClient = new OkHttpClient();
+
+    public static okhttp3.OkHttpClient defaultHttpClient2 = new okhttp3.OkHttpClient();
+
+
+    public static okhttp3.OkHttpClient getDefaultHttpClient2(){
+        defaultHttpClient2.networkInterceptors().add(new okhttp3.Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                okhttp3.Request request = chain.request().newBuilder().
+                        addHeader("secretKey",secretKey)
+                        .build();
+                return chain.proceed(request);
+            }
+        });
+        return binanceMethods.defaultHttpClient2;
+    }
+
+    public static OkHttpClient getDefaultHttpClient() {
+        defaultHttpClient.networkInterceptors().add(new Interceptor() {
+            @Override
+            public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("secretKey",secretKey).build();
+                return chain.proceed(request);
+            }
+        });
+        return defaultHttpClient;
+    }
+
+    static{
+        defaultHttpClient.networkInterceptors().add(new Interceptor() {
+            @Override
+            public com.squareup.okhttp.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("secretKey",secretKey).build();
+                return chain.proceed(request);
+            }
+        });
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getSignature(String url,HashMap<String,Object> theHashMap) throws NoSuchAlgorithmException, InvalidKeyException {
-        //HashMap<String,Object> hashMap = new HashMap<>();
-        //hashMap.put("data","dataexample");
-        //hashMap.put("side","sideexample");
-        //hashMap.put("type","typeexample");
-        //hashMap.put("quantity",1111111);
-        //hashMap.put("timestamp","figureouthowtomaketimestamp");
-        //hashMap.put("recvwindow",10000);
+    public String getSignature(String url,HashMap<String,String> theHashMap) throws NoSuchAlgorithmException, InvalidKeyException {
 
         String signature = "";
         ArrayList<String> signatureList = new ArrayList<>();
@@ -48,20 +85,12 @@ public class binanceMethods {
         }
 
         signature = String.join("&",signatureList);
-        byte[] secretKeyByteArray = secretKey.getBytes();
-        SecretKeySpec keySpec = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
-        Mac mac = Mac.getInstance("HmacSHA256");
-        mac.init(keySpec);
-        String utf8EncodedSecretKey = new String(secretKey.getBytes(), StandardCharsets.UTF_8);
-        String utf8EncodedSignature = new String(signature.getBytes(),StandardCharsets.UTF_8);
-        byte[] digest = mac.doFinal(utf8EncodedSignature.getBytes());
-        // returns the hashed url
-        System.out.println(DigestUtils.shaHex(digest));
-        return DigestUtils.shaHex(digest);
+        HMAC256 test = new HMAC256();
+        return test.hmacDigest(signature,secretKey,"HmacSHA256");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public String generateQueryString(HashMap<String,Object> hashMap){
+    public String generateQueryString(HashMap<String,String> hashMap){
         ArrayList<String> signatureList = new ArrayList<>();
 
         for(String eachKey: hashMap.keySet()){
@@ -75,23 +104,33 @@ public class binanceMethods {
 
         String url = this.baseUrl + "/api/v3/account/";
 
-        HashMap<String,Object> data = new HashMap<>();
-        data.put("revWindow",10000);
-        data.put("timestamp",synchronize());
+        HashMap<String,String> data = new HashMap<>();
+        data.put("recvWindow","10000");
+        data.put("timestamp",String.valueOf(synchronize()));
         String signature = getSignature(url,data);
         data.put("signature",signature);
-        String queryString = generateQueryString(data) + "/";
+        String queryString = generateQueryString(data);
+
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
 
         getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
 
         ///   ONLY PROBLEM IS THE GENERATE SIGNATURE METHOD
 
-        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(queryString);
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
+
+        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
         try {
+            System.out.println("Reached account info");
             Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
+            System.out.println(responseAccount.errorBody());
             com.example.nctai_trading.Account result = responseAccount.body();
             System.out.println(result.getBalances());
+            List<Balance> balanceList = result.getBalances();
+            for(Balance eachBalance: balanceList){
+                System.out.println(eachBalance.getAsset());
+                System.out.println(eachBalance.getFree());
+            }
             System.out.println(result.getAccountType());
             System.out.println(result.getMakerCommission());
         } catch (IOException e) {
@@ -121,7 +160,7 @@ public class binanceMethods {
 
     public long synchronize() throws IOException {
         long serverTime = getServerTime();
-        long systemTime = ((int)System.currentTimeMillis()) * 1000;
+        long systemTime = System.currentTimeMillis() * 1000;
         long offset = systemTime - serverTime + 500;
         return systemTime - offset;
     }

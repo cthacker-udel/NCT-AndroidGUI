@@ -130,9 +130,7 @@ public class binancePage extends AppCompatActivity {
 
         // not IP, either API Key <--
 
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
 
-        BinanceApiRestClient client = factory.newRestClient();
 
         //BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
 
@@ -161,6 +159,10 @@ public class binancePage extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+
+        BinanceApiRestClient client = factory.newRestClient();
 
         //Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).build();
 
