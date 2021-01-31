@@ -8,18 +8,13 @@ import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Optional;
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import retrofit2.Call;
@@ -160,6 +155,39 @@ public class binanceMethods {
         return String.format("%s : %s","1",result.getPrice());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<Order> getOpenOrderList() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+        String url = "https://api.binance.us/api/v3/openOrderList/";
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.us/api/v3/openOrderList/").addConverterFactory(GsonConverterFactory.create()).build();
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("recvWindow","10000");
+        data.put("timestamp",String.valueOf(synchronize()));
+
+        String signature = getSignature(url,data);
+
+        data.put("signature",signature);
+
+        getOpenOrderList openOrderListCmd = retrofit.create(getOpenOrderList.class);
+
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow", data.get("recvWindow"), "timestamp", data.get("timestamp"), "signature", data.get("signature"));
+
+        Call<OpenOrderList> openOrderListCall = openOrderListCmd.openOrderListQuery(immutableMap,apiKey);
+
+        Response<OpenOrderList> openOrderListResponse = openOrderListCall.execute();
+
+        OpenOrderList openOrderListBody = openOrderListResponse.body();
+
+        List<Order> orderList = openOrderListBody.getOrders();
+
+        for(Order eachOrder: orderList){
+            System.out.println(eachOrder.getSymbol());
+        }
+        return orderList;
+    }
+
     public long getServerTime() throws IOException {
         String url = this.baseUrl + "/api/v3/time/";
         Retrofit retrofit = new Retrofit.Builder()
@@ -179,10 +207,43 @@ public class binanceMethods {
         return result.getServerTime();
     }
 
+    public List<TradeListTrade> getAccountTradeList(String symbol1, String symbol2, int limit) throws IOException {
+        String symbol = symbol1 + symbol2;
+
+        String url = this.baseUrl + "/api/v3/myTrades/";
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("symbol",symbol);
+        data.put("timestamp",String.valueOf(getTimeStamp()));
+        data.put("limit",String.valueOf(limit));
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        getAccountTradeList theTradeList = retrofit.create(getAccountTradeList.class);
+
+        Call<List<TradeListTrade>> theTradeListCall = theTradeList.getAccountTradeListQuery(data,apiKey);
+
+        Response<List<TradeListTrade>> theTradeListResponse = theTradeListCall.execute();
+
+        List<TradeListTrade> result = theTradeListResponse.body();
+
+        for(TradeListTrade eachTrade: result){
+            System.out.println(String.format("Price : %s, Qty %s",eachTrade.getPrice(),eachTrade.getQty()));
+        }
+        return result;
+    }
+
     public long synchronize() throws IOException {
         long serverTime = getServerTime();
         long systemTime = System.currentTimeMillis() * 1000;
         long offset = systemTime - serverTime + 500;
         return systemTime - offset;
+    }
+
+    public long getTimeStamp(){
+        return System.currentTimeMillis() * 1000;
     }
 }
