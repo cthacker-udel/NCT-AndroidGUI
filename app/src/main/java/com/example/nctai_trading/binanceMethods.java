@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -234,6 +235,82 @@ public class binanceMethods {
             System.out.println(String.format("Price : %s, Qty %s",eachTrade.getPrice(),eachTrade.getQty()));
         }
         return result;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public OrderBook getOrderBook(String symbol1, int limit) throws IOException {
+
+        String url = this.baseUrl + "/api/v3/depth";
+
+        String symbol = symbol1 + "USD";
+
+        HashMap<String,String> data = new HashMap<>();
+
+        data.put("symbol",symbol);
+        data.put("limit",String.valueOf(limit));
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        getOrderBook theOrderBook = retrofit.create(getOrderBook.class);
+
+        Call<OrderBook> theOrderBookCall = theOrderBook.getOrderBook(data);
+
+        Response<OrderBook> theOrderBookResponse = theOrderBookCall.execute();
+
+        OrderBook result = theOrderBookResponse.body();
+
+        List<List<String>> bids = result.getBids();
+
+        List<List<String>> asks = result.getAsks();
+
+        ArrayList<String> bidList = new ArrayList<>();
+        ArrayList<String> askList = new ArrayList<>();
+
+        bids.stream().parallel().flatMap(Collection::stream).forEach(bidList::add);
+        asks.stream().parallel().flatMap(Collection::stream).forEach(askList::add);
+
+        int count = 1;
+        for(int i = 0; i < bidList.size(); i++){
+            System.out.println(String.format("Order %d : \n Bid : %s \n Ask : %s \n",count++,bidList.get(i),askList.get(i)));
+        }
+
+        return result;
+    }
+
+    public List<Trades> getRecentTrades(String symbol1, int limit) throws IOException {
+
+        String url = this.baseUrl + "/api/v3/trades";
+
+        String symbol = symbol1 + "USD";
+
+        HashMap<String,String> data = new HashMap<>();
+
+        data.put("symbol",symbol);
+        data.put("limit",String.valueOf(limit));
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        getRecentTrades theRecentTrades = retrofit.create(getRecentTrades.class);
+
+        Call<List<Trades>> theRecentTradesCall = theRecentTrades.getRecentTrades(data);
+
+        Response<List<Trades>> theRecentTradesResponse = theRecentTradesCall.execute();
+
+        List<Trades> result = theRecentTradesResponse.body();
+
+        int count = 1;
+
+        for(Trades eachTrade: result){
+            System.out.println(String.format("Trade %d : \n Price : %s \n Quantity %s \n",count++,eachTrade.getPrice(),eachTrade.getQty()));
+        }
+
+        return result;
+
     }
 
     public long synchronize() throws IOException {
