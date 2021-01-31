@@ -123,16 +123,16 @@ public class binanceMethods {
         try {
             System.out.println("Reached account info");
             Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
-            System.out.println(responseAccount.errorBody());
             com.example.nctai_trading.Account result = responseAccount.body();
-            System.out.println(result.getBalances());
+            HashMap<String,String> balanceMap = new HashMap<>();
             List<Balance> balanceList = result.getBalances();
             for(Balance eachBalance: balanceList){
-                System.out.println(eachBalance.getAsset());
-                System.out.println(eachBalance.getFree());
+                balanceMap.put(eachBalance.getAsset(),eachBalance.getFree());
             }
-            System.out.println(result.getAccountType());
-            System.out.println(result.getMakerCommission());
+            String accountType = result.getAccountType();
+            Integer makerCommision = result.getMakerCommission();
+            System.out.println(balanceMap);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

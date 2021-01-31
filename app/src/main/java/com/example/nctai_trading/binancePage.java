@@ -248,7 +248,7 @@ public class binancePage extends AppCompatActivity {
         System.out.println(client);
 
         //System.out.println(client.getAccount().getAssetBalance("BTC").getFree());
-        System.out.println(client.getAccount().getBalances());
+        //System.out.println(client.getAccount().getBalances());
 
         showAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
