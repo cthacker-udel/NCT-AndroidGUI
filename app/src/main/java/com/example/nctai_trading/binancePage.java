@@ -268,20 +268,25 @@ public class binancePage extends AppCompatActivity {
                     return;
                 }
                 else{
-                    currentSelectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
+                    try {
+                        displayPriceAndQuantity.setText(new binanceMethods().displayCurrentPrice(currencyInfo.currencyList().get(selectedItem) + "USD"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //currentSelectedItem = displayCurrencyAmountAndQuantity.getSelectedItem().toString();
                     // error message below, probably because client has not been instantiated properly, requires proper keys
                     // spinner functions correctly
-                    OrderBook orderBook = client.getOrderBook(currencies.get(currentSelectedItem),10);
-                    List<OrderBookEntry> asks = orderBook.getAsks();
-                    OrderBookEntry firstAskEntry = asks.get(0);
-                    displayPriceAndQuantity.setText(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
+                    //OrderBook orderBook = client.getOrderBook(currencies.get(currentSelectedItem),10);
+                    //List<OrderBookEntry> asks = orderBook.getAsks();
+                    //OrderBookEntry firstAskEntry = asks.get(0);
+                    //displayPriceAndQuantity.setText(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
                     //System.out.println(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
-                    List<Trade> trades = client.getMyTrades(currencies.get(currentSelectedItem));
-                    ArrayList<String> tradeList = new ArrayList<>();
-                    for(Trade eachTrade: trades){
-                        tradeList.add(String.format("Price : %s \n Quantity : %s \n--------------------",eachTrade.getPrice(),eachTrade.getQty()));
-                    }
-                    accountBalanceView.setText(String.join("\n",tradeList));
+                    //List<Trade> trades = client.getMyTrades(currencies.get(currentSelectedItem));
+                    //ArrayList<String> tradeList = new ArrayList<>();
+                    //for(Trade eachTrade: trades){
+                    //    tradeList.add(String.format("Price : %s \n Quantity : %s \n--------------------",eachTrade.getPrice(),eachTrade.getQty()));
+                    //}
+                    //accountBalanceView.setText(String.join("\n",tradeList));
                 }
             }
 

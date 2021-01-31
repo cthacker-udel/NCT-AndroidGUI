@@ -139,6 +139,27 @@ public class binanceMethods {
         return "";
     }
 
+    public String displayCurrentPrice(String symbol) throws IOException {
+        AveragePrice result;
+        HashMap<String,String> data = new HashMap<>();
+        data.put("symbol",symbol);
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.us/api/v3/avgPrice/").addConverterFactory(GsonConverterFactory.create()).build();
+
+        getAveragePrice avgPriceGet = retrofit.create(getAveragePrice.class);
+
+        Call<AveragePrice> avgPriceObject = avgPriceGet.getAvgPrice(data);
+
+        Response<AveragePrice> responseAvgPrice = avgPriceObject.execute();
+        try {
+            result = responseAvgPrice.body();
+        }
+        catch(NullPointerException nullPointerException){
+            // fix bug
+            return "Not available";
+        }
+        return String.format("%s : %s","1",result.getPrice());
+    }
+
     public long getServerTime() throws IOException {
         String url = this.baseUrl + "/api/v3/time/";
         Retrofit retrofit = new Retrofit.Builder()
