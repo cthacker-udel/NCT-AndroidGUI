@@ -326,47 +326,148 @@ public class binanceMethods {
     //}
     public class sellCurrency {
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public Sale sellCurrencyMarketQuantity(String symbol1, double quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-            String url = baseUrl + "/api/v3/order";
-            String side = "SELL";
-            String symbol = symbol1 + "USD";
-            String type = "MARKET";
-            String timeStamp = String.valueOf(synchronize());
+        public ArrayList<String> sellCurrencyMarketQuantity(String symbol1, double quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+            try {
+                String url = baseUrl + "/api/v3/order/";
+                String side = "SELL";
+                String symbol = symbol1 + "USD";
+                String type = "MARKET";
+                String timeStamp = String.valueOf(synchronize());
 
-            HashMap<String,String> data = new HashMap<>();
-            data.put("symbol",symbol);
-            data.put("side",side);
-            data.put("type",type);
-            data.put("timestamp",timeStamp);
+                HashMap<String, String> data = new HashMap<>();
+                data.put("symbol", symbol);
+                data.put("side", side);
+                data.put("type", type);
+                data.put("timestamp", timeStamp);
 
-            String signature = getSignature(url,data);
+                String signature = getSignature(url, data);
 
-            ImmutableMap<String,String> immutableMap = ImmutableMap.of("symbol",symbol,"side",side,"type",type,"timestamp",timeStamp,"signature",signature);
+                ImmutableMap<String, String> immutableMap = ImmutableMap.of("symbol", symbol, "side", side, "type", type, "timestamp", timeStamp, "signature", signature);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
 
-            sellCurrencyMarketQuantity theSale = retrofit.create(sellCurrencyMarketQuantity.class);
+                sellCurrencyMarketQuantity theSale = retrofit.create(sellCurrencyMarketQuantity.class);
 
-            Call<Sale> theSaleCall = theSale.sellCurrencyMarketCall(immutableMap,apiKey);
+                Call<Sale> theSaleCall = theSale.sellCurrencyMarketCall(immutableMap, apiKey);
 
-            Response<Sale> theSaleResult = theSaleCall.execute();
+                Response<Sale> theSaleResult = theSaleCall.execute();
 
-            Sale result = theSaleResult.body();
+                Sale result = theSaleResult.body();
 
-            ArrayList<String> saleDetails = new ArrayList<>();
+                ArrayList<String> saleDetails = new ArrayList<>();
 
-            saleDetails.add("---------- Sale Details : ----------\n");
+                saleDetails.add("---------- Sale Details : ----------\n");
 
 
-            List<Fill> fills = result.getFills();
-            int count = 1;
-            for(Fill eachFill: fills){
-                saleDetails.add(String.format("-------SALE %d-------\n ---> Price : %s \n---> Quantity : %s\n---> Commission : %s\n---> Commission Asset %s\n\n",count++,eachFill.getPrice(),eachFill.getQty(),eachFill.getCommission(),eachFill.getCommissionAsset()));
+                List<Fill> fills = result.getFills();
+                int count = 1;
+                for (Fill eachFill : fills) {
+                    saleDetails.add(String.format("-------SALE %d-------\n ---> Price : %s \n---> Quantity : %s\n---> Commission : %s\n---> Commission Asset %s\n\n", count++, eachFill.getPrice(), eachFill.getQty(), eachFill.getCommission(), eachFill.getCommissionAsset()));
+                }
+                return saleDetails;
             }
-            return result;
+            catch(Exception e){
+                return new ArrayList<String>();
+            }
+
+        }
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public ArrayList<String> sellCurrencyMarketQuoteOrderQuantity(String symbol1, double quoteOrderQuantity1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+            try {
+                String url = baseUrl + "/api/v3/order/";
+                String symbol = symbol1 + "USD";
+                String side = "SELL";
+                String type = "MARKET";
+                double quoteOrderQuantity = quoteOrderQuantity1;
+                String timeStamp = String.valueOf(synchronize());
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+
+                HashMap<String, String> data = new HashMap<>();
+
+                data.put("symbol", symbol);
+                data.put("side", side);
+                data.put("type", type);
+                data.put("quoteOrderQty", String.valueOf(quoteOrderQuantity));
+                data.put("timestamp", timeStamp);
+                String signature = getSignature(url, data);
+                data.put("signature", signature);
+
+                sellCurrencyMarketQuantity sellCurrencyMarketQuoteOrder = retrofit.create(sellCurrencyMarketQuantity.class);
+
+                Call<Sale> theSale = sellCurrencyMarketQuoteOrder.sellCurrencyMarketCall(data, apiKey);
+
+                Response<Sale> theSaleResult = theSale.execute();
+
+                Sale result = theSaleResult.body();
+
+                ArrayList<String> saleDetails = new ArrayList<>();
+
+                List<Fill> fills = result.getFills();
+                int count = 1;
+                for (Fill eachFill : fills) {
+                    saleDetails.add(String.format("-------SALE %d-------\n ---> Price : %s \n---> Quantity : %s\n---> Commission : %s\n---> Commission Asset %s\n\n", count++, eachFill.getPrice(), eachFill.getQty(), eachFill.getCommission(), eachFill.getCommissionAsset()));
+                }
+                return saleDetails;
+            }
+            catch(Exception e){
+                return new ArrayList<String>();
+            }
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public ArrayList<String> baseSale(String symbol1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+            try {
+                String url = baseUrl + "/api/v3/order";
+                String symbol = symbol1 + "USD";
+                String side = "SELL";
+                String type = "MARKET";
+                String timestamp = String.valueOf(synchronize());
+
+                HashMap<String, String> data = new HashMap<>();
+
+                data.put("symbol", symbol);
+                data.put("side", side);
+                data.put("type", type);
+                data.put("timestamp", timestamp);
+
+                String signature = getSignature(url, data);
+
+                data.put("signature", signature);
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                sellCurrencyMarketQuantity sellCurrency = retrofit.create(sellCurrencyMarketQuantity.class);
+
+                Call<Sale> getSale = sellCurrency.sellCurrencyMarketCall(data, apiKey);
+
+                Response<Sale> theSale = getSale.execute();
+
+                Sale result = theSale.body();
+
+                ArrayList<String> saleDetails = new ArrayList<>();
+
+                List<Fill> fills = result.getFills();
+                int count = 1;
+                for (Fill eachFill : fills) {
+                    saleDetails.add(String.format("-------SALE %d-------\n ---> Price : %s \n---> Quantity : %s\n---> Commission : %s\n---> Commission Asset %s\n\n", count++, eachFill.getPrice(), eachFill.getQty(), eachFill.getCommission(), eachFill.getCommissionAsset()));
+                }
+                return saleDetails;
+            }
+            catch(Exception e){
+                return new ArrayList<String>();
+            }
+
 
         }
     }
