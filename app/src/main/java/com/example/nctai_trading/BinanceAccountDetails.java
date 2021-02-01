@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class BinanceAccountDetails extends AppCompatActivity {
     TextView accountBalance;
     Spinner currencySelectorBinanceAccountDetailsPage;
     TextView accountDetailsScrollText;
+    ScrollView accountDetailsScroller;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -40,6 +42,10 @@ public class BinanceAccountDetails extends AppCompatActivity {
         accountBalance = findViewById(R.id.binanceAccountDetailsAccountBalanceOfCurrency);
         currencySelectorBinanceAccountDetailsPage = findViewById(R.id.binanceAccountDetailsCurencySelector);
         accountDetailsScrollText = findViewById(R.id.binanceAccountDetailsScrollViewText);
+        accountDetailsScroller = findViewById(R.id.binanceAccountDetailsScrollView);
+        accountDetailsScroller.setNestedScrollingEnabled(true);
+
+        accountDetailsScrollText.setText("HELLO");
 
         SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
 

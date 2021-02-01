@@ -47,7 +47,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -313,7 +317,7 @@ public class binancePage extends AppCompatActivity {
         // display account balance
 
         displayAccountBalance.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onClick(View v) {
                 //BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
@@ -333,15 +337,16 @@ public class binancePage extends AppCompatActivity {
                 }
 
                 double total = 0;
-
-                for(String eachSymbol: orders.keySet()){
+                HashMap<String, String> finalOrders = orders;
+                HashMap<String,String> updatedOrders = (HashMap<String,String>)finalOrders.keySet().stream().parallel().filter(e -> Double.parseDouble(finalOrders.get(e)) > 0).collect(Collectors.toMap(e -> e, finalOrders::get));
+                for(String eachSymbol: updatedOrders.keySet()){
                     if(eachSymbol.equals("USD")){
-                        total += Double.parseDouble(orders.get(eachSymbol));
+                        total += Double.parseDouble(updatedOrders.get(eachSymbol));
                     }
                     else {
                         try {
                             System.out.println(eachSymbol);
-                            total += Double.parseDouble(methods.displayCurrentPrice(eachSymbol + "USD").split(":")[1]) * Double.parseDouble(orders.get(eachSymbol));
+                            total += Double.parseDouble(methods.displayCurrentPrice(eachSymbol + "USD").split(":")[1]) * Double.parseDouble(updatedOrders.get(eachSymbol));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
