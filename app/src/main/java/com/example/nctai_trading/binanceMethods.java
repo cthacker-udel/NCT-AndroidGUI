@@ -215,7 +215,7 @@ public class binanceMethods {
 
         HashMap<String,String> data = new HashMap<>();
         data.put("symbol",symbol);
-        data.put("timestamp",String.valueOf(getTimeStamp()));
+        data.put("timestamp",String.valueOf(synchronize()));
         data.put("limit",String.valueOf(limit));
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -320,7 +320,60 @@ public class binanceMethods {
         return systemTime - offset;
     }
 
-    public long getTimeStamp(){
-        return System.currentTimeMillis() * 1000;
+    //public long getTimeStamp(){
+    //    // deprecated
+    //    return System.currentTimeMillis() * 1000;
+    //}
+    public class sellCurrency {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public Sale sellCurrencyMarketQuantity(String symbol1, double quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+            String url = baseUrl + "/api/v3/order";
+            String side = "SELL";
+            String symbol = symbol1 + "USD";
+            String type = "MARKET";
+            String timeStamp = String.valueOf(synchronize());
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put("symbol",symbol);
+            data.put("side",side);
+            data.put("type",type);
+            data.put("timestamp",timeStamp);
+
+            String signature = getSignature(url,data);
+
+            ImmutableMap<String,String> immutableMap = ImmutableMap.of("symbol",symbol,"side",side,"type",type,"timestamp",timeStamp,"signature",signature);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            sellCurrencyMarketQuantity theSale = retrofit.create(sellCurrencyMarketQuantity.class);
+
+            Call<Sale> theSaleCall = theSale.sellCurrencyMarketCall(immutableMap,apiKey);
+
+            Response<Sale> theSaleResult = theSaleCall.execute();
+
+            Sale result = theSaleResult.body();
+
+            ArrayList<String> saleDetails = new ArrayList<>();
+
+            saleDetails.add("---------- Sale Details : ----------\n");
+
+
+            List<Fill> fills = result.getFills();
+            int count = 1;
+            for(Fill eachFill: fills){
+                saleDetails.add(String.format("-------SALE %d-------\n ---> Price : %s \n---> Quantity : %s\n---> Commission : %s\n---> Commission Asset %s\n\n",count++,eachFill.getPrice(),eachFill.getQty(),eachFill.getCommission(),eachFill.getCommissionAsset()));
+            }
+            return result;
+
+        }
     }
+
+
+    // COINBASE PRO SIGN A MESSAGE
+
+
+
 }
