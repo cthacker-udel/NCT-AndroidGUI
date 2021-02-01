@@ -101,6 +101,7 @@ public class binanceBuyPage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedAmount = (long)binanceBuyPageSpinner.getSelectedItem();
+                // it will display how much that quantity with the price is worth, if you select 20 doge coin it will display -> .75
             }
 
             @Override
@@ -119,21 +120,35 @@ public class binanceBuyPage extends AppCompatActivity {
                     amountAdapter.clear();
                     double priceOne = 0;
                     double priceTwo = 0;
+                    int count = 1;
+                    double priceTwoTemp = 0;
+                    double priceOneTemp = 0;
                     try {
                         priceOne = methods.getPriceOfOne(currencies.get(selectedCurrency1)+"USD");
                         priceTwo = methods.getPriceOfOne(currencies.get(selectedCurrency2)+"USD");
+                        priceTwoTemp = priceTwo;
+                        priceOneTemp = priceOne;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    //if(priceOne > priceTwo){
-                    //    Toast.makeText(binanceBuyPage.this,"With amount is < 1 amount of buy",Toast.LENGTH_SHORT).show();
-                    //    tradeInvalid = true;
-                    //    return;
-                    //}
-                    double max = Math.max(priceOne,priceTwo);
-                    double min = Math.min(priceOne,priceTwo);
-                    long times = Math.round(max / min);
-                    LongStream.range(1,times).forEach(amountAdapter::add);
+                    if(priceOne > priceTwo){
+                        long times = Math.round(priceOne / priceTwo);
+                        LongStream.range(1,times+1).forEach(amountAdapter::add);
+                    }
+                    if(priceTwo > priceOne){
+                        while(priceOne < priceTwo){
+                            count++;
+                            priceOne += priceOneTemp;
+                        }
+                        amountAdapter.add((long)1);
+                        // figure out calculation
+                    }
+                    // [0.35    , 1.5 (2 of 1.5) 3 -> .35 * 30] first case
+                    // [1.5   , 0.35 (20 of .35) -> 1.5] second case
+                    //double max = Math.max(priceOne,priceTwo);
+                    //double min = Math.min(priceOne,priceTwo);
+                    //long times = Math.round(max / min);
+                    //LongStream.range(1,times).forEach(amountAdapter::add);
                 }
                 binanceBuyPageSpinner.setAdapter(amountAdapter);
                 tradeInvalid = false;

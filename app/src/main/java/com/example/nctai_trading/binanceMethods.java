@@ -488,10 +488,16 @@ public class binanceMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public ArrayList<String> baseSale(String symbol1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+        public ArrayList<String> baseSale(String symbol1, long quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
             try {
                 String url = baseUrl + "/api/v3/order";
-                String symbol = symbol1 + "USD";
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                sellCurrencyMarketQuantity sellCurrency = retrofit.create(sellCurrencyMarketQuantity.class);
+
+                String symbol = symbol1;
                 String side = "SELL";
                 String type = "MARKET";
                 String timestamp = String.valueOf(synchronize());
@@ -501,18 +507,12 @@ public class binanceMethods {
                 data.put("symbol", symbol);
                 data.put("side", side);
                 data.put("type", type);
+                data.put("quantity",String.valueOf(quantity));
                 data.put("timestamp", timestamp);
 
                 String signature = getSignature(url, data);
 
                 data.put("signature", signature);
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(url)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                sellCurrencyMarketQuantity sellCurrency = retrofit.create(sellCurrencyMarketQuantity.class);
 
                 Call<Sale> getSale = sellCurrency.sellCurrencyMarketCall(data, apiKey);
 
