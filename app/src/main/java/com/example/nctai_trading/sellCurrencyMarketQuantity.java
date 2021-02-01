@@ -10,7 +10,6 @@ import retrofit2.http.QueryMap;
 
 public interface sellCurrencyMarketQuantity {
 
-    @FormUrlEncoded
     @POST("https://api.binance.us/api/v3/order")
     Call<Sale> sellCurrencyMarketCall(@QueryMap Map<String,String> map, @Header("X-MBX-APIKEY") String apiKey);
 

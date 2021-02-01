@@ -83,15 +83,17 @@ public class binancePage extends AppCompatActivity {
 
     TextView accountBalanceView;
 
-    Button displayAccountTransactions;
-
     TextView accountTradesTextView;
 
     String currentSelectedItem;
 
     Button showAccountInfo;
 
-    URL url;
+    //URL url;
+
+    Button buyButton;
+
+    Button sellButton;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -108,9 +110,11 @@ public class binancePage extends AppCompatActivity {
         displayPriceAndQuantity = findViewById(R.id.binancePagePriceAndQuantity);
         displayAccountBalance = findViewById(R.id.binancePageAccountBalanceButton);
         accountBalanceView = findViewById(R.id.binancePageAccountView);
-        displayAccountTransactions = findViewById(R.id.binancePageDisplayAccountTransactions);
         accountTradesTextView = findViewById(R.id.binanceAccountDetailsScrollViewText);
         showAccountInfo = findViewById(R.id.binanceAccountDetailsAccountShowButton);
+        buyButton = findViewById(R.id.binancePageBuyButton);
+        sellButton = findViewById(R.id.binancePageSellButton);
+
 
         AlertDialog.Builder currencyError = new AlertDialog.Builder(this);
 
@@ -146,11 +150,11 @@ public class binancePage extends AppCompatActivity {
 
         // need proper account url that generates the signature
 
-        try {
-            URL url = new URL("https://api.binance.us/api/v3/account");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    URL url = new URL("https://api.binance.us/api/v3/account");
+        //} catch (MalformedURLException e) {
+        //    e.printStackTrace();
+        //}
 
         binanceMethods methods = new binanceMethods();
 
@@ -164,9 +168,9 @@ public class binancePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
 
-        //BinanceApiRestClient client = factory.newRestClient();
+        BinanceApiRestClient client = factory.newRestClient();
 
         //Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -273,7 +277,7 @@ public class binancePage extends AppCompatActivity {
                 }
                 else{
                     try {
-                        displayPriceAndQuantity.setText(new binanceMethods().displayCurrentPrice(currencyInfo.currencyList().get(selectedItem) + "USD"));
+                        displayPriceAndQuantity.setText(new binanceMethods(apiKey,secretKey).displayCurrentPrice(currencyInfo.currencyList().get(selectedItem) + "USD"));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -447,7 +451,7 @@ public class binancePage extends AppCompatActivity {
                 }
             }
         });
-
+        /*
         displayAccountTransactions.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -463,7 +467,22 @@ public class binancePage extends AppCompatActivity {
 
             }
         });
+        */
 
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toBuyPage = new Intent(getApplicationContext(),binanceBuyPage.class);
+                startActivity(toBuyPage);
+            }
+        });
 
+        sellButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toSellPage = new Intent(getApplicationContext(),binanceSellPage.class);
+                startActivity(toSellPage);
+            }
+        });
     }
 }

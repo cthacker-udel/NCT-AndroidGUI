@@ -370,11 +370,26 @@ public class binanceMethods {
         return systemTime - offset;
     }
 
+    public double getPriceOfOne(String symbol) throws IOException {
+        String result = displayCurrentPrice(symbol);
+        return Double.parseDouble(result.split(":")[1].trim());
+    }
+
     //public long getTimeStamp(){
     //    // deprecated
     //    return System.currentTimeMillis() * 1000;
     //}
     public class sellCurrency {
+
+        public sellCurrency(){
+            super();
+        }
+
+        public sellCurrency(String newApiKey, String newSecretKey){
+            apiKey = newApiKey;
+            secretKey = newSecretKey;
+        }
+
         @RequiresApi(api = Build.VERSION_CODES.O)
         public ArrayList<String> sellCurrencyMarketQuantity(String symbol1, double quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
             try {
@@ -524,6 +539,16 @@ public class binanceMethods {
 
     public class buyCurrency{
 
+        public buyCurrency(){
+            super();
+        }
+
+        public buyCurrency(String newApiKey, String newSecretKey){
+            apiKey = newApiKey;
+            secretKey = newSecretKey;
+        }
+
+
         @RequiresApi(api = Build.VERSION_CODES.O)
         public ArrayList<String> buyCurrencyMarketQuantity(String symbol1, double quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
             try {
@@ -537,6 +562,7 @@ public class binanceMethods {
                 data.put("symbol", symbol);
                 data.put("side", side);
                 data.put("type", type);
+                data.put("quantity",String.valueOf((long)quantity));
                 data.put("timestamp", timeStamp);
 
                 String signature = getSignature(url, data);
@@ -622,10 +648,16 @@ public class binanceMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public ArrayList<String> baseBuy(String symbol1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+        public ArrayList<String> baseBuy(String symbol1, long quantity) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
             try {
-                String url = baseUrl + "/api/v3/order";
-                String symbol = symbol1 + "USD";
+                String url = baseUrl + "/api/v3/order/";
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                sellCurrencyMarketQuantity sellCurrency = retrofit.create(sellCurrencyMarketQuantity.class);
+
+                String symbol = symbol1;
                 String side = "BUY";
                 String type = "MARKET";
                 String timestamp = String.valueOf(synchronize());
@@ -635,22 +667,18 @@ public class binanceMethods {
                 data.put("symbol", symbol);
                 data.put("side", side);
                 data.put("type", type);
+                data.put("quantity",String.valueOf(quantity));
                 data.put("timestamp", timestamp);
 
                 String signature = getSignature(url, data);
 
                 data.put("signature", signature);
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(url)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                sellCurrencyMarketQuantity sellCurrency = retrofit.create(sellCurrencyMarketQuantity.class);
-
                 Call<Sale> getSale = sellCurrency.sellCurrencyMarketCall(data, apiKey);
 
                 Response<Sale> theSale = getSale.execute();
+
+                System.out.println(theSale.errorBody());
 
                 Sale result = theSale.body();
 

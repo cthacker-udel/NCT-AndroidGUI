@@ -100,41 +100,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/binancePageSignInBtn" />
 
-    <ScrollView
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="75dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binancePageAccountBalanceButton">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/binanceAccountDetailsScrollViewText"
-                android:layout_width="250dp"
-                android:layout_height="100dp"
-                android:textColor="@color/white"
-                tools:text="@string/binancePageScrollViewContent" />
-
-
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/binancePageDisplayAccountTransactions"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Display Account Transactions with Selected Currency"
-        app:backgroundTint="@color/cardview_dark_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binancePageAccountBalanceButton" />
-
     <TextView
         android:id="@+id/textView54"
         android:layout_width="wrap_content"
@@ -159,5 +124,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView54" />
+
+    <Button
+        android:id="@+id/binancePageBuyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="175dp"
+        app:backgroundTint="@color/cardview_dark_background"
+        android:text="Buy Page"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binancePageAccountBalanceButton" />
+
+    <Button
+        android:id="@+id/binancePageSellButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="50dp"
+        app:backgroundTint="@color/cardview_dark_background"
+        android:text="Sell Page"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/binancePageAccountBalanceButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.nctai_trading;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -31,7 +32,7 @@ public class BinanceAccountDetails extends AppCompatActivity {
     TextView accountBalance;
     Spinner currencySelectorBinanceAccountDetailsPage;
     TextView accountDetailsScrollText;
-    ScrollView accountDetailsScroller;
+    NestedScrollView accountDetailsScroller;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -45,7 +46,9 @@ public class BinanceAccountDetails extends AppCompatActivity {
         accountDetailsScroller = findViewById(R.id.binanceAccountDetailsScrollView);
         accountDetailsScroller.setNestedScrollingEnabled(true);
 
-        accountDetailsScrollText.setText("HELLO");
+        // beneath the scrollview should have a message saying Thank you for using Next Capital Tech LLC!
+
+        accountDetailsScrollText.setText(R.string.binancePageScrollViewContent);
 
         SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
 
