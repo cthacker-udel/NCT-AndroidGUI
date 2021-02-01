@@ -29,6 +29,15 @@ public class binanceMethods {
     public static String secretKey = "mM57MtfNnRG1UrrZs6uGbKNNx1VIU7UktgwqPxelhXkI0cqjXaSCTOvXZY8vMTxj";
     public static String apiKey = "lISh9SeQdCT1HGPeo3Z6p8jWAsOJ6tmjoG7LeMsMNGCGBT0HRhfyfEvHJdjn49IG";
 
+    public binanceMethods(){
+        super();
+    }
+
+    public binanceMethods(String newApiKey, String newSecretKey){
+        secretKey = newSecretKey;
+        apiKey = newApiKey;
+    }
+
     public static OkHttpClient defaultHttpClient = new OkHttpClient();
 
     public static okhttp3.OkHttpClient defaultHttpClient2 = new okhttp3.OkHttpClient();
@@ -133,6 +142,47 @@ public class binanceMethods {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public HashMap<String,String> tempGenerateAccountInformation() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+        String url = this.baseUrl + "/api/v3/account/";
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("recvWindow","10000");
+        data.put("timestamp",String.valueOf(synchronize()));
+        String signature = getSignature(url,data);
+        data.put("signature",signature);
+        String queryString = generateQueryString(data);
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+
+        getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
+
+        ///   ONLY PROBLEM IS THE GENERATE SIGNATURE METHOD
+
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
+
+        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
+        try {
+            System.out.println("Reached account info");
+            Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
+            com.example.nctai_trading.Account result = responseAccount.body();
+            HashMap<String,String> balanceMap = new HashMap<>();
+            List<Balance> balanceList = result.getBalances();
+            for(Balance eachBalance: balanceList){
+                balanceMap.put(eachBalance.getAsset(),eachBalance.getFree());
+            }
+            String accountType = result.getAccountType();
+            Integer makerCommision = result.getMakerCommission();
+            System.out.println(balanceMap);
+            return balanceMap;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
     }
 
     public String displayCurrentPrice(String symbol) throws IOException {

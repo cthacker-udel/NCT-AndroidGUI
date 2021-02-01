@@ -160,9 +160,9 @@ public class binancePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+        //BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
 
-        BinanceApiRestClient client = factory.newRestClient();
+        //BinanceApiRestClient client = factory.newRestClient();
 
         //Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -182,7 +182,7 @@ public class binancePage extends AppCompatActivity {
         // we can use unirest for serverspeed and get requests, and use retrofit for post requests like buy and sell
 
 
-        try {
+        //try {
             //HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             // Now it's "open", we can set the request method, headers etc.
             //connection.setRequestProperty("accept", "application/json");
@@ -207,45 +207,45 @@ public class binancePage extends AppCompatActivity {
             afterwards they are simply just making a new key named signature and replacing it with the generatesignature result
 
          */
-            HashMap<String,Object> hashMap = new HashMap<>();
-            hashMap.put("data","dataexample");
-            hashMap.put("side","sideexample");
-            hashMap.put("type","typeexample");
-            hashMap.put("quantity",1111111);
-            hashMap.put("timestamp","figureouthowtomaketimestamp");
-            hashMap.put("recvwindow",10000);
+        //    HashMap<String,Object> hashMap = new HashMap<>();
+        //    hashMap.put("data","dataexample");
+        //    hashMap.put("side","sideexample");
+        //    hashMap.put("type","typeexample");
+        //    hashMap.put("quantity",1111111);
+        //    hashMap.put("timestamp","figureouthowtomaketimestamp");
+        //    hashMap.put("recvwindow",10000);
 
-            String signature = "";
-            ArrayList<String> signatureList = new ArrayList<>();
+        //    String signature = "";
+        //    ArrayList<String> signatureList = new ArrayList<>();
 
-            for(String eachKey: hashMap.keySet()){
-                signatureList.add(String.format("%s=%s",String.valueOf(eachKey),String.valueOf(hashMap.get(eachKey))));
-            }
+        //    for(String eachKey: hashMap.keySet()){
+        //        signatureList.add(String.format("%s=%s",String.valueOf(eachKey),String.valueOf(hashMap.get(eachKey))));
+        //    }
 
-            signature = String.join("&",signatureList);
-            String utf8EncodedSecretKey = new String(secretKey.getBytes(), StandardCharsets.UTF_8);
-            SecretKeySpec keySpec = new SecretKeySpec(utf8EncodedSecretKey.getBytes(), "HmacSHA256");
-            Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(keySpec);
-            String utf8EncodedSignature = new String(signature.getBytes(),StandardCharsets.UTF_8);
-            byte[] digest = mac.doFinal(utf8EncodedSignature.getBytes());
+        //    signature = String.join("&",signatureList);
+        //    String utf8EncodedSecretKey = new String(secretKey.getBytes(), StandardCharsets.UTF_8);
+        //    SecretKeySpec keySpec = new SecretKeySpec(utf8EncodedSecretKey.getBytes(), "HmacSHA256");
+        //    Mac mac = Mac.getInstance("HmacSHA256");
+        //    mac.init(keySpec);
+        //    String utf8EncodedSignature = new String(signature.getBytes(),StandardCharsets.UTF_8);
+        //    byte[] digest = mac.doFinal(utf8EncodedSignature.getBytes());
             // returns the hashed url
-            System.out.println(DigestUtils.shaHex(digest));
+        //    System.out.println(DigestUtils.shaHex(digest));
 
             // how to use hmac new in java, and what to do with the third parameter in hmac but in java
 
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
+        //} catch (NoSuchAlgorithmException | InvalidKeyException e) {
+        //    e.printStackTrace();
+        //}
 
 
         //System.out.println(client2);
 
-        System.out.println(client.getServerTime());
+        //System.out.println(client.getServerTime());
 
         // Permissions
 
-        System.out.println(client);
+        //System.out.println(client);
 
         //System.out.println(client.getAccount().getAssetBalance("BTC").getFree());
         //System.out.println(client.getAccount().getBalances());
@@ -316,65 +316,100 @@ public class binancePage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
+                //BinanceApiAsyncRestClient client2 = factory.newAsyncRestClient();
 
-                List<Order> LTCBTCorderList = client.getAllOrders(new AllOrdersRequest("LTCBTC"));
+                //List<Order> LTCBTCorderList = client.getAllOrders(new AllOrdersRequest("LTCBTC"));
 
                 ArrayList<String> ordersList = new ArrayList<String>();
 
-                for (Order each : LTCBTCorderList){
-                    each.getOrderId();
-                    each.getPrice();
-                    each.getOrigQty();
-                    each.getExecutedQty();
-                    // orderid, symbol, price, origqty, executedqty -- 2, LTCBTC, 10.0, 100, 200.
-                    ordersList.add(String.format("%s, %s, %s, %s, %s", each.getOrderId(), each.getPrice(), each.getOrigQty(), each.getExecutedQty()) );
-                }
-                String formattedOrders = String.join("\n -------- \n", ordersList);
+                binanceMethods methods = new binanceMethods(apiKey,secretKey);
 
-                Account account = client.getAccount();
+                HashMap<String,String> orders = new HashMap<>();
+
+                try {
+                    orders = methods.tempGenerateAccountInformation();
+                } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+
+                double total = 0;
+
+                for(String eachSymbol: orders.keySet()){
+                    if(eachSymbol.equals("USD")){
+                        total += Double.parseDouble(orders.get(eachSymbol));
+                    }
+                    else {
+                        try {
+                            System.out.println(eachSymbol);
+                            total += Double.parseDouble(methods.displayCurrentPrice(eachSymbol + "USD").split(":")[1]) * Double.parseDouble(orders.get(eachSymbol));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+                DecimalFormat decimalFormat = new DecimalFormat("#########.##");
+
+                decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+
+                displayAccountBalance.setText(decimalFormat.format(total));
+
+
+
+                //for (Order each : LTCBTCorderList){
+                //    each.getOrderId();
+                //    each.getPrice();
+                //    each.getOrigQty();
+                //    each.getExecutedQty();
+                    // orderid, symbol, price, origqty, executedqty -- 2, LTCBTC, 10.0, 100, 200.
+                //    ordersList.add(String.format("%s, %s, %s, %s, %s", each.getOrderId(), each.getPrice(), each.getOrigQty(), each.getExecutedQty()) );
+                //}
+                //String formattedOrders = String.join("\n -------- \n", ordersList);
+
+                //Account account = client.getAccount();
 
                 // ACCOUNT DETAILS
 
-                List<Order> openOrders = client.getOpenOrders(new OrderRequest("BTC"));
+                //List<Order> openOrders = client.getOpenOrders(new OrderRequest("BTC"));
 
-                ArrayList<String> openOrdersList = new ArrayList<>();
-                openOrdersList.add("--------OPEN ORDERS--------");
-                for(Order eachOrder: openOrders){
-                    openOrdersList.add(String.format("%s, %s, %s, %s",eachOrder.getOrderId(),eachOrder.getPrice(),eachOrder.getOrigQty(),eachOrder.getExecutedQty()));
-                }
-                String formattedOpenOrders = String.join("\n-----------\n",openOrdersList);
+                //ArrayList<String> openOrdersList = new ArrayList<>();
+                //openOrdersList.add("--------OPEN ORDERS--------");
+                //for(Order eachOrder: openOrders){
+                //    openOrdersList.add(String.format("%s, %s, %s, %s",eachOrder.getOrderId(),eachOrder.getPrice(),eachOrder.getOrigQty(),eachOrder.getExecutedQty()));
+                //}
+                //String formattedOpenOrders = String.join("\n-----------\n",openOrdersList);
 
-                List<AssetBalance> acctAssetBalances =  account.getBalances();
-                ArrayList<String> acctAssetList = new ArrayList<String>();
+                //List<AssetBalance> acctAssetBalances =  account.getBalances();
+                //ArrayList<String> acctAssetList = new ArrayList<String>();
 
-                for (AssetBalance each : acctAssetBalances) {
-                  String acctAsset = each.getAsset();
-                  System.out.println(each.getAsset());
-                  acctAssetList.add(each.getAsset());
+                //for (AssetBalance each : acctAssetBalances) {
+                  //String acctAsset = each.getAsset();
+                  //System.out.println(each.getAsset());
+                  //acctAssetList.add(each.getAsset());
 
-                }
+                //}
 
-                String formattedAssets = String.join("\n -------- \n", acctAssetList);
+                //String formattedAssets = String.join("\n -------- \n", acctAssetList);
 
-                ArrayList<String> accountDetails = new ArrayList<>();
+                //ArrayList<String> accountDetails = new ArrayList<>();
 
-                accountDetails.add("---------ACCOUNT DETAILS---------");
-                accountDetails.add(account.isCanTrade()? "Can Trade: True": "Can Trade: False");
-                accountDetails.add(account.isCanWithdraw()? "Can Withdraw: True": "Can Withdraw: False");
-                accountDetails.add(account.isCanDeposit()? "Can Deposit: True": "Can Deposit: False");
-                accountDetails.add(String.format("Update Time : %d",account.getUpdateTime()));
+                //accountDetails.add("---------ACCOUNT DETAILS---------");
+                //accountDetails.add(account.isCanTrade()? "Can Trade: True": "Can Trade: False");
+                //accountDetails.add(account.isCanWithdraw()? "Can Withdraw: True": "Can Withdraw: False");
+                //accountDetails.add(account.isCanDeposit()? "Can Deposit: True": "Can Deposit: False");
+                //accountDetails.add(String.format("Update Time : %d",account.getUpdateTime()));
 
-                String formattedAccountDetails = String.format("\n---------\n",accountDetails);
+                //String formattedAccountDetails = String.format("\n---------\n",accountDetails);
 
-                double totalBalance = 0;
-                DecimalFormat format = new DecimalFormat("##.##");
-                format.setRoundingMode(RoundingMode.HALF_UP);
-                List<AssetBalance> balances = account.getBalances();
-                for(AssetBalance eachBalance: balances){
-                    totalBalance += Double.parseDouble(eachBalance.getAsset());
-                }
-                accountBalanceView.setText(String.format("$%s",format.format(totalBalance)));
+                //double totalBalance = 0;
+                //DecimalFormat format = new DecimalFormat("##.##");
+                //format.setRoundingMode(RoundingMode.HALF_UP);
+                //List<AssetBalance> balances = account.getBalances();
+                //for(AssetBalance eachBalance: balances){
+                //    totalBalance += Double.parseDouble(eachBalance.getAsset());
+                //}
+                //accountBalanceView.setText(String.format("$%s",format.format(totalBalance)));
             }
         });
 
