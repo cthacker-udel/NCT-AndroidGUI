@@ -138,7 +138,7 @@ public class binanceSellPage extends AppCompatActivity {
                         priceOne += priceOneTemp;
                     }
                 }
-                LongStream.range(1,count).forEach(e -> amountAdapter.add(e));
+                LongStream.range(1,count).forEach(amountAdapter::add);
                 sellAmountSpinner.setAdapter(amountAdapter);
             }
         });

@@ -16,6 +16,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+//import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Arrays;
 import java.util.logging.Level;

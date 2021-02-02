@@ -17,20 +17,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.binance.api.client.BinanceApiAsyncRestClient;
-import com.binance.api.client.BinanceApiCallback;
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.BinanceApiWebSocketClient;
-import com.binance.api.client.domain.account.Account;
-import com.binance.api.client.domain.account.AssetBalance;
-import com.binance.api.client.domain.account.Order;
-import com.binance.api.client.domain.account.Trade;
-import com.binance.api.client.domain.account.request.AllOrdersRequest;
-import com.binance.api.client.domain.account.request.OrderRequest;
-import com.binance.api.client.domain.market.OrderBook;
-import com.binance.api.client.domain.market.OrderBookEntry;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.binance.api.client.BinanceApiAsyncRestClient;
+//import com.binance.api.client.BinanceApiCallback;
+//import com.binance.api.client.BinanceApiClientFactory;
+//import com.binance.api.client.BinanceApiRestClient;
+//import com.binance.api.client.BinanceApiWebSocketClient;
+//import com.binance.api.client.domain.account.Account;
+//import com.binance.api.client.domain.account.AssetBalance;
+//import com.binance.api.client.domain.account.Order;
+//import com.binance.api.client.domain.account.Trade;
+//import com.binance.api.client.domain.account.request.AllOrdersRequest;
+//import com.binance.api.client.domain.account.request.OrderRequest;
+//import com.binance.api.client.domain.market.OrderBook;
+//import com.binance.api.client.domain.market.OrderBookEntry;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -75,7 +75,7 @@ public class binancePage extends AppCompatActivity {
 
     Button displayPriceAndQuantity;
 
-    BinanceApiRestClient client;
+    //BinanceApiRestClient client;
 
     boolean userSignedIn;
 
@@ -168,9 +168,9 @@ public class binancePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+        //BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
 
-        BinanceApiRestClient client = factory.newRestClient();
+        //BinanceApiRestClient client = factory.newRestClient();
 
         //Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).build();
 
@@ -312,8 +312,8 @@ public class binancePage extends AppCompatActivity {
 
                     // test client
 
-                    client.ping();
-                    System.out.println(client.getServerTime());
+                    //client.ping();
+                    //System.out.println(client.getServerTime());
                     binancePageSignInBtn.setText("Login Success!");
             }
         });
@@ -440,10 +440,10 @@ public class binancePage extends AppCompatActivity {
                         return;
                     }
                     else{
-                        OrderBook orderBook = client.getOrderBook(currencies.get(formattedAutoCompletePriceAndQuantityText),10);
-                        List<OrderBookEntry> asks = orderBook.getAsks();
-                        OrderBookEntry firstAskEntry = asks.get(0);
-                        System.out.println(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
+                        //OrderBook orderBook = client.getOrderBook(currencies.get(formattedAutoCompletePriceAndQuantityText),10);
+                        //List<OrderBookEntry> asks = orderBook.getAsks();
+                        //OrderBookEntry firstAskEntry = asks.get(0);
+                        //System.out.println(String.format("Price : %s \n Quantity : %s",firstAskEntry.getPrice(),firstAskEntry.getQty()));
                     }
                 }
                 catch(Exception e){

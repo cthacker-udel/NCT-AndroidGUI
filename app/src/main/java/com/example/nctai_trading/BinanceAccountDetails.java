@@ -15,13 +15,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiRestClient;
-import com.binance.api.client.domain.account.Order;
-import com.binance.api.client.domain.account.Trade;
-import com.binance.api.client.domain.account.request.AllOrdersRequest;
-import com.binance.api.client.domain.general.ExchangeInfo;
-import com.binance.api.client.domain.general.SymbolInfo;
+//import com.binance.api.client.BinanceApiClientFactory;
+//import com.binance.api.client.BinanceApiRestClient;
+//import com.binance.api.client.domain.account.Order;
+//import com.binance.api.client.domain.account.Trade;
+//import com.binance.api.client.domain.account.request.AllOrdersRequest;
+//import com.binance.api.client.domain.general.ExchangeInfo;
+//import com.binance.api.client.domain.general.SymbolInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +56,8 @@ public class BinanceAccountDetails extends AppCompatActivity {
 
         String secretKey = sharedPreferences.getString("binanceSecretKey","defaultBinanceSecretKey");
 
-        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
-        BinanceApiRestClient client = factory.newRestClient();
+        //BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(apiKey,secretKey);
+        //BinanceApiRestClient client = factory.newRestClient();
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
         adapter2.add("-- Please select currency --");
@@ -73,21 +73,21 @@ public class BinanceAccountDetails extends AppCompatActivity {
                 }
                 else{
                     String selectedCurrency = currencySelectorBinanceAccountDetailsPage.getSelectedItem().toString();
-                    List<Trade> listTrades = client.getMyTrades(currencyInfo.currencyList().get(selectedCurrency));
+                    //List<Trade> listTrades = client.getMyTrades(currencyInfo.currencyList().get(selectedCurrency));
                     ArrayList<String> tradeList = new ArrayList<>();
-                    for(Trade eachTrade: listTrades){
-                        eachTrade.getTime();
-                        eachTrade.getPrice();
-                        eachTrade.getQty();
-                        tradeList.add(String.format("Price : %s , Quantity : %s , Time %d",eachTrade.getPrice(),eachTrade.getQty(),eachTrade.getTime()));
-                    }
-                    accountDetailsScrollText.setText(String.join("\n----------\n",tradeList));
-                    List<Order> orderList = client.getAllOrders(new AllOrdersRequest(selectedCurrency));
+                    //for(Trade eachTrade: listTrades){
+                    //    eachTrade.getTime();
+                    //    eachTrade.getPrice();
+                    //    eachTrade.getQty();
+                    //    tradeList.add(String.format("Price : %s , Quantity : %s , Time %d",eachTrade.getPrice(),eachTrade.getQty(),eachTrade.getTime()));
+                    //}
+                    //accountDetailsScrollText.setText(String.join("\n----------\n",tradeList));
+                    //List<Order> orderList = client.getAllOrders(new AllOrdersRequest(selectedCurrency));
                     double sumOfOrders = 0;
-                    for(Order eachOrder: orderList){
-                        sumOfOrders += (Double.parseDouble(eachOrder.getPrice()) * Double.parseDouble(eachOrder.getExecutedQty()));
-                    }
-                    accountBalance.setText(String.valueOf(sumOfOrders));
+                    //for(Order eachOrder: orderList){
+                    //    sumOfOrders += (Double.parseDouble(eachOrder.getPrice()) * Double.parseDouble(eachOrder.getExecutedQty()));
+                    //}
+                    //accountBalance.setText(String.valueOf(sumOfOrders));
                 }
             }
 

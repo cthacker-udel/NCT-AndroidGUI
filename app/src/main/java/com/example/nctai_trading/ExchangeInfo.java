@@ -1,7 +1,6 @@
 package com.example.nctai_trading;
 
-import com.binance.api.client.domain.general.ExchangeFilter;
-import com.binance.api.client.domain.general.RateLimit;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
