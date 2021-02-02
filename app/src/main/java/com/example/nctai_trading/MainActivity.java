@@ -4,12 +4,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.os.AsyncTask;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -20,38 +19,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import com.mongodb.BasicDBObject;
-import com.mongodb.Block;
-import com.mongodb.ConnectionString;
-import com.mongodb.DBObject;
+
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
+
 import com.mongodb.MongoClientURI;
-import com.mongodb.MongoCredential;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.*;
 
-import com.mongodb.client.MongoIterable;
-import com.mongodb.client.model.CreateCollectionOptions;
-import com.mongodb.client.model.ValidationOptions;
-import java.lang.reflect.*;
 
-import org.bson.BsonDocument;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.regex.*;
 
-import io.particle.android.sdk.cloud.ParticleCloud;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.devicesetup.ParticleDeviceSetupLibrary;
 

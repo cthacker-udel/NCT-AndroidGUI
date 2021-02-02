@@ -31,12 +31,18 @@ public class coinBaseProPage extends AppCompatActivity {
         String passPhrase = sharedPreferences.getString("coinBasePassPhrase","defaultCoinBasePassPhrase");
 
         coinBaseProAccountBtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            @RequiresApi(api = Build.VERSION_CODES.R)
             @Override
             public void onClick(View v) {
                 coinbaseProMethods methods = new coinbaseProMethods(coinBaseApiKey,coinBaseSecretKey,passPhrase);
                 try {
-                    methods.getAccount();
+                    methods.getAccount("86995fbe-8a22-4647-b1a4-0b0a34e7a16c");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                coinbaseProMethods.buyCurrency buyCurrencyMethods = methods.new buyCurrency(coinBaseApiKey,coinBaseSecretKey,passPhrase);
+                try {
+                    buyCurrencyMethods.placeOrderMarket(".004","BTC",null);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

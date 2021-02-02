@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import retrofit2.Call;

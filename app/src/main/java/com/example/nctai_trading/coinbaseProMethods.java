@@ -4,15 +4,18 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -46,23 +49,17 @@ public class coinbaseProMethods {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, LinkedHashMap<String,String> body, String passPhrase) throws IOException {
+    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
 
-        //Base64.Decoder decoder = Base64.getDecoder();
-        //Base64.Encoder encoder = Base64.getEncoder();
 
-        //byte[] encodedMessageAscii = method.getBytes(StandardCharsets.US_ASCII);
-        //byte[] hmacKey = decoder.decode(secretKey);
-        //String hmacKey = secretKey;
-        //HMAC256 hmac256 = new HMAC256();
-        //String signature = new String(encoder.encode(hmac256.hmacDigest(hmacKey,message,"Hmac256").getBytes()),"UTF-8");
         String timeStamp = getTimeStamp();
         String signature = generateSignature(timeStamp,method,requestPath,body.toString());
         HashMap<String,String> data = new HashMap<>();
-        data.put("Content-Type","Application/JSON");
-        data.put("CB-ACCESS-SIGN",signature);
         data.put("CB-ACCESS-KEY",apiKey);
+        data.put("CB-ACCESS-SIGN",signature);
+        data.put("CB-ACCESS-TIMESTAMP",timeStamp);
         data.put("CB-ACCESS-PASSPHRASE",passPhrase);
+        data.put("Content-Type","Application/JSON");
 
         return data;
     }
@@ -70,17 +67,10 @@ public class coinbaseProMethods {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public HashMap<String,String> getAuthHeadersGET(String method, String requestPath, String passPhrase) throws IOException {
 
-        //Base64.Decoder decoder = Base64.getDecoder();
-        //Base64.Encoder encoder = Base64.getEncoder();
 
-        //byte[] encodedMessageAscii = method.getBytes(StandardCharsets.US_ASCII);
-        //byte[] hmacKey = decoder.decode(secretKey);
-        //String hmacKey = secretKey;
-        //HMAC256 hmac256 = new HMAC256();
-        //String signature = new String(encoder.encode(hmac256.hmacDigest(hmacKey,message,"Hmac256").getBytes()),"UTF-8");
         String body = "";
         String timeStamp = getTimeStamp();
-        String signature = generateSignature(timeStamp,method,requestPath,body.toString());
+        String signature = generateSignature(timeStamp,method,requestPath,body);
         HashMap<String,String> data = new HashMap<>();
         data.put("CB-ACCESS-KEY",apiKey);
         data.put("CB-ACCESS-SIGN",signature);
@@ -125,6 +115,16 @@ public class coinbaseProMethods {
     }
 
     // Json stringify in example = {"price":"1.0","size":"1.0","side":"buy","product_id":"BTC-USD"}
+    // hashmap.toString().
+    // hashmap string = {method=/orders, timestamp=1000000}
+
+    public String jsonStringifyMap(Map<String,String> map){
+        Map<String,String> baseMap = new HashMap<>();
+        for(String eachKey: map.keySet()){
+            baseMap.put(String.format("\"%s\"",eachKey),String.format("\"%s\"",baseMap.get(eachKey)));
+        }
+        return baseMap.toString().replace("=",":").replace(" ","");
+    }
 
     public String getTimeStamp() throws IOException {
         return String.valueOf(System.currentTimeMillis() / 1000);
@@ -157,7 +157,7 @@ public class coinbaseProMethods {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void getAccount() throws IOException {
+    public TreeMap<String,String[]> getAccountList() throws IOException {
 
         String url = this.baseUrl + "/accounts/";
 
@@ -171,34 +171,60 @@ public class coinbaseProMethods {
 
         Call<List<coinBaseListAccount>> coinBaseProAccountsCall = getCoinBaseProAccounts.getAccounts(getAuthHeadersGET("GET","/accounts",passPhrase));
 
-        //Call<List<coinBaseListAccount>> coinBaseProAccountsCall = getCoinBaseProAccounts.getAccounts("Authorization");
-
         Response<List<coinBaseListAccount>> coinBaseProAccountsResponse = coinBaseProAccountsCall.execute();
 
         List<coinBaseListAccount> accountList = coinBaseProAccountsResponse.body();
 
+        double amount = 0;
+        TreeMap<String,String[]> account = new TreeMap<>();
         for(coinBaseListAccount eachAccount: accountList){
-            System.out.println(eachAccount.getId());
-            System.out.println(eachAccount.getBalance());
-            System.out.println(eachAccount.getCurrency());
+            amount = Double.parseDouble(eachAccount.getBalance());
+            if(amount <= 0){
+                continue;
+            }
+            account.put(eachAccount.getId(),new String[]{eachAccount.getCurrency(),eachAccount.getBalance()});
         }
+        return account;
 
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public ArrayList<String> getAccount(String id) throws IOException {
 
+        String url = this.baseUrl + String.format("/accounts/%s/",id);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        getCoinBaseAccount getCoinBaseAccount = retrofit.create(com.example.nctai_trading.getCoinBaseAccount.class);
+
+        Call<coinBaseAccount> getCoinBaseAccountCall = getCoinBaseAccount.getCoinBaseAccountCall(id, getAuthHeadersGET("GET",String.format("/accounts/%s",id),passPhrase));
+
+        Response<coinBaseAccount> coinBaseAccountResponse = getCoinBaseAccountCall.execute();
+
+        coinBaseAccount coinBaseAccount = coinBaseAccountResponse.body();
+
+        ArrayList<String> accountDetails = new ArrayList<>();
+        accountDetails.add(String.format("----------------\n Account ID : %s \n Currency : %s \n Balance %s \n Available : %s \n Holds : %s \n -------------------------\n",coinBaseAccount.getId(),coinBaseAccount.getCurrency(),coinBaseAccount.getBalance(),coinBaseAccount.getAvailable(),coinBaseAccount.getHolds()));
+        return accountDetails;
     }
 
     class buyCurrency{
 
         private String buyCurrencyApiKey = "";
         private String buyCurrencySecretKey = "";
+        private String passphrase = "";
 
         public buyCurrency(){
             super();
         }
 
-        public buyCurrency(String newApi, String newSecret){
+        public buyCurrency(String newApi, String newSecret, String newPassPhrase){
             this.buyCurrencyApiKey = newApi;
             this.buyCurrencySecretKey = newSecret;
+            this.passphrase = newPassPhrase;
         }
 
         public void setBuyCurrencyApikey(String newKey){
@@ -209,18 +235,52 @@ public class coinbaseProMethods {
             this.buyCurrencySecretKey = newKey;
         }
 
+        public void setPassphrase(String newPassPhrase){
+            this.passphrase = newPassPhrase;
+        }
+
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public void placeOrder(String price, String size, String side, String product_id) throws IOException {
-            LinkedHashMap<String,String> data = new LinkedHashMap<>();
-            data.put("price",price);
-            data.put("size",size);
-            data.put("side",side);
-            data.put("product_id",product_id + "-USD");
-            String timestamp = getTimeStamp();
+        public void placeOrderMarket(String size, String currency1, String currency2) throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            HashMap<String,String> data = new LinkedHashMap<>();
+            // size == how much of currency1 do you want to trade anything < 1 cent is not allowed
+            String productId = "";
+            if(currency2 == null){
+                productId = currency1 + "-USD";
+            }
+            else{
+                productId = currency1 + "-" + currency2;
+            }
+            data.put("size","1.0");
+            data.put("price","0.100");
+            data.put("side","buy");
+            data.put("product_id","BTC-USD");
+            //data.put("side","buy");
+            //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
             HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
             authHeaders.put("passphrase",passPhrase);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+
+            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders);
+
+            Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
+
+            coinBaseProPurchase result = coinBaseProPurchaseResponse.body();
+
+            System.out.println(result.getCreatedAt());
+            System.out.println(result.getExecutedValue());
+
+
             // add header onto call request in interface with
         }
 
