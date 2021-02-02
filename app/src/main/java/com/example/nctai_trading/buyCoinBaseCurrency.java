@@ -6,10 +6,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.POST;
 
 public interface buyCoinBaseCurrency {
 
-    @GET("https://api.pro.coinbase.com/orders")
+    @POST("https://api.pro.coinbase.com/orders")
     Call<coinBaseProPurchase> buyCoinBasePro(@HeaderMap Map<String,String> authMap);
 
 }

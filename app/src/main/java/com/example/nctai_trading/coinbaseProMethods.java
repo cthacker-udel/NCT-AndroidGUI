@@ -19,6 +19,7 @@ import java.util.TreeMap;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.ws.rs.core.Link;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -52,8 +53,12 @@ public class coinbaseProMethods {
     public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
 
 
+        //String timeStamp = getTimeStamp();
+        //temp
         String timeStamp = getTimeStamp();
-        String signature = generateSignature(timeStamp,method,requestPath,body.toString());
+        String signature = tempGenerateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        System.out.println(jsonStringifyMap(body));
+        //String signature = generateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
         HashMap<String,String> data = new HashMap<>();
         data.put("CB-ACCESS-KEY",apiKey);
         data.put("CB-ACCESS-SIGN",signature);
@@ -98,6 +103,23 @@ public class coinbaseProMethods {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String tempGenerateSignature(String timestamp, String method, String requestPath, String body){
+        try{
+            String prehash = timestamp + method.toUpperCase() + requestPath + body;
+            byte[] secretDecoded = Base64.getDecoder().decode(secretKey);
+            SecretKeySpec keySpec = new SecretKeySpec(secretDecoded, Mac.getInstance("HmacSHA256").getAlgorithm());
+            //Mac sha256 = (Mac) Mac.getInstance("HmacSHA256").clone();
+            Mac sha256 = Mac.getInstance("HmacSHA256");
+            sha256.init(keySpec);
+            return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes()));
+        }
+        catch(InvalidKeyException | NoSuchAlgorithmException e){
+            e.printStackTrace();
+            throw new RuntimeException(new Error("Cannot set up auth headers"));
+        }
+    }
+
     public Double getServerTime() throws IOException {
 
         String url = baseUrl + "/time/";
@@ -119,9 +141,9 @@ public class coinbaseProMethods {
     // hashmap string = {method=/orders, timestamp=1000000}
 
     public String jsonStringifyMap(Map<String,String> map){
-        Map<String,String> baseMap = new HashMap<>();
+        LinkedHashMap<String,String> baseMap = new LinkedHashMap<>();
         for(String eachKey: map.keySet()){
-            baseMap.put(String.format("\"%s\"",eachKey),String.format("\"%s\"",baseMap.get(eachKey)));
+            baseMap.put(String.format("\"%s\"",eachKey),String.format("\"%s\"",map.get(eachKey)));
         }
         return baseMap.toString().replace("=",":").replace(" ","");
     }
@@ -253,8 +275,8 @@ public class coinbaseProMethods {
             else{
                 productId = currency1 + "-" + currency2;
             }
+            data.put("price","1.0");
             data.put("size","1.0");
-            data.put("price","0.100");
             data.put("side","buy");
             data.put("product_id","BTC-USD");
             //data.put("side","buy");
@@ -262,7 +284,6 @@ public class coinbaseProMethods {
             String requestPath = "/orders";
             String method = "POST";
             HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
-            authHeaders.put("passphrase",passPhrase);
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
