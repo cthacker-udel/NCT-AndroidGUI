@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.LongStream;
 
 public class binanceSellPage extends AppCompatActivity {
@@ -56,9 +57,6 @@ public class binanceSellPage extends AppCompatActivity {
         currencies = currencyInfo.currencyList();
 
         currenciesNames = currencies.keySet().stream().toArray(String[]::new);
-
-
-
 
         // alert dialog
 
@@ -114,32 +112,27 @@ public class binanceSellPage extends AppCompatActivity {
         updateSellAmountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double priceOne = 0;
-                double priceTwo = 0;
-                int count = 1;
-                double priceTwoTemp = 0;
-                double priceOneTemp = 0;
                 amountAdapter.clear();
                 amountAdapter.add((long)0);
+                PriceTicker priceTicker = null;
+                binanceMethods methods = new binanceMethods(apiKey,secretKey);
+                if(selectedCurrencySell.equals("------ select currency ------") || selectedCurrencyWith.equals("------ select currency ------")){
+                    Toast.makeText(binanceSellPage.this,"Please enter two currencies",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
-                    priceOne = methods.getPriceOfOne(currencies.get(selectedCurrencySell)+"USD");
-                    priceTwo = methods.getPriceOfOne(currencies.get(selectedCurrencyWith)+"USD");
-                    priceTwoTemp = priceTwo;
-                    priceOneTemp = priceOne;
+                    priceTicker = methods.getPriceTicker(selectedCurrencySell,selectedCurrencyWith);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if(priceOne > priceTwo){
-                    ;
+                if(priceTicker == null){
+                    Toast.makeText(binanceSellPage.this,"Please swap currencies",Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                if(priceTwo > priceOne){
-                    while(priceOne < priceTwo){
-                        count++;
-                        priceOne += priceOneTemp;
-                    }
-                }
-                LongStream.range(1,count).forEach(amountAdapter::add);
+                long amt = Long.parseLong(priceTicker.getPrice());
+                LongStream.range(1,amt).forEach(amountAdapter::add);
                 sellAmountSpinner.setAdapter(amountAdapter);
+                // use ticker to calucalte -> LTCBTC = 4 LTC TO 1 BTC (result is 4.08888)
             }
         });
 

@@ -36,7 +36,6 @@ public class binanceBuyPage extends AppCompatActivity {
     Spinner binanceBuyPageSpinner;
     long selectedAmount;
     Button updateAmountScrollerBtn;
-    boolean tradeInvalid;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
@@ -49,7 +48,6 @@ public class binanceBuyPage extends AppCompatActivity {
         buyButton = findViewById(R.id.binanceBuyPageButton);
         binanceBuyPageSpinner = findViewById(R.id.binanceBuyPageAmountScroller);
         updateAmountScrollerBtn = findViewById(R.id.binanceBuyPageUpdateAmountSpinnerButton);
-        tradeInvalid = false;
 
         currencies = currencyInfo.currencyList();
 
@@ -115,43 +113,36 @@ public class binanceBuyPage extends AppCompatActivity {
             // also calculate the total amount of the coin you select and calculate how many of the other coin buy
             @Override
             public void onClick(View v) {
+                PriceTicker priceTicker = null;
                 if(selectedCurrency1 != null && selectedCurrency2 != null && !selectedCurrency1.equals("------ select currency ------") && !selectedCurrency2.equals("------ select currency ------") && !selectedCurrency1.equals(selectedCurrency2)){
                     binanceMethods methods = new binanceMethods(apiKey,secretKey);
                     amountAdapter.clear();
-                    double priceOne = 0;
-                    double priceTwo = 0;
-                    int count = 1;
-                    double priceTwoTemp = 0;
-                    double priceOneTemp = 0;
-                    try {
-                        priceOne = methods.getPriceOfOne(currencies.get(selectedCurrency1)+"USD");
-                        priceTwo = methods.getPriceOfOne(currencies.get(selectedCurrency2)+"USD");
-                        priceTwoTemp = priceTwo;
-                        priceOneTemp = priceOne;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if(priceOne > priceTwo){
-                        long times = Math.round(priceOne / priceTwo);
-                        LongStream.range(1,times+1).forEach(amountAdapter::add);
-                    }
-                    if(priceTwo > priceOne){
-                        while(priceOne < priceTwo){
-                            count++;
-                            priceOne += priceOneTemp;
-                        }
-                        amountAdapter.add((long)1);
-                        // figure out calculation
-                    }
+                    amountAdapter.add((long)1);
+                    // TO GET CONVERSION FIRST MAKE A COINBASE PRO API AND THEN UTILIZE THE CONVERT TO - FROM AND GET THE ID THEN ACCESS THE LEDGER ASSOCIATED WITH THE ID
+                    // figure out calculation
                     // [0.35    , 1.5 (2 of 1.5) 3 -> .35 * 30] first case
                     // [1.5   , 0.35 (20 of .35) -> 1.5] second case
                     //double max = Math.max(priceOne,priceTwo);
                     //double min = Math.min(priceOne,priceTwo);
                     //long times = Math.round(max / min);
                     //LongStream.range(1,times).forEach(amountAdapter::add);
+                    try {
+                        priceTicker = methods.getPriceTicker(currencies.get(selectedCurrency2),currencies.get(selectedCurrency1));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(priceTicker == null){
+                        Toast.makeText(binanceBuyPage.this,"Please swap currency",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    long amt = Long.parseLong(priceTicker.getPrice());
+                    LongStream.range(1,amt).forEach(amountAdapter::add);
+                }
+                else{
+                    Toast.makeText(binanceBuyPage.this,"Please enter currency",Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 binanceBuyPageSpinner.setAdapter(amountAdapter);
-                tradeInvalid = false;
             }
         });
 
@@ -200,7 +191,7 @@ public class binanceBuyPage extends AppCompatActivity {
                     selectedCurrencyError.create().show();
                     return;
                 }
-                else if(selectedAmount == 0 || tradeInvalid){
+                else if(selectedAmount == 0){
                     selectedCurrencyError.setMessage("Cannot buy 0 amount");
                     selectedCurrencyError.create().show();
                 }

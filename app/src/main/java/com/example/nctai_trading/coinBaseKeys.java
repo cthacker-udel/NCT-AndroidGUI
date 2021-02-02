@@ -44,8 +44,12 @@ public class coinBaseKeys extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                editor.putString("coinBaseApiKey",coinBaseApiText);
-                editor.putString("coinBaseSecretKey",coinBaseSecretKeyText);
+                //editor.putString("coinBaseApiKey",coinBaseApiText);
+                //editor.putString("coinBaseSecretKey",coinBaseSecretKeyText);
+                // temp
+                editor.putString("coinBaseApiKey","17e5d0f33c9074a2f67c95cf0436fca9");
+                editor.putString("coinBaseSecretKey","ufOMqTBzARwhCbNQmrazgDAk6ir4xjUyU1cH0kkV8k6b0X1hRI8ipcKs1beTwAQuoWDPUJ7dnhuqanAxKEVrXw");
+                editor.putString("coinBasePassPhrase","NCTAI09AKATBE");
                 editor.apply();
                 editor.commit();
 

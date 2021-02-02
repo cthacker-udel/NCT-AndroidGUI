@@ -26,7 +26,6 @@ public class mainPage extends AppCompatActivity {
     Button donationBtn;
     Button altInvestmentBtn;
     ImageView imageView;
-    Button mainPageSignInBtn;
     Button mainPageARBtn;
     Button mainPageBinanceKeys;
     Button mainPageBinanceSignInBtn;
@@ -50,7 +49,6 @@ public class mainPage extends AppCompatActivity {
         paymentOptionBtn = findViewById(R.id.mainPagePaymentOptionButton);
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
-        mainPageSignInBtn = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
         mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
@@ -95,6 +93,8 @@ public class mainPage extends AppCompatActivity {
         String coinBaseApiKey = sharedPreferences.getString("coinBaseApiKey","defaultCoinBaseApiKey");
 
         String coinBaseSecretKey = sharedPreferences.getString("coinBaseSecretKey","defaultCoinBaseSecretKey");
+
+        String coinBasePassphrase = sharedPreferences.getString("coinBasePassPhrase","defaultCoinBasePassPhrase");
 
         // sign in double check to make sure they have a binance key, api key and the secret key, if one of them is wrong then throw a prompt
 
@@ -196,13 +196,6 @@ public class mainPage extends AppCompatActivity {
             }
         });
 
-        mainPageSignInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO [VIC] Implement binance code
-            }
-        });
-
         donationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -286,7 +279,19 @@ public class mainPage extends AppCompatActivity {
         mainPageCoinBaseProBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(coinBaseApiKey.equals("defaultCoinBaseApiKey")){
+                    Toast.makeText(mainPage.this,"Please enter coinbase api key",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(coinBaseSecretKey.equals("defaultCoinBaseSecretKey")){
+                    Toast.makeText(mainPage.this,"Please enter coinbase secret key",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(coinBasePassphrase.equals("defaultCoinBasePassPhrase")){
+                    Toast.makeText(mainPage.this,"Please enter coinbase passphrase",Toast.LENGTH_LONG).show();
+                }
+                Intent toCoinBaseProPage = new Intent(getApplicationContext(),coinBaseProPage.class);
+                startActivity(toCoinBaseProPage);
             }
         });
     }

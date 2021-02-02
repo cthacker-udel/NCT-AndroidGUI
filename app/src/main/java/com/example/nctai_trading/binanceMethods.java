@@ -23,6 +23,16 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/*
+
+@author - Cameron Thacker
+
+binance API methods
+
+
+ */
+
+
 public class binanceMethods {
 
     public static String baseUrl = "https://api.binance.us";
@@ -331,7 +341,7 @@ public class binanceMethods {
 
     public List<Trades> getRecentTrades(String symbol1, int limit) throws IOException {
 
-        String url = this.baseUrl + "/api/v3/trades";
+        String url = this.baseUrl + "/api/v3/trades/";
 
         String symbol = symbol1 + "USD";
 
@@ -373,6 +383,31 @@ public class binanceMethods {
     public double getPriceOfOne(String symbol) throws IOException {
         String result = displayCurrentPrice(symbol);
         return Double.parseDouble(result.split(":")[1].trim());
+    }
+
+    public PriceTicker getPriceTicker(String symbol1, String symbol2) throws IOException {
+
+        String url = this.baseUrl + "/api/v3/ticker/price/";
+        String symbol = symbol1 + symbol2;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        HashMap<String,String> data = new HashMap<>();
+
+        data.put("symbol",symbol);
+
+        getPriceTicker getPriceTicker = retrofit.create(com.example.nctai_trading.getPriceTicker.class);
+
+        Call<PriceTicker> priceTickerCall = getPriceTicker.getPriceTicker(data);
+
+        Response<PriceTicker> priceTickerResponse = priceTickerCall.execute();
+
+        PriceTicker response = priceTickerResponse.body();
+
+        return response;
     }
 
     //public long getTimeStamp(){
