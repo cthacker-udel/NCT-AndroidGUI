@@ -1,31 +1,33 @@
 package com.example.nctai_trading;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.ws.rs.core.Link;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -58,7 +60,7 @@ public class coinbaseProMethods {
     public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
 
         String timeStamp = "1612316366963";
-        String timeStamp2 = getTimeStamp();
+        String timeStamp2 = Instant.now().getEpochSecond() + "";
 
         //temp
         byte[] ascii = jsonStringifyMap(body).getBytes(StandardCharsets.US_ASCII);
@@ -268,33 +270,34 @@ public class coinbaseProMethods {
         return accountDetails;
     }
 
-    class buyCurrency{
+    class buyCurrency {
 
         private String buyCurrencyApiKey = "";
         private String buyCurrencySecretKey = "";
         private String passphrase = "";
 
-        public buyCurrency(){
+        public buyCurrency() {
             super();
         }
 
-        public buyCurrency(String newApi, String newSecret, String newPassPhrase){
+        public buyCurrency(String newApi, String newSecret, String newPassPhrase) {
             this.buyCurrencyApiKey = newApi;
             this.buyCurrencySecretKey = newSecret;
             this.passphrase = newPassPhrase;
         }
 
-        public void setBuyCurrencyApikey(String newKey){
+        public void setBuyCurrencyApikey(String newKey) {
             this.buyCurrencyApiKey = newKey;
         }
 
-        public void setBuyCurrencySecretKey(String newKey){
+        public void setBuyCurrencySecretKey(String newKey) {
             this.buyCurrencySecretKey = newKey;
         }
 
-        public void setPassphrase(String newPassPhrase){
+        public void setPassphrase(String newPassPhrase) {
             this.passphrase = newPassPhrase;
         }
+
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void placeOrderMarket(String size, String currency1, String currency2) throws IOException {
@@ -308,13 +311,12 @@ public class coinbaseProMethods {
 
             buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
 
-            HashMap<String,String> data = new LinkedHashMap<>();
+            HashMap<String, String> data = new LinkedHashMap<>();
             // size == how much of currency1 do you want to trade anything < 1 cent is not allowed
             String productId = "";
-            if(currency2 == null){
+            if (currency2 == null) {
                 productId = currency1 + "-USD";
-            }
-            else{
+            } else {
                 productId = currency1 + "-" + currency2;
             }
 
@@ -325,18 +327,18 @@ public class coinbaseProMethods {
             body.setSide("buy");
             body.setSize(1.0);
 
-            data.put("product_id","BTC-USD");
-            data.put("side","buy");
-            data.put("type","market");
-            data.put("funds","1");
+            data.put("product_id", "BTC-USD");
+            data.put("side", "buy");
+            data.put("type", "market");
+            data.put("funds", "1");
             //data.put("side","buy");
             //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
-            HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
+            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, data, passPhrase);
 
             //Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(body,authHeaders);
-            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders,data);
+            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders, data);
 
             Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
 
@@ -349,8 +351,136 @@ public class coinbaseProMethods {
             // add header onto call request in interface with
         }
 
+        /*
+
+        @author - Preethi
+
+         */
+
+        public void placeOrdermarket(BigDecimal price, BigDecimal size, String currency1, String currency2) throws IOException {
+            coinBaseNewLimitOrderSingle2 order = new coinBaseNewLimitOrderSingle2();
+            order.setPrice(price);
+            String productId = "";
+            if(currency2 == null){
+                productId = currency1 + "-USD";
+            }
+            else{
+                productId = currency1 + "-" + currency2;
+            }
+            order.setProduct_id(productId);
+            order.setSide("buy");
+            order.setSize(size);
+            Retrofit retrofit = getClient();
+            coinBaseLimitOrder limitOrder = retrofit.create(coinBaseLimitOrder.class);
+            Call<coinBaseProPurchase> getCoinBasePurchase = limitOrder.createorder2(order);
+
+            Response<coinBaseProPurchase> purchase = getCoinBasePurchase.execute();
+
+            coinBaseProPurchase body = purchase.body();
+
+            System.out.println(body.getId());
+
+        }
+
+        /*
+
+        @author - Preethi
+
+
+         */
+        public String bodyToString(final RequestBody request) {
+            try {
+                final RequestBody copy = request;
+                final Buffer buffer = new Buffer();
+                if (copy != null)
+                    copy.writeTo(buffer);
+                else
+                    return "";
+                return buffer.readUtf8();
+            } catch (final IOException e) {
+                return "did not work";
+            }
+        }
+
+        /*
+
+        @author - Preethi
+
+         */
+        Retrofit getClient() {
+            final String baseUrl = "https://api.pro.coinbase.com";
+            Retrofit retrofit;
+
+            Interceptor securityInterceptor = new Interceptor() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    String timestamp = Instant.now().getEpochSecond() + "";
+                    Log.i("Retro", timestamp);
+                    String endpoint = request.url().toString();
+                    Log.i("Retro", endpoint);
+                    String resource = endpoint.replace(baseUrl, "");
+                    Log.i("Retro", resource);
+                    String method = request.method();
+                    Log.i("Retro", method);
+                    RequestBody requestBody = request.body();
+                    String jsonBody = "";
+                    if (requestBody != null) {
+                        jsonBody = bodyToString(requestBody);
+                    }
+                    Log.i("Retro", jsonBody);
+
+                    String cbsAccessSign = generateSignature(timestamp,method,resource,jsonBody);//generateSignature(resource, method, jsonBody, timestamp, "ufOMqTBzARwhCbNQmrazgDAk6ir4xjUyU1cH0kkV8k6b0X1hRI8ipcKs1beTwAQuoWDPUJ7dnhuqanAxKEVrXw");
+                    Request newRequest = request.newBuilder().addHeader("CB-ACCESS-KEY", "17e5d0f33c9074a2f67c95cf0436fca9").
+                            addHeader("CB-ACCESS-SIGN", cbsAccessSign).
+                            addHeader("CB-ACCESS-TIMESTAMP", timestamp).addHeader("CB-ACCESS-PASSPHRASE", "NCTAI09AKATBE").build();
+                    return chain.proceed(newRequest);
+                }
+            };
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(securityInterceptor).addInterceptor(interceptor).build();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
+                    .build();
+
+
+            return retrofit;
+        }
+
     }
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

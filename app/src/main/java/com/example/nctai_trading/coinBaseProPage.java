@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class coinBaseProPage extends AppCompatActivity {
 
@@ -42,7 +43,8 @@ public class coinBaseProPage extends AppCompatActivity {
                 }
                 coinbaseProMethods.buyCurrency buyCurrencyMethods = methods.new buyCurrency(coinBaseApiKey,coinBaseSecretKey,passPhrase);
                 try {
-                    buyCurrencyMethods.placeOrderMarket(".004","BTC",null);
+                    //buyCurrencyMethods.placeOrderMarket(".004","BTC",null);
+                    buyCurrencyMethods.placeOrdermarket(new BigDecimal("1.0"), new BigDecimal("1.0"), "BTC", null);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
