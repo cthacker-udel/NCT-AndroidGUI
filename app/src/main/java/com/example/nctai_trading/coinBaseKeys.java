@@ -47,9 +47,12 @@ public class coinBaseKeys extends AppCompatActivity {
                 //editor.putString("coinBaseApiKey",coinBaseApiText);
                 //editor.putString("coinBaseSecretKey",coinBaseSecretKeyText);
                 // temp
-                editor.putString("coinBaseApiKey","17e5d0f33c9074a2f67c95cf0436fca9");
-                editor.putString("coinBaseSecretKey","ufOMqTBzARwhCbNQmrazgDAk6ir4xjUyU1cH0kkV8k6b0X1hRI8ipcKs1beTwAQuoWDPUJ7dnhuqanAxKEVrXw");
-                editor.putString("coinBasePassPhrase","NCTAI09AKATBE");
+                //editor.putString("coinBaseApiKey","17e5d0f33c9074a2f67c95cf0436fca9");
+                //editor.putString("coinBaseSecretKey","ufOMqTBzARwhCbNQmrazgDAk6ir4xjUyU1cH0kkV8k6b0X1hRI8ipcKs1beTwAQuoWDPUJ7dnhuqanAxKEVrXw==");
+                //editor.putString("coinBasePassPhrase","NCTAI09AKATBE");
+                editor.putString("coinBaseApiKey","b2bcbbbfc26c78b9c08246dd8c79c648");
+                editor.putString("coinBaseSecretKey","GmC/Vt4AnVVVcnSVCkEHWfxsWDpNeekF33EPan8SDERnjMv2t6nOSgiZIp6M1Ea8E520+WKEIk+Eo7lIN6ROJg==");
+                editor.putString("coinBasePassPhrase","99yperf544f");
                 editor.apply();
                 editor.commit();
 

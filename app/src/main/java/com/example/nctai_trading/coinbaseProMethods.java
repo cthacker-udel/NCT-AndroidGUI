@@ -7,15 +7,20 @@ import androidx.annotation.RequiresApi;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -52,18 +57,24 @@ public class coinbaseProMethods {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
 
+        String timeStamp = "1612316366963";
+        String timeStamp2 = getTimeStamp();
 
-        String timeStamp = getTimeStamp();
         //temp
-        //String signature = tempGenerateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        byte[] ascii = jsonStringifyMap(body).getBytes(StandardCharsets.US_ASCII);
+        String asciiString = new String(ascii,StandardCharsets.UTF_8);
+        String signature = generateSignature(timeStamp2,method,requestPath,body.toString());
         System.out.println(jsonStringifyMap(body));
-        String signature = generateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
+        //                 {"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
+        //System.out.println(timeStamp2);
+        //String signature = generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(body).trim());
         System.out.println(signature);
         // above works then it has to be the retrofit call
         HashMap<String,String> data = new HashMap<>();
         data.put("CB-ACCESS-KEY",apiKey);
         data.put("CB-ACCESS-SIGN",signature);
-        data.put("CB-ACCESS-TIMESTAMP",timeStamp);
+        data.put("CB-ACCESS-TIMESTAMP",timeStamp2);
         data.put("CB-ACCESS-PASSPHRASE",passPhrase);
         data.put("Content-Type","Application/JSON");
 
@@ -78,11 +89,11 @@ public class coinbaseProMethods {
         String timeStamp = getTimeStamp();
         String signature = generateSignature(timeStamp,method,requestPath,body);
         HashMap<String,String> data = new HashMap<>();
-        data.put("CB-ACCESS-KEY",apiKey);
+        data.put("Content-Type","Application/JSON");
         data.put("CB-ACCESS-SIGN",signature);
         data.put("CB-ACCESS-TIMESTAMP",timeStamp);
+        data.put("CB-ACCESS-KEY",apiKey);
         data.put("CB-ACCESS-PASSPHRASE",passPhrase);
-        data.put("Content-Type","Application/JSON");
 
         return data;
     }
@@ -139,18 +150,41 @@ public class coinbaseProMethods {
 
     // Json stringify in example = {"price":"1.0","size":"1.0","side":"buy","product_id":"BTC-USD"}
     // hashmap.toString().
-    // hashmap string = {method=/orders, timestamp=1000000}
+    //hashmap string = "{method=/orders, timestamp=1000000}"
 
     public String jsonStringifyMap(Map<String,String> map){
         LinkedHashMap<String,String> baseMap = new LinkedHashMap<>();
         for(String eachKey: map.keySet()){
-            baseMap.put(String.format("\"%s\"",eachKey),String.format("\"%s\"",map.get(eachKey)));
+            if(isNumber(map.get(eachKey))){
+                baseMap.put(String.format("\"%s\"",eachKey),String.valueOf(map.get(eachKey)));
+            }
+            else {
+                baseMap.put(String.format("\"%s\"", eachKey), String.format("\"%s\"", String.valueOf(map.get(eachKey))));
+            }
         }
-        return baseMap.toString().replace("=",":").replace(" ","");
+        //"{method=/orders, timestamp=1000000}"
+        //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
+        return baseMap.toString().replace("=",": ");
     }
 
     public String getTimeStamp() throws IOException {
         return String.valueOf(System.currentTimeMillis() / 1000);
+    }
+
+    public boolean isNumber(String value){
+        try{
+            Double.parseDouble(value);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
+    }
+
+
+    public String getTimeStamp2(){
+        //return new BigDecimal(System.currentTimeMillis() + "").divide(BigDecimal.valueOf(1000)).toString();
+        return new BigDecimal(System.currentTimeMillis() + "").divide(BigDecimal.valueOf(1000)).toString();
     }
 
     //public Double synchronize() throws IOException {          -deprecated
@@ -283,17 +317,26 @@ public class coinbaseProMethods {
             else{
                 productId = currency1 + "-" + currency2;
             }
-            data.put("price","1.0");
-            data.put("size","1.0");
-            data.put("side","buy");
+
+            coinBaseBody body = new coinBaseBody();
+
+            body.setPrice(1.0);
+            body.setProduct_id("BTC-USD");
+            body.setSide("buy");
+            body.setSize(1.0);
+
             data.put("product_id","BTC-USD");
+            data.put("side","buy");
+            data.put("type","market");
+            data.put("funds","1");
             //data.put("side","buy");
             //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
             HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
 
-            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(data,authHeaders);
+            //Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(body,authHeaders);
+            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders,data);
 
             Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
 
