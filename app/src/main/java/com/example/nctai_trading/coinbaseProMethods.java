@@ -61,7 +61,7 @@ public class coinbaseProMethods {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, NewMarketOrderSingle newBody, String passPhrase) throws IOException {
+    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, Map<String,String> newBody, String passPhrase) throws IOException {
 
         String timeStamp = "1612316366963";
 
@@ -80,7 +80,7 @@ public class coinbaseProMethods {
         data.put("accept","application/json");
         data.put("CB-ACCESS-KEY",apiKey);
         String timeStamp2 = Instant.now().getEpochSecond() + "";
-        data.put("CB-ACCESS-SIGN",generateSignature(timeStamp2,method,requestPath,toJson(body)));
+        data.put("CB-ACCESS-SIGN",generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(newBody)));
         data.put("CB-ACCESS-TIMESTAMP",timeStamp2);
         data.put("CB-ACCESS-PASSPHRASE",passPhrase);
         data.put("User-Agent","Java Client");
@@ -360,7 +360,7 @@ public class coinbaseProMethods {
             //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
-            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, order, passPhrase);
+            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, data, passPhrase);
 
             //Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(body,authHeaders);
             Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders, data);
