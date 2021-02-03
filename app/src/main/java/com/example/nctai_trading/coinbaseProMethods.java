@@ -53,12 +53,13 @@ public class coinbaseProMethods {
     public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
 
 
-        //String timeStamp = getTimeStamp();
-        //temp
         String timeStamp = getTimeStamp();
-        String signature = tempGenerateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        //temp
+        //String signature = tempGenerateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
         System.out.println(jsonStringifyMap(body));
-        //String signature = generateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        String signature = generateSignature(timeStamp,method,requestPath,jsonStringifyMap(body));
+        System.out.println(signature);
+        // above works then it has to be the retrofit call
         HashMap<String,String> data = new HashMap<>();
         data.put("CB-ACCESS-KEY",apiKey);
         data.put("CB-ACCESS-SIGN",signature);
@@ -266,6 +267,13 @@ public class coinbaseProMethods {
 
             String url = baseUrl + "/orders/";
 
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+
             HashMap<String,String> data = new LinkedHashMap<>();
             // size == how much of currency1 do you want to trade anything < 1 cent is not allowed
             String productId = "";
@@ -285,14 +293,7 @@ public class coinbaseProMethods {
             String method = "POST";
             HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
-
-            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders);
+            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(data,authHeaders);
 
             Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
 
