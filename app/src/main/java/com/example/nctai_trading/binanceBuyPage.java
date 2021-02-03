@@ -24,7 +24,6 @@ import java.util.TreeMap;
 import java.util.stream.LongStream;
 
 public class binanceBuyPage extends AppCompatActivity {
-
     Spinner currency1Spinner;
     Spinner currency2Spinner;
     String selectedCurrency1;

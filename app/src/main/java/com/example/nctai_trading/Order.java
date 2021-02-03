@@ -15,6 +15,9 @@ public class Order {
     @Expose
     private String clientOrderId;
 
+    // first converts it to an order, then uses the toJson method to convert it to a string, then passes
+    // the resulting string to get signature
+
     public String getSymbol() {
         return symbol;
     }

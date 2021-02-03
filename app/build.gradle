@@ -44,6 +44,8 @@ dependencies {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
     }
 
+
+
     // particle
 
 
@@ -53,6 +55,8 @@ dependencies {
     // coinbase
 
     //implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0'
 
     //retrofit
 

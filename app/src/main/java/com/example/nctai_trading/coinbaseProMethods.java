@@ -5,6 +5,10 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -57,30 +61,42 @@ public class coinbaseProMethods {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, HashMap<String,String> body, String passPhrase) throws IOException {
+    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, NewMarketOrderSingle newBody, String passPhrase) throws IOException {
 
         String timeStamp = "1612316366963";
-        String timeStamp2 = Instant.now().getEpochSecond() + "";
 
         //temp
-        byte[] ascii = jsonStringifyMap(body).getBytes(StandardCharsets.US_ASCII);
-        String asciiString = new String(ascii,StandardCharsets.UTF_8);
-        String signature = generateSignature(timeStamp2,method,requestPath,body.toString());
-        System.out.println(jsonStringifyMap(body));
+        //byte[] ascii = jsonStringifyMap(body).getBytes(StandardCharsets.US_ASCII);
+        //String asciiString = new String(ascii,StandardCharsets.UTF_8);
+        //String signature = generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(body));
+        String body = toJson(newBody);
         //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
         //                 {"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
         //System.out.println(timeStamp2);
         //String signature = generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(body).trim());
-        System.out.println(signature);
+        System.out.println(toJson(body));
         // above works then it has to be the retrofit call
         HashMap<String,String> data = new HashMap<>();
+        data.put("accept","application/json");
         data.put("CB-ACCESS-KEY",apiKey);
-        data.put("CB-ACCESS-SIGN",signature);
+        String timeStamp2 = Instant.now().getEpochSecond() + "";
+        data.put("CB-ACCESS-SIGN",generateSignature(timeStamp2,method,requestPath,toJson(body)));
         data.put("CB-ACCESS-TIMESTAMP",timeStamp2);
         data.put("CB-ACCESS-PASSPHRASE",passPhrase);
-        data.put("Content-Type","Application/JSON");
+        data.put("User-Agent","Java Client");
+        data.put("content-type","Application/JSON");
 
         return data;
+    }
+
+    public String toJson(Object object){
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        try{
+            String json = objectMapper.writeValueAsString(object);
+            return json;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Unable to serialize");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -270,6 +286,13 @@ public class coinbaseProMethods {
         return accountDetails;
     }
 
+    private NewMarketOrderSingle createNewMarketOrder(String product, String action, double size) {
+        NewMarketOrderSingle marketOrder = new NewMarketOrderSingle(size);
+        marketOrder.setProduct_id(product);
+        marketOrder.setSide(action);
+        return marketOrder;
+    }
+
     class buyCurrency {
 
         private String buyCurrencyApiKey = "";
@@ -327,6 +350,8 @@ public class coinbaseProMethods {
             body.setSide("buy");
             body.setSize(1.0);
 
+            NewMarketOrderSingle order = createNewMarketOrder(productId,"buy",0.1);
+
             data.put("product_id", "BTC-USD");
             data.put("side", "buy");
             data.put("type", "market");
@@ -335,7 +360,7 @@ public class coinbaseProMethods {
             //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
-            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, data, passPhrase);
+            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, order, passPhrase);
 
             //Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(body,authHeaders);
             Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders, data);
@@ -350,6 +375,44 @@ public class coinbaseProMethods {
 
             // add header onto call request in interface with
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /*
 

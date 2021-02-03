@@ -13,13 +13,11 @@ buildscript {
 }
 
 allprojects {
+
+
     repositories {
         google()
         jcenter()
-        maven{ url 'https://github.com/Walter-Stroebel/JParticle'}
+        //maven{ url 'https://github.com/Walter-Stroebel/JParticle'}
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
