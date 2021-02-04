@@ -260,7 +260,7 @@ public class coinbaseProMethods {
 
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public void placeOrderMarket(String size, String currency1, String currency2) throws IOException {
+        public void placeOrderMarket(BigDecimal funds, String currency1, String currency2) throws IOException {
 
             String url = baseUrl + "/orders/";
 
@@ -283,7 +283,7 @@ public class coinbaseProMethods {
             data.put("product_id", "BTC-USD");
             data.put("side", "buy");
             data.put("type", "market");
-            data.put("funds", BigDecimal.valueOf(5));
+            data.put("funds", funds);
             String requestPath = "/orders";
             String method = "POST";
 
@@ -296,6 +296,47 @@ public class coinbaseProMethods {
             coinBaseProPurchase result = coinBaseProPurchaseResponse.body();
 
             System.out.println(result.getCreatedAt());
+            System.out.println(result.getExecutedValue());
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void placeOrderLimit(BigDecimal price, BigDecimal size, String currency1, String currency2) throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+
+            HashMap<String,Object> data = new LinkedHashMap<>();
+            String productId = "";
+            if(currency2 == null){
+                productId = currency1 + "-USD";
+            }
+            else{
+                productId = currency1 + "-" + currency2;
+            }
+
+            data.put("product_id",productId);
+            data.put("side","buy");
+            data.put("type","limit");
+            data.put("price",price);
+            data.put("size",size);
+            String requestPath = "/orders";
+            String method = "POST";
+
+            HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
+
+            Call<coinBaseProPurchase> coinBaseProPurchaseCall = buyCoinBaseCurrency.buyCoinBasePro(authHeaders,data);
+
+            Response<coinBaseProPurchase> coinBaseProPurchaseResponse = coinBaseProPurchaseCall.execute();
+
+            coinBaseProPurchase result = coinBaseProPurchaseResponse.body();
+
             System.out.println(result.getExecutedValue());
 
         }
