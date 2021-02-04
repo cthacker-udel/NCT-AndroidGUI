@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.Bidi;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -973,6 +974,52 @@ public class coinbaseProMethods {
 
         }
 
+
+
+
+    }
+
+    class conversionRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public conversionRequests(){
+            super();
+        }
+
+        public conversionRequests(String newApiKey, String newSecretKey, String newPassphrase){
+            conversionRequests.this.apiKey = newApiKey;
+            conversionRequests.this.secretKey = newSecretKey;
+            conversionRequests.this.passPhrase = newPassphrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinbaseConversionResponse conversionRequest(String from, String to, BigDecimal amount) throws IOException {
+
+            String url = baseUrl + "/conversions";
+
+            HashMap<String,Object> body = new LinkedHashMap<>();
+            body.put("from",from);
+            body.put("to",to);
+            body.put("amount",amount);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinbaseConversion getCoinbaseConversion = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbaseConversion.class);
+
+            Call<coinbaseConversionResponse> coinbaseConversionResponseCall = getCoinbaseConversion.getConversionResponse(getAuthHeadersPOST("POST","/conversions",body,passPhrase),body);
+
+            Response<coinbaseConversionResponse> coinbaseConversionResponseResponse = coinbaseConversionResponseCall.execute();
+
+            coinbaseConversionResponse result = coinbaseConversionResponseResponse.body();
+
+            return result;
+        }
 
 
 
