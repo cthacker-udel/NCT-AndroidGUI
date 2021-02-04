@@ -4,6 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.nctai_trading.coinbasePro.coinBaseProExchangeLimits.TransferLimits;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -600,6 +601,98 @@ public class coinbaseProMethods {
 
 
 
+
+
+
+    }
+
+    class fillRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public fillRequests(){
+            super();
+        }
+
+        public fillRequests(String newApi, String newSecret, String newPassPhrase){
+            fillRequests.this.apiKey = newApi;
+            fillRequests.this.secretKey = newSecret;
+            fillRequests.this.passPhrase = newPassPhrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public List<coinBaseListFillsFill> getListFills() throws IOException {
+
+            String url = baseUrl + "/fills/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getListFills getListFills = retrofit.create(com.example.nctai_trading.coinbasePro.getListFills.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/fills",passPhrase);
+
+            Call<List<coinBaseListFillsFill>> getListOfFills = getListFills.getListFills(authHeaders);
+
+            Response<List<coinBaseListFillsFill>> getListOfFillsResponse = getListOfFills.execute();
+
+            List<coinBaseListFillsFill> listOfFills = getListOfFillsResponse.body();
+
+            if(listOfFills == null){
+                return null;
+            }
+
+            return listOfFills;
+
+        }
+
+
+    }
+
+    class exchangeLimitRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public exchangeLimitRequests(){
+            super();
+        }
+
+        public exchangeLimitRequests(String newApi, String newSecret, String newPassPhrase){
+            exchangeLimitRequests.this.apiKey = newApi;
+            exchangeLimitRequests.this.secretKey = newSecret;
+            exchangeLimitRequests.this.passPhrase = newPassPhrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public TransferLimits getExchangeLimits() throws IOException {
+
+            String url = baseUrl + "/users/self/exchange-limits/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinBaseProExchangeLimits getCoinBaseProExchangeLimits = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseProExchangeLimits.class);
+
+            Call<TransferLimits> getTransferLimits = getCoinBaseProExchangeLimits.getExchangeLimits(getAuthHeadersGET("GET","/users/self/exchange-limits",passPhrase));
+
+            Response<TransferLimits>  getTransferLimitsResponse = getTransferLimits.execute();
+
+            TransferLimits transferLimits = getTransferLimitsResponse.body();
+
+            if(transferLimits == null){
+                return null;
+            }
+
+            return transferLimits;
+        }
 
 
 
