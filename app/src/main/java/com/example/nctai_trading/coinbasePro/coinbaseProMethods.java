@@ -854,7 +854,6 @@ public class coinbaseProMethods {
 
     }
 
-    // finish
     class withdrawRequests{
 
         private String apiKey = "";
@@ -870,6 +869,112 @@ public class coinbaseProMethods {
             withdrawRequests.this.secretKey = newApi;
             withdrawRequests.this.passPhrase = newPassPhrase;
         }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public coinbaseProWithdrawl getListOfWithdrawls() throws IOException {
+
+            String url = baseUrl + "/transfers";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinbaseWithdrawList getCoinbaseWithdrawList = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbaseWithdrawList.class);
+
+            HashMap<String,String> authMap = getAuthHeadersGET("GET","/transfers",passPhrase);
+
+            Call<coinbaseProWithdrawl> withdrawlCall = getCoinbaseWithdrawList.getCoinbaseWithdrawList(authMap);
+
+            Response<coinbaseProWithdrawl> coinbaseProWithdrawlResponse = withdrawlCall.execute();
+
+            coinbaseProWithdrawl result = coinbaseProWithdrawlResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public coinbaseProWithdrawl getSingleWithdrawl(String withdrawID) throws IOException {
+
+            String url = baseUrl + "/transfers/:" + withdrawID + "/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            getCoinbaseWithdrawl getCoinbaseWithdrawl = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbaseWithdrawl.class);
+
+            HashMap<String,String> authMap = getAuthHeadersGET("GET","/transfers/:" + withdrawID,passPhrase);
+
+            Call<coinbaseProWithdrawl> withdrawlCall = getCoinbaseWithdrawl.getSingleWithdrawl(withdrawID,authMap);
+
+            Response<coinbaseProWithdrawl> coinbaseProWithdrawlResponse = withdrawlCall.execute();
+
+            coinbaseProWithdrawl result = coinbaseProWithdrawlResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinbaseProWithdrawToPaymentResponse coinbaseWithdrawToPaymentMethod(BigDecimal amount, String currency, String paymentMethodId) throws IOException {
+
+            HashMap<String,Object> body = new LinkedHashMap<>();
+
+            body.put("amount",amount);
+            body.put("currency",currency);
+            body.put("payment_method_id",paymentMethodId);
+
+            String url = baseUrl + "/withdrawls/payment-method/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            coinbaseWithdrawToPayment coinbaseWithdrawToPayment = retrofit.create(com.example.nctai_trading.coinbasePro.coinbaseWithdrawToPayment.class);
+
+            Call<coinbaseProWithdrawToPaymentResponse> coinbaseProWithdrawToPaymentResponseCall = coinbaseWithdrawToPayment.withdrawToPayment(getAuthHeadersPOST("POST","/withdrawls/payment-method",body,passPhrase),body);
+
+            Response<coinbaseProWithdrawToPaymentResponse> coinbaseProWithdrawToPaymentResponseResponse = coinbaseProWithdrawToPaymentResponseCall.execute();
+
+            coinbaseProWithdrawToPaymentResponse result = coinbaseProWithdrawToPaymentResponseResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinbaseWithdrawToCoinbaseResponse coinbaseWithdrawToCoinbase(BigDecimal amount, String currency, String coinbaseAcctID) throws IOException {
+
+            HashMap<String,Object> body = new LinkedHashMap<>();
+
+            body.put("amount",amount);
+            body.put("currency",currency);
+            body.put("coinbase_account_id",coinbaseAcctID);
+
+            String url = baseUrl + "/withdrawls/coinbase-account/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            coinbaseWithdrawToCoinbase coinbaseWithdrawToCoinbase = retrofit.create(com.example.nctai_trading.coinbasePro.coinbaseWithdrawToCoinbase.class);
+
+            Call<coinbaseWithdrawToCoinbaseResponse> coinbaseWithdrawToCoinbaseResponseCall = coinbaseWithdrawToCoinbase.withdrawToCoinbaseAcct(getAuthHeadersPOST("POST","/withdrawls/coinbase-account",body,passPhrase),body);
+
+            Response<coinbaseWithdrawToCoinbaseResponse> coinbaseWithdrawToCoinbaseResponseResponse = coinbaseWithdrawToCoinbaseResponseCall.execute();
+
+            coinbaseWithdrawToCoinbaseResponse result = coinbaseWithdrawToCoinbaseResponseResponse.body();
+
+            return result;
+
+
+        }
+
+
 
 
     }
