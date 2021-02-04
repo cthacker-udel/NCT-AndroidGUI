@@ -48,7 +48,6 @@ dependencies {
 
     // particle
 
-
     implementation 'io.particle:cloudsdk:1.0.1'
     implementation 'io.particle:devicesetup:0.7.3'
 
@@ -80,13 +79,22 @@ dependencies {
 
     implementation 'net.sargue:mailgun:1.9.2'
 
-    // misc
+    // square point-of-sale
+
+    implementation 'com.squareup.sdk:point-of-sale-sdk:2.0'
+
+    // android layout
 
     implementation 'androidx.navigation:navigation-ui:2.3.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
+    // com.google
+
     implementation 'com.google.android.material:material:1.2.1'
+
+    // mongoDB
+
     implementation files('libs/mongo-java-driver-3.4.0-SNAPSHOT.jar')
 
 }
