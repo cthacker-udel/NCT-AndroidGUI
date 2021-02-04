@@ -56,12 +56,12 @@ CAMERON THACKER - NCT ANDROID GUI
   
 #### Resources
 
-### Binance Methods[https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/java/com/example/nctai_trading/binanceUS]
+### [Binance Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/java/com/example/nctai_trading/binanceUS)
 
-### Coinbase Methods[https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/java/com/example/nctai_trading/coinbasePro]
+### [Coinbase Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/java/com/example/nctai_trading/coinbasePro)
 
-### App Pages[https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/res/layout]
+### [App Pages](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/res/layout)
 
-### Gradle Build : app[https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/build.gradle]
+### [Gradle Build : app](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/build.gradle)
 
-### Gradle Build : project[https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/build.gradle]
+### [Gradle Build : project](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/build.gradle)
