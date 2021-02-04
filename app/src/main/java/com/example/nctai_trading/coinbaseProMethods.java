@@ -64,19 +64,6 @@ public class coinbaseProMethods {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, Map<String,Object> newBody, String passPhrase) throws IOException {
 
-        String timeStamp = "1612316366963";
-
-        //temp
-        //byte[] ascii = jsonStringifyMap(body).getBytes(StandardCharsets.US_ASCII);
-        //String asciiString = new String(ascii,StandardCharsets.UTF_8);
-        //String signature = generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(body));
-        String body = toJson(newBody);
-        //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
-        //                 {"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
-        //System.out.println(timeStamp2);
-        //String signature = generateSignature(timeStamp2,method,requestPath,jsonStringifyMap(body).trim());
-        System.out.println(toJson(body));
-        // above works then it has to be the retrofit call
         HashMap<String,String> data = new HashMap<>();
         data.put("accept","application/json");
         data.put("CB-ACCESS-KEY",apiKey);
@@ -100,7 +87,7 @@ public class coinbaseProMethods {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public HashMap<String,String> getAuthHeadersGET(String method, String requestPath, String passPhrase) throws IOException {
 
 
@@ -123,24 +110,6 @@ public class coinbaseProMethods {
             String prehash = timestamp + method.toUpperCase() + requestPath + body;
             byte[] secretDecoded = Base64.getDecoder().decode(secretKey);
             SecretKeySpec keySpec = new SecretKeySpec(secretDecoded, Mac.getInstance("HmacSHA256").getAlgorithm());
-            //Mac sha256 = (Mac) Mac.getInstance("HmacSHA256").clone();
-            Mac sha256 = Mac.getInstance("HmacSHA256");
-            sha256.init(keySpec);
-            return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes()));
-        }
-        catch(InvalidKeyException | NoSuchAlgorithmException e){
-            e.printStackTrace();
-            throw new RuntimeException(new Error("Cannot set up auth headers"));
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String tempGenerateSignature(String timestamp, String method, String requestPath, String body){
-        try{
-            String prehash = timestamp + method.toUpperCase() + requestPath + body;
-            byte[] secretDecoded = Base64.getDecoder().decode(secretKey);
-            SecretKeySpec keySpec = new SecretKeySpec(secretDecoded, Mac.getInstance("HmacSHA256").getAlgorithm());
-            //Mac sha256 = (Mac) Mac.getInstance("HmacSHA256").clone();
             Mac sha256 = Mac.getInstance("HmacSHA256");
             sha256.init(keySpec);
             return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes()));
@@ -167,30 +136,13 @@ public class coinbaseProMethods {
 
     }
 
-    // Json stringify in example = {"price":"1.0","size":"1.0","side":"buy","product_id":"BTC-USD"}
-    // hashmap.toString().
-    //hashmap string = "{method=/orders, timestamp=1000000}"
-
     public String jsonStringifyMap(Map<String,Object> map){
-        LinkedHashMap<String,String> baseMap = new LinkedHashMap<>();
-        /*
-        for(String eachKey: map.keySet()){
-            if(isNumber(map.get(eachKey))){
-                baseMap.put(String.format("\"%s\"",eachKey),String.valueOf(map.get(eachKey)));
-            }
-            else {
-                baseMap.put(String.format("\"%s\"", eachKey), String.format("\"%s\"", String.valueOf(map.get(eachKey))));
-            }
-        }
-        */
-        //"{method=/orders, timestamp=1000000}"
-        //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
-        //return baseMap.toString().replace("=",": ");
         return new Gson().toJson(map);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public String getTimeStamp() throws IOException {
-        return String.valueOf(System.currentTimeMillis() / 1000);
+        return String.valueOf(Instant.now().getEpochSecond());
     }
 
     public boolean isNumber(String value){
@@ -203,39 +155,20 @@ public class coinbaseProMethods {
         }
     }
 
-
-    public String getTimeStamp2(){
-        //return new BigDecimal(System.currentTimeMillis() + "").divide(BigDecimal.valueOf(1000)).toString();
-        return new BigDecimal(System.currentTimeMillis() + "").divide(BigDecimal.valueOf(1000)).toString();
-    }
-
-    //public Double synchronize() throws IOException {          -deprecated
-    //    double servertime = getServerTime();
-    //    double systemtime = System.currentTimeMillis() * 1000;
-    //    double offset = systemtime - servertime + 500;
-    //    return systemtime - offset;
-    //}
-
-    // typically for get
-    // callData = hashMap = {"price":"1.0", "size": 1.0", "side": "buy", "product_id": "BTC-USD"}
     @RequiresApi(api = Build.VERSION_CODES.R)
     public HashMap<String,String> call(String method1, String requestPath, HashMap<String,String> callData) throws IOException {
         String timestamp = getTimeStamp();
         String method = method1;
         if(callData != null) {
             String message = String.join("", new String[]{timestamp, method, requestPath,callData.toString().replaceAll(" ","")});
-            //HashMap<String,String> headers = getAuthHeaders(timestamp,message,apiKey,secretKey,passPhrase);
-            //return headers;
         }
         else{
             String message = String.join("",new String[]{timestamp,method,requestPath,"0"});
-            //HashMap<String,String> headers = getAuthHeaders(timestamp,message,apiKey,secretKey,passPhrase);
-            //return headers;
         }
         return new HashMap<String,String>();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public TreeMap<String,String[]> getAccountList() throws IOException {
 
         String url = this.baseUrl + "/accounts/";
@@ -339,7 +272,6 @@ public class coinbaseProMethods {
             buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
 
             HashMap<String, Object> data = new LinkedHashMap<>();
-            // size == how much of currency1 do you want to trade anything < 1 cent is not allowed
             String productId = "";
             if (currency2 == null) {
                 productId = currency1 + "-USD";
@@ -347,26 +279,16 @@ public class coinbaseProMethods {
                 productId = currency1 + "-" + currency2;
             }
 
-            coinBaseBody body = new coinBaseBody();
-
-            body.setPrice(1.0);
-            body.setProduct_id("BTC-USD");
-            body.setSide("buy");
-            body.setSize(1.0);
-
-            NewMarketOrderSingle order = createNewMarketOrder(productId,"buy",0.1);
 
             data.put("product_id", "BTC-USD");
             data.put("side", "buy");
             data.put("type", "market");
             data.put("funds", BigDecimal.valueOf(5));
-            //data.put("side","buy");
-            //data.put("type","market");
             String requestPath = "/orders";
             String method = "POST";
+
             HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, data, passPhrase);
 
-            //Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(body,authHeaders);
             Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders, data);
 
             Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
@@ -376,148 +298,8 @@ public class coinbaseProMethods {
             System.out.println(result.getCreatedAt());
             System.out.println(result.getExecutedValue());
 
-
-            // add header onto call request in interface with
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-
-        @author - Preethi
-
-         */
-
-        public void placeOrdermarket(BigDecimal price, BigDecimal size, String currency1, String currency2) throws IOException {
-            coinBaseNewLimitOrderSingle2 order = new coinBaseNewLimitOrderSingle2();
-            order.setPrice(price);
-            String productId = "";
-            if(currency2 == null){
-                productId = currency1 + "-USD";
-            }
-            else{
-                productId = currency1 + "-" + currency2;
-            }
-            order.setProduct_id(productId);
-            order.setSide("buy");
-            order.setSize(size);
-            Retrofit retrofit = getClient();
-            coinBaseLimitOrder limitOrder = retrofit.create(coinBaseLimitOrder.class);
-            Call<coinBaseProPurchase> getCoinBasePurchase = limitOrder.createorder2(order);
-
-            Response<coinBaseProPurchase> purchase = getCoinBasePurchase.execute();
-
-            coinBaseProPurchase body = purchase.body();
-
-            System.out.println(body.getId());
-
-        }
-
-        /*
-
-        @author - Preethi
-
-
-         */
-        public String bodyToString(final RequestBody request) {
-            try {
-                final RequestBody copy = request;
-                final Buffer buffer = new Buffer();
-                if (copy != null)
-                    copy.writeTo(buffer);
-                else
-                    return "";
-                return buffer.readUtf8();
-            } catch (final IOException e) {
-                return "did not work";
-            }
-        }
-
-        /*
-
-        @author - Preethi
-
-         */
-        Retrofit getClient() {
-            final String baseUrl = "https://api.pro.coinbase.com";
-            Retrofit retrofit;
-
-            Interceptor securityInterceptor = new Interceptor() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public okhttp3.Response intercept(Chain chain) throws IOException {
-                    Request request = chain.request();
-                    String timestamp = Instant.now().getEpochSecond() + "";
-                    Log.i("Retro", timestamp);
-                    String endpoint = request.url().toString();
-                    Log.i("Retro", endpoint);
-                    String resource = endpoint.replace(baseUrl, "");
-                    Log.i("Retro", resource);
-                    String method = request.method();
-                    Log.i("Retro", method);
-                    RequestBody requestBody = request.body();
-                    String jsonBody = "";
-                    if (requestBody != null) {
-                        jsonBody = bodyToString(requestBody);
-                    }
-                    Log.i("Retro", jsonBody);
-
-                    String cbsAccessSign = generateSignature(timestamp,method,resource,jsonBody);//generateSignature(resource, method, jsonBody, timestamp, "ufOMqTBzARwhCbNQmrazgDAk6ir4xjUyU1cH0kkV8k6b0X1hRI8ipcKs1beTwAQuoWDPUJ7dnhuqanAxKEVrXw");
-                    Request newRequest = request.newBuilder().addHeader("CB-ACCESS-KEY", "17e5d0f33c9074a2f67c95cf0436fca9").
-                            addHeader("CB-ACCESS-SIGN", cbsAccessSign).
-                            addHeader("CB-ACCESS-TIMESTAMP", timestamp).addHeader("CB-ACCESS-PASSPHRASE", "NCTAI09AKATBE").build();
-                    return chain.proceed(newRequest);
-                }
-            };
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(securityInterceptor).addInterceptor(interceptor).build();
-
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-
-
-            return retrofit;
-        }
 
     }
 }
