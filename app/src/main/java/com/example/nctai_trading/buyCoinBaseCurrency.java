@@ -14,6 +14,6 @@ import retrofit2.http.QueryMap;
 public interface buyCoinBaseCurrency {
 
     @POST("https://api.pro.coinbase.com/orders")
-    Call<coinBaseProPurchase> buyCoinBasePro(@HeaderMap Map<String,String> authMap, @Body Map<String,String> body);
+    Call<coinBaseProPurchase> buyCoinBasePro(@HeaderMap Map<String,String> authMap, @Body Map<String,Object> body);
 
 }
