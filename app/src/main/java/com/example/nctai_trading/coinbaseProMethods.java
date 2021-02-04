@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -61,7 +62,7 @@ public class coinbaseProMethods {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, Map<String,String> newBody, String passPhrase) throws IOException {
+    public HashMap<String,String> getAuthHeadersPOST(String method, String requestPath, Map<String,Object> newBody, String passPhrase) throws IOException {
 
         String timeStamp = "1612316366963";
 
@@ -170,8 +171,9 @@ public class coinbaseProMethods {
     // hashmap.toString().
     //hashmap string = "{method=/orders, timestamp=1000000}"
 
-    public String jsonStringifyMap(Map<String,String> map){
+    public String jsonStringifyMap(Map<String,Object> map){
         LinkedHashMap<String,String> baseMap = new LinkedHashMap<>();
+        /*
         for(String eachKey: map.keySet()){
             if(isNumber(map.get(eachKey))){
                 baseMap.put(String.format("\"%s\"",eachKey),String.valueOf(map.get(eachKey)));
@@ -180,9 +182,11 @@ public class coinbaseProMethods {
                 baseMap.put(String.format("\"%s\"", eachKey), String.format("\"%s\"", String.valueOf(map.get(eachKey))));
             }
         }
+        */
         //"{method=/orders, timestamp=1000000}"
         //100000POST/orders{"product_id": "BTC-USD", "side": "buy", "type": "market", "funds": 1}
-        return baseMap.toString().replace("=",": ");
+        //return baseMap.toString().replace("=",": ");
+        return new Gson().toJson(map);
     }
 
     public String getTimeStamp() throws IOException {
@@ -334,7 +338,7 @@ public class coinbaseProMethods {
 
             buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
 
-            HashMap<String, String> data = new LinkedHashMap<>();
+            HashMap<String, Object> data = new LinkedHashMap<>();
             // size == how much of currency1 do you want to trade anything < 1 cent is not allowed
             String productId = "";
             if (currency2 == null) {
@@ -355,7 +359,7 @@ public class coinbaseProMethods {
             data.put("product_id", "BTC-USD");
             data.put("side", "buy");
             data.put("type", "market");
-            data.put("funds", "1");
+            data.put("funds", BigDecimal.valueOf(5));
             //data.put("side","buy");
             //data.put("type","market");
             String requestPath = "/orders";
