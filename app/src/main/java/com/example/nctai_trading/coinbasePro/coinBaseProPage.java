@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.coinbasePro;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.coinbasePro.coinbaseProMethods;
+
 import java.io.IOException;
-import java.math.BigDecimal;
 
 public class coinBaseProPage extends AppCompatActivity {
 

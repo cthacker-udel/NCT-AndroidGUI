@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.coinbasePro;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

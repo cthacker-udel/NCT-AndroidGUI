@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.coinbasePro;
 
 
 
@@ -33,7 +33,7 @@ public class coinBaseAccountDetailsList {
     private String type;
     @SerializedName("details")
     @Expose
-    private List<com.example.nctai_trading.coinBaseAccountDetails> details;
+    private List<coinBaseAccountDetails> details;
 
     public String getId() {
         return id;
@@ -79,7 +79,7 @@ public class coinBaseAccountDetailsList {
         return details;
     }
 
-    public void setDetails(List<com.example.nctai_trading.coinBaseAccountDetails> details) {
+    public void setDetails(List<coinBaseAccountDetails> details) {
         this.details = details;
     }
 }

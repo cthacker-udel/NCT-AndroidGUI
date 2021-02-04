@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.example.nctai_trading.coinbasePro.coinBaseKeys;
+import com.example.nctai_trading.coinbasePro.coinBaseProPage;
 
 import java.util.UUID;
 
@@ -231,7 +233,7 @@ public class mainPage extends AppCompatActivity {
         mainPageCoinbaseKeys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toCoinBaseKeysPage = new Intent(getApplicationContext(),coinBaseKeys.class);
+                Intent toCoinBaseKeysPage = new Intent(getApplicationContext(), coinBaseKeys.class);
                 startActivity(toCoinBaseKeysPage);
             }
         });
@@ -290,7 +292,7 @@ public class mainPage extends AppCompatActivity {
                 if(coinBasePassphrase.equals("defaultCoinBasePassPhrase")){
                     Toast.makeText(mainPage.this,"Please enter coinbase passphrase",Toast.LENGTH_LONG).show();
                 }
-                Intent toCoinBaseProPage = new Intent(getApplicationContext(),coinBaseProPage.class);
+                Intent toCoinBaseProPage = new Intent(getApplicationContext(), coinBaseProPage.class);
                 startActivity(toCoinBaseProPage);
             }
         });

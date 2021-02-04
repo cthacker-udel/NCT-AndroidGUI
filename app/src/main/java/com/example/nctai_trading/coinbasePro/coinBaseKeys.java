@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.coinbasePro;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.mainPage;
 
 public class coinBaseKeys extends AppCompatActivity {
 
@@ -59,7 +62,7 @@ public class coinBaseKeys extends AppCompatActivity {
                 coinBaseAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                        Intent toMainPage = new Intent(getApplicationContext(), mainPage.class);
                         startActivity(toMainPage);
                     }
                 });

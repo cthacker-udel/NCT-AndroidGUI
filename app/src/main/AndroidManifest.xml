@@ -14,10 +14,10 @@
         android:theme="@style/Theme.NCTAITrading">
         <activity android:name=".binanceSellPage"></activity>
         <activity android:name=".binanceBuyPage" />
-        <activity android:name=".coinBaseProPage" />
+        <activity android:name=".coinbasePro.coinBaseProPage" />
         <activity android:name=".BinanceAccountDetails" />
         <activity android:name=".binancePage" />
-        <activity android:name=".coinBaseKeys" />
+        <activity android:name=".coinbasePro.coinBaseKeys" />
         <activity android:name=".binanceKeys" />
         <activity android:name=".ARPage" />
         <activity android:name=".alternateInvestments" />

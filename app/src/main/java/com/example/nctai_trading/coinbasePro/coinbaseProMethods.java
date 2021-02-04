@@ -1,7 +1,6 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.coinbasePro;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -12,7 +11,6 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -27,12 +25,6 @@ import java.util.TreeMap;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okio.Buffer;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -104,6 +96,24 @@ public class coinbaseProMethods {
         return data;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public HashMap<String,String> getAuthHeadersBASE(String requestPath) throws IOException {
+
+        String body = "";
+        String method = "";
+        String timeStamp = getTimeStamp();
+        String signature = generateSignature(timeStamp,method,requestPath,body);
+        HashMap<String,String> data = new HashMap<>();
+        data.put("Content-Type","Application/JSON");
+        data.put("CB-ACCESS-SIGN",signature);
+        data.put("CB-ACCESS-TIMESTAMP",timeStamp);
+        data.put("CB-ACCESS-KEY",this.apiKey);
+        data.put("CB-ACCESS-PASSPHRASE",this.passPhrase);
+
+        return data;
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String generateSignature(String timestamp, String method, String requestPath, String body){
         try{
@@ -129,7 +139,7 @@ public class coinbaseProMethods {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        getCoinBaseProServerTime getCoinBaseProServerTime = retrofit.create(com.example.nctai_trading.getCoinBaseProServerTime.class);
+        getCoinBaseProServerTime getCoinBaseProServerTime = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseProServerTime.class);
         Call<coinBaseProServerResponse> serverResponseCall = getCoinBaseProServerTime.getCoinBaseProServerTime();
         Response<coinBaseProServerResponse> serverResponseResponse = serverResponseCall.execute();
         return serverResponseResponse.body().getEpoch();
@@ -178,7 +188,7 @@ public class coinbaseProMethods {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        getCoinBaseProAccounts getCoinBaseProAccounts = retrofit.create(com.example.nctai_trading.getCoinBaseProAccounts.class);
+        getCoinBaseProAccounts getCoinBaseProAccounts = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseProAccounts.class);
 
 
         Call<List<coinBaseListAccount>> coinBaseProAccountsCall = getCoinBaseProAccounts.getAccounts(getAuthHeadersGET("GET","/accounts",passPhrase));
@@ -210,7 +220,7 @@ public class coinbaseProMethods {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        getCoinBaseAccount getCoinBaseAccount = retrofit.create(com.example.nctai_trading.getCoinBaseAccount.class);
+        getCoinBaseAccount getCoinBaseAccount = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseAccount.class);
 
         Call<coinBaseAccount> getCoinBaseAccountCall = getCoinBaseAccount.getCoinBaseAccountCall(id, getAuthHeadersGET("GET",String.format("/accounts/%s",id),passPhrase));
 
@@ -221,13 +231,6 @@ public class coinbaseProMethods {
         ArrayList<String> accountDetails = new ArrayList<>();
         accountDetails.add(String.format("----------------\n Account ID : %s \n Currency : %s \n Balance %s \n Available : %s \n Holds : %s \n -------------------------\n",coinBaseAccount.getId(),coinBaseAccount.getCurrency(),coinBaseAccount.getBalance(),coinBaseAccount.getAvailable(),coinBaseAccount.getHolds()));
         return accountDetails;
-    }
-
-    private NewMarketOrderSingle createNewMarketOrder(String product, String action, double size) {
-        NewMarketOrderSingle marketOrder = new NewMarketOrderSingle(size);
-        marketOrder.setProduct_id(product);
-        marketOrder.setSide(action);
-        return marketOrder;
     }
 
     class buyCurrency {
@@ -269,7 +272,7 @@ public class coinbaseProMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.coinbasePro.buyCoinBaseCurrency.class);
 
             HashMap<String, Object> data = new LinkedHashMap<>();
             String productId = "";
@@ -310,7 +313,7 @@ public class coinbaseProMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.coinbasePro.buyCoinBaseCurrency.class);
 
             HashMap<String,Object> data = new LinkedHashMap<>();
             String productId = "";
@@ -383,7 +386,7 @@ public class coinbaseProMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.coinbasePro.buyCoinBaseCurrency.class);
 
             HashMap<String, Object> data = new LinkedHashMap<>();
             String productId = "";
@@ -424,7 +427,7 @@ public class coinbaseProMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.coinbasePro.buyCoinBaseCurrency.class);
 
             HashMap<String,Object> data = new LinkedHashMap<>();
             String productId = "";
@@ -455,6 +458,155 @@ public class coinbaseProMethods {
 
         }
     }
+
+    class cancelOrder{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+
+        public cancelOrder(){
+            super();
+        }
+
+        public cancelOrder(String newApiKey, String newSecretKey, String newPassPhrase){
+            cancelOrder.this.apiKey = newApiKey;
+            cancelOrder.this.secretKey = newSecretKey;
+            cancelOrder.this.passPhrase = newPassPhrase;
+        }
+
+        public boolean cancelId(String id){
+
+            String url = baseUrl + String.format("/orders/%s/",id);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            cancelCoinBaseOrder cancelCoinBaseOrder = retrofit.create(com.example.nctai_trading.coinbasePro.cancelCoinBaseOrder.class);
+
+            Response cancelCoinbaseOrder = cancelCoinBaseOrder.cancelCoinbaseOrder(id);
+
+
+            assert cancelCoinbaseOrder.errorBody() != null;
+            return cancelCoinbaseOrder.errorBody().contentLength() <= 0;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public boolean cancelAll() throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            cancelAllCoinBaseOrders cancelAllCoinBaseOrders = retrofit.create(com.example.nctai_trading.coinbasePro.cancelAllCoinBaseOrders.class);
+
+            Call<List<String>> cancelAllOrders = cancelAllCoinBaseOrders.cancelAllOrders(getAuthHeadersBASE("/orders"));
+
+            Response<List<String>> response = cancelAllOrders.execute();
+
+            List<String> result = response.body();
+
+            return result != null;
+        }
+    }
+
+    class orderRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public orderRequests(){
+            super();
+        }
+
+        public orderRequests(String ApiKey, String SecretKey, String PassPhrase){
+            orderRequests.this.apiKey = ApiKey;
+            orderRequests.this.secretKey = SecretKey;
+            orderRequests.this.passPhrase = PassPhrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public List<coinbaseOpenOrderListOrder> getOpenOrderList() throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinBaseOpenOrderList getCoinBaseOpenOrderList = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseOpenOrderList.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/orders",this.passPhrase);
+
+            Call<List<coinbaseOpenOrderListOrder>> openOrders = getCoinBaseOpenOrderList.getCoinBaseOpenOrderList(authHeaders);
+
+            Response<List<coinbaseOpenOrderListOrder>> response = openOrders.execute();
+
+            List<coinbaseOpenOrderListOrder> openOrderList = response.body();
+
+            if(openOrderList == null){
+                return null;
+            }
+
+            for(coinbaseOpenOrderListOrder eachOrder: openOrderList){
+                System.out.println(eachOrder.getId());
+            }
+
+            return openOrderList;
+
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public coinBaseProSingleOrder getOrderById(String id) throws IOException {
+
+            String url = baseUrl + String.format("/orders/%s/",id);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinBaseOrderById getCoinBaseOrderById = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseOrderById.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET",String.format("/orders/%s",id),passPhrase);
+
+            Call<coinBaseProSingleOrder> getOrderById = getCoinBaseOrderById.getSingleOrder(id,authHeaders);
+
+            Response<coinBaseProSingleOrder> response = getOrderById.execute();
+
+            coinBaseProSingleOrder result = response.body();
+
+            if(result == null){
+                return null;
+            }
+
+            return result;
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
 }
 
 
