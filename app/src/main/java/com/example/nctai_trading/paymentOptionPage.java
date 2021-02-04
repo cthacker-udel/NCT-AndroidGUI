@@ -1,8 +1,11 @@
 package com.example.nctai_trading;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nctai_trading.squareSDK.cardEntryBackgroundHandler;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -23,6 +27,9 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.BSONObject;
 import org.bson.Document;
 
+import sqip.Card;
+import sqip.CardDetails;
+import sqip.CardEntry;
 
 
 public class paymentOptionPage extends AppCompatActivity {
@@ -37,6 +44,12 @@ public class paymentOptionPage extends AppCompatActivity {
 
     private static final int LOAD_PAYMENT_DATA_REQUEST_CODE = 1;
 
+
+
+
+    private static final int CHARGE_REQUEST_CODE = 1;
+
+
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     //private GooglePayChargeClient googlePayChargeClient;
@@ -50,6 +63,10 @@ public class paymentOptionPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_option_page);
+
+        com.example.nctai_trading.squareSDK.cardEntryBackgroundHandler cardEntryBackgroundHandler = new cardEntryBackgroundHandler();
+        CardEntry.setCardNonceBackgroundHandler(cardEntryBackgroundHandler);
+
         termsOfServiceBtn = findViewById(R.id.paymentOptionTermsOfServiceBtn);
         backToHomePageBtn = findViewById(R.id.backToHomePageButton);
         payByCardBtn = findViewById(R.id.payByCardBtn);
@@ -72,15 +89,12 @@ public class paymentOptionPage extends AppCompatActivity {
             }
         });
 
-        //payByCardBtn.setOnClickListener((view) ->
-        //{
-        //    if(InAppPaymentsSdk.INSTANCE.getSquareApplicationId().equals("REPLACE_ME")){
-        //        return;
-        //    }
-        //    else{
-        //        return;
-        //    }
-        //});
+        payByCardBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CardEntry.startCardEntryActivity(paymentOptionPage.this,true,CardEntry.DEFAULT_CARD_ENTRY_REQUEST_CODE);
+            }
+        });
 
         backToHomePageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,18 +151,19 @@ public class paymentOptionPage extends AppCompatActivity {
         });
     }
 
-    //@Override
-    //protected void onActivityResult(int requestCode,int resultCode, Intent data) {
-    //    super.onActivityResult(requestCode, resultCode, data);
-    //    CardEntry.handleActivityResult(data,result -> {
-    //        if(result.isSuccess()){
-    //            CardDetails cardResult = result.getSuccessValue();
-    //            Card card = cardResult.getCard();
-    //            String nonce = cardResult.getNonce();
-    //        }
-    //        else if(result.isCanceled()){
-    //            Toast.makeText(paymentOptionPage.this,"Canceled",Toast.LENGTH_SHORT).show();
-    //        }
-    //    });
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        CardEntry.handleActivityResult(data,result -> {
+            if(result.isSuccess()){
+                CardDetails cardResult = result.getSuccessValue();
+                Card card = cardResult.getCard();
+                String nonce = cardResult.getNonce();
+            }
+            else if(result.isCanceled()){
+                Toast.makeText(paymentOptionPage.this,"Canceled",Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }
 }

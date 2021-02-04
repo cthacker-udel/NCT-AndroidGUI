@@ -1,10 +1,13 @@
 package com.example.nctai_trading;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private String hashedPassword = "";
     private Object invokeObject;
 
+
+
     // TODO: [MAIN ACTIVITY] Implement sign in button functionality
     // TODO: [MAIN ACTIVITY] Implement reset password functionality
     // TODO: [MAIN ACTIVITY] Implement create button functionality
@@ -75,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         ParticleCloudSDK.init(this);
         ParticleDeviceSetupLibrary.initWithSetupOnly(this);
+
 
         lstView = (ListView)findViewById(R.id.lstView);
         btnAdd = (Button)findViewById(R.id.btnAdd);
@@ -186,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
         // ALERT BUTTONS
 
-        setContentView(R.layout.activity_main);
         signInButton = findViewById(R.id.signInButton);
         email = findViewById(R.id.mainPageEmail);
         password = findViewById(R.id.mainPagePassword);
@@ -544,4 +550,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

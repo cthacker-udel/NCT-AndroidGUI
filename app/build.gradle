@@ -81,7 +81,7 @@ dependencies {
 
     // square point-of-sale
 
-    implementation 'com.squareup.sdk:point-of-sale-sdk:2.0'
+    implementation "com.squareup.sdk.in-app-payments:card-entry:1.5.0"
 
     // android layout
 
