@@ -388,7 +388,7 @@ public class binancePage extends AppCompatActivity {
                 //accountDetails.add("---------ACCOUNT DETAILS---------");
                 //accountDetails.add(account.isCanTrade()? "Can Trade: True": "Can Trade: False");
                 //accountDetails.add(account.isCanWithdraw()? "Can Withdraw: True": "Can Withdraw: False");
-                //accountDetails.add(account.isCanDeposit()? "Can Deposit: True": "Can Deposit: False");
+                //accountDetails.add(account.isCanDeposit()? "Can coinbaseProDeposit: True": "Can coinbaseProDeposit: False");
                 //accountDetails.add(String.format("Update Time : %d",account.getUpdateTime()));
 
                 //String formattedAccountDetails = String.format("\n---------\n",accountDetails);

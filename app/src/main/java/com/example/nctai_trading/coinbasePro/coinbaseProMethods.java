@@ -698,6 +698,182 @@ public class coinbaseProMethods {
 
     }
 
+    class depositRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public depositRequests(){
+            super();
+        }
+
+        public depositRequests(String newApi, String newSecretKey, String newPassPhrase){
+            depositRequests.this.apiKey = newApi;
+            depositRequests.this.secretKey = newSecretKey;
+            depositRequests.this.passPhrase = newPassPhrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public List<coinbaseProDeposit> getListOfDeposits() throws IOException {
+
+            String url = baseUrl + "/transfers/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinBaseDeposits getCoinBaseDeposits = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseDeposits.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/transfers",passPhrase);
+
+            Call<List<coinbaseProDeposit>> coinbaseProDepositCall = getCoinBaseDeposits.getCoinBaseProDeposits(authHeaders);
+
+            Response<List<coinbaseProDeposit>> coinbaseProDepositResponse = coinbaseProDepositCall.execute();
+
+            List<coinbaseProDeposit> coinbaseProDeposit = coinbaseProDepositResponse.body();
+
+            if(coinbaseProDeposit == null){
+                return null;
+            }
+
+            return coinbaseProDeposit;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public coinbaseProDeposit getSingleDeposit(String transferId) throws IOException {
+
+            String url = baseUrl + String.format("/transfers/:%s",transferId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinBaseDeposit getCoinBaseDeposit = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinBaseDeposit.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/transfers/:" + transferId,passPhrase);
+
+            Call<coinbaseProDeposit> coinbaseProDepositCall = getCoinBaseDeposit.getSingleDeposit(transferId,authHeaders);
+
+            Response<coinbaseProDeposit> coinbaseProDepositResponse = coinbaseProDepositCall.execute();
+
+            coinbaseProDeposit result = coinbaseProDepositResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinbaseProPaymentDeposit depositFunds(BigDecimal amount, String currency, String payment_method_id) throws IOException {
+
+            String url = baseUrl + "/deposits/payment-method/";
+
+            HashMap<String,Object> data = new LinkedHashMap<>();
+
+            data.put("amount",amount);
+            data.put("currency",currency);
+            data.put("payment_method_id",payment_method_id);
+
+            String requestPath = "/deposits/payment-method";
+            String method = "POST";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            coinbaseDepositFunds coinbaseDepositFunds = retrofit.create(com.example.nctai_trading.coinbasePro.coinbaseDepositFunds.class);
+
+            Call<coinbaseProPaymentDeposit> coinbaseProPaymentDepositCall = coinbaseDepositFunds.coinbaseDepositPayment(getAuthHeadersPOST(method,requestPath,data,passPhrase),data);
+
+            Response<coinbaseProPaymentDeposit> coinbaseProPaymentDepositResponse = coinbaseProPaymentDepositCall.execute();
+
+            coinbaseProPaymentDeposit paymentDeposit = coinbaseProPaymentDepositResponse.body();
+
+            return paymentDeposit;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinBaseProCoinbaseDeposit coinbaseProCoinbaseDeposit(BigDecimal amount, String currency, String coinbaseAccountId) throws IOException {
+            String url = baseUrl + "/deposits/coinbase-account/";
+
+            HashMap<String,Object> body = new LinkedHashMap<>();
+
+            body.put("amount",amount);
+            body.put("currency",currency);
+            body.put("coinbase_account_id",coinbaseAccountId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            coinbaseDepositCoinbaseAcctFunds coinbaseDepositCoinbaseAcctFunds = retrofit.create(com.example.nctai_trading.coinbasePro.coinbaseDepositCoinbaseAcctFunds.class);
+
+            Call<coinBaseProCoinbaseDeposit> coinbaseDepositCall = coinbaseDepositCoinbaseAcctFunds.depositCoinbaseProFunds(getAuthHeadersPOST("POST","/deposits/coinbase-account",body,passPhrase),body);
+
+            Response<coinBaseProCoinbaseDeposit> coinBaseProCoinbaseDepositResponse = coinbaseDepositCall.execute();
+
+            coinBaseProCoinbaseDeposit deposit = coinBaseProCoinbaseDepositResponse.body();
+
+            return deposit;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public coinbaseCryptoDepositAddress getCryptoDepositAddresses(String coinbaseAccountID) throws IOException {
+
+            String url = baseUrl + "/coinbase-account/" + coinbaseAccountID + "/addresses/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinbaseCryptoAcctAddress getCoinbaseCryptoAcctAddress = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbaseCryptoAcctAddress.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersPOST("POST","/coinbase-accounts/" + coinbaseAccountID + "/addresses",new HashMap<String,Object>(),passPhrase);
+
+            // post request with no body?, should I just pass an empty HashMap<String,Object>() as body.
+
+            Call<coinbaseCryptoDepositAddress> coinbaseCryptoDepositAddressCall = getCoinbaseCryptoAcctAddress.getCoinbaseCryptoDepositAddress(authHeaders);
+
+            Response<coinbaseCryptoDepositAddress> coinbaseCryptoDepositAddressResponse = coinbaseCryptoDepositAddressCall.execute();
+
+            coinbaseCryptoDepositAddress result = coinbaseCryptoDepositAddressResponse.body();
+
+            return result;
+        }
+
+
+
+
+
+    }
+
+    // finish
+    class withdrawRequests{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public withdrawRequests(){
+            super();
+        }
+
+        public withdrawRequests(String newApi, String newSecretKey, String newPassPhrase){
+            withdrawRequests.this.apiKey = newApi;
+            withdrawRequests.this.secretKey = newApi;
+            withdrawRequests.this.passPhrase = newPassPhrase;
+        }
+
+
+    }
+
 
 
 }
