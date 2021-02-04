@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.example.nctai_trading.binanceUS.binanceKeys;
+import com.example.nctai_trading.binanceUS.binancePage;
 import com.example.nctai_trading.coinbasePro.coinBaseKeys;
 import com.example.nctai_trading.coinbasePro.coinBaseProPage;
 
@@ -225,7 +227,7 @@ public class mainPage extends AppCompatActivity {
         mainPageBinanceKeys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toBinanceKeysPage = new Intent(getApplicationContext(),binanceKeys.class);
+                Intent toBinanceKeysPage = new Intent(getApplicationContext(), binanceKeys.class);
                 startActivity(toBinanceKeysPage);
             }
         });
@@ -274,7 +276,7 @@ public class mainPage extends AppCompatActivity {
                     userContainsSecretKey.create().show();
                     return;
                 }
-                Intent toBinancePage = new Intent(getApplicationContext(),binancePage.class);
+                Intent toBinancePage = new Intent(getApplicationContext(), binancePage.class);
                 startActivity(toBinancePage);
             }
         });

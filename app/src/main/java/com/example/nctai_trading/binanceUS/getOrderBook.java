@@ -1,4 +1,6 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
+
+import com.example.nctai_trading.OrderBook;
 
 import java.util.Map;
 

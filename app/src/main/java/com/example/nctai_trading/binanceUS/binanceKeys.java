@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,25 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-
-import org.bson.Document;
-
-import java.util.Map;
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.mainPage;
 
 public class binanceKeys extends AppCompatActivity {
 
@@ -91,7 +79,7 @@ public class binanceKeys extends AppCompatActivity {
                 });
                 binanceKeysAlert.setCancelable(true);
                 binanceKeysAlert.create().show();
-                Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                Intent toMainPage = new Intent(getApplicationContext(), mainPage.class);
                 startActivity(toMainPage);
             }
         });

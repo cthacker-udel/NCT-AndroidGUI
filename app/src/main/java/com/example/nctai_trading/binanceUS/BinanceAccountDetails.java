@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +22,10 @@ import android.widget.Toast;
 //import com.binance.api.client.domain.general.ExchangeInfo;
 //import com.binance.api.client.domain.general.SymbolInfo;
 
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.currencyInfo;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class BinanceAccountDetails extends AppCompatActivity {
 

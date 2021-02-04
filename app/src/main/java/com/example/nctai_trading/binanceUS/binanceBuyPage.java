@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -14,11 +14,14 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.nctai_trading.PriceTicker;
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.currencyInfo;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.LongStream;

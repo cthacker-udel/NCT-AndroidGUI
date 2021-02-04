@@ -1,9 +1,22 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.nctai_trading.AveragePrice;
+import com.example.nctai_trading.Balance;
+import com.example.nctai_trading.Fill;
+import com.example.nctai_trading.HMAC256;
+import com.example.nctai_trading.OpenOrderList;
+import com.example.nctai_trading.Order;
+import com.example.nctai_trading.OrderBook;
+import com.example.nctai_trading.PriceTicker;
+import com.example.nctai_trading.Sale;
+import com.example.nctai_trading.TradeListTrade;
+import com.example.nctai_trading.Trades;
+import com.example.nctai_trading.sellCurrencyMarketQuantity;
+import com.example.nctai_trading.serverTime;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -398,7 +411,7 @@ public class binanceMethods {
 
         data.put("symbol",symbol);
 
-        getPriceTicker getPriceTicker = retrofit.create(com.example.nctai_trading.getPriceTicker.class);
+        getPriceTicker getPriceTicker = retrofit.create(com.example.nctai_trading.binanceUS.getPriceTicker.class);
 
         Call<PriceTicker> priceTickerCall = getPriceTicker.getPriceTicker(data);
 

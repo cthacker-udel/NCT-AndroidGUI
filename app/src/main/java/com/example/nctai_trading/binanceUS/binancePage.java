@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -32,36 +32,18 @@ import android.widget.Toast;
 //import com.binance.api.client.domain.market.OrderBookEntry;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.currencyInfo;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.RoundingMode;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Url;
 
 public class binancePage extends AppCompatActivity {
 
