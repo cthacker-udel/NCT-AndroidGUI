@@ -343,6 +343,118 @@ public class coinbaseProMethods {
 
 
     }
+
+    class sellCurrency{
+
+        private String sellCurrencyApiKey = "";
+        private String sellCurrencySecretKey = "";
+        private String passphrase = "";
+
+        public sellCurrency() {
+            super();
+        }
+
+        public sellCurrency(String newApi, String newSecret, String newPassPhrase) {
+            this.sellCurrencyApiKey = newApi;
+            this.sellCurrencySecretKey = newSecret;
+            this.passphrase = newPassPhrase;
+        }
+
+        public void setSellCurrencyApikey(String newKey) {
+            this.sellCurrencyApiKey = newKey;
+        }
+
+        public void setSellCurrencySecretKey(String newKey) {
+            this.sellCurrencySecretKey = newKey;
+        }
+
+        public void setPassphrase(String newPassPhrase) {
+            this.passphrase = newPassPhrase;
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void placeSellMarket(BigDecimal funds, String currency1, String currency2) throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+
+            HashMap<String, Object> data = new LinkedHashMap<>();
+            String productId = "";
+            if (currency2 == null) {
+                productId = currency1 + "-USD";
+            } else {
+                productId = currency1 + "-" + currency2;
+            }
+
+
+            data.put("product_id", "BTC-USD");
+            data.put("side", "sell");
+            data.put("type", "market");
+            data.put("funds", funds);
+            String requestPath = "/orders";
+            String method = "POST";
+
+            HashMap<String, String> authHeaders = getAuthHeadersPOST(method, requestPath, data, passPhrase);
+
+            Call<coinBaseProPurchase> getCoinBasePurchase = buyCoinBaseCurrency.buyCoinBasePro(authHeaders, data);
+
+            Response<coinBaseProPurchase> coinBaseProPurchaseResponse = getCoinBasePurchase.execute();
+
+            coinBaseProPurchase result = coinBaseProPurchaseResponse.body();
+
+            System.out.println(result.getCreatedAt());
+            System.out.println(result.getExecutedValue());
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void placeSellLimit(BigDecimal price, BigDecimal size, String currency1, String currency2) throws IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            buyCoinBaseCurrency buyCoinBaseCurrency = retrofit.create(com.example.nctai_trading.buyCoinBaseCurrency.class);
+
+            HashMap<String,Object> data = new LinkedHashMap<>();
+            String productId = "";
+            if(currency2 == null){
+                productId = currency1 + "-USD";
+            }
+            else{
+                productId = currency1 + "-" + currency2;
+            }
+
+            data.put("product_id",productId);
+            data.put("side","sell");
+            data.put("type","limit");
+            data.put("price",price);
+            data.put("size",size);
+            String requestPath = "/orders";
+            String method = "POST";
+
+            HashMap<String,String> authHeaders = getAuthHeadersPOST(method,requestPath,data,passPhrase);
+
+            Call<coinBaseProPurchase> coinBaseProPurchaseCall = buyCoinBaseCurrency.buyCoinBasePro(authHeaders,data);
+
+            Response<coinBaseProPurchase> coinBaseProPurchaseResponse = coinBaseProPurchaseCall.execute();
+
+            coinBaseProPurchase result = coinBaseProPurchaseResponse.body();
+
+            System.out.println(result.getExecutedValue());
+
+        }
+    }
 }
 
 
