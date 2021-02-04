@@ -998,7 +998,7 @@ public class coinbaseProMethods {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public coinbaseConversionResponse conversionRequest(String from, String to, BigDecimal amount) throws IOException {
 
-            String url = baseUrl + "/conversions";
+            String url = baseUrl + "/conversions/";
 
             HashMap<String,Object> body = new LinkedHashMap<>();
             body.put("from",from);
@@ -1025,7 +1025,89 @@ public class coinbaseProMethods {
 
     }
 
+    class paymentMethodRequests{
 
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public paymentMethodRequests(){
+            super();
+        }
+
+        public paymentMethodRequests(String newApiKey, String newSecretKey, String newPassPhrase){
+            paymentMethodRequests.this.apiKey = newApiKey;
+            paymentMethodRequests.this.secretKey = newSecretKey;
+            paymentMethodRequests.this.passPhrase = newPassPhrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public List<coinbasePaymentMethod> getListOfPaymentMethods() throws IOException {
+
+            String url = baseUrl + "/payment-methods/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            getCoinbasePaymentMethodList getCoinbasePaymentMethodList = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbasePaymentMethodList.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/payment-methods",passPhrase);
+
+            Call<List<coinbasePaymentMethod>> getPaymentMethodList = getCoinbasePaymentMethodList.getPaymentMethodList(authHeaders);
+
+            Response<List<coinbasePaymentMethod>> coinbasePaymentMethodListResponse = getPaymentMethodList.execute();
+
+            List<coinbasePaymentMethod> paymentMethods = coinbasePaymentMethodListResponse.body();
+
+            return paymentMethods;
+
+        }
+
+    }
+
+    class feesRequest{
+
+        private String apiKey = "";
+        private String secretKey = "";
+        private String passPhrase = "";
+
+        public feesRequest(){
+            super();
+        }
+
+        public feesRequest(String newApiKey, String newSecretKey, String newPassphrase){
+            feesRequest.this.apiKey = newApiKey;
+            feesRequest.this.secretKey = newSecretKey;
+            feesRequest.this.passPhrase = newPassphrase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        public coinbaseFees getFees() throws IOException {
+
+            String url = baseUrl + "/fees/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            getCoinbaseFees getCoinbaseFees = retrofit.create(com.example.nctai_trading.coinbasePro.getCoinbaseFees.class);
+
+            HashMap<String,String> authHeaders = getAuthHeadersGET("GET","/fees",passPhrase);
+
+            Call<coinbaseFees> getFees = getCoinbaseFees.getFees(authHeaders);
+
+            Response<coinbaseFees> coinbaseFeesResponse = getFees.execute();
+
+            coinbaseFees fees = coinbaseFeesResponse.body();
+
+            return fees;
+
+
+        }
+
+    }
 
 }
 
