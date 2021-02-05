@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.particle;
 
 /**
  * Just defines sleep as it should have been.

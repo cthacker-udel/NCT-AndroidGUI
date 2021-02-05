@@ -1,7 +1,5 @@
 package com.example.nctai_trading.binanceUS;
 
-import com.example.nctai_trading.serverTime;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 

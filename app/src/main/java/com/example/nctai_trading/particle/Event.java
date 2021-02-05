@@ -2,11 +2,14 @@
  * Copyright (c) 2017 by Walter Stroebel and InfComTec.
  * All rights reserved.
  */
-package com.example.nctai_trading;
+package com.example.nctai_trading.particle;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+
+import com.example.nctai_trading.particle.Cloud;
+import com.example.nctai_trading.particle.Device;
 
 import java.util.Date;
 import java.util.TreeMap;

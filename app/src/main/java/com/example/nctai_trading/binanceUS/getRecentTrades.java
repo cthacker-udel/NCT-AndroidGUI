@@ -1,7 +1,5 @@
 package com.example.nctai_trading.binanceUS;
 
-import com.example.nctai_trading.Trades;
-
 import java.util.List;
 import java.util.Map;
 

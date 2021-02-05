@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.nctai_trading.PriceTicker;
 import com.example.nctai_trading.R;
 import com.example.nctai_trading.currencyInfo;
 

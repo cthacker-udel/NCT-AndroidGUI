@@ -4,19 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.nctai_trading.AveragePrice;
-import com.example.nctai_trading.Balance;
-import com.example.nctai_trading.Fill;
 import com.example.nctai_trading.HMAC256;
-import com.example.nctai_trading.OpenOrderList;
-import com.example.nctai_trading.Order;
-import com.example.nctai_trading.OrderBook;
-import com.example.nctai_trading.PriceTicker;
-import com.example.nctai_trading.Sale;
-import com.example.nctai_trading.TradeListTrade;
-import com.example.nctai_trading.Trades;
-import com.example.nctai_trading.sellCurrencyMarketQuantity;
-import com.example.nctai_trading.serverTime;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -146,11 +134,11 @@ public class binanceMethods {
 
         ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
 
-        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
+        Call<Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
         try {
             System.out.println("Reached account info");
-            Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
-            com.example.nctai_trading.Account result = responseAccount.body();
+            Response<Account> responseAccount = accountCall.execute();
+            Account result = responseAccount.body();
             HashMap<String,String> balanceMap = new HashMap<>();
             List<Balance> balanceList = result.getBalances();
             for(Balance eachBalance: balanceList){
@@ -186,11 +174,11 @@ public class binanceMethods {
 
         ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
 
-        Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
+        Call<Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
         try {
             System.out.println("Reached account info");
-            Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
-            com.example.nctai_trading.Account result = responseAccount.body();
+            Response<Account> responseAccount = accountCall.execute();
+            Account result = responseAccount.body();
             HashMap<String,String> balanceMap = new HashMap<>();
             List<Balance> balanceList = result.getBalances();
             for(Balance eachBalance: balanceList){
@@ -312,7 +300,7 @@ public class binanceMethods {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public OrderBook getOrderBook(String symbol1, int limit) throws IOException {
 
-        String url = this.baseUrl + "/api/v3/depth";
+        String url = this.baseUrl + "/api/v3/depth/";
 
         String symbol = symbol1 + "USD";
 
@@ -746,6 +734,27 @@ public class binanceMethods {
         }
 
     }
+
+    public class tradeRequests{
+
+        public tradeRequests(){
+            super();
+        }
+
+        public tradeRequests(String newApi, String newSecret){
+            apiKey = newApi;
+            secretKey = newSecret;
+        }
+
+        public void getHistoricalTrades(){
+
+
+
+        }
+
+
+    }
+
 
 
     // COINBASE PRO SIGN A MESSAGE

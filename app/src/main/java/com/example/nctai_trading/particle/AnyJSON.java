@@ -2,14 +2,11 @@
  * Copyright (c) 2017 by Walter Stroebel and InfComTec.
  * Some utility code for using the JSON classes.
  */
-package com.example.nctai_trading;
-
-import com.google.gson.JsonObject;
+package com.example.nctai_trading.particle;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Objects;
 import org.json.JSONArray;
 import org.json.JSONException;

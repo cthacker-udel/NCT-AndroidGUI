@@ -1,5 +1,6 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.binanceUS;
 
+import com.example.nctai_trading.binanceUS.Fill;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

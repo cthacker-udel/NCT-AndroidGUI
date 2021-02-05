@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.particle;
 
 import java.util.Date;
 import java.util.TimeZone;

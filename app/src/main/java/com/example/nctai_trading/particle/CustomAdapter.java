@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.particle;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.User;
 
 import java.util.List;
 

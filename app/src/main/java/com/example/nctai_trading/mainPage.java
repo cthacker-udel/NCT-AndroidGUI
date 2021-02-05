@@ -19,6 +19,9 @@ import com.example.nctai_trading.binanceUS.binanceKeys;
 import com.example.nctai_trading.binanceUS.binancePage;
 import com.example.nctai_trading.coinbasePro.coinBaseKeys;
 import com.example.nctai_trading.coinbasePro.coinBaseProPage;
+import com.example.nctai_trading.particle.Cloud;
+import com.example.nctai_trading.particle.DeviceEvent;
+import com.example.nctai_trading.particle.Event;
 
 import java.util.UUID;
 

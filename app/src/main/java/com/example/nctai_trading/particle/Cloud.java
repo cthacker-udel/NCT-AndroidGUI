@@ -2,7 +2,7 @@
  * Copyright (c) 2017 by Walter Stroebel and InfComTec.
  * All rights reserved.
  */
-package com.example.nctai_trading;
+package com.example.nctai_trading.particle;
 
 import android.os.Build;
 

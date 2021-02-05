@@ -158,10 +158,10 @@ public class binancePage extends AppCompatActivity {
 
         //getAccountInfo accountInfoGet = retrofit.create(getAccountInfo.class);
 
-        //Call<com.example.nctai_trading.Account> accountCall = accountInfoGet.getAccount();
+        //Call<com.example.nctai_trading.binanceUS.Account> accountCall = accountInfoGet.getAccount();
         //try {
-        //    Response<com.example.nctai_trading.Account> responseAccount = accountCall.execute();
-        //    com.example.nctai_trading.Account result = responseAccount.body();
+        //    Response<com.example.nctai_trading.binanceUS.Account> responseAccount = accountCall.execute();
+        //    com.example.nctai_trading.binanceUS.Account result = responseAccount.body();
         //    System.out.println(result.getBalances());
         //    System.out.println(result.getAccountType());
         //    System.out.println(result.getMakerCommission());
