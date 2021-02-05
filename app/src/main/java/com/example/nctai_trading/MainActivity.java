@@ -275,9 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     Object obj = c.newInstance();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
+                } catch (IllegalAccessException | InstantiationException e) {
                     e.printStackTrace();
                 }
 
@@ -294,9 +292,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     MainActivity.this.invokeObject = method.invoke(passwordFormulaInstance,passwordContent);
                     MainActivity.this.hashedPassword = MainActivity.this.invokeObject.toString();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
 

@@ -59,11 +59,11 @@ dependencies {
 
     //retrofit
 
-    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.14.4'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
 
     // gson
 
@@ -81,7 +81,7 @@ dependencies {
 
     // square point-of-sale
 
-    implementation "com.squareup.sdk.in-app-payments:card-entry:1.5.0"
+    implementation 'com.squareup:square:8.1.0.20210121'
 
     // android layout
 
