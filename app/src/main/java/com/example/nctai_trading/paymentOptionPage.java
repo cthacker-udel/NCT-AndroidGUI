@@ -64,8 +64,8 @@ public class paymentOptionPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_option_page);
 
-        com.example.nctai_trading.squareSDK.cardEntryBackgroundHandler cardEntryBackgroundHandler = new cardEntryBackgroundHandler();
-        CardEntry.setCardNonceBackgroundHandler(cardEntryBackgroundHandler);
+        com.example.nctai_trading.squareSDK.cardEntryBackgroundHandler cardEntryBackgroundHandler;
+        //CardEntry.setCardNonceBackgroundHandler(cardEntryBackgroundHandler);
 
         termsOfServiceBtn = findViewById(R.id.paymentOptionTermsOfServiceBtn);
         backToHomePageBtn = findViewById(R.id.backToHomePageButton);

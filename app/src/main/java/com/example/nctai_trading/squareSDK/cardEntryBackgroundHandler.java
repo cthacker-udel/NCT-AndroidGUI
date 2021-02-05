@@ -22,9 +22,6 @@ public class cardEntryBackgroundHandler implements CardNonceBackgroundHandler {
     @NotNull
     @Override
     public CardEntryActivityCommand handleEnteredCardInBackground(@NotNull CardDetails cardDetails) {
-
-
-
         try{
             // TODO : Call your backend service
             // MyBackendServiceResponse response = // myBackendService(cardDetails.getNonce());....
