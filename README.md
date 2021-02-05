@@ -31,6 +31,9 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Sell requests
 - [x] Account information requests
 - [x] Order information requests
+- [x] Market Requests
+- [x] Trade requests
+- [x] Cancel requests
 
 ### Shared Preferences Implementation
 
