@@ -5,6 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
+import com.google.gson.Gson;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -746,12 +747,400 @@ public class binanceMethods {
             secretKey = newSecret;
         }
 
-        public void getHistoricalTrades(){
+        public List<binanceHistoricalTrade> getHistoricalTrades(String symbol) throws IOException {
 
+            String url = baseUrl + "/api/v3/historicalTrades/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            Call<List<binanceHistoricalTrade>> getHistoricalTradeList = binanceTradesInterface.getHistoricalTrades(data,apiKey);
+
+            Response<List<binanceHistoricalTrade>> historicalTradeList = getHistoricalTradeList.execute();
+
+            List<binanceHistoricalTrade> result = historicalTradeList.body();
+
+            return result;
+        }
+
+        public List<binanceAggTrade> getAggTrades(String symbol) throws IOException {
+
+            String url = baseUrl + "/api/v3/aggTrades/";
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            Call<List<binanceAggTrade>> binanceAggTradeCall = binanceTradesInterface.getAggTrades(data,apiKey);
+
+            Response<List<binanceAggTrade>> binanceAggTradeResponse = binanceAggTradeCall.execute();
+
+            List<binanceAggTrade> binanceAggTradeList = binanceAggTradeResponse.body();
+
+            return binanceAggTradeList;
 
 
         }
 
+        public binanceAveragePrice getAveragePrice(String symbol) throws IOException {
+
+            String url = baseUrl + "/api/v3/avgPrice/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            Call<binanceAveragePrice> getAvgPrice = binanceTradesInterface.getAvgPrice(data,apiKey);
+
+            Response<binanceAveragePrice> averagePriceResponse = getAvgPrice.execute();
+
+            binanceAveragePrice theAvgPrice = averagePriceResponse.body();
+
+            return theAvgPrice;
+
+        }
+
+        public List<binance24HourChange> get24HourPriceChangeWithoutSymbol() throws IOException {
+
+            String url = baseUrl + "/api/v3/ticker/24hr/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            Call<List<binance24HourChange>> binance24HourChangeCall = binanceTradesInterface.get24HourChangeNoSymbol(apiKey);
+
+            Response<List<binance24HourChange>> binance24HourChangeResponse = binance24HourChangeCall.execute();
+
+            List<binance24HourChange> changes24Hour = binance24HourChangeResponse.body();
+
+            return changes24Hour;
+
+
+        }
+
+        public binance24HourChange get24HourPriceChangeWithSymbol(String symbol) throws IOException {
+
+            String url = baseUrl + "/api/v3/ticker/24hr/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            Call<binance24HourChange> binance24HourChangeCall = binanceTradesInterface.get24HourChangeSymbol(data,apiKey);
+
+            Response<binance24HourChange> binance24HourChangeResponse = binance24HourChangeCall.execute();
+
+            binance24HourChange result = binance24HourChangeResponse.body();
+
+            return result;
+
+        }
+
+        public List<binanceBookTicker> getBookTickerNoSymbol() throws IOException {
+
+            String url = baseUrl + "/api/v3/ticker/bookTicker/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            Call<List<binanceBookTicker>> tickersCall = binanceTradesInterface.getBookTickerNoSymbol(apiKey);
+
+            Response<List<binanceBookTicker>> binanceBookTickerResponse = tickersCall.execute();
+
+            List<binanceBookTicker> result = binanceBookTickerResponse.body();
+
+            return result;
+
+        }
+
+        public binanceBookTicker getBookTickerSymbol(String symbol) throws IOException {
+
+            String url = baseUrl + "/api/v3/ticker/bookTicker/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceTradesInterface binanceTradesInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceTradesInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            Call<binanceBookTicker> binanceBookTickerCall = binanceTradesInterface.getBookTickerSymbol(data,apiKey);
+
+            Response<binanceBookTicker> binanceBookTickerRepsonse = binanceBookTickerCall.execute();
+
+            binanceBookTicker result = binanceBookTickerRepsonse.body();
+
+            return result;
+
+        }
+
+    }
+
+    public class cancelRequests{
+
+        public cancelRequests(){
+            super();
+        }
+
+        public cancelRequests(String newApi, String newSecret){
+            apiKey = newApi;
+            secretKey = newSecret;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public binanceCancelOrder cancelOrder(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> data = new HashMap<>();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            data.put("symbol",symbol);
+            data.put("timestamp",String.valueOf(synchronize()));
+
+            String signature = getSignature(url,data);
+
+            data.put("signature",signature);
+
+            Call<binanceCancelOrder> binanceCancelOrderCall = binanceOrdersInterface.cancelOrder(data,apiKey);
+
+            Response<binanceCancelOrder> cancelOrderResponse = binanceCancelOrderCall.execute();
+
+            binanceCancelOrder result = cancelOrderResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean canelAllOrdersWithSymbol(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/openOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+            data.put("timestamp",String.valueOf(synchronize()));
+            data.put("signature",getSignature(url,data));
+
+            Response cancelAllBinanceOrdersWithSymbol = binanceOrdersInterface.cancelAllOrdersSymbol(data,apiKey);
+
+            return cancelAllBinanceOrdersWithSymbol.errorBody() != null;
+
+        }
+
+    }
+
+    public class orderRequests{
+
+        public orderRequests(){
+            super();
+        }
+
+        public orderRequests(String newApiKey, String newSecretKey){
+            apiKey = newApiKey;
+            secretKey = newSecretKey;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<binanceOrderListOrder> getAllOpenOrdersNoSymbol() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/openOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<List<binanceOrderListOrder>> getAllOpenOrders = binanceOrdersInterface.getAllOpenOrdersNoSymbol(data,apiKey);
+
+            Response<List<binanceOrderListOrder>> binanceOpenOrdersListResponse = getAllOpenOrders.execute();
+
+            List<binanceOrderListOrder> listOfOpenOrders = binanceOpenOrdersListResponse.body();
+
+            return listOfOpenOrders;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<binanceOrderListOrder> getAllOpenOrdersSymbol(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/openOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<List<binanceOrderListOrder>> getOpenOrders = binanceOrdersInterface.getAllOpenOrdersSymbol(data,apiKey);
+
+            Response<List<binanceOrderListOrder>> binanceOpenOrdersResponse = getOpenOrders.execute();
+
+            List<binanceOrderListOrder> openOrderList = binanceOpenOrdersResponse.body();
+
+            return openOrderList;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<binanceOrderListOrder> getAllAccountOrders(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/allOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+
+            data.put("timestamp",synchronize() + "");
+
+            data.put("signature",getSignature(url,data));
+
+            Call<List<binanceOrderListOrder>> allAcctOrdersList = binanceOrdersInterface.getAllOpenOrdersAcct(data,apiKey);
+
+            Response<List<binanceOrderListOrder>> allAcctOrdersResponse = allAcctOrdersList.execute();
+
+            List<binanceOrderListOrder> allAcctOrders = allAcctOrdersResponse.body();
+
+            return allAcctOrders;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public binanceOCOTrade newOCOTrade(String symbol, String side, double quantity, double price, double stopPrice) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/order/oco/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+            data.put("side",side);
+            data.put("quantity",quantity + "");
+            data.put("price",price + "");
+            data.put("stopPrice",stopPrice + "");
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<binanceOCOTrade> makeOCOTrade = binanceOrdersInterface.createOCOTrade(data,apiKey);
+
+            Response<binanceOCOTrade> ocoTradeResponse = makeOCOTrade.execute();
+
+            binanceOCOTrade trade = ocoTradeResponse.body();
+
+            return trade;
+
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public binanceOCOTrade cancelOCOTradeOrderListID(String symbol, String id) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/orderList/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+
+            data.put("symbol",symbol);
+            data.put("orderListId",id);
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<binanceOCOTrade> cancelOCOTrade = binanceOrdersInterface.cancelOCOTradeOrderListId(data,apiKey);
+
+            Response<binanceOCOTrade> cancelledOCOTrade = cancelOCOTrade.execute();
+
+            binanceOCOTrade cancelResult = cancelledOCOTrade.body();
+
+            return cancelResult;
+
+        }
 
     }
 
