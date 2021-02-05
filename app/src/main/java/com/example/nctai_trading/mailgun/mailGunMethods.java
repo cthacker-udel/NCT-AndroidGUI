@@ -13,6 +13,7 @@ import org.spongycastle.asn1.ocsp.ResponseData;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
@@ -575,6 +576,37 @@ public class mailGunMethods {
             return result.getMessage();
 
         }
+
+    }
+
+    class eventsRequests{
+
+        public eventsRequests(){
+            super();
+        }
+
+
+        public List<mailgunDomainEvents> getRecentDomainEvents(String domainName) throws IOException {
+
+            String url = baseUrl + String.format("/%s/events/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunEventsInterface mailgunEventsInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunEventsInterface.class);
+
+            Call<List<mailgunDomainEvents>> getRecentEvents = mailgunEventsInterface.getDomainEvents(domainName,getAuthHeaders());
+
+            Response<List<mailgunDomainEvents>> recentEvents = getRecentEvents.execute();
+
+            List<mailgunDomainEvents> result = recentEvents.body();
+
+            return result;
+
+        }
+
 
     }
 
