@@ -43,6 +43,14 @@ public class mailGunMethods {
 
     }
 
+    public HashMap<String,String> getAuthHeaders(){
+
+        HashMap<String,String> authHeader = new HashMap<>();
+        authHeader.put("api",getSignature());
+        return authHeader;
+
+    }
+
     class messageRequests{
 
         public mailgunMessageResponse sendMessage(String to, String from, String subject, String text) throws IOException {
@@ -294,6 +302,279 @@ public class mailGunMethods {
         }
 
 
+
+    }
+
+    class ipRequests{
+
+        public mailgunIPList getAllIps() throws IOException {
+
+            String url = baseUrl + "/ips/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPInterface mailgunIPInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPInterface.class);
+
+            HashMap<String,String> authHeader = new HashMap<>();
+            authHeader.put("api",getSignature());
+
+            Call<mailgunIPList> mailgunIPListCall = mailgunIPInterface.getListIPS(authHeader);
+
+            Response<mailgunIPList> mailgunIPListResponse = mailgunIPListCall.execute();
+
+            mailgunIPList IPList = mailgunIPListResponse.body();
+
+            return IPList;
+
+        }
+
+        public mailgunSpecificIP getSpecficiIP(String ipAddress) throws IOException{
+
+            String url = baseUrl + String.format("/ips/%s",ipAddress);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPInterface mailgunIPInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPInterface.class);
+
+            Call<mailgunSpecificIP> mailgunSpecificIPCall = mailgunIPInterface.getSpecificIP(ipAddress,getAuthHeaders());
+
+            Response<mailgunSpecificIP> mailgunSpecificIPResponse = mailgunSpecificIPCall.execute();
+
+            mailgunSpecificIP result = mailgunSpecificIPResponse.body();
+
+            return result;
+
+        }
+
+        public mailgunIPList getDomainIPList(String domain) throws IOException{
+
+            String url = baseUrl + String.format("/domains/%s/ips/",domain);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPInterface mailgunIPInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPInterface.class);
+
+            Call<mailgunIPList> mailgunIPListCall = mailgunIPInterface.getDomainIPS(domain, getAuthHeaders());
+
+            Response<mailgunIPList> mailgunIPListResponse = mailgunIPListCall.execute();
+
+            mailgunIPList result = mailgunIPListResponse.body();
+
+            return result;
+
+        }
+
+        public String assignIPToDomain(String domain, String ip) throws IOException {
+
+            String url = baseUrl + String.format("/domains/%s/ips",domain);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("ip",ip);
+
+            mailgunIPInterface mailgunIPInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPInterface.class);
+
+            Call<mailgunDeleteDomainResponse> mailgunDeleteDomainResponseCall = mailgunIPInterface.assignDomainIP(domain,getAuthHeaders(),body);
+
+            Response<mailgunDeleteDomainResponse> response = mailgunDeleteDomainResponseCall.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+            return result.getMessage();
+
+        }
+
+        public String unassignIPToDomain(String domain, String ip) throws IOException {
+
+            String url = baseUrl + String.format("/domains/%s/ips/%s",domain,ip);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPInterface mailgunIPInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPInterface.class);
+
+            Call<mailgunDeleteDomainResponse> responseCall = mailgunIPInterface.unassignDomainIP(domain,ip,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> response = responseCall.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+            return result.getMessage();
+        }
+
+    }
+
+    class ipPoolRequests{
+
+        public String createIPPool(String name) throws IOException {
+
+            String url = baseUrl + "/v1/ip_pools/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+            body.put("name",name);
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            Call<mailgunDeleteDomainResponse> createIpPool = mailgunIPPoolInterface.createIPPool(getAuthHeaders(),body);
+
+            Response<mailgunDeleteDomainResponse> response = createIpPool.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+            return result.getMessage();
+
+        }
+
+        public mailgunIPList getIpPools() throws IOException {
+
+            String url = baseUrl + "/v1/ip_pools/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            Call<mailgunIPList> mailgunIPListCall = mailgunIPPoolInterface.getIPPools(getAuthHeaders());
+
+            Response<mailgunIPList> mailgunIPListResponse = mailgunIPListCall.execute();
+
+            mailgunIPList result = mailgunIPListResponse.body();
+
+            return result;
+
+        }
+
+        public String updateIpPools(String name, String description, String addIp, String removeIp) throws IOException {
+
+            String url = baseUrl + String.format("/v1/ip_pools/%s/",name);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("name",name);
+            body.put("description",description);
+            body.put("add_ip",addIp);
+            body.put("remove_ip",removeIp);
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            Call<mailgunDeleteDomainResponse> mailgunDeleteDomainResponseCall = mailgunIPPoolInterface.updateIPPool(name,body,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> response = mailgunDeleteDomainResponseCall.execute();
+
+            mailgunDeleteDomainResponse mailgunDeleteDomainResponse = response.body();
+
+            return mailgunDeleteDomainResponse.getMessage();
+
+
+        }
+
+        public String deleteIpPool(String ip, String poolId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/ip_pools/%s/",poolId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("ip",ip);
+            body.put("pool_id",poolId);
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            Call<mailgunDeleteDomainResponse> responseCall = mailgunIPPoolInterface.deleteIPPool(poolId,body,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> response = responseCall.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+            return result.getMessage();
+
+        }
+
+        public String linkIpPool(String domainName, String poolId) throws IOException {
+
+            String url = baseUrl + String.format("/v3/domains/%s/ips/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("pool_id",poolId);
+
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            Call<mailgunDeleteDomainResponse> responseCall = mailgunIPPoolInterface.linkIPPool(domainName,body,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> deleteDomainResponseResponse = responseCall.execute();
+
+            mailgunDeleteDomainResponse result = deleteDomainResponseResponse.body();
+
+            return result.getMessage();
+
+
+        }
+
+        public String unlinkIpPool(String domainName, String ip, String poolId) throws IOException {
+
+            String url = baseUrl + String.format("/v3/domains/%s/ips/ip_pool/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunIPPoolInterface mailgunIPPoolInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunIPPoolInterface.class);
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("ip",ip);
+            body.put("pool_id",poolId);
+
+            Call<mailgunDeleteDomainResponse> mailgunDeleteDomainResponseCall = mailgunIPPoolInterface.unlinkIPPool(domainName,body,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> response = mailgunDeleteDomainResponseCall.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+
+            return result.getMessage();
+
+        }
 
     }
 
