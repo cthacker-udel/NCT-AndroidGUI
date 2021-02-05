@@ -610,6 +610,41 @@ public class mailGunMethods {
 
     }
 
+    class statsRequests{
+
+        public statsRequests(){
+            super();
+        }
+
+        public List<mailgunDomainStat> getDomainStats(String domainName, String filterEvent) throws IOException {
+
+            String url = baseUrl + String.format("/%s/stats/total/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("event",filterEvent);
+            body.put("resolution","1m");
+
+            mailgunStatsInterface mailgunStatsInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunStatsInterface.class);
+
+            Call<List<mailgunDomainStat>> statsCall = mailgunStatsInterface.getDomainStats(domainName,getAuthHeaders(),body);
+
+            Response<List<mailgunDomainStat>> statsResponse = statsCall.execute();
+
+            List<mailgunDomainStat> stats = statsResponse.body();
+
+            return stats;
+
+        }
+
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String generateCode(){
 
