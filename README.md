@@ -7,6 +7,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Shared Preferences Implementation
 - [x] Binance.us implementation
 - [x] CoinbasePro implementation
+- [x] Mailgun implementation
 
 ### MongoDB Implementation
 
@@ -35,6 +36,11 @@ CAMERON THACKER - NCT ANDROID GUI
 
 - [x] Store binance and coinbase credentials safely
 - [x] Check if user has coinbase or binance keys stored in system upon sign in, and prompted to enter them in upon sign in
+
+### Mailgun Implementation
+
+- [x] Send messages to domains
+- [x] Domain credential requests
 
 
 ## TODOS
