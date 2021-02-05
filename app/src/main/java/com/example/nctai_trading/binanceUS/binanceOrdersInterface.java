@@ -34,4 +34,13 @@ public interface binanceOrdersInterface {
     @DELETE("https://api.binance.us/api/v3/orderList")
     Call<binanceOCOTrade> cancelOCOTradeOrderListId(@QueryMap Map<String,String> authMap, @Header("X-MBX-APIKEY") String apiKey);
 
+    @DELETE("https://api.binance.us/api/v3/orderList")
+    Call<binanceSpecificOCO> cancelSpecificOCOTradeOrder(@QueryMap Map<String,String> authMap, @Header("X-MBX-APIKEY") String apiKey);
+
+    @DELETE("https://api.binance.us/api/v3/allOrderList")
+    Call<List<binanceSpecificOCO>> cancelAllSpecificOCO(@QueryMap Map<String,String> authMap, @Header("X-MBX-APIKEY") String apiKey);
+
+    @GET("https://api.binance.us/api/v3/openOrderList")
+    Call<List<binanceSpecificOCO>> getAllOpenOCO(@QueryMap Map<String,String> authMap, @Header("X-MBX-APIKEY") String apiKey);
+
 }

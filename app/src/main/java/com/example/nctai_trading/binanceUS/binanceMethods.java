@@ -1142,6 +1142,88 @@ public class binanceMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public binanceSpecificOCO cancelSpecificOCOListID(String orderListID) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/orderList/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put("orderListId",orderListID);
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<binanceSpecificOCO> cancelSpecificOCO = binanceOrdersInterface.cancelSpecificOCOTradeOrder(data,apiKey);
+
+            Response<binanceSpecificOCO> binanceSpecificOCOResponse = cancelSpecificOCO.execute();
+
+            binanceSpecificOCO result = binanceSpecificOCOResponse.body();
+
+            return result;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<binanceSpecificOCO> cancelAllSpecificOCO() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/allOrderList/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            Call<List<binanceSpecificOCO>> binanceOrdersCall = binanceOrdersInterface.cancelAllSpecificOCO(data,apiKey);
+
+            Response<List<binanceSpecificOCO>> binanceOrdersResponse = binanceOrdersCall.execute();
+
+            List<binanceSpecificOCO> binanceSpecificOCOList = binanceOrdersResponse.body();
+
+            return binanceSpecificOCOList;
+
+
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<binanceSpecificOCO> openAllOpenOCO() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/openOrderList";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            binanceOrdersInterface binanceOrdersInterface = retrofit.create(com.example.nctai_trading.binanceUS.binanceOrdersInterface.class);
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put("timestamp",synchronize() + "");
+            data.put("signature",getSignature(url,data));
+
+            Call<List<binanceSpecificOCO>> binanceSpecificOCOList = binanceOrdersInterface.getAllOpenOCO(data,apiKey);
+
+            Response<List<binanceSpecificOCO>> binanceSpecificOcoResponse = binanceSpecificOCOList.execute();
+
+            List<binanceSpecificOCO> result = binanceSpecificOcoResponse.body();
+
+            return result;
+
+        }
+
+
     }
 
 
