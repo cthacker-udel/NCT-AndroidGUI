@@ -6,6 +6,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
@@ -24,4 +25,9 @@ public interface mailgunSuppressionInterface {
 
     @POST("https://api.mailgun.net/{domain}/bounces")
     Call<mailgunDeleteDomainResponse> addMultipleBouncers(@Path("domain") String domainName, @Body List<HashMap<String,String>> body, @HeaderMap Map<String,String> authMap);
+
+    @DELETE("https://api.mailgun.net/{domain}/bounces/{address}")
+    Call<mailgunDeleteDomainResponse> deleteSingleBounce(@Path("domain") String domainName, @Path("address") String addressName, @HeaderMap Map<String,String> authMap);
+
+
 }

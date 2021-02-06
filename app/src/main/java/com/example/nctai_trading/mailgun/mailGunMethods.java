@@ -749,6 +749,89 @@ public class mailGunMethods {
 
         }
 
+        public mailgunDeleteDomainResponse deleteSpecificBouncer(String domainName, String address) throws IOException {
+
+            String url = baseUrl + String.format("/%s/bounces/%s/",domainName,address);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunSuppressionInterface mailgunSuppressionInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunSuppressionInterface.class);
+
+            Call<mailgunDeleteDomainResponse> call = mailgunSuppressionInterface.deleteSingleBounce(domainName,address,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> response = call.execute();
+
+            mailgunDeleteDomainResponse result = response.body();
+
+            return result;
+        }
+
+
+
+
+    }
+
+    class validationRequests{
+
+        public validationRequests(){
+            super();
+        }
+
+
+        public com.example.nctai_trading.mailgun.mailgunSingleEmailValidation singleValidationGET(String address) throws IOException {
+
+            String url = baseUrl + "/v4/address/validate/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunEmailValidationInterface mailgunEmailValidationInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunEmailValidationInterface.class);
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("address",address);
+
+            Call<mailgunSingleEmailValidation> mailgunSingleEmailValidation = mailgunEmailValidationInterface.singleEmailValidation(body,getAuthHeaders());
+
+            Response<mailgunSingleEmailValidation> mailgunSingleEmailValidationResponse = mailgunSingleEmailValidation.execute();
+
+            com.example.nctai_trading.mailgun.mailgunSingleEmailValidation result = mailgunSingleEmailValidationResponse.body();
+
+            return result;
+
+
+        }
+
+        public mailgunSingleEmailValidation singleEmailValidationPOST(String address) throws IOException{
+
+            String url = baseUrl + "/v4/address/validate/";
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("address",address);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunEmailValidationInterface emailValidationInterface = retrofit.create(mailgunEmailValidationInterface.class);
+
+            Call<mailgunSingleEmailValidation> emailValidationCall = emailValidationInterface.singleEmailValidationPOST(body,getAuthHeaders());
+
+            Response<mailgunSingleEmailValidation> emailValidationResponse = emailValidationCall.execute();
+
+            mailgunSingleEmailValidation result = emailValidationResponse.body();
+
+            return result;
+
+        }
+
 
 
     }
