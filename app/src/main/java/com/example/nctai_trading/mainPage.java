@@ -19,13 +19,9 @@ import com.example.nctai_trading.binanceUS.binanceKeys;
 import com.example.nctai_trading.binanceUS.binancePage;
 import com.example.nctai_trading.coinbasePro.coinBaseKeys;
 import com.example.nctai_trading.coinbasePro.coinBaseProPage;
-import com.example.nctai_trading.particle.Cloud;
-import com.example.nctai_trading.particle.DeviceEvent;
-import com.example.nctai_trading.particle.Event;
+import com.example.nctai_trading.particle.particleMethods;
 
-import java.util.UUID;
-
-import io.particle.android.sdk.cloud.ParticleCloudSDK;
+import java.io.IOException;
 
 public class mainPage extends AppCompatActivity {
 
@@ -140,64 +136,16 @@ public class mainPage extends AppCompatActivity {
                     }
                 }
                 else{
-                    ParticleCloudSDK.init(mainPage.this);
-                    Cloud particleCloud = new Cloud("3bdfa0e2739b955a2664c371a4a8cdba056645f6",true,false);
-                    DeviceEvent nn13buy = new DeviceEvent() {
-                        @Override
-                        public void event(Event e) {
-                            e.deviceName = "nn13buy";
-                        }
+                    com.example.nctai_trading.particle.particleMethods methods = new com.example.nctai_trading.particle.particleMethods();
+                    particleMethods.accessTokenRequests tokenMethods = methods.new accessTokenRequests();
+                    try {
+                        tokenMethods.deleteAllActiveAccessTokens("token123","abcdefgh");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                        @Override
-                        public UUID uuid() {
-                            return null;
-                        }
 
-                        @Override
-                        public String forDeviceId() {
-                            return null;
-                        }
-
-                        @Override
-                        public String forDeviceName() {
-                            return null;
-                        }
-
-                        @Override
-                        public String forEventName() {
-                            return null;
-                        }
-                    };
-                    DeviceEvent nn13sell = new DeviceEvent() {
-                        @Override
-                        public void event(Event e) {
-                            e.deviceName = "nn13sell";
-                        }
-
-                        @Override
-                        public UUID uuid() {
-                            return null;
-                        }
-
-                        @Override
-                        public String forDeviceId() {
-                            return null;
-                        }
-
-                        @Override
-                        public String forDeviceName() {
-                            return null;
-                        }
-
-                        @Override
-                        public String forEventName() {
-                            return null;
-                        }
-                    };
-                    particleCloud.subscribe(nn13buy);
-                    particleCloud.subscribe(nn13sell);
-                    particleCloud.callF("devicename","sell","binanceapi and secret key");
-                    particleCloud.callF("devicename","buy","binanceapi and secret key");
+                    return;
                 }
 
             }

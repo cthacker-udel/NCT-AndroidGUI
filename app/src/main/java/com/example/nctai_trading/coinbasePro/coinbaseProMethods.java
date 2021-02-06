@@ -235,7 +235,7 @@ public class coinbaseProMethods {
         return accountDetails;
     }
 
-    class buyCurrency {
+    public class buyCurrency {
 
         private String buyCurrencyApiKey = "";
         private String buyCurrencySecretKey = "";
@@ -348,7 +348,7 @@ public class coinbaseProMethods {
 
     }
 
-    class sellCurrency{
+    public class sellCurrency{
 
         private String sellCurrencyApiKey = "";
         private String sellCurrencySecretKey = "";
@@ -460,7 +460,7 @@ public class coinbaseProMethods {
         }
     }
 
-    class cancelOrder{
+    public class cancelOrder{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -517,7 +517,7 @@ public class coinbaseProMethods {
         }
     }
 
-    class orderRequests{
+    public class orderRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -606,7 +606,7 @@ public class coinbaseProMethods {
 
     }
 
-    class fillRequests{
+    public class fillRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -653,7 +653,7 @@ public class coinbaseProMethods {
 
     }
 
-    class exchangeLimitRequests{
+    public class exchangeLimitRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -698,7 +698,7 @@ public class coinbaseProMethods {
 
     }
 
-    class depositRequests{
+    public class depositRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -854,7 +854,7 @@ public class coinbaseProMethods {
 
     }
 
-    class withdrawRequests{
+    public class withdrawRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -979,7 +979,7 @@ public class coinbaseProMethods {
 
     }
 
-    class conversionRequests{
+    public class conversionRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -1025,7 +1025,7 @@ public class coinbaseProMethods {
 
     }
 
-    class paymentMethodRequests{
+    public class paymentMethodRequests{
 
         private String apiKey = "";
         private String secretKey = "";
@@ -1067,7 +1067,7 @@ public class coinbaseProMethods {
 
     }
 
-    class feesRequest{
+    public class feesRequest{
 
         private String apiKey = "";
         private String secretKey = "";
