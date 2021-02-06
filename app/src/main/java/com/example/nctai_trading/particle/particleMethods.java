@@ -11,6 +11,7 @@ import java.util.Map;
 import io.particle.android.sdk.cloud.ApiDefs;
 import io.particle.android.sdk.cloud.ParticleCloudSDK;
 import io.particle.android.sdk.di.CloudModule;
+import retrofit.converter.GsonConverter;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -22,6 +23,8 @@ public class particleMethods {
 
     String username = "particle";
     String password = "particle";
+
+    String accessToken = "1234";
 
     public String getSignature(){
 
@@ -37,6 +40,14 @@ public class particleMethods {
         Map<String,String> authHeader = new HashMap<>();
         authHeader.put("Authorization",getSignature());
         return authHeader;
+
+    }
+
+    public Map<String,String> getTokenQueryString(){
+
+        Map<String,String> queryMap = new HashMap<>();
+        queryMap.put("access_token",accessToken);
+        return queryMap;
 
     }
 
@@ -342,6 +353,158 @@ public class particleMethods {
             return deviceList;
 
         }
+
+        public particleProductListDeviceList getListOfDevicesPartOfProduct(String productID) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/devices/",productID);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Map<String,String> queryMap = getTokenQueryString();
+
+            Call<particleProductListDeviceList> call = particleDeviceInterface.getProductDevices(productID,queryMap);
+
+            Response<particleProductListDeviceList> response = call.execute();
+
+            particleProductListDeviceList result = response.body();
+
+            return result;
+
+        }
+
+        public particleDeviceImportResponse importDeviceIntoProduct(String productId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/devices/",productId);
+
+            Map<String,String> queryMap = getTokenQueryString();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<particleDeviceImportResponse> call = particleDeviceInterface.importProductDevice(productId,queryMap);
+
+            Response<particleDeviceImportResponse> response = call.execute();
+
+            particleDeviceImportResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleDeviceInformation getDeviceInformation(String deviceId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/devices/%s/",deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<particleDeviceInformation> call = particleDeviceInterface.getDeviceInformation(deviceId,getTokenQueryString());
+
+            Response<particleDeviceInformation> response = call.execute();
+
+            particleDeviceInformation result = response.body();
+
+            return result;
+        }
+
+        public particleDeviceInformation getProductDeviceInformation(String deviceId, String productId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/devices/%s/",productId,deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<particleDeviceInformation> call = particleDeviceInterface.getProductDeviceInformation(productId,deviceId,getTokenQueryString());
+
+            Response<particleDeviceInformation> response = call.execute();
+
+            particleDeviceInformation result = response.body();
+
+            return result;
+        }
+
+
+        public particleDevicePingResponse pingDevice(String deviceId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/devices/%s/ping/",deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<particleDevicePingResponse> call = particleDeviceInterface.pingDevice(deviceId,getTokenQueryString());
+
+            Response<particleDevicePingResponse> response = call.execute();
+
+            particleDevicePingResponse result = response.body();
+
+            return result;
+        }
+
+        public boolean removeDeviceFromProduct(String productId, String deviceId){
+
+            String url = baseUrl + String.format("/v1/products/%s/devices/%s/",productId,deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Response call = particleDeviceInterface.removeDevice(productId,deviceId,getAuthHeaders());
+
+            return call.errorBody().contentLength() < 1;
+        }
+
+        public particleDeviceSignalResponse signalDevice(String deviceId, String signal) throws IOException {
+
+            String url = baseUrl + String.format("/v1/devices/%s/",deviceId);
+
+            Map<String,String> queryMap = getTokenQueryString();
+
+            queryMap.put("signal",signal);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<particleDeviceSignalResponse> call = particleDeviceInterface.signalDevice(deviceId,queryMap);
+
+            Response<particleDeviceSignalResponse> response = call.execute();
+
+            particleDeviceSignalResponse result = response.body();
+
+            return result;
+
+
+        }
+
+
+
 
 
     }
