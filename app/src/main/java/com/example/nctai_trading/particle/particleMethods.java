@@ -320,5 +320,31 @@ public class particleMethods {
 
     }
 
+    public class deviceRequests{
+
+        public List<particleDeviceListDevice> getListOfDevices() throws IOException {
+
+            String url = baseUrl + "/v1/devices/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceInterface particleDeviceInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceInterface.class);
+
+            Call<List<particleDeviceListDevice>> call = particleDeviceInterface.getDeviceList();
+
+            Response<List<particleDeviceListDevice>> response = call.execute();
+
+            List<particleDeviceListDevice> deviceList = response.body();
+
+            return deviceList;
+
+        }
+
+
+    }
+
 
 }
