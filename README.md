@@ -81,6 +81,10 @@ CAMERON THACKER - NCT ANDROID GUI
 
 ### [Coinbase Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/java/com/example/nctai_trading/coinbasePro)
 
+### [Mailgun Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/mailgun/mailGunMethods.java)
+
+### [Particle Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/particle/particleMethods.java)
+
 ### [App Pages](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/res/layout)
 
 ### [Gradle Build : app](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/build.gradle)
