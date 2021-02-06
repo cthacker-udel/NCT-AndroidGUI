@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.particle.android.sdk.cloud.ApiDefs;
+import io.particle.android.sdk.cloud.ParticleCloudSDK;
+import io.particle.android.sdk.di.CloudModule;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -220,8 +223,100 @@ public class particleMethods {
 
     public class oAuthRequests{
 
+        public particleClientList getAllOAuthClients(String token) throws IOException {
+
+            HashMap<String,String> data = new HashMap<>();
+            data.put("access_token",token);
+
+            String url = baseUrl + "/v1/clients/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
+
+            Call<particleClientList> clientListCall = particleOAuthInterface.getAllOAuthClients(data);
+
+            Response<particleClientList> clientListResponse = clientListCall.execute();
+
+            particleClientList clientList = clientListResponse.body();
+
+            return clientList;
+
+        }
+
+        public particleCreateClientResponse createAClient(String name, String type, String accessToken) throws IOException {
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("name",name);
+            body.put("type",type);
+            body.put("access_token",accessToken);
+
+            String url = baseUrl + "/v1/clients/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
+
+            Call<particleCreateClientResponse> call = particleOAuthInterface.createOAuthClient(body);
+
+            Response<particleCreateClientResponse> response = call.execute();
+
+            particleCreateClientResponse result = response.body();
+
+            return result;
+        }
+
+        public String updateAClient(String clientID) throws IOException {
+
+            String url = baseUrl + String.format("/v1/clients/%s",clientID);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("clientId",clientID);
+
+            particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
+
+            Call<particleCreateClientResponse> call = particleOAuthInterface.updateOAuthClient(clientID,body);
+
+            Response<particleCreateClientResponse> response = call.execute();
+
+            particleCreateClientResponse result = response.body();
+
+            return result.getClient().getName();
+
+        }
+
+        public boolean deleteAClient(String clientID){
+
+            String url = baseUrl + String.format("/v1/clients/%s",clientID);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("clientId",clientID);
 
 
+            particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
+
+            Response response = particleOAuthInterface.deleteOAuthClient(clientID,body);
+
+            return response.errorBody().contentLength() < 1;
+        }
 
     }
 
