@@ -743,5 +743,99 @@ public class particleMethods {
 
     }
 
+    public class webhookRequests{
+
+        public webhookRequests(){
+            super();
+        }
+
+        public particleWebhookCreationResponse createWebhook(String integrationType, String event, String newUrl, String requestType) throws IOException {
+
+            String url = baseUrl + "/v1/integrations/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("integration_type",integrationType);
+            body.put("event",event);
+            body.put("url",newUrl);
+            body.put("requestType",requestType);
+
+            particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
+
+            Call<particleWebhookCreationResponse> call = particleWebhookInterface.createWebhook(body);
+
+            Response<particleWebhookCreationResponse> response = call.execute();
+
+            particleWebhookCreationResponse result = response.body();
+
+            return result;
+
+
+        }
+
+        public particleWebhookAzureResponse enableAzureIOTWebhookIntegration(String integrationType, String event, String hubName, String policyName, String policyKey) throws IOException {
+
+            String url = baseUrl + "/v1/integrations/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
+
+            HashMap<String,String> body = new HashMap<>();
+            body.put("integration_type",integrationType);
+            body.put("event",event);
+            body.put("hub_name",hubName);
+            body.put("policy_name",policyName);
+            body.put("policy_key",policyKey);
+
+            Call<particleWebhookAzureResponse> call = particleWebhookInterface.createAzureWebhook(body);
+
+            Response<particleWebhookAzureResponse> response = call.execute();
+
+            particleWebhookAzureResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleGoogleCloudResponse enableGoogleCloudPlatformIntegration(String integrationType, String event, String topic) throws IOException {
+
+            HashMap<String,String> body = new HashMap<>();
+            body.put("integration_type",integrationType);
+            body.put("event",event);
+            body.put("topic",topic);
+
+            String url = baseUrl + "/v1/integrations/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
+
+            Call<particleGoogleCloudResponse> call = particleWebhookInterface.createGoogleCloudWebhook(body);
+
+            Response<particleGoogleCloudResponse> response = call.execute();
+
+            particleGoogleCloudResponse result = response.body();
+
+            return result;
+
+
+
+
+        }
+
+    }
+
 
 }
