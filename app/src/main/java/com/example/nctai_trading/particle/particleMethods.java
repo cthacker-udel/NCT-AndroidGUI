@@ -1,5 +1,7 @@
 package com.example.nctai_trading.particle;
 
+
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
@@ -594,6 +596,150 @@ public class particleMethods {
 
         }
 
+
+    }
+
+    public class eventRequests{
+
+        public eventRequests(){
+            super();
+        }
+
+
+        public particleStreamOfEventsResponse openStreamOfServerEvents(String eventPrefix) throws IOException {
+
+            String url = baseUrl + String.format("/v1/events/%s/",eventPrefix);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
+
+            Call<particleStreamOfEventsResponse> startEventStream = particleEventsInterface.startStreamOfEvents(eventPrefix,getTokenQueryString());
+
+            Response<particleStreamOfEventsResponse> response = startEventStream.execute();
+
+            particleStreamOfEventsResponse result = response.body();
+
+            return result;
+        }
+
+        public particleStreamOfEventsResponse openStreamOfServerSentEvents(String eventPrefix) throws IOException {
+
+            String url = baseUrl + String.format("/v1/devices/events/%s",eventPrefix);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
+
+            Call<particleStreamOfEventsResponse> call = particleEventsInterface.startServerSentStreamOfEvents(eventPrefix,getTokenQueryString());
+
+            Response<particleStreamOfEventsResponse> response = call.execute();
+
+            particleStreamOfEventsResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleStreamOfEventsResponse getStreamOfEventsForDevice(String deviceId, String eventPrefix) throws IOException {
+
+            String url = baseUrl + String.format("/v1/devices/%s/events/%s/",deviceId,eventPrefix);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface eventsInterface = retrofit.create(particleEventsInterface.class);
+
+            Call<particleStreamOfEventsResponse> call = eventsInterface.startServerStreamForDevice(deviceId,eventPrefix,getTokenQueryString());
+
+            Response<particleStreamOfEventsResponse> response = call.execute();
+
+            particleStreamOfEventsResponse result = response.body();
+
+            return result;
+
+
+        }
+
+        public particleStreamOfEventsResponse openStreamOfEventsProduct(String productId, String eventPrefix) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/events/%s/",productId,eventPrefix);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
+
+            Call<particleStreamOfEventsResponse> call = particleEventsInterface.startServerStreamForProduct(productId,eventPrefix,getTokenQueryString());
+
+            Response<particleStreamOfEventsResponse> response = call.execute();
+
+            particleStreamOfEventsResponse result = response.body();
+
+            return result;
+        }
+
+        public boolean publishAnEvent(String name) throws IOException {
+
+            Map<String,String> data = new HashMap<>();
+
+            data.put("name",name);
+
+            String url = baseUrl + "/v1/devices/events/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
+
+            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishEvent(data);
+
+            Response<particleDeleteTokenResponse> response = call.execute();
+
+            particleDeleteTokenResponse result = response.body();
+
+            return result.getOk();
+
+
+
+        }
+
+        public boolean publishProductEvent(String name, String productId) throws IOException {
+
+            Map<String,String> data = new HashMap<>();
+
+            data.put("name",name);
+
+            String url = baseUrl + String.format("/v1/products/%s/events/",name);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
+
+            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishProductEvent(productId,data);
+
+            Response<particleDeleteTokenResponse> response = call.execute();
+
+            particleDeleteTokenResponse result = response.body();
+
+            return result.getOk();
+
+        }
 
     }
 
