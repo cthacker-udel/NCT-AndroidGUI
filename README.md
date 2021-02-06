@@ -44,6 +44,12 @@ CAMERON THACKER - NCT ANDROID GUI
 
 - [x] Send messages to domains
 - [x] Domain credential requests
+- [x] Email validation requests
+- [x] IP requests
+- [x] IP Pool requests
+- [x] Events requests
+- [x] Stats requests
+- [x] Bouncer requests
 
 
 ## TODOS
