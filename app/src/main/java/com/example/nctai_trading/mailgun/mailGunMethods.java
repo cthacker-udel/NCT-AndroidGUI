@@ -645,6 +645,114 @@ public class mailGunMethods {
 
     }
 
+    class suppressionRequests{
+
+        public suppressionRequests(){
+            super();
+        }
+
+        public mailgunSuppressionRequest getAllBounces(String domainName) throws IOException {
+
+            String url = baseUrl + String.format("/%s/bounces/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunSuppressionInterface mailgunSuppressionInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunSuppressionInterface.class);
+
+            Call<mailgunSuppressionRequest> getBouncers = mailgunSuppressionInterface.getBounces(domainName,getAuthHeaders());
+
+            Response<mailgunSuppressionRequest> request = getBouncers.execute();
+
+            mailgunSuppressionRequest result = request.body();
+
+            return result;
+
+        }
+
+        public mailgunSuppressionSingleBouncer getSingleBouncer(String domain, String address) throws IOException {
+
+            String url = baseUrl + String.format("/%s/bounces/%s/",domain,address);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunSuppressionInterface mailgunSuppressionInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunSuppressionInterface.class);
+
+            Call<mailgunSuppressionSingleBouncer> mailgunSuppressionSingleBouncerCall = mailgunSuppressionInterface.getSingleBouner(domain,address,getAuthHeaders());
+
+            Response<mailgunSuppressionSingleBouncer> mailgunSuppressionSingleBouncerResponse = mailgunSuppressionSingleBouncerCall.execute();
+
+            mailgunSuppressionSingleBouncer singleBouncer = mailgunSuppressionSingleBouncerResponse.body();
+
+            return singleBouncer;
+        }
+
+        public mailgunAddSingleBouncer addSingleBouncer(String domain, String address) throws IOException {
+
+            String url = baseUrl + String.format("/%s/bounces",domain);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            HashMap<String,String> body = new HashMap<>();
+
+            body.put("address",address);
+
+            mailgunSuppressionInterface mailgunSuppressionInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunSuppressionInterface.class);
+
+            Call<mailgunAddSingleBouncer> mailgunAddSingleBouncerCall = mailgunSuppressionInterface.addSingleBouncer(domain,body,getAuthHeaders());
+
+            Response<mailgunAddSingleBouncer> response = mailgunAddSingleBouncerCall.execute();
+
+            mailgunAddSingleBouncer result = response.body();
+
+            return result;
+        }
+
+        public String addMultipleBouncers(String domainName, String... domainNames) throws IOException {
+
+            ArrayList<HashMap<String,String>> bounceList = new ArrayList<HashMap<String, String>>();
+
+            for(String eachArg: domainNames){
+
+                HashMap<String,String> bouncerMap = new HashMap<>();
+                bouncerMap.put("address",eachArg);
+                bounceList.add(bouncerMap);
+
+            }
+
+            String url = baseUrl + String.format("/%s/bounces/",domainName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            mailgunSuppressionInterface mailgunSuppressionInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunSuppressionInterface.class);
+
+            Call<mailgunDeleteDomainResponse> call = mailgunSuppressionInterface.addMultipleBouncers(domainName,bounceList,getAuthHeaders());
+
+            Response<mailgunDeleteDomainResponse> result = call.execute();
+
+            mailgunDeleteDomainResponse res = result.body();
+
+            return res.getMessage();
+
+
+
+        }
+
+
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String generateCode(){
 
