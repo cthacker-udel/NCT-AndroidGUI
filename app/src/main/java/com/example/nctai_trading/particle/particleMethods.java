@@ -509,5 +509,93 @@ public class particleMethods {
 
     }
 
+    public class userRequests{
+
+        public userRequests(){
+            super();
+        }
+
+
+        public particleGetCurrentUserResponse getUser() throws IOException {
+
+            String url = baseUrl + "/v1/user/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
+
+            Call<particleGetCurrentUserResponse> call = particleUserInterface.getCurrentUser(getTokenQueryString());
+
+            Response<particleGetCurrentUserResponse> response = call.execute();
+
+            particleGetCurrentUserResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleUpdateUserResponse updateCurrentUser(String newPassword, String newUsername, String newAccountInfoFirstName, String newAccountInfolastName, String currentPassword) throws IOException {
+
+            Map<String,String> newInfo = new HashMap<String,String>();
+
+            newInfo.put("password",newPassword);
+            newInfo.put("current_password",currentPassword);
+            newInfo.put("username",newUsername);
+            newInfo.put("account_info[first_name]",newAccountInfoFirstName);
+            newInfo.put("account_info[last_name]",newAccountInfolastName);
+            newInfo.put("access_token",accessToken);
+
+            String url = baseUrl + "/v1/user/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
+
+            Call<particleUpdateUserResponse> call = particleUserInterface.updateCurrentUser(newInfo);
+
+            Response<particleUpdateUserResponse> response = call.execute();
+
+            particleUpdateUserResponse result = response.body();
+
+            return result;
+
+
+        }
+
+        public particleUpdateUserResponse userPasswordReset(String username) throws IOException {
+
+            Map<String,String> info = new HashMap<>();
+            info.put("username",username);
+
+            String url = baseUrl + "/v1/user/password-reset";
+
+            // use mailgun to send email token
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
+
+            Call<particleUpdateUserResponse> call = particleUserInterface.passwordReset(info);
+
+            Response<particleUpdateUserResponse> response = call.execute();
+
+            particleUpdateUserResponse result = response.body();
+
+            return result;
+
+        }
+
+
+    }
+
 
 }
