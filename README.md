@@ -8,6 +8,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Binance.us implementation
 - [x] CoinbasePro implementation
 - [x] Mailgun implementation
+- [x] Square Checkout implementation
 
 ### MongoDB Implementation
 
@@ -50,6 +51,11 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Events requests
 - [x] Stats requests
 - [x] Bouncer requests
+
+### Square Implementation
+
+- [x] Added Checkout functionality when pay by card button is pressed in mainPage.java
+- [x] Added Tax functionality
 
 
 ## TODOS
