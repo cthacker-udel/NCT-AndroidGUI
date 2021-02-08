@@ -2,6 +2,8 @@ package com.example.nctai_trading.particle;
 
 
 
+import com.google.gson.Gson;
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
@@ -1018,5 +1020,142 @@ public class particleMethods {
 
     }
 
+    public class deviceGroupRequests{
+
+        public particleGetDeviceGroup getDeviceGroup(String productId, String groupName) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/groups/%s/",productId,groupName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Call<particleGetDeviceGroup> call = particleDeviceGroupInterface.getDeviceGroup(productId,groupName,getTokenQueryString());
+
+            Response<particleGetDeviceGroup> response = call.execute();
+
+            particleGetDeviceGroup group = response.body();
+
+            return group;
+
+        }
+
+        public List<particleDeviceGroupList> getListDeviceGroups(String productId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/groups/",productId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Call<List<particleDeviceGroupList>> call = particleDeviceGroupInterface.getDeviceGroupList(productId,getTokenQueryString());
+
+            Response<List<particleDeviceGroupList>> response = call.execute();
+
+            List<particleDeviceGroupList> result = response.body();
+
+            return result;
+        }
+
+        public particleGetDeviceGroup createDeviceGroup(String productId, String name) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/groups/",productId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+            body.put("name",name);
+
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Call<particleGetDeviceGroup> call = particleDeviceGroupInterface.createDeviceGroup(productId,body);
+
+            Response<particleGetDeviceGroup> response = call.execute();
+
+            return response.body();
+
+
+
+        }
+
+        public particleGetDeviceGroup editDeviceGroup(String productId, String groupName) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/groups/%s/",productId,groupName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("name","name2");
+            body.put("access_token",accessToken);
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Call<particleGetDeviceGroup> call = particleDeviceGroupInterface.editDeviceGroup(productId,groupName,body);
+
+            Response<particleGetDeviceGroup> response = call.execute();
+
+            particleGetDeviceGroup result = response.body();
+
+            return result;
+
+
+        }
+
+        public boolean deleteDeviceGroup(String productId, String groupName){
+
+            String url = baseUrl + String.format("/v1/products/%s/groups/%s/",productId,groupName);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Response deleteDeviceGroup = particleDeviceGroupInterface.delteDeviceGroup(productId,groupName,getTokenQueryString());
+
+            return deleteDeviceGroup.errorBody().contentLength() < 1;
+        }
+
+        public particleDeviceGroupAssignGroupsToDeviceResponse assignGroupsToDevice(String deviceId, String productId, String... groups) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/{productId}/devices/{deviceId}/",productId,deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
+
+            Map<String,Object> body = new HashMap<>();
+
+            body.put("groups",groups);
+
+            Call<particleDeviceGroupAssignGroupsToDeviceResponse> call = particleDeviceGroupInterface.assignGroupsToDevice(productId,deviceId,body);
+
+            Response<particleDeviceGroupAssignGroupsToDeviceResponse> response = call.execute();
+
+            particleDeviceGroupAssignGroupsToDeviceResponse result = response.body();
+
+            return result;
+        }
+
+
+    }
 
 }
