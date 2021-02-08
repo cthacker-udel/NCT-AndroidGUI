@@ -33,5 +33,4 @@ public interface particleDeviceGroupInterface {
     @PUT("https://api.particle.io/v1/products/{productId}/devices/{deviceId}")
     Call<particleDeviceGroupAssignGroupsToDeviceResponse> assignGroupsToDevice(@Path("productId") String productId, @Path("deviceId") String deviceId,@Body Map<String,Object> body);
 
-
 }

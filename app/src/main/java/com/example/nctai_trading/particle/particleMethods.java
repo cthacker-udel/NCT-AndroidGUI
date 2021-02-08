@@ -1158,4 +1158,82 @@ public class particleMethods {
 
     }
 
+    public class customerRequests{
+
+        public particleCreateCustomerResponse createCustomerAccessToken(String productId, String email, String password) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/customers/",productId);
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("access_token",accessToken);
+            body.put("email",email);
+            body.put("password",password);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerToken(productId,body);
+
+            Response<particleCreateCustomerResponse> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public particleCreateCustomerResponse createCustomerClientCredentials(String productId, String clientId, String clientSecret, String email) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/customers",productId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("client_id",clientId);
+            body.put("client_secret",clientSecret);
+            body.put("email",email);
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerCredentials(productId,getAuthHeaders(),body);
+
+            Response<particleCreateCustomerResponse> response = call.execute();
+
+            particleCreateCustomerResponse result = response.body();
+
+            return result;
+
+
+        }
+
+        public particleProductCustomerList listCustomersForAProduct(String productId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/customers/");
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleProductCustomerList> call = particleCustomerInterface.getProductCustomerList(productId,getAuthHeaders());
+
+            Response<particleProductCustomerList> response = call.execute();
+
+            particleProductCustomerList result = response.body();
+
+            return result;
+
+        }
+
+    }
+
 }
