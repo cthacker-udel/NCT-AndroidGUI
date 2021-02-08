@@ -837,5 +837,186 @@ public class particleMethods {
 
     }
 
+    public class firmwareRequests{
+
+        public boolean updateFirmwareDeviceID(String deviceId){
+
+            String url = baseUrl + String.format("/v1/devices/%s/",deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("deviceId",deviceId);
+
+            Response response = particleFirmwareInterface.updateDeviceFirmware(deviceId,body);
+
+            return response.errorBody().contentLength() < 1;
+
+        }
+
+        public particleListFirmwareAllPlatformsResponse listFirmwareAllPlatforms(String featured) throws IOException {
+
+            String url = baseUrl + "/v1/build_targets/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+            body.put("featured",featured);
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<particleListFirmwareAllPlatformsResponse> call = particleFirmwareInterface.listAllProductFirmware(body,getTokenQueryString());
+
+            Response<particleListFirmwareAllPlatformsResponse> response = call.execute();
+
+            particleListFirmwareAllPlatformsResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleLockProductFirmware lockProductDeviceFirmware(String deviceId, String productId, String desiredFirmwareVersion) throws IOException {
+
+            String url = baseUrl + String.format("/v1/product/%s/devices/%s/",productId,deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("deviceId",deviceId);
+            body.put("productIdOrSlug",productId);
+            body.put("desired_firmware_version",desiredFirmwareVersion);
+            body.put("access_token",accessToken);
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.lockProductFirmware(body);
+
+            Response<particleLockProductFirmware> response = call.execute();
+
+            particleLockProductFirmware result = response.body();
+
+            return result;
+
+
+
+        }
+
+        public particleLockProductFirmware unlockProductDeviceFirmware(String deviceId, String productId, String desiredFirmwareVerison) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/devices/%s/",deviceId,productId);
+
+            Map<String,String> body = new HashMap<>();
+            body.put("deviceId",deviceId);
+            body.put("productIdOrSlug",productId);
+            body.put("desired_firmware_version",desiredFirmwareVerison);
+            body.put("access_token",accessToken);
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.unlockProductFirmware(productId,deviceId,body);
+
+            Response<particleLockProductFirmware> response = call.execute();
+
+            particleLockProductFirmware result = response.body();
+
+            return result;
+
+        }
+
+        public particleLockProductFirmware markUnmarkDevelopmentDevice(String deviceId, String productId, boolean development) throws IOException {
+
+            String url = baseUrl + String.format("/v1/proudcts/%s/devices/%s/",productId,deviceId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Map<String,String> body = new HashMap<>();
+            if(development){
+                body.put("development","true");
+            }
+            else{
+                body.put("development","false");
+            }
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.markProductDevelopmentDevice(productId,deviceId,body,getTokenQueryString());
+
+            Response<particleLockProductFirmware> response = call.execute();
+
+            particleLockProductFirmware result = response.body();
+
+            return result;
+        }
+
+        public particleProductFirmwareResponse productFirmware(String productId, String version) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/firmware/%s/",productId,version);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<particleProductFirmwareResponse> call = particleFirmwareInterface.getProductFirmware(productId,version,getTokenQueryString());
+
+            Response<particleProductFirmwareResponse> response = call.execute();
+
+            particleProductFirmwareResponse result = response.body();
+
+            return result;
+
+
+
+        }
+
+        public List<particleProductListAllFirmwareResponse> listAllProductFirmwares(String productId) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/firmware",productId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
+
+            Call<List<particleProductListAllFirmwareResponse>> call = particleFirmwareInterface.getAllProductFirmware(productId,getTokenQueryString());
+
+            Response<List<particleProductListAllFirmwareResponse>> response = call.execute();
+
+            List<particleProductListAllFirmwareResponse> allProductFirmware = response.body();
+
+            return allProductFirmware;
+
+        }
+
+
+
+    }
+
 
 }
