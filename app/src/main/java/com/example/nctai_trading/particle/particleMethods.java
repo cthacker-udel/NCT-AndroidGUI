@@ -1177,7 +1177,7 @@ public class particleMethods {
 
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerToken(productId,body);
+            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerAccessToken(productId,body);
 
             Response<particleCreateCustomerResponse> response = call.execute();
 
@@ -1233,6 +1233,83 @@ public class particleMethods {
             return result;
 
         }
+
+        public particleCreateCustomerTokenResponse generateACustomerToken(String clientId, String clientSecret, String grantType) throws IOException {
+
+            String url = baseUrl + "/oauth/token/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("client_id",clientId);
+
+            body.put("client_secret",clientSecret);
+
+            body.put("grant_type",grantType);
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleCreateCustomerTokenResponse> call = particleCustomerInterface.createCustomerToken(getAuthHeaders(),body);
+
+            Response<particleCreateCustomerTokenResponse> response = call.execute();
+
+            particleCreateCustomerTokenResponse result = response.body();
+
+            return result;
+
+        }
+
+        public particleUpdateCustomerPasswordResponse updateCustomerPassword(String productId, String customerEmail, String password) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/customers/%s/",productId,customerEmail);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = getTokenQueryString();
+            body.put("password",password);
+
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.updateCustomer(productId,customerEmail,body);
+
+            Response<particleUpdateCustomerPasswordResponse> response = call.execute();
+
+            particleUpdateCustomerPasswordResponse result = response.body();
+
+            return result;
+        }
+
+        public particleUpdateCustomerPasswordResponse deleteCustomer(String productId, String customerEmail) throws IOException {
+
+            String url = baseUrl + String.format("/v1/products/%s/customers/%s",productId,customerEmail);
+
+            Map<String,String> body = getTokenQueryString();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
+
+            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.deleteCustomer(productId,customerEmail,body);
+
+            Response<particleUpdateCustomerPasswordResponse> response = call.execute();
+
+            particleUpdateCustomerPasswordResponse result = response.body();
+
+            return result;
+
+        }
+
 
     }
 
