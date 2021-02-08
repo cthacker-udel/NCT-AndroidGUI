@@ -5,10 +5,11 @@ CAMERON THACKER - NCT ANDROID GUI
 
 - [x] MongoDB Server Implementation
 - [x] Shared Preferences Implementation
-- [x] Binance.us implementation
-- [x] CoinbasePro implementation
-- [x] Mailgun implementation
-- [x] Square Checkout implementation
+- [x] Binance.us API implementation
+- [x] CoinbasePro API implementation
+- [x] Mailgun API implementation
+- [x] Square Checkout API implementation
+- [x] Particle Cloud API Implementation
 
 ### MongoDB Implementation
 
@@ -56,6 +57,18 @@ CAMERON THACKER - NCT ANDROID GUI
 
 - [x] Added Checkout functionality when pay by card button is pressed in mainPage.java
 - [x] Added Tax functionality
+
+### Particle Implementation
+
+- [x] Added access token implementation
+- [x] Added O-Auth implementation
+- [x] added device implementation
+- [x] added user implementation
+- [x] added event implementation
+- [x] added webhook implementation
+- [x] added firmware implementation
+- [x] added device group implementation
+- [x] added customer implementation
 
 
 ## TODOS
