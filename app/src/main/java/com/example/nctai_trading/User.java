@@ -1,7 +1,5 @@
 package com.example.nctai_trading;
 
-import com.example.nctai_trading.binanceUS.Id;
-
 public class User {
 
     private Id _id;
