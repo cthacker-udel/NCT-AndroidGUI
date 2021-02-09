@@ -232,6 +232,40 @@ public class ameritradeMethods {
             return placeOrder.errorBody().contentLength() < 1;
         }
 
+        public boolean deleteSavedOrder(String accessToken,String orderId, String account, String session, String duration, String orderStrategyType, long quantity, String stockSymbol, String assetType){
+
+            String url = baseUrl + String.format("/accounts/%s/orders/",account);
+
+            Map<String,Object> body = new HashMap<>();
+
+            body.put("orderType","MARKET");
+            body.put("session",session);
+            body.put("duration",duration);
+            body.put("orderStrategyType",orderStrategyType);
+
+            Map<String,String> instrument = new HashMap<>();
+
+            instrument.put("symbol",stockSymbol);
+            instrument.put("assetType",assetType);
+
+            ameritradePlaceOrderOrderLegCollection getOrderLegCollection = new ameritradePlaceOrderOrderLegCollection("Buy",15,instrument);
+
+            Map<String,Object> orderLegCollection = getOrderLegCollection.getOrderLegCollection();
+
+            body.put("orderLegCollection",orderLegCollection);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ameritradeAccountTradingInterface ameritradeAccountTradingInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeAccountTradingInterface.class);
+
+            Response placeOrder = ameritradeAccountTradingInterface.deleteSavedOrder(account,orderId,body,getAuthorizationHeader(accessToken));
+
+            return placeOrder.errorBody().contentLength() < 1;
+        }
+
     }
 
 

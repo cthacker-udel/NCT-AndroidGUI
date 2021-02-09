@@ -29,5 +29,7 @@ public interface ameritradeAccountTradingInterface {
     @POST("https://api.tdameritrade.com/v1/accounts/{accountId}/savedorders")
     Response createSavedOrder(@Path("accountId") String accountId, @Body Map<String,Object> body, @HeaderMap Map<String,String> authHeader);
 
+    @DELETE("https://api.tdameritrade.com/v1/accounts/{accountId}/savedorders/{savedOrderId}")
+    Response deleteSavedOrder(@Path("accountId") String accountId, @Path("savedOrderId") String OrderId, @Body Map<String,Object> body, @HeaderMap Map<String,String> authHeader);
 
 }
