@@ -15,6 +15,8 @@ public class ameritradeMethods {
 
     public String baseUrl = "https://api.tdameritrade.com/v1";
 
+    public String accessToken = "A84UCPOEY9BKT4VM3MYASTSUZJATUSSM";
+
     public ameritradeMethods(){
         this.clientId = "A84UCPOEY9BKT4VM3MYASTSUZJATUSSM";
     }
@@ -265,6 +267,32 @@ public class ameritradeMethods {
 
             return placeOrder.errorBody().contentLength() < 1;
         }
+
+        public ameritradeGetAccountMarginAccount getAccount(String accountId) throws IOException {
+
+            String url = baseUrl + String.format("/accounts/%s",accountId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ameritradeAccountTradingInterface ameritradeAccountTradingInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeAccountTradingInterface.class);
+
+            Call<ameritradeGetAccountMarginAccount> call = ameritradeAccountTradingInterface.getAccount(accountId,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeGetAccountMarginAccount> response = call.execute();
+
+            ameritradeGetAccountMarginAccount result = response.body();
+
+            return result;
+        }
+
+    }
+
+    public class intstrumentRequests{
+
+
 
     }
 

@@ -32,4 +32,7 @@ public interface ameritradeAccountTradingInterface {
     @DELETE("https://api.tdameritrade.com/v1/accounts/{accountId}/savedorders/{savedOrderId}")
     Response deleteSavedOrder(@Path("accountId") String accountId, @Path("savedOrderId") String OrderId, @Body Map<String,Object> body, @HeaderMap Map<String,String> authHeader);
 
+    @GET("https://api.tdameritrade.com/v1/accounts/{accountId}")
+    Call<ameritradeGetAccountMarginAccount> getAccount(@Path("accountId") String accountId, @HeaderMap Map<String,String> authHeader);
+
 }
