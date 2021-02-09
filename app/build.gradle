@@ -51,12 +51,6 @@ dependencies {
     implementation 'io.particle:cloudsdk:1.0.1'
     implementation 'io.particle:devicesetup:0.7.3'
 
-    // coinbase
-
-    //implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0'
-
     //retrofit
 
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
