@@ -243,5 +243,145 @@ public class bithumbMethods {
 
     }
 
+    public class tradeRecordRequests{
+
+        public bithumbTradeRecordResponse getTradeRecords(String symbol) throws IOException {
+
+            String url = baseUrl + "/spot/trades/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+
+            bithumbTradeRecordInterface bithumbTradeRecordInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbTradeRecordInterface.class);
+
+            Call<bithumbTradeRecordResponse> call = bithumbTradeRecordInterface.getTradeRecord(authHeader);
+
+            Response<bithumbTradeRecordResponse> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
+    public class klineRequests{
+
+        public bithumbKlineResponse getKline(String symbol, String type, String start, String end) throws IOException {
+            String url = baseUrl + "/spot/kline/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+            authHeader.put("type",type);
+            authHeader.put("start",start);
+            authHeader.put("end",end);
+
+            bithumbKlineInterface bithumbKlineInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbKlineInterface.class);
+
+            Call<bithumbKlineResponse> call = bithumbKlineInterface.getKline(authHeader);
+
+            Response<bithumbKlineResponse> response = call.execute();
+
+            return response.body();
+
+        }
+
+
+
+
+    }
+
+    public class virtualCoinOrderRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bithumbVirtualCoinOrder createOrderForVirtualCoin(String symbol, String type, String side, String price, String quantity) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/spot/placeOrder/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bithumbOrderInterface bithumbOrderInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbOrderInterface.class);
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+            authHeader.put("type",type);
+            authHeader.put("side",side);
+            authHeader.put("price",price);
+            authHeader.put("quantity",quantity);
+            authHeader.put("timestamp",getTimeStamp());
+            authHeader.put("signature",getSignature(authHeader));
+
+            Call<bithumbVirtualCoinOrder> call = bithumbOrderInterface.placeVirtualCoinOrder(authHeader);
+
+            Response<bithumbVirtualCoinOrder> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public boolean cancelVirtualCoinOrder(String orderId, String symbol) throws NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/spot/cancelOrder/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("orderId",orderId);
+            authHeader.put("symbol",symbol);
+            authHeader.put("signature",getSignature(authHeader));
+
+            bithumbOrderInterface bithumbOrderInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbOrderInterface.class);
+
+            Response cancelVirtualOrder = bithumbOrderInterface.cancelVirtualCoinOrder(authHeader);
+
+            return cancelVirtualOrder.errorBody().contentLength() < 1;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public bithumbVirtualCoinAsset queryVirtualCoinAccount(String assetType) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/spot/assetList/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+            authHeader.put("assetType",assetType);
+            authHeader.put("signature",getSignature(authHeader));
+
+            bithumbOrderInterface bithumbOrderInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbOrderInterface.class);
+
+            Call<bithumbVirtualCoinAsset> call = bithumbOrderInterface.getVirtualCoinAssets(authHeader);
+
+            Response<bithumbVirtualCoinAsset> response = call.execute();
+
+            return response.body();
+
+        }
+
+
+    }
+
 
 }
