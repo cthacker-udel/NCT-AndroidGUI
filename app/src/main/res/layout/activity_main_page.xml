@@ -166,11 +166,11 @@
         app:layout_constraintTop_toBottomOf="@+id/mainPageStartStopListening" />
 
     <Button
-        android:id="@+id/mainPageBinanceSignIn"
+        android:id="@+id/mainPageAmeritradeSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Ameritrade Sign In"
         app:backgroundTint="@android:color/darker_gray"
-        android:text="Binance Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainPageStartStopListening" />
@@ -183,5 +183,5 @@
         android:text="CoinBasePro Sign In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPageBinanceSignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/mainPageAmeritradeSignIn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

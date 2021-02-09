@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.example.nctai_trading.coinbasePro.coinBaseKeys;
 import com.example.nctai_trading.particle.Cloud;
 import com.example.nctai_trading.particle.DeviceEvent;
 import com.example.nctai_trading.particle.Event;
@@ -55,7 +54,7 @@ public class mainPage extends AppCompatActivity {
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
         mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
-        mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
+        mainPageBinanceSignInBtn = findViewById(R.id.mainPageAmeritradeSignIn);
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
         mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
         mainPageCoinBaseProBtn = findViewById(R.id.mainPageCoinBaseProSignInButton);
@@ -227,16 +226,14 @@ public class mainPage extends AppCompatActivity {
         mainPageBinanceKeys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toBinanceKeysPage = new Intent(getApplicationContext(), binanceKeys.class);
-                startActivity(toBinanceKeysPage);
+
             }
         });
 
         mainPageCoinbaseKeys.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toCoinBaseKeysPage = new Intent(getApplicationContext(), coinBaseKeys.class);
-                startActivity(toCoinBaseKeysPage);
+
             }
         });
 
@@ -276,8 +273,7 @@ public class mainPage extends AppCompatActivity {
                     userContainsSecretKey.create().show();
                     return;
                 }
-                Intent toBinancePage = new Intent(getApplicationContext(), binancePage.class);
-                startActivity(toBinancePage);
+
             }
         });
         mainPageCoinBaseProBtn.setOnClickListener(new View.OnClickListener() {
@@ -294,8 +290,7 @@ public class mainPage extends AppCompatActivity {
                 if(coinBasePassphrase.equals("defaultCoinBasePassPhrase")){
                     Toast.makeText(mainPage.this,"Please enter coinbase passphrase",Toast.LENGTH_LONG).show();
                 }
-                Intent toCoinBaseProPage = new Intent(getApplicationContext(), coinBaseProPage.class);
-                startActivity(toCoinBaseProPage);
+
             }
         });
     }

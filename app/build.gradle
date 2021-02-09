@@ -69,6 +69,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'commons-validator:commons-validator:1.7'
 
+
     // mailgun
 
     implementation 'net.sargue:mailgun:1.9.2'

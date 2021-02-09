@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NCTAITrading">
+        <activity android:name=".AmeritradePage"></activity>
         <activity android:name=".coinbasePro.coinBaseKeys" />
         <activity android:name=".ARPage" />
         <activity android:name=".alternateInvestments" />

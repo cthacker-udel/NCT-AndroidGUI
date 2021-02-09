@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     ListView lstView;
     Button btnAdd, btnEdit, btnDelete;
     EditText edtUser;
-    User userSelected=null;
-    List<User> users = new ArrayList<User>();
     boolean bothKeysNotCreated;
     boolean bothCoinBaseKeysNotCreated;
     boolean binanceApiKeyError;
