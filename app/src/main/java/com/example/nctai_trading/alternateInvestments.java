@@ -54,6 +54,7 @@ public class alternateInvestments extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // update 1
         setContentView(R.layout.activity_alternate_investments);
         investBtn = findViewById(R.id.alternativeInvestBtn);
         passedEmail = "";
