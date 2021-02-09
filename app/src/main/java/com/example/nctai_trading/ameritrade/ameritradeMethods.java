@@ -292,6 +292,105 @@ public class ameritradeMethods {
 
     public class intstrumentRequests{
 
+        public ameritradeSearchInstrumentInstrument searchInstuments(String oAuthUserId, String symbol, String projection) throws IOException {
+
+            String url = baseUrl + "/instruments/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("apikey",oAuthUserId);
+            body.put("symbol",symbol);
+            body.put("projection",projection);
+
+            ameritradeInstumentInterface ameritradeInstumentInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeInstumentInterface.class);
+
+            Call<ameritradeSearchInstrumentInstrument> call = ameritradeInstumentInterface.searchInstruments(body,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeSearchInstrumentInstrument> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
+    public class marketHoursRequests{
+
+        public ameritradeGetMultipleMarketHoursResponse getHoursForMultipleMarkets(String markets, String date) throws IOException {
+
+            String url = baseUrl + "/marketdata/hours/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("markets",markets);
+            body.put("date",date);
+
+            ameritradeMarketHours ameritradeMarketHours = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeMarketHours.class);
+
+            Call<ameritradeGetMultipleMarketHoursResponse> call = ameritradeMarketHours.getHoursForMultipleMarkets(body,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeGetMultipleMarketHoursResponse> response = call.execute();
+
+            return response.body();
+        }
+
+        public ameritradeGetMultipleMarketHoursResponse getHoursForSingleMarket(String apiKey, String date, String market) throws IOException {
+
+            String url = baseUrl + String.format("/marketdata/%s/hours/",market);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("apikey",apiKey);
+            body.put("date",date);
+
+            ameritradeMarketHours ameritradeMarketHours = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeMarketHours.class);
+
+            Call<ameritradeGetMultipleMarketHoursResponse> call = ameritradeMarketHours.getHoursForSingleMarket(market,body,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeGetMultipleMarketHoursResponse> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
+    public class moverRequests{
+
+        public ameritradeGetMoversResponse getMovers(String apiKey, String index) throws IOException {
+
+            String url = baseUrl + String.format("/marketdata/%s/movers/",index);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+            body.put("apikey",apiKey);
+
+            ameritradeMoverInterface ameritradeMoverInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeMoverInterface.class);
+
+            Call<ameritradeGetMoversResponse> call = ameritradeMoverInterface.getMovers(index,body,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeGetMoversResponse> response = call.execute();
+
+            return response.body();
+
+        }
 
 
     }
