@@ -395,5 +395,40 @@ public class ameritradeMethods {
 
     }
 
+    public class optionChainRequests{
+
+        public Object getOptionChain(String apiKey, String symbol, String strikeCount, String interval, String strike, String fromDate, String toDate, String volatility, String underlyingPrice, String interestRate, String daysToExpiration){
+
+            String url = baseUrl + "/marketdata/chains/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("apikey",apiKey);
+            body.put("symbol",symbol);
+            body.put("strikecount",strikeCount);
+            body.put("interval",interval);
+            body.put("strike",strike);
+            body.put("fromDate",fromDate);
+            body.put("toDate",toDate);
+            body.put("volatility",volatility);
+            body.put("underlyingPrice",underlyingPrice);
+            body.put("interestRate",interestRate);
+            body.put("daysToExpiration",daysToExpiration);
+
+            ameritradeOptionChainInterface ameritradeOptionChainInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeOptionChainInterface.class);
+
+            Response response = ameritradeOptionChainInterface.getOptionChain(body,getAuthorizationHeader(accessToken));
+
+            return response.body();
+
+        }
+
+    }
+
 
 }
