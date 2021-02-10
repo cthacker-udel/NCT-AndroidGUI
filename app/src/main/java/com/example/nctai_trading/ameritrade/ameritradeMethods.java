@@ -1,8 +1,10 @@
 package com.example.nctai_trading.ameritrade;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -425,6 +427,89 @@ public class ameritradeMethods {
             Response response = ameritradeOptionChainInterface.getOptionChain(body,getAuthorizationHeader(accessToken));
 
             return response.body();
+
+        }
+
+    }
+
+    public class priceHistoryRequests{
+
+        public ameritradePriceHistoryResponse getPriceHistory(String symbol, String apiKey, String period, String frequencyType, String frequency) throws IOException {
+
+            String url = baseUrl + String.format("/marketdata/%s/pricehistory",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("symbol",symbol);
+            body.put("apikey",apiKey);
+            body.put("period",period);
+            body.put("frequencyType",frequencyType);
+            body.put("frequency",frequency);
+
+            ameritradePriceHistoryInterface ameritradePriceHistoryInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradePriceHistoryInterface.class);
+
+            Call<ameritradePriceHistoryResponse> call = ameritradePriceHistoryInterface.getPriceHistory(symbol,body,getAuthorizationHeader(accessToken));
+
+            Response<ameritradePriceHistoryResponse> response = call.execute();
+
+            return response.body();
+
+
+        }
+
+
+    }
+
+    public class quoteRequests{
+
+        public Object getSpecificSymbolQuote(String symbol, String apiKey){
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("apikey",apiKey);
+
+            String url = baseUrl + String.format("/marketdata/%s/quotes",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ameritradeQuoteInterface ameritradeQuoteInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeQuoteInterface.class);
+
+            Response response = ameritradeQuoteInterface.getQuoteForSymbol(symbol,body,getAuthorizationHeader(accessToken));
+
+            return response.body();
+        }
+
+        public Object getQuoteForSymbols(String apiKey, String... symbols){
+
+            String url = baseUrl + "/marketdata/quotes/";
+
+            String formatString = Arrays.toString(symbols);
+            formatString = formatString.substring(1,formatString.length()-1);
+
+            Map<String,String> body = new HashMap<>();
+
+            body.put("apikey",apiKey);
+            body.put("symbol",formatString);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ameritradeQuoteInterface ameritradeQuoteInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeQuoteInterface.class);
+
+            Response call = ameritradeQuoteInterface.getQuotesForSymbols(body,getAuthorizationHeader(accessToken));
+
+            return call.body();
+
 
         }
 
