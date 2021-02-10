@@ -54,6 +54,7 @@ public class mailGunMethods {
 
     public class messageRequests{
 
+        // 401 : UNAUTHORIZED
         public mailgunMessageResponse sendMessage(String to, String from, String subject, String text) throws IOException {
 
             String url = baseUrl + "/v3/sales.nextcapitaltech.com/messages/";
