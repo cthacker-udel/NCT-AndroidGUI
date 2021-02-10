@@ -10,12 +10,16 @@ import retrofit.RetrofitError;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
 public interface mailgunMessageInterface {
 
+    @FormUrlEncoded
     @POST("https://api.mailgun.net/v3/sales.nextcapitaltech.com/messages")
-    Call<mailgunMessageResponse> sendMessage(@HeaderMap Map<String,String> authMap, @Body Map<String,String> data);
+    Call<mailgunMessageResponse> sendMessage(@Header("api") String apiKey, @Field("from") String from, @Field("to") String to, @Field("subject") String subject, @Field("text") String text);
 
 }

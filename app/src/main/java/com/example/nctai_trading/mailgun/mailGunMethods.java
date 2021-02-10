@@ -26,8 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class mailGunMethods {
 
     public String baseUrl = "https://api.mailgun.net";
-    private String username = "api";
-    private String password = "117cf22399d9675b2414b45aab0ccf17-9b1bf5d3-d9673505";
+    public String username = "api";
+    public String password = "117cf22399d9675b2414b45aab0ccf17-9b1bf5d3-d9673505";
 
     public mailGunMethods(){
         super();
@@ -52,22 +52,11 @@ public class mailGunMethods {
 
     }
 
-    class messageRequests{
+    public class messageRequests{
 
         public mailgunMessageResponse sendMessage(String to, String from, String subject, String text) throws IOException {
 
             String url = baseUrl + "/v3/sales.nextcapitaltech.com/messages/";
-
-            HashMap<String,String> data = new HashMap<>();
-
-            data.put("from",from);
-            data.put("to",to);
-            data.put("subject",subject);
-            data.put("text",text);
-
-            HashMap<String,String> authHeader = new HashMap<>();
-
-            authHeader.put("api",getSignature());
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
@@ -76,7 +65,7 @@ public class mailGunMethods {
 
             mailgunMessageInterface mailgunMessageInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunMessageInterface.class);
 
-            Call<mailgunMessageResponse> response = mailgunMessageInterface.sendMessage(authHeader,data);
+            Call<mailgunMessageResponse> response = mailgunMessageInterface.sendMessage(getSignature(),from,to,subject,text);
 
             Response<mailgunMessageResponse> mailgunMessageResponseResponse = response.execute();
 
@@ -88,7 +77,7 @@ public class mailGunMethods {
 
     }
 
-    class domainRequests{
+    public class domainRequests{
 
         public mailGunDomainResponse getDomainsUnderAccount() throws IOException {
 
@@ -306,7 +295,7 @@ public class mailGunMethods {
 
     }
 
-    class ipRequests{
+    public class ipRequests{
 
         public mailgunIPList getAllIps() throws IOException {
 
@@ -421,7 +410,7 @@ public class mailGunMethods {
 
     }
 
-    class ipPoolRequests{
+    public class ipPoolRequests{
 
         public String createIPPool(String name) throws IOException {
 
@@ -579,7 +568,7 @@ public class mailGunMethods {
 
     }
 
-    class eventsRequests{
+    public class eventsRequests{
 
         public eventsRequests(){
             super();
@@ -610,7 +599,7 @@ public class mailGunMethods {
 
     }
 
-    class statsRequests{
+    public class statsRequests{
 
         public statsRequests(){
             super();
@@ -645,7 +634,7 @@ public class mailGunMethods {
 
     }
 
-    class suppressionRequests{
+    public class suppressionRequests{
 
         public suppressionRequests(){
             super();
@@ -774,7 +763,7 @@ public class mailGunMethods {
 
     }
 
-    class validationRequests{
+    public class validationRequests{
 
         public validationRequests(){
             super();
