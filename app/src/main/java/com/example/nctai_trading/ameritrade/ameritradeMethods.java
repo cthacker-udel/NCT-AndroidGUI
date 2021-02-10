@@ -515,5 +515,26 @@ public class ameritradeMethods {
 
     }
 
+    public class transactionRequests{
+
+        public ameritradeGetTransactionResponse getSpecificTransaction(String account, String transactionId) throws IOException {
+
+            String url = baseUrl + String.format("/accounts/%s/transactions/%s/",account,transactionId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            ameritradeTransactionInterface ameritradeTransactionInterface = retrofit.create(com.example.nctai_trading.ameritrade.ameritradeTransactionInterface.class);
+
+            Call<ameritradeGetTransactionResponse> call = ameritradeTransactionInterface.getSpecificTransaction(account,transactionId,getAuthorizationHeader(accessToken));
+
+            Response<ameritradeGetTransactionResponse> response = call.execute();
+
+            return response.body();
+        }
+    }
+
 
 }
