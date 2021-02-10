@@ -37,7 +37,11 @@ public class particleMethods {
     String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
     String refreshToken = "529c17ca203cb064bd556ed10168cc6ecbd95f5f";
 
-    String accessToken = "1234";
+    // new client id generate by create a client
+    // clientid = nct-app-3115-1752
+    // client name = nct-app-3115
+    // client secret = e9cd02aa85689212244c3698ff333e388975a153
+    // updated name -> Cameron-app
 
     public String getSignature(){
 
@@ -79,13 +83,12 @@ public class particleMethods {
         authHeader.put("username",username);
         authHeader.put("password",secretKey);
         return authHeader;
-
     }
 
     public Map<String,String> getTokenQueryString(){
 
         Map<String,String> queryMap = new HashMap<>();
-        queryMap.put("access_token",accessToken);
+        queryMap.put("access_token",accesstoken);
         return queryMap;
 
     }
@@ -295,12 +298,6 @@ public class particleMethods {
 
         public particleCreateClientResponse createAClient(String name, String type, String accessToken) throws IOException {
 
-            HashMap<String,String> body = new HashMap<>();
-
-            body.put("name",name);
-            body.put("type",type);
-            body.put("access_token",accessToken);
-
             String url = baseUrl + "/v1/clients/";
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -310,7 +307,7 @@ public class particleMethods {
 
             particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
 
-            Call<particleCreateClientResponse> call = particleOAuthInterface.createOAuthClient(body);
+            Call<particleCreateClientResponse> call = particleOAuthInterface.createOAuthClient(name,type,accessToken);
 
             Response<particleCreateClientResponse> response = call.execute();
 
@@ -319,9 +316,9 @@ public class particleMethods {
             return result;
         }
 
-        public String updateAClient(String clientID) throws IOException {
+        public String updateAClient(String clientID, String newName, String accessToken) throws IOException {
 
-            String url = baseUrl + String.format("/v1/clients/%s",clientID);
+            String url = baseUrl + String.format("/v1/clients/%s/",clientID);
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
@@ -334,7 +331,7 @@ public class particleMethods {
 
             particleOAuthInterface particleOAuthInterface = retrofit.create(com.example.nctai_trading.particle.particleOAuthInterface.class);
 
-            Call<particleCreateClientResponse> call = particleOAuthInterface.updateOAuthClient(clientID,body);
+            Call<particleCreateClientResponse> call = particleOAuthInterface.updateOAuthClient(clientID,newName, accessToken);
 
             Response<particleCreateClientResponse> response = call.execute();
 
@@ -344,6 +341,7 @@ public class particleMethods {
 
         }
 
+        // test
         public boolean deleteAClient(String clientID){
 
             String url = baseUrl + String.format("/v1/clients/%s",clientID);
@@ -368,6 +366,7 @@ public class particleMethods {
 
     public class deviceRequests{
 
+        // error - access token..
         public List<particleDeviceListDevice> getListOfDevices() throws IOException {
 
             String url = baseUrl + "/v1/devices/";
@@ -388,7 +387,7 @@ public class particleMethods {
             return deviceList;
 
         }
-
+        // test
         public particleProductListDeviceList getListOfDevicesPartOfProduct(String productID) throws IOException {
 
             String url = baseUrl + String.format("/v1/products/%s/devices/",productID);
@@ -411,7 +410,7 @@ public class particleMethods {
             return result;
 
         }
-
+        // test
         public particleDeviceImportResponse importDeviceIntoProduct(String productId) throws IOException {
 
             String url = baseUrl + String.format("/v1/products/%s/devices/",productId);
@@ -434,7 +433,7 @@ public class particleMethods {
             return result;
 
         }
-
+        // test
         public particleDeviceInformation getDeviceInformation(String deviceId) throws IOException {
 
             String url = baseUrl + String.format("/v1/devices/%s/",deviceId);
@@ -454,7 +453,7 @@ public class particleMethods {
 
             return result;
         }
-
+        // test
         public particleDeviceInformation getProductDeviceInformation(String deviceId, String productId) throws IOException {
 
             String url = baseUrl + String.format("/v1/products/%s/devices/%s/",productId,deviceId);
@@ -475,7 +474,7 @@ public class particleMethods {
             return result;
         }
 
-
+        //test
         public particleDevicePingResponse pingDevice(String deviceId) throws IOException {
 
             String url = baseUrl + String.format("/v1/devices/%s/ping/",deviceId);
@@ -495,7 +494,7 @@ public class particleMethods {
 
             return result;
         }
-
+        //test
         public boolean removeDeviceFromProduct(String productId, String deviceId){
 
             String url = baseUrl + String.format("/v1/products/%s/devices/%s/",productId,deviceId);
@@ -511,7 +510,7 @@ public class particleMethods {
 
             return call.errorBody().contentLength() < 1;
         }
-
+        //test
         public particleDeviceSignalResponse signalDevice(String deviceId, String signal) throws IOException {
 
             String url = baseUrl + String.format("/v1/devices/%s/",deviceId);
@@ -570,18 +569,30 @@ public class particleMethods {
 
             return result;
 
+            /*
+
+            firstname : Noah
+            lastName : Nelson
+            subscription Ids: 18695.0, 19896.0
+            wifidevicecount : 1
+            cellulardevicecount : 3
+            username: noah13nelson@gmail.com
+
+             */
+
         }
 
+        // test
         public particleUpdateUserResponse updateCurrentUser(String newPassword, String newUsername, String newAccountInfoFirstName, String newAccountInfolastName, String currentPassword) throws IOException {
 
-            Map<String,String> newInfo = new HashMap<String,String>();
+            //Map<String,String> newInfo = new HashMap<String,String>();
 
-            newInfo.put("password",newPassword);
-            newInfo.put("current_password",currentPassword);
-            newInfo.put("username",newUsername);
-            newInfo.put("account_info[first_name]",newAccountInfoFirstName);
-            newInfo.put("account_info[last_name]",newAccountInfolastName);
-            newInfo.put("access_token",accessToken);
+            //newInfo.put("password",newPassword);
+            //newInfo.put("current_password",currentPassword);
+            //newInfo.put("username",newUsername);
+            //newInfo.put("account_info[first_name]",newAccountInfoFirstName);
+            //newInfo.put("account_info[last_name]",newAccountInfolastName);
+            //newInfo.put("access_token",accesstoken);
 
             String url = baseUrl + "/v1/user/";
 
@@ -592,7 +603,7 @@ public class particleMethods {
 
             particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
 
-            Call<particleUpdateUserResponse> call = particleUserInterface.updateCurrentUser(newInfo);
+            Call<particleUpdateUserResponse> call = particleUserInterface.updateCurrentUser(newPassword,newUsername,newAccountInfoFirstName,newAccountInfolastName,currentPassword,accesstoken);
 
             Response<particleUpdateUserResponse> response = call.execute();
 
@@ -603,12 +614,11 @@ public class particleMethods {
 
         }
 
+        // test
         public particleUpdateUserResponse userPasswordReset(String username) throws IOException {
 
-            Map<String,String> info = new HashMap<>();
-            info.put("username",username);
 
-            String url = baseUrl + "/v1/user/password-reset";
+            String url = baseUrl + "/v1/user/password-reset/";
 
             // use mailgun to send email token
 
@@ -619,7 +629,7 @@ public class particleMethods {
 
             particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
 
-            Call<particleUpdateUserResponse> call = particleUserInterface.passwordReset(info);
+            Call<particleUpdateUserResponse> call = particleUserInterface.passwordReset(username);
 
             Response<particleUpdateUserResponse> response = call.execute();
 
@@ -627,6 +637,25 @@ public class particleMethods {
 
             return result;
 
+        }
+
+        // test
+        public particleDeleteUserResponse deleteUser(String password) throws IOException {
+
+            String url = baseUrl + "/v1/user/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            particleUserInterface particleUserInterface = retrofit.create(com.example.nctai_trading.particle.particleUserInterface.class);
+
+            Call<particleDeleteUserResponse> call = particleUserInterface.deleteUser(password,accesstoken);
+
+            Response<particleDeleteUserResponse> response = call.execute();
+
+            return response.body();
         }
 
 
@@ -638,7 +667,7 @@ public class particleMethods {
             super();
         }
 
-
+        // error : malformedjsonException expected value at line 1 column 1 path $
         public particleStreamOfEventsResponse openStreamOfServerEvents(String eventPrefix) throws IOException {
 
             String url = baseUrl + String.format("/v1/events/%s/",eventPrefix);
@@ -659,9 +688,11 @@ public class particleMethods {
             return result;
         }
 
+
+        // test
         public particleStreamOfEventsResponse openStreamOfServerSentEvents(String eventPrefix) throws IOException {
 
-            String url = baseUrl + String.format("/v1/devices/events/%s",eventPrefix);
+            String url = baseUrl + String.format("/v1/devices/events/%s/",eventPrefix);
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
@@ -679,7 +710,7 @@ public class particleMethods {
             return result;
 
         }
-
+        // test
         public particleStreamOfEventsResponse getStreamOfEventsForDevice(String deviceId, String eventPrefix) throws IOException {
 
             String url = baseUrl + String.format("/v1/devices/%s/events/%s/",deviceId,eventPrefix);
@@ -701,7 +732,7 @@ public class particleMethods {
 
 
         }
-
+        // test
         public particleStreamOfEventsResponse openStreamOfEventsProduct(String productId, String eventPrefix) throws IOException {
 
             String url = baseUrl + String.format("/v1/products/%s/events/%s/",productId,eventPrefix);
@@ -722,11 +753,8 @@ public class particleMethods {
             return result;
         }
 
+        // works
         public boolean publishAnEvent(String name) throws IOException {
-
-            Map<String,String> data = new HashMap<>();
-
-            data.put("name",name);
 
             String url = baseUrl + "/v1/devices/events/";
 
@@ -737,18 +765,17 @@ public class particleMethods {
 
             particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
 
-            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishEvent(data);
+            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishEvent(name,accesstoken);
 
             Response<particleDeleteTokenResponse> response = call.execute();
 
             particleDeleteTokenResponse result = response.body();
 
             return result.getOk();
-
-
-
         }
 
+
+        // test
         public boolean publishProductEvent(String name, String productId) throws IOException {
 
             Map<String,String> data = new HashMap<>();
@@ -791,16 +818,9 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            HashMap<String,String> body = new HashMap<>();
-
-            body.put("integration_type",integrationType);
-            body.put("event",event);
-            body.put("url",newUrl);
-            body.put("requestType",requestType);
-
             particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
 
-            Call<particleWebhookCreationResponse> call = particleWebhookInterface.createWebhook(body);
+            Call<particleWebhookCreationResponse> call = particleWebhookInterface.createWebhook(integrationType,event,newUrl,requestType);
 
             Response<particleWebhookCreationResponse> response = call.execute();
 
@@ -822,14 +842,8 @@ public class particleMethods {
 
             particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
 
-            HashMap<String,String> body = new HashMap<>();
-            body.put("integration_type",integrationType);
-            body.put("event",event);
-            body.put("hub_name",hubName);
-            body.put("policy_name",policyName);
-            body.put("policy_key",policyKey);
 
-            Call<particleWebhookAzureResponse> call = particleWebhookInterface.createAzureWebhook(body);
+            Call<particleWebhookAzureResponse> call = particleWebhookInterface.createAzureWebhook(integrationType,event,hubName,policyName,policyKey);
 
             Response<particleWebhookAzureResponse> response = call.execute();
 
@@ -841,10 +855,6 @@ public class particleMethods {
 
         public particleGoogleCloudResponse enableGoogleCloudPlatformIntegration(String integrationType, String event, String topic) throws IOException {
 
-            HashMap<String,String> body = new HashMap<>();
-            body.put("integration_type",integrationType);
-            body.put("event",event);
-            body.put("topic",topic);
 
             String url = baseUrl + "/v1/integrations/";
 
@@ -855,7 +865,7 @@ public class particleMethods {
 
             particleWebhookInterface particleWebhookInterface = retrofit.create(com.example.nctai_trading.particle.particleWebhookInterface.class);
 
-            Call<particleGoogleCloudResponse> call = particleWebhookInterface.createGoogleCloudWebhook(body);
+            Call<particleGoogleCloudResponse> call = particleWebhookInterface.createGoogleCloudWebhook(integrationType,event,topic);
 
             Response<particleGoogleCloudResponse> response = call.execute();
 
@@ -883,11 +893,7 @@ public class particleMethods {
 
             particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
 
-            Map<String,String> body = new HashMap<>();
-
-            body.put("deviceId",deviceId);
-
-            Response response = particleFirmwareInterface.updateDeviceFirmware(deviceId,body);
+            Response response = particleFirmwareInterface.updateDeviceFirmware(deviceId);
 
             return response.errorBody().contentLength() < 1;
 
@@ -926,16 +932,9 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            Map<String,String> body = new HashMap<>();
-
-            body.put("deviceId",deviceId);
-            body.put("productIdOrSlug",productId);
-            body.put("desired_firmware_version",desiredFirmwareVersion);
-            body.put("access_token",accessToken);
-
             particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
 
-            Call<particleLockProductFirmware> call = particleFirmwareInterface.lockProductFirmware(body);
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.lockProductFirmware(productId,deviceId,desiredFirmwareVersion,accesstoken);
 
             Response<particleLockProductFirmware> response = call.execute();
 
@@ -951,13 +950,6 @@ public class particleMethods {
 
             String url = baseUrl + String.format("/v1/products/%s/devices/%s/",deviceId,productId);
 
-            Map<String,String> body = new HashMap<>();
-            body.put("deviceId",deviceId);
-            body.put("productIdOrSlug",productId);
-            body.put("desired_firmware_version",desiredFirmwareVerison);
-            body.put("access_token",accessToken);
-
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -965,7 +957,7 @@ public class particleMethods {
 
             particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
 
-            Call<particleLockProductFirmware> call = particleFirmwareInterface.unlockProductFirmware(productId,deviceId,body);
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.unlockProductFirmware(productId,deviceId,desiredFirmwareVerison,accesstoken);
 
             Response<particleLockProductFirmware> response = call.execute();
 
@@ -983,17 +975,10 @@ public class particleMethods {
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            Map<String,String> body = new HashMap<>();
-            if(development){
-                body.put("development","true");
-            }
-            else{
-                body.put("development","false");
-            }
 
             particleFirmwareInterface particleFirmwareInterface = retrofit.create(com.example.nctai_trading.particle.particleFirmwareInterface.class);
 
-            Call<particleLockProductFirmware> call = particleFirmwareInterface.markProductDevelopmentDevice(productId,deviceId,body,getTokenQueryString());
+            Call<particleLockProductFirmware> call = particleFirmwareInterface.markProductDevelopmentDevice(productId,deviceId,development,accesstoken);
 
             Response<particleLockProductFirmware> response = call.execute();
 
@@ -1103,13 +1088,9 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            Map<String,String> body = new HashMap<>();
-            body.put("name",name);
-
-
             particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
 
-            Call<particleGetDeviceGroup> call = particleDeviceGroupInterface.createDeviceGroup(productId,body);
+            Call<particleGetDeviceGroup> call = particleDeviceGroupInterface.createDeviceGroup(productId,name);
 
             Response<particleGetDeviceGroup> response = call.execute();
 
@@ -1131,7 +1112,7 @@ public class particleMethods {
             Map<String,String> body = new HashMap<>();
 
             body.put("name","name2");
-            body.put("access_token",accessToken);
+            body.put("access_token",accesstoken);
 
             particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
 
@@ -1157,7 +1138,7 @@ public class particleMethods {
 
             particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
 
-            Response deleteDeviceGroup = particleDeviceGroupInterface.delteDeviceGroup(productId,groupName,getTokenQueryString());
+            Response deleteDeviceGroup = particleDeviceGroupInterface.delteDeviceGroup(productId,groupName,accesstoken);
 
             return deleteDeviceGroup.errorBody().contentLength() < 1;
         }
@@ -1173,11 +1154,7 @@ public class particleMethods {
 
             particleDeviceGroupInterface particleDeviceGroupInterface = retrofit.create(com.example.nctai_trading.particle.particleDeviceGroupInterface.class);
 
-            Map<String,Object> body = new HashMap<>();
-
-            body.put("groups",groups);
-
-            Call<particleDeviceGroupAssignGroupsToDeviceResponse> call = particleDeviceGroupInterface.assignGroupsToDevice(productId,deviceId,body);
+            Call<particleDeviceGroupAssignGroupsToDeviceResponse> call = particleDeviceGroupInterface.assignGroupsToDevice(productId,deviceId,groups);
 
             Response<particleDeviceGroupAssignGroupsToDeviceResponse> response = call.execute();
 
@@ -1195,12 +1172,6 @@ public class particleMethods {
 
             String url = baseUrl + String.format("/v1/products/%s/customers/",productId);
 
-            Map<String,String> body = new HashMap<>();
-
-            body.put("access_token",accessToken);
-            body.put("email",email);
-            body.put("password",password);
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -1208,7 +1179,7 @@ public class particleMethods {
 
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerAccessToken(productId,body);
+            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerAccessToken(productId,email,password);
 
             Response<particleCreateCustomerResponse> response = call.execute();
 
@@ -1225,15 +1196,9 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            Map<String,String> body = new HashMap<>();
-
-            body.put("client_id",clientId);
-            body.put("client_secret",clientSecret);
-            body.put("email",email);
-
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerCredentials(productId,getAuthHeaders(),body);
+            Call<particleCreateCustomerResponse> call = particleCustomerInterface.createCustomerCredentials(productId,getAuthHeaders(),clientId,clientSecret,email);
 
             Response<particleCreateCustomerResponse> response = call.execute();
 
@@ -1274,17 +1239,9 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            Map<String,String> body = new HashMap<>();
-
-            body.put("client_id",clientId);
-
-            body.put("client_secret",clientSecret);
-
-            body.put("grant_type",grantType);
-
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleCreateCustomerTokenResponse> call = particleCustomerInterface.createCustomerToken(getAuthHeaders(),body);
+            Call<particleCreateCustomerTokenResponse> call = particleCustomerInterface.createCustomerToken(getAuthHeaders(),clientId,clientSecret,"client_credentials",7884000);
 
             Response<particleCreateCustomerTokenResponse> response = call.execute();
 
@@ -1303,13 +1260,10 @@ public class particleMethods {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            Map<String,String> body = getTokenQueryString();
-            body.put("password",password);
-
 
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.updateCustomer(productId,customerEmail,body);
+            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.updateCustomer(productId,customerEmail,password);
 
             Response<particleUpdateCustomerPasswordResponse> response = call.execute();
 
@@ -1322,8 +1276,6 @@ public class particleMethods {
 
             String url = baseUrl + String.format("/v1/products/%s/customers/%s",productId,customerEmail);
 
-            Map<String,String> body = getTokenQueryString();
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -1331,7 +1283,7 @@ public class particleMethods {
 
             particleCustomerInterface particleCustomerInterface = retrofit.create(com.example.nctai_trading.particle.particleCustomerInterface.class);
 
-            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.deleteCustomer(productId,customerEmail,body);
+            Call<particleUpdateCustomerPasswordResponse> call = particleCustomerInterface.deleteCustomer(productId,customerEmail,accesstoken);
 
             Response<particleUpdateCustomerPasswordResponse> response = call.execute();
 

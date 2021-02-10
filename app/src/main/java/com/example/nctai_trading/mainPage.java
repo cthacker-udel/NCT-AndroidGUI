@@ -137,9 +137,10 @@ public class mainPage extends AppCompatActivity {
                 }
                 else{
                     com.example.nctai_trading.particle.particleMethods methods = new com.example.nctai_trading.particle.particleMethods();
-                    particleMethods.oAuthRequests tokenMethods = methods.new oAuthRequests();
+                    particleMethods.eventRequests tokenMethods = methods.new eventRequests();
                     try {
-                        tokenMethods.getAllOAuthClients("597d74aa67e9c6200009a804f37c4252ce671fc1");
+                        tokenMethods.publishAnEvent("Event2");
+                        tokenMethods.openStreamOfServerEvents("Event2");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
