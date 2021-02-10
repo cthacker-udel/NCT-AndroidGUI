@@ -27,6 +27,8 @@ import org.bson.types.ObjectId;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.*;
 
 public class signUpPage extends AppCompatActivity {
@@ -169,17 +171,17 @@ public class signUpPage extends AppCompatActivity {
 
                 Matcher emailMatcher = emailValidator.matcher(emailContent);
 
-                if(!emailMatcher.matches() || !Patterns.EMAIL_ADDRESS.matcher(emailContent).matches()){
-                    emailInvalidAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(signUpPage.this,"Please edit your email",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    emailInvalidAlert.setCancelable(true);
-                    emailInvalidAlert.create().show();
-                    return ;
-                }
+                //if(!emailMatcher.matches() || !Patterns.EMAIL_ADDRESS.matcher(emailContent).matches()){
+                //    emailInvalidAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                //        @Override
+                //        public void onClick(DialogInterface dialog, int which) {
+                //            Toast.makeText(signUpPage.this,"Please edit your email",Toast.LENGTH_SHORT).show();
+                //        }
+                //    });
+                //    emailInvalidAlert.setCancelable(true);
+                //    emailInvalidAlert.create().show();
+                //    return ;
+                //}
 
                 if(emailContent.length() < 1){
                     emailLengthAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -279,25 +281,26 @@ public class signUpPage extends AppCompatActivity {
                 }
 
                 /// TODO: [IMPORTANT : SIGN UP PAGE] initiate putting username and password into database, along with firstname and lastname, then switch back to sign in screen,
-
                 // TODO: [MAILGUN IMPLEMENTATION] Display message saying that an email has been sent to their email address, then add a link and that will verify them, or add an code and then I will create a separate page which will have two credentials to be entered: email and verification code, if they enter the correct verification code then the data in the database is switched to verified
                 Document createdUser = new Document("_id",new ObjectId());
-                createdUser.append("twoFactor",new Object[]{new Document("active",false),new Document("secret","")});
+                //createdUser.append("twoFactor",new Object[]{new Document("active",false),new Document("secret","")});
                 createdUser.append("email",emailContent);
                 createdUser.append("password",hashedPassword);
                 createdUser.append("wallet",new ObjectId());
 
-                Configuration configuration = new Configuration()
-                        .domain("nextcapitaltech.com")
-                        .apiKey("key-XXXXXX")
-                        .from("Test account", "nextcapital@nextcapitaltech.com");
+                coll.insertOne(createdUser);
 
-                Mail.using(configuration)
-                        .to(emailContent)
-                        .subject("Next Capital Tech Verification Email")
-                        .text("Verification code : ######")
-                        .build()
-                        .send();
+                //Configuration configuration = new Configuration()
+                //        .domain("nextcapitaltech.com")
+                //        .apiKey("key-XXXXXX")
+                //        .from("Test account", "nextcapital@nextcapitaltech.com");
+
+                //Mail.using(configuration)
+                //        .to(emailContent)
+                //        .subject("Next Capital Tech Verification Email")
+                //        .text("Verification code : ######")
+                //        .build()
+                //        .send();
 
 
                 // createdUser.append("emailVerify", false);
