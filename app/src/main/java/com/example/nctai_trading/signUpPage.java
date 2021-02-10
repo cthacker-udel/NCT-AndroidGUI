@@ -121,7 +121,7 @@ public class signUpPage extends AppCompatActivity {
             public void onClick(View v){
 
                 String usernameContent = usernameText.getText().toString().trim();
-                String emailContent = usernameText.getText().toString().trim();
+                String emailContent = emailText.getText().toString().trim();
                 String passwordContent = passwordText.getText().toString().trim();
                 String confirmPasswordContent = confirmPasswordText.getText().toString().trim();
                 String firstNameContent = firstNameText.getText().toString().trim();
@@ -281,13 +281,16 @@ public class signUpPage extends AppCompatActivity {
                 }
 
                 /// TODO: [IMPORTANT : SIGN UP PAGE] initiate putting username and password into database, along with firstname and lastname, then switch back to sign in screen,
+                //List<Document> documentList = new ArrayList<>();
                 // TODO: [MAILGUN IMPLEMENTATION] Display message saying that an email has been sent to their email address, then add a link and that will verify them, or add an code and then I will create a separate page which will have two credentials to be entered: email and verification code, if they enter the correct verification code then the data in the database is switched to verified
                 Document createdUser = new Document("_id",new ObjectId());
                 //createdUser.append("twoFactor",new Object[]{new Document("active",false),new Document("secret","")});
                 createdUser.append("email",emailContent);
                 createdUser.append("password",hashedPassword);
                 createdUser.append("wallet",new ObjectId());
+                //documentList.add(createdUser);
 
+                //coll.insertMany(documentList);
                 coll.insertOne(createdUser);
 
                 //Configuration configuration = new Configuration()

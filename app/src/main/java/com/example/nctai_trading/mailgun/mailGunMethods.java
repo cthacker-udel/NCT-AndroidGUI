@@ -801,10 +801,6 @@ public class mailGunMethods {
 
             String url = baseUrl + "/v4/address/validate/";
 
-            HashMap<String,String> body = new HashMap<>();
-
-            body.put("address",address);
-
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -812,7 +808,7 @@ public class mailGunMethods {
 
             mailgunEmailValidationInterface emailValidationInterface = retrofit.create(mailgunEmailValidationInterface.class);
 
-            Call<mailgunSingleEmailValidation> emailValidationCall = emailValidationInterface.singleEmailValidationPOST(body,getAuthHeaders());
+            Call<mailgunSingleEmailValidation> emailValidationCall = emailValidationInterface.singleEmailValidationPOST(address,getAuthHeaders());
 
             Response<mailgunSingleEmailValidation> emailValidationResponse = emailValidationCall.execute();
 
