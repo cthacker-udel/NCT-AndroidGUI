@@ -2,13 +2,18 @@ package com.example.nctai_trading.particle;
 
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +30,12 @@ public class particleMethods {
 
     String baseUrl = "https://api.particle.io";
 
-    String username = "particle";
-    String password = "particle";
+    String username = "noah13nelson@gmail.com";
+    String password = "CompeteToWin*13";
+    String secretKey = "2f7c82f8baca961fbff0e657c7edfb2ad7c9b110";
+    String clientId = "nct-app-3115";
+    String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
+    String refreshToken = "529c17ca203cb064bd556ed10168cc6ecbd95f5f";
 
     String accessToken = "1234";
 
@@ -39,10 +48,36 @@ public class particleMethods {
 
     }
 
+    public String getAuthString(){
+
+        return String.format("%s:%s",username,password);
+
+    }
+
+    public String toJson(Object object){
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        try{
+            String json = objectMapper.writeValueAsString(object);
+            return json;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Unable to serialize");
+        }
+    }
+
+    public String jsonStringifyMap(Map<String,Object> map){
+        return new Gson().toJson(map);
+    }
+
+
+
     public Map<String,String> getAuthHeaders(){
 
-        Map<String,String> authHeader = new HashMap<>();
-        authHeader.put("Authorization",getSignature());
+        //Map<String,String> authHeader = new HashMap<>();
+        //authHeader.put("Authorization",getSignature());
+        //return authHeader;
+        Map<String,String> authHeader = new LinkedHashMap<>();
+        authHeader.put("username",username);
+        authHeader.put("password",secretKey);
         return authHeader;
 
     }
@@ -71,15 +106,7 @@ public class particleMethods {
 
     public class accessTokenRequests{
 
-        public particleAccessTokenResponse getAccessToken(String grantType, String username, String password) throws IOException {
-
-            Map<String,String> authHeader = getAuthHeaders();
-
-            Map<String,String> body = new HashMap<>();
-
-            body.put("grant_type",grantType);
-            body.put("username",username);
-            body.put("password",password);
+        public particleAccessTokenResponse getAccessToken(String grantType) throws IOException {//, String username, String password) throws IOException {
 
             String url = baseUrl + "/oauth/token/";
 
@@ -90,24 +117,25 @@ public class particleMethods {
 
             particleAuthenticationInterface particleAuthenticationInterface = retrofit.create(particleAuthenticationInterface.class);
 
-            Call<particleErrorResponse> getToken = particleAuthenticationInterface.getAccessToken(authHeader,body);
+            Call<particleAccessTokenResponse> getToken = particleAuthenticationInterface.getAccessToken(clientId,secretKey,grantType,username,password);
 
-            Response<particleErrorResponse> tokenResponseResponse = getToken.execute();
+            Response<particleAccessTokenResponse> tokenResponseResponse = getToken.execute();
 
-            System.out.println(tokenResponseResponse.errorBody().toString());
+            particleAccessTokenResponse response = tokenResponseResponse.body();
 
-            particleErrorResponse response = tokenResponseResponse.body();
+            System.out.println(response.getAccessToken());
 
-            System.out.println(response.getErrorDescription());
+            System.out.println(response.getExpiresIn());
 
-            return null;
+            System.out.println(response.getRefreshToken());
+
+            return response;
 
         }
 
+        // find the otp to test
         public void getListOfAccessTokens(String otp) throws IOException {
 
-            Map<String,String> body = new HashMap<>();
-            body.put("otp",otp);
 
             String url = baseUrl + "/v1/access_tokens/";
 
@@ -118,7 +146,7 @@ public class particleMethods {
 
             particleAuthenticationInterface particleAuthenticationInterface = retrofit.create(com.example.nctai_trading.particle.particleAuthenticationInterface.class);
 
-            Call<List<particleAccessTokenListAccessToken>> call = particleAuthenticationInterface.getListOfAccessToken(getAuthHeaders(),body);
+            Call<List<particleAccessTokenListAccessToken>> call = particleAuthenticationInterface.getListOfAccessToken(getAuthHeaders(),otp);
 
             Response<List<particleAccessTokenListAccessToken>> response = call.execute();
 
@@ -130,6 +158,8 @@ public class particleMethods {
 
         }
 
+
+        // 401 : Unauthorized. You must send username and password
         public particleDeleteTokenResponse deleteAccessToken(String token) throws IOException {
 
             String url = baseUrl + String.format("/v1/access_tokens/%s/",token);
@@ -141,11 +171,8 @@ public class particleMethods {
 
             particleAuthenticationInterface particleAuthenticationInterface = retrofit.create(com.example.nctai_trading.particle.particleAuthenticationInterface.class);
 
-            HashMap<String,String> body = new HashMap<>();
 
-            body.put("token",token);
-
-            Call<particleDeleteTokenResponse> deleteTokenCall = particleAuthenticationInterface.deleteAccessToken(token,getAuthHeaders(),body);
+            Call<particleDeleteTokenResponse> deleteTokenCall = particleAuthenticationInterface.deleteAccessToken(token,getAuthString());
 
             Response<particleDeleteTokenResponse> deleteTokenResponse = deleteTokenCall.execute();
 
@@ -156,6 +183,7 @@ public class particleMethods {
 
         }
 
+        // test
         public void deleteAllActiveAccessTokens(String... accessTokens) throws IOException {
 
             String url = baseUrl + "/v1/access_tokens/";
@@ -185,6 +213,7 @@ public class particleMethods {
 
         }
 
+        // test
         public particleDeleteTokenResponse deleteCurrentToken(String token) throws IOException {
 
             String url = baseUrl + "/v1/access_tokens/current/";
@@ -209,6 +238,7 @@ public class particleMethods {
 
         }
 
+        // works
         public particleCurrentTokenInformation getCurrentTokenInformation(String token) throws IOException {
 
             HashMap<String,String> currentToken = new HashMap<>();
@@ -238,6 +268,7 @@ public class particleMethods {
 
     public class oAuthRequests{
 
+        // works
         public particleClientList getAllOAuthClients(String token) throws IOException {
 
             HashMap<String,String> data = new HashMap<>();
