@@ -112,26 +112,36 @@ public class paymentOptionPage extends AppCompatActivity {
                 OrderSource bodyOrderOrderSource = new OrderSource.Builder()
                         .name("Customer1")
                         .build();
+
+
                 List<OrderLineItem> bodyOrderOrderLineItems = new LinkedList<>();
 
+
+                // taxes
                 List<OrderLineItemAppliedTax> bodyOrderOrderLineItem0AppliedTaxes = new LinkedList<>();
 
                 Money bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney = new Money.Builder()
                         .amount(53L) // money amount
                         .currency("GBP")
                         .build();
+
                 OrderLineItemAppliedTax bodyOrderOrderLineItems0AppliedTaxes0 = new OrderLineItemAppliedTax.Builder(
                         "38ze1696-z1e3-5628-af6d-f1e04d947fg3")
                         .uid("uid3")
                         .appliedMoney(bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney)
                         .build();
+
+
+                // applied discounts
                 List<OrderLineItemAppliedDiscount> bodyOrderOrderLineItems0AppliedDiscounts = new LinkedList<>();
 
+                // money to apply on discount
                 Money bodyOrderOrderLineItems0AppliedDiscounts0AppliedMoney = new Money.Builder()
                         .amount(161L)
                         .currency("LSL")
                         .build();
 
+                // setting up discount
                 OrderLineItemAppliedDiscount bodyOrderOrderLineItems0AppliedDiscounts0 = new OrderLineItemAppliedDiscount.Builder(
                         "56ae1696-z1e3-9328-af6d-f1e04d947gd4")
                         .uid("uid7")
@@ -139,11 +149,14 @@ public class paymentOptionPage extends AppCompatActivity {
                         .build();
                 bodyOrderOrderLineItems0AppliedDiscounts.add(bodyOrderOrderLineItems0AppliedDiscounts0);
 
+                // amount of money service is
                 Money bodyOrderOrderLineItems0BasePriceMoney = new Money.Builder()
                         .amount(1500L)
                         .currency("USD")
                         .build();
 
+
+                // creating item they are ordering
                 OrderLineItem bodyOrderOrderLineItems0 = new OrderLineItem.Builder("1")
                         .uid("uid3")
                         .name("Next Capital Tech AI Services")
@@ -159,6 +172,8 @@ public class paymentOptionPage extends AppCompatActivity {
 
                 List<OrderLineItemTax> bodyOrderOrderTaxes = new LinkedList<>();
 
+
+                // item with taxes
                 OrderLineItemTax bodyOrderOrderTaxes0 = new OrderLineItemTax.Builder()
                         .uid("38ze1696-z1e3-5628-af6d-f1e04d947fg3")
                         .catalogObjectId("catalogObjectID7")
@@ -179,6 +194,7 @@ public class paymentOptionPage extends AppCompatActivity {
                         .currency("USD")
                         .build();
 
+                // set up discount percentage
                 OrderLineItemDiscount bodyOrderOrderDiscounts0 = new OrderLineItemDiscount.Builder()
                         .uid("56ae1696-z1e3-9328-af6d-f1e04d947gd4")
                         .catalogObjectId("catalogObjectId1")
