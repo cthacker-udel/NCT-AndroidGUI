@@ -97,13 +97,6 @@ public class particleMethods {
     public String getContentHeaders(){
 
         return "Content-Type: application/json";
-        // -H = header
-        // -d = body like in coinbasepro
-        // There are three ways to send your access token in a request.
-        //
-        //In an HTTP Authorization header (always works)
-        //In the URL query string (only works with GET requests)
-        //In the request body (only works for POST, PUT and DELETE when body is form encoded)
 
     }
 
