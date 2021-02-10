@@ -76,13 +76,11 @@ public class particleMethods {
 
     public Map<String,String> getAuthHeaders(){
 
-        //Map<String,String> authHeader = new HashMap<>();
-        //authHeader.put("Authorization",getSignature());
-        //return authHeader;
         Map<String,String> authHeader = new LinkedHashMap<>();
         authHeader.put("username",username);
         authHeader.put("password",secretKey);
         return authHeader;
+
     }
 
     public Map<String,String> getTokenQueryString(){
