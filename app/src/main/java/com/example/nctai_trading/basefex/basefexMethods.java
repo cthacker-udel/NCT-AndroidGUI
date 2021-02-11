@@ -262,6 +262,83 @@ public class basefexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<basefexActiveOrderListOrder> getActiveOrderList(String symbol, String limit) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/orders/opening/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,String> queryMap = new LinkedHashMap<>();
+
+            queryMap.put("symbol",symbol);
+            queryMap.put("limit",limit);
+
+            String timestamp = getTimeStamp();
+            Call<List<basefexActiveOrderListOrder>> call = basefexOrdersInterface.getActiveOrderList(timestamp,apiKey,generateSignature(secretKey,"GET","/orders/opening",timestamp,""),queryMap);
+
+            Response<List<basefexActiveOrderListOrder>> response = call.execute();
+
+            return response.body();
+
+
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public basefexCountOrdersCount countOrders(String symbol, String type, String side) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/orders/count/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,String> queryMap = new LinkedHashMap<>();
+            queryMap.put("symbol",symbol);
+            queryMap.put("type",type);
+            queryMap.put("side",side);
+
+            String timestamp = getTimeStamp();
+            Call<basefexCountOrdersCount> call = basefexOrdersInterface.getOrderCount(timestamp,apiKey,generateSignature(secretKey,"GET","/orders/count",timestamp,""),queryMap);
+
+            Response<basefexCountOrdersCount> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public basefexCountOrdersCount countActiveOrders(String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/opening/count/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,String> queryMap = new LinkedHashMap<>();
+
+            queryMap.put("symbol",symbol);
+
+            String timestamp = getTimeStamp();
+            Call<basefexCountOrdersCount> call =  basefexOrdersInterface.getActiveOrderCount(timestamp,apiKey,generateSignature(secretKey,"GET","/opening/count",timestamp,""),queryMap);
+
+            Response<basefexCountOrdersCount> response = call.execute();
+
+            return response.body();
+        }
+
     }
 
 

@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
 public interface basefexOrdersInterface {
 
@@ -32,4 +33,13 @@ public interface basefexOrdersInterface {
 
     @DELETE("https://api.basefex.com/orders/batch")
     Response cancelOrderBatch(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Body Map<String,Object> body);
+
+    @GET("https://api.basefex.com/orders/opening")
+    Call<List<basefexActiveOrderListOrder>> getActiveOrderList(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @QueryMap Map<String,String> queryMap);
+
+    @GET("https://api.basefex.com/orders/count")
+    Call<basefexCountOrdersCount> getOrderCount(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @QueryMap Map<String,String> queryMap);
+
+    @GET("https://api.basefex.com/opening/count")
+    Call<basefexCountOrdersCount> getActiveOrderCount(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @QueryMap Map<String,String> queryMap);
 }

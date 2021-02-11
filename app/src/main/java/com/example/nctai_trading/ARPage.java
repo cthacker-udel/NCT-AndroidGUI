@@ -54,13 +54,14 @@ public class ARPage extends AppCompatActivity {
                 try {
                     //accountRequests.countTransactions();
                     //ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
-                    List<Map<String,Object>> orderList = new LinkedList<Map<String,Object>>();
-                    Map<String,Object> orders = new HashMap<>();
-                    orders.put("price",11234);
-                    orders.put("size",200);
-                    orders.put("side","BUY");
-                    orderList.add(orders);
-                    ordersRequests.placeOrderInBatches("BTCUSD",orderList);
+                    //List<Map<String,Object>> orderList = new LinkedList<Map<String,Object>>();
+                    //Map<String,Object> orders = new HashMap<>();
+                    //orders.put("price",11234);
+                    //orders.put("size",200);
+                    //orders.put("side","BUY");
+                    //orderList.add(orders);
+                    //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
+                    ordersRequests.getActiveOrderList("BTCUSD","10");
                 } catch (NoSuchAlgorithmException | InvalidKeyException | IOException e) {
                     e.printStackTrace();
                 }
