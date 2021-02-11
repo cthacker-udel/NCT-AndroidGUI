@@ -171,6 +171,44 @@ public class basefexMethods {
             return result;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrder(String orderId) throws NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + String.format("/orders/%s/",orderId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            String timestamp = getTimeStamp();
+
+            Response cancelOrder = basefexOrdersInterface.cancelOrder(orderId,timestamp,apiKey,generateSignature(secretKey,"DELETE",String.format("/orders/%s",orderId),timestamp,""));
+
+            return cancelOrder.isSuccessful();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<basefexOrderListOrder> getOrderList() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<basefexOrderListOrder>> call = basefexOrdersInterface.getOrderList(timestamp,apiKey,generateSignature(secretKey,"GET","/orders",timestamp,""));
+            Response<List<basefexOrderListOrder>> response = call.execute();
+
+            return response.body();
+        }
+
     }
 
 
