@@ -7,6 +7,8 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Shared Preferences Implementation
 - [x] Binance.us API implementation
 - [x] CoinbasePro API implementation
+- [x] Bithumb API implementation
+- [x] Alpaca API implementation
 - [x] Mailgun API implementation
 - [x] Square Checkout API implementation
 - [x] Particle Cloud API Implementation
@@ -70,6 +72,19 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] added device group implementation
 - [x] added customer implementation
 
+### Bithumb Implementation
+
+- [x] Place orders / withdraw orders implementation
+- [x] Order History implementation
+- [x] Ticker price implementation
+- [x] Kline implementation
+
+### Alpaca Implementation
+
+- [x] Account Info implementation
+- [x] Order implementation
+- [x] Order Position implementation
+- [x] Asset implementation
 
 ## TODOS
 -------
@@ -97,6 +112,10 @@ CAMERON THACKER - NCT ANDROID GUI
 ### [Mailgun Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/mailgun/mailGunMethods.java)
 
 ### [Particle Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/particle/particleMethods.java)
+
+### [Alpaca Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/alpaca/alpacaMethods.java)
+
+### [Bithumb Methods](https://github.com/cthacker-udel/NCT-AndroidGUI/blob/master/app/src/main/java/com/example/nctai_trading/bithumb/bithumbMethods.java)
 
 ### [App Pages](https://github.com/cthacker-udel/NCT-AndroidGUI/tree/master/app/src/main/res/layout)
 
