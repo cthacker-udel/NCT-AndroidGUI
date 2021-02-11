@@ -13,6 +13,8 @@ import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class ARPage extends AppCompatActivity {
 
@@ -36,23 +38,29 @@ public class ARPage extends AppCompatActivity {
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
 
                 com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
+                com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
 
                 com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
+
                 try {
-                    //accountMethods.getAccount();
+                    basefexMethods.test();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
+                }
+                //accountMethods.getAccount();
                     //orderRequests.getListOfOrders();
                     //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
                     //orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
                     //positionRequests.getOpenPositions();
                     //positionRequests.getOpenPosition("YUM");
-                    assetRequests.getAssets();
-                    assetRequests.getAsset("AAT");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    //assetRequests.getAssets();
+                    //assetRequests.getAsset("AAT");
+
 
 
                 //validationRequests.singleEmailValidationPOST("cthacker@udel.edu");
