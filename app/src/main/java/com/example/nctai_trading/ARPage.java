@@ -40,13 +40,16 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
+                com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
                 try {
                     //accountMethods.getAccount();
                     //orderRequests.getListOfOrders();
                     //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
-                    orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
-                    positionRequests.getOpenPositions();
-                    positionRequests.getOpenPosition("YUM");
+                    //orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
+                    //positionRequests.getOpenPositions();
+                    //positionRequests.getOpenPosition("YUM");
+                    assetRequests.getAssets();
+                    assetRequests.getAsset("AAT");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

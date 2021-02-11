@@ -272,5 +272,48 @@ public class alpacaMethods {
         }
     }
 
+    public class assetRequests{
+
+        public List<alpacaAsset> getAssets() throws IOException {
+
+            String url = paperBaseUrl + "/v2/assets/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaAssetInterface alpacaAssetInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaAssetInterface.class);
+
+            Call<List<alpacaAsset>> getAssets = alpacaAssetInterface.getAssets(apiKey,secretKey);
+
+            Response<List<alpacaAsset>> response = getAssets.execute();
+
+            List<alpacaAsset> assets = response.body();
+
+            return assets;
+
+        }
+
+        public alpacaAsset getAsset(String symbol) throws IOException {
+
+            String url = paperBaseUrl + String.format("/v2/assets/%s/",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaAssetInterface alpacaAssetInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaAssetInterface.class);
+
+            Call<alpacaAsset> call = alpacaAssetInterface.getAsset(symbol,apiKey,secretKey);
+
+            Response<alpacaAsset> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
 
 }
