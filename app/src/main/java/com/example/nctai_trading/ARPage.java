@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.nctai_trading.alpaca.alpacaMethods;
+import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class ARPage extends AppCompatActivity {
         ARButton = findViewById(R.id.ARPageButton);
 
         ARButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
 
@@ -44,12 +45,12 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
-
+                com.example.nctai_trading.basefex.basefexMethods.accountRequests accountRequests = basefexMethods.new accountRequests();
+                com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
                 try {
-                    basefexMethods.test();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidKeyException e) {
+                    //accountRequests.countTransactions();
+                    ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
+                } catch (NoSuchAlgorithmException | InvalidKeyException | IOException e) {
                     e.printStackTrace();
                 }
                 //accountMethods.getAccount();
