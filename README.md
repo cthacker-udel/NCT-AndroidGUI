@@ -9,6 +9,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] CoinbasePro API implementation
 - [x] Bithumb API implementation
 - [x] Alpaca API implementation
+- [x] baseFEX API implementation
 - [x] Mailgun API implementation
 - [x] Square Checkout API implementation
 - [x] Particle Cloud API Implementation
@@ -85,6 +86,12 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Order implementation
 - [x] Order Position implementation
 - [x] Asset implementation
+
+### BaseFEX Implementation
+
+- [x] Account Info implementation
+- [x] Order implementation
+- [x] Trade implementation
 
 ## TODOS
 -------
