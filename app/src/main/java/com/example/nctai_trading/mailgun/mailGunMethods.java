@@ -1,27 +1,30 @@
 package com.example.nctai_trading.mailgun;
 
-import android.database.Observable;
+
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.gson.Gson;
-
-import org.apache.commons.codec.binary.Base64;
-import org.spongycastle.asn1.ocsp.ResponseData;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.IntStream;
 
-import io.particle.android.sdk.cloud.exceptions.ParticleCloudException;
-import retrofit.RetrofitError;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import android.util.Base64;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class mailGunMethods {
 
@@ -37,10 +40,10 @@ public class mailGunMethods {
 
     public String getSignature(){
 
-        String readyToEncode = username + ":" + password;
-        byte[] result = Base64.encodeBase64(readyToEncode.getBytes());
-        String encodedString = new String(result);
-        return encodedString;
+
+        String readyToEncode  = "api:" + password;
+
+        return "BASIC" + " " + Base64.encodeToString(readyToEncode.getBytes(), Base64.NO_WRAP);
 
     }
 
@@ -55,6 +58,7 @@ public class mailGunMethods {
     public class messageRequests{
 
         // 401 : UNAUTHORIZED
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public mailgunMessageResponse sendMessage(String to, String from, String subject, String text) throws IOException {
 
             String url = baseUrl + "/v3/sales.nextcapitaltech.com/messages/";
@@ -84,18 +88,19 @@ public class mailGunMethods {
 
             String url = baseUrl + "/domains/";
 
+            Gson gson = new GsonBuilder().setLenient().create();
+
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
+
+            Map<String,String> authMap = new HashMap<>();
+            authMap.put("Authorization",getSignature());
 
             mailgunDomainInterface mailgunDomainInterface = retrofit.create(com.example.nctai_trading.mailgun.mailgunDomainInterface.class);
 
-            HashMap<String,String> authHeader = new HashMap<>();
-
-            authHeader.put("api",getSignature());
-
-            Call<mailGunDomainResponse> mailGunDomainResponseCall = mailgunDomainInterface.getDomains(authHeader);
+            Call<mailGunDomainResponse> mailGunDomainResponseCall = mailgunDomainInterface.getDomains(getSignature());
 
             Response<mailGunDomainResponse> mailGunDomainResponseResponse = mailGunDomainResponseCall.execute();
 
@@ -808,7 +813,7 @@ public class mailGunMethods {
 
             mailgunEmailValidationInterface emailValidationInterface = retrofit.create(mailgunEmailValidationInterface.class);
 
-            Call<mailgunSingleEmailValidation> emailValidationCall = emailValidationInterface.singleEmailValidationPOST(address,getAuthHeaders());
+            Call<mailgunSingleEmailValidation> emailValidationCall = emailValidationInterface.singleEmailValidationPOST(address,getSignature());
 
             Response<mailgunSingleEmailValidation> emailValidationResponse = emailValidationCall.execute();
 
@@ -825,7 +830,7 @@ public class mailGunMethods {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String generateCode(){
 
-        return new Random().ints().limit(6).mapToObj(String::valueOf).reduce((e1, e2) -> e1+e2).get();
+        return new Random().ints(0,10).limit(6).mapToObj(String::valueOf).reduce((e1, e2) -> e1+e2).get();
 
     }
 

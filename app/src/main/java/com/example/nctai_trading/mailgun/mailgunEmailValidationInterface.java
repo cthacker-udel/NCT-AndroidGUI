@@ -7,7 +7,9 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface mailgunEmailValidationInterface {
@@ -15,9 +17,10 @@ public interface mailgunEmailValidationInterface {
     @GET("https://api.mailgun.net/v4/address/validate")
     Call<mailgunSingleEmailValidation> singleEmailValidation(@Body Map<String,String> body, @HeaderMap Map<String,String> authHeader);
 
+    @Headers({"Accept: application/json"})
     @FormUrlEncoded
     @POST("https://api.mailgun.net/v4/address/validate")
-    Call<mailgunSingleEmailValidation> singleEmailValidationPOST(@Field("address") String emailAddress, @HeaderMap Map<String,String> authHeader);
+    Call<mailgunSingleEmailValidation> singleEmailValidationPOST(@Field("address") String emailAddress, @Header("Authorization") String auth);
 
 
 

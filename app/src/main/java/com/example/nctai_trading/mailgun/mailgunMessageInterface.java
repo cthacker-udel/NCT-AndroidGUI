@@ -14,12 +14,14 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface mailgunMessageInterface {
 
+    @Headers({"Accept: application/json"})
     @FormUrlEncoded
     @POST("https://api.mailgun.net/v3/sales.nextcapitaltech.com/messages")
-    Call<mailgunMessageResponse> sendMessage(@Header("api") String apiKey, @Field("from") String from, @Field("to") String to, @Field("subject") String subject, @Field("text") String text);
+    Call<mailgunMessageResponse> sendMessage(@Header("Authorization") String apiKey, @Field("from") String from, @Field("to") String to, @Field("subject") String subject, @Field("text") String text);
 
 }

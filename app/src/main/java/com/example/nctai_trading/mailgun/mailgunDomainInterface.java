@@ -5,16 +5,20 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface mailgunDomainInterface {
 
+    @Headers({"Accept: application/json"})
     @GET("https://api.mailgun.net/domains")
-    Call<mailGunDomainResponse> getDomains(@HeaderMap Map<String, String> authMap);
+    Call<mailGunDomainResponse> getDomains(@Header("Authorization") String authHeader);
 
     @PUT("https://api.mailgun.net/domains/{id}")
     Call<mailgunSingleDomainResponse> getSingleDomain(@Path("id") String id, @HeaderMap Map<String,String> authHeader);
