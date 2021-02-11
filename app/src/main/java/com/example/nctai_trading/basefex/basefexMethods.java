@@ -395,7 +395,56 @@ public class basefexMethods {
 
     }
 
+    public class positionRequests{
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public basefexAdjustLeverage adjustLeverage(String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + String.format("/positions/%s/margin/",symbol);
+
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexPositionInterface basefexPositionInterface = retrofit.create(com.example.nctai_trading.basefex.basefexPositionInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<basefexAdjustLeverage> call = basefexPositionInterface.adjustLeverage(symbol,timestamp,apiKey,generateSignature(secretKey,"PUT",String.format("/positions/%s/margin",symbol),timestamp,""));
+
+            Response<basefexAdjustLeverage> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public basefexSetRiskLimit setRiskLimit(String symbol, Integer notional) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + String.format("/positions/%s/risk-limit",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexPositionInterface basefexPositionInterface = retrofit.create(com.example.nctai_trading.basefex.basefexPositionInterface.class);
+
+            Map<String,Object> body = new LinkedHashMap<>();
+            body.put("notional",notional);
+
+            String timestamp = getTimeStamp();
+            Call<basefexSetRiskLimit> call = basefexPositionInterface.setRiskLimit(symbol,timestamp,apiKey,generateSignature(secretKey,"PUT",String.format("/positions/%s/risk-limit",symbol),timestamp,jsonStringifyMap(body)),body);
+
+            Response<basefexSetRiskLimit> response = call.execute();
+
+            return response.body();
+        }
+
+
+
+
+    }
 
 
 }
