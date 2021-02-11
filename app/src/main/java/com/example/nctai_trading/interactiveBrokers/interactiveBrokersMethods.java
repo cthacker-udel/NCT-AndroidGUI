@@ -12,8 +12,9 @@ import java.time.Instant;
 
 public class interactiveBrokersMethods {
 
-    String consumerKey = "";
+    String httpSignKey = "TESTCOINS";
     String signatureMethod = "RSA-SHA256";
+    String httpEncryptKey = "TESTCOINSKEY";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getTimeStamp(){
