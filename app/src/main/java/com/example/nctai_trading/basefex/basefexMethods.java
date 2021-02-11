@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import kotlin.collections.builders.ListBuilderKt;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -338,6 +339,59 @@ public class basefexMethods {
 
             return response.body();
         }
+
+    }
+
+    public class tradeRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<basefexTradeListTrade> getTradeList(String symbol, String side) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/trades/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexTradesInterface basefexTradesInterface = retrofit.create(com.example.nctai_trading.basefex.basefexTradesInterface.class);
+
+            Map<String,String> queryMap = new LinkedHashMap<>();
+            queryMap.put("symbol",symbol);
+            queryMap.put("side",side);
+
+            String timestamp = getTimeStamp();
+            Call<List<basefexTradeListTrade>> call = basefexTradesInterface.getTradeList(timestamp,apiKey,generateSignature(secretKey,"GET","/trades",timestamp,""),queryMap);
+
+            Response<List<basefexTradeListTrade>> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public basefexCountOrdersCount getTradeCount(String symbol, String side) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/trades/count/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexTradesInterface basefexTradesInterface = retrofit.create(com.example.nctai_trading.basefex.basefexTradesInterface.class);
+
+            Map<String,String> queryMap = new LinkedHashMap<>();
+            queryMap.put("symbol",symbol);
+            queryMap.put("side",side);
+
+            String timestamp = getTimeStamp();
+            Call<basefexCountOrdersCount> call = basefexTradesInterface.getTradeCount(timestamp,apiKey,generateSignature(secretKey,"GET","/trades/count",timestamp,""),queryMap);
+
+            Response<basefexCountOrdersCount> response = call.execute();
+
+            return response.body();
+        }
+
 
     }
 
