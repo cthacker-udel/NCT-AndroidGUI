@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,6 +208,58 @@ public class basefexMethods {
             Response<List<basefexOrderListOrder>> response = call.execute();
 
             return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<basefexOrderListOrder> placeOrderInBatches(String symbol, List<Map<String,Object>> orders) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/orders/batch/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,Object> body = new LinkedHashMap<>();
+
+            body.put("symbol",symbol);
+            body.put("orders",orders);
+
+            String timestamp = getTimeStamp();
+            Call<List<basefexOrderListOrder>> call = basefexOrdersInterface.placeOrderBatch(timestamp,apiKey,generateSignature(secretKey,"POST","/orders/batch",timestamp,jsonStringifyMap(body)),body);
+
+            Response<List<basefexOrderListOrder>> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrderBatch(String symbol, List<String> ids) throws NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/orders/batch/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,Object> body = new LinkedHashMap<>();
+
+            body.put("symbol",symbol);
+            body.put("ids",ids);
+
+            String timestamp = getTimeStamp();
+            Response cancelOrderBatch = basefexOrdersInterface.cancelOrderBatch(timestamp,apiKey,generateSignature(secretKey,"DELETE","/orders/batch",timestamp,jsonStringifyMap(body)),body);
+
+            return cancelOrderBatch.isSuccessful();
+
+
+
+
         }
 
     }

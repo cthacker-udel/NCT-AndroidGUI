@@ -16,6 +16,10 @@ import com.example.nctai_trading.mailgun.mailGunMethods;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ARPage extends AppCompatActivity {
 
@@ -49,7 +53,14 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
                 try {
                     //accountRequests.countTransactions();
-                    ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
+                    //ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
+                    List<Map<String,Object>> orderList = new LinkedList<Map<String,Object>>();
+                    Map<String,Object> orders = new HashMap<>();
+                    orders.put("price",11234);
+                    orders.put("size",200);
+                    orders.put("side","BUY");
+                    orderList.add(orders);
+                    ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                 } catch (NoSuchAlgorithmException | InvalidKeyException | IOException e) {
                     e.printStackTrace();
                 }

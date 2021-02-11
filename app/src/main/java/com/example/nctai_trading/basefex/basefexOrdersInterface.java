@@ -27,4 +27,9 @@ public interface basefexOrdersInterface {
     @GET("https://api.basefex.com/orders")
     Call<List<basefexOrderListOrder>> getOrderList(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature);
 
+    @POST("https://api.basefex.com/orders/batch")
+    Call<List<basefexOrderListOrder>> placeOrderBatch(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Body Map<String,Object> body);
+
+    @DELETE("https://api.basefex.com/orders/batch")
+    Response cancelOrderBatch(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Body Map<String,Object> body);
 }
