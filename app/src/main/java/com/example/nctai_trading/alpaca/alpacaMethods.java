@@ -56,6 +56,8 @@ public class alpacaMethods {
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+            // clientOrderId aac4fd90-872d-4aff-b84c-e89f9c13ad48
+            // id db2c0948-7815-4085-8958-5e00f56e2faa
 
             alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
 
@@ -97,6 +99,177 @@ public class alpacaMethods {
 
         }
 
+        public alpacaOrderListOrder getOrderOrderId(String orderId) throws IOException {
+
+            String url = paperBaseUrl + String.format("/v2/orders/%s/",orderId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
+
+            Call<alpacaOrderListOrder> call = alpacaOrderInterface.getOrderOrderId(orderId,apiKey,secretKey);
+
+            Response<alpacaOrderListOrder> response = call.execute();
+
+            alpacaOrderListOrder result = response.body();
+
+            return result;
+
+        }
+
+        public alpacaOrderListOrder getOrderClientOrderId(String clientOrderId) throws IOException {
+
+            String url = paperBaseUrl + String.format("/v2/orders:%s",clientOrderId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
+
+            Call<alpacaOrderListOrder> call = alpacaOrderInterface.getOrderClientOrderId(clientOrderId,apiKey,secretKey);
+
+            Response<alpacaOrderListOrder> response = call.execute();
+
+            return response.body();
+        }
+
+        public alpacaOrderListOrder replaceOrder(String orderId, Integer quantity, String timeInForce) throws IOException {
+
+            String url = paperBaseUrl + String.format("/v2/orders/%s/",orderId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<Object,Object> body = new LinkedHashMap<>();
+
+            body.put("qty",quantity);
+            body.put("time_in_force",timeInForce);
+
+            alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
+
+            Call<alpacaOrderListOrder> call = alpacaOrderInterface.replaceOrder(orderId,apiKey,secretKey,body);
+
+            Response<alpacaOrderListOrder> response = call.execute();
+
+            return response.body();
+
+
+        }
+
+        public void cancelAllOrders(){
+
+            String url = paperBaseUrl + "/v2/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
+
+            Response deleteAllOrders = alpacaOrderInterface.deleteAllOrders(apiKey,secretKey);
+
+            return;
+
+        }
+
+        public void canelOrder(String orderId){
+
+            String url = paperBaseUrl + String.format("/v2/orders/%s/",orderId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
+
+            Response deleteOrder = alpacaOrderInterface.deleteOrder(orderId,apiKey,secretKey);
+
+            return;
+        }
+
+
+
+    }
+
+    public class positionRequests{
+
+        public List<alpacaPosition> getOpenPositions() throws IOException {
+
+            String url = paperBaseUrl + "/v2/positions/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaPositionInterface alpacaPositionInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaPositionInterface.class);
+
+            Call<List<alpacaPosition>> call = alpacaPositionInterface.getOpenPositions(apiKey,secretKey);
+
+            Response<List<alpacaPosition>> response = call.execute();
+
+            return response.body();
+        }
+
+        public alpacaPosition getOpenPosition(String symbol) throws IOException {
+
+            String url = paperBaseUrl + String.format("/v2/positions/%s/",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaPositionInterface alpacaPositionInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaPositionInterface.class);
+
+            Call<alpacaPosition> call = alpacaPositionInterface.getOpenPositionSymbol(symbol,apiKey,secretKey);
+
+            Response<alpacaPosition> response = call.execute();
+
+            return response.body();
+        }
+
+        public boolean closeAllPositions(){
+
+            String url = paperBaseUrl + "/v2/positions/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaPositionInterface alpacaPositionInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaPositionInterface.class);
+
+            Response response = alpacaPositionInterface.closeAllPositions(apiKey,secretKey);
+
+            return response.errorBody().contentLength() < 1;
+
+        }
+
+        public boolean closeAPosition(String symbol){
+
+            String url = paperBaseUrl + String.format("/v2/positions/%s/",symbol);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaPositionInterface alpacaPositionInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaPositionInterface.class);
+
+            Response response = alpacaPositionInterface.closePosition(symbol,apiKey,secretKey);
+
+            return response.errorBody().contentLength() < 1;
+        }
     }
 
 

@@ -36,12 +36,17 @@ public class ARPage extends AppCompatActivity {
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
 
                 com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
+
                 com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
+                com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
                 try {
                     //accountMethods.getAccount();
                     //orderRequests.getListOfOrders();
-                    orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
+                    //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
+                    orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
+                    positionRequests.getOpenPositions();
+                    positionRequests.getOpenPosition("YUM");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
