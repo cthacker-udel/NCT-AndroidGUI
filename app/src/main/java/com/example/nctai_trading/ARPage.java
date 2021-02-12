@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
+import com.example.nctai_trading.particle.particleMethods;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -44,6 +45,7 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
                 com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
+                com.example.nctai_trading.particle.particleMethods particleMethods = new com.example.nctai_trading.particle.particleMethods();
 
                 com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
@@ -51,6 +53,9 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
                 com.example.nctai_trading.basefex.basefexMethods.accountRequests accountRequests = basefexMethods.new accountRequests();
                 com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
+
+                com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
+
                 try {
                     //accountRequests.countTransactions();
                     //ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
@@ -61,8 +66,10 @@ public class ARPage extends AppCompatActivity {
                     //orders.put("side","BUY");
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
-                    ordersRequests.getActiveOrderList("BTCUSD","10");
-                } catch (NoSuchAlgorithmException | InvalidKeyException | IOException e) {
+                    //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    eventRequests.openStreamOfServerEvents("String_msg_from_RL");
+
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 //accountMethods.getAccount();

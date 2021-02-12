@@ -5,6 +5,18 @@ import com.google.gson.annotations.SerializedName;
 
 public class particleStreamOfEventsResponseData {
 
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+    }
+
+    @SerializedName("event")
+    @Expose
+    private String event;
+
     @SerializedName("data")
     @Expose
     private String data;

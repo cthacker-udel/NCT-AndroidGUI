@@ -2,25 +2,30 @@ package com.example.nctai_trading.particle;
 
 
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
+import com.squareup.okhttp.ResponseBody;
 
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.particle.android.sdk.cloud.ApiDefs;
-import io.particle.android.sdk.cloud.ParticleCloudSDK;
-import io.particle.android.sdk.di.CloudModule;
-import retrofit.converter.GsonConverter;
+
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -663,20 +668,25 @@ public class particleMethods {
 
             String url = baseUrl + String.format("/v1/events/%s/",eventPrefix);
 
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
+                    .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
             particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
 
-            Call<particleStreamOfEventsResponse> startEventStream = particleEventsInterface.startStreamOfEvents(eventPrefix,getTokenQueryString());
+            Call<com.squareup.okhttp.ResponseBody> startEventStream = particleEventsInterface.startStreamOfEvents(eventPrefix,getTokenQueryString());
 
-            Response<particleStreamOfEventsResponse> response = startEventStream.execute();
+            Response<ResponseBody> response = startEventStream.execute();
 
-            particleStreamOfEventsResponse result = response.body();
+            InputStream stream = response.body().byteStream();
 
-            return result;
+            return null;
         }
 
 

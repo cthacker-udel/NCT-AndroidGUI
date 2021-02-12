@@ -1,6 +1,9 @@
 package com.example.nctai_trading.particle;
 
+import com.squareup.okhttp.ResponseBody;
+
 import java.util.Map;
+
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,11 +13,13 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
 
 public interface particleEventsInterface {
 
+    @Streaming
     @GET("https://api.particle.io/v1/events/{eventPrefix}")
-    Call<particleStreamOfEventsResponse> startStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);
+    Call<ResponseBody> startStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);
 
     @GET("https://api.particle.io/v1/devices/events/{eventPrefix}")
     Call<particleStreamOfEventsResponse> startServerSentStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);
