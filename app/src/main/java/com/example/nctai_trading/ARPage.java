@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
+import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
 
@@ -46,7 +47,9 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
                 com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
                 com.example.nctai_trading.particle.particleMethods particleMethods = new com.example.nctai_trading.particle.particleMethods();
+                com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new com.example.nctai_trading.bitMEX.bitmexMethods();
 
+                com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementMethods = bitmexMethods.new announcementRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
                 com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
                 com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
@@ -67,6 +70,7 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    announcementMethods.getAnnouncement();
                     eventRequests.openStreamOfServerEvents("String_msg_from_RL");
 
                 } catch (IOException e) {
