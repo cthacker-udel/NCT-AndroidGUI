@@ -5,9 +5,6 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.coinbasePro.coinBaseProExchangeLimits.TransferLimits;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -69,16 +66,6 @@ public class coinbaseProMethods {
         data.put("content-type","Application/JSON");
 
         return data;
-    }
-
-    public String toJson(Object object){
-        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        try{
-            String json = objectMapper.writeValueAsString(object);
-            return json;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to serialize");
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)

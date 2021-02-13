@@ -58,6 +58,9 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
 
                 com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.apiKeyRequests apiMethods = bitmexMethods.new apiKeyRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.executionRequests executionRequests = bitmexMethods.new executionRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests fundingRequests = bitmexMethods.new fundingRequests();
 
                 try {
                     //accountRequests.countTransactions();
@@ -70,8 +73,13 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    eventRequests.publishAnEvent("event1");
+                    eventRequests.openStreamOfServerEvents("event1");
+                    //eventRequests.openStreamOfServerEvents("String_msg_from_RL");
+                    fundingRequests.getFunding();
+                    executionRequests.getExecutionTradeHistory();
+                    apiMethods.getApiKeys();
                     announcementMethods.getUrgentAnnouncement();
-                    eventRequests.openStreamOfServerEvents("String_msg_from_RL");
 
                 } catch (IOException e) {
                     e.printStackTrace();

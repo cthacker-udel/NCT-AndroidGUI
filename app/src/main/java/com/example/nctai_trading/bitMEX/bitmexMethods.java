@@ -118,7 +118,8 @@ public class bitmexMethods {
 
     public class apiKeyRequests{
 
-        public void getApiKey(String apiKey){
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexApiKey> getApiKeys() throws IOException {
 
             String url = baseUrl + "/apiKey/";
 
@@ -126,6 +127,82 @@ public class bitmexMethods {
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+
+            bitmexApiInterface bitmexApiInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexApiInterface.class);
+
+            String timestamp = getTimeStamp();
+
+            Call<List<bitmexApiKey>> call = bitmexApiInterface.getApiKeys(timestamp,apikey,generateSignature("GET","/api/v1/apiKey",timestamp,""));
+
+            Response<List<bitmexApiKey>> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
+    public class executionRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexRawExecution> getExecutionRequests() throws IOException {
+            String url = baseUrl + "/execution/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexExecutionInterface bitmexExecutionInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexExecutionInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<bitmexRawExecution>> call = bitmexExecutionInterface.getRawExecution(timestamp, apikey, generateSignature("GET", "/api/v1/execution", timestamp, ""));
+
+            Response<List<bitmexRawExecution>> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexRawExecution> getExecutionTradeHistory() throws IOException {
+
+            String url = baseUrl + "/execution/tradeHistory/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexExecutionInterface bitmexExecutionInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexExecutionInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<bitmexRawExecution>> call = bitmexExecutionInterface.getExecutionTradeHistory(timestamp,apikey,generateSignature("GET","/api/v1/execution/tradeHistory",timestamp,""));
+
+            Response<List<bitmexRawExecution>> response = call.execute();
+
+            return response.body();
+        }
+    }
+
+    public class fundingRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexFunding> getFunding() throws IOException {
+
+            String url = baseUrl + "/funding/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexFundingInterface bitmexFundingInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexFundingInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<bitmexFunding>> getFundingHistory = bitmexFundingInterface.getFunding(timestamp,apikey,generateSignature("GET","/api/v1/funding",timestamp,""),10);
+
+            Response<List<bitmexFunding>> response = getFundingHistory.execute();
+
+            return response.body();
 
         }
 

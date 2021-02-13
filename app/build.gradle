@@ -35,6 +35,7 @@ android {
 repositories {
     google()
     jcenter()
+    maven { url "https://oss.jfrog.org/libs-snapshot" }
 }
 
 dependencies {
@@ -44,24 +45,20 @@ dependencies {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
     }
 
+    // rxandroid-java
 
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
 
     // particle
 
     implementation 'io.particle:cloudsdk:1.0.1'
     implementation 'io.particle:devicesetup:0.7.3'
 
-    // coinbase
-
-    //implementation 'com.coinbase.android:coinbase-android-sdk:1.0.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0'
-
     //retrofit
 
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:4.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
 
