@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -134,7 +135,7 @@ public class binanceMethods {
 
         ///   ONLY PROBLEM IS THE GENERATE SIGNATURE METHOD
 
-        Map<String,String> immutableMap = Map.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
 
         Call<Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
         try {
@@ -174,7 +175,7 @@ public class binanceMethods {
 
         ///   ONLY PROBLEM IS THE GENERATE SIGNATURE METHOD
 
-        Map<String,String> immutableMap = Map.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow",String.valueOf(data.get("recvWindow")),"timestamp",String.valueOf(data.get("timestamp")),"signature",data.get("signature"));
 
         Call<Account> accountCall = accountInfoGet.getAccount(immutableMap,apiKey);
         try {
@@ -235,7 +236,7 @@ public class binanceMethods {
 
         getOpenOrderList openOrderListCmd = retrofit.create(getOpenOrderList.class);
 
-        Map<String,String> immutableMap = Map.of("recvWindow", data.get("recvWindow"), "timestamp", data.get("timestamp"), "signature", data.get("signature"));
+        ImmutableMap<String,String> immutableMap = ImmutableMap.of("recvWindow", data.get("recvWindow"), "timestamp", data.get("timestamp"), "signature", data.get("signature"));
 
         Call<OpenOrderList> openOrderListCall = openOrderListCmd.openOrderListQuery(immutableMap,apiKey);
 
@@ -444,7 +445,7 @@ public class binanceMethods {
 
                 String signature = getSignature(url, data);
 
-                Map<String, String> immutableMap = Map.of("symbol", symbol, "side", side, "type", type, "timestamp", timeStamp, "signature", signature);
+                ImmutableMap<String, String> immutableMap = ImmutableMap.of("symbol", symbol, "side", side, "type", type, "timestamp", timeStamp, "signature", signature);
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(url)
@@ -604,7 +605,7 @@ public class binanceMethods {
 
                 String signature = getSignature(url, data);
 
-                Map<String, String> immutableMap = Map.of("symbol", symbol, "side", side, "type", type, "timestamp", timeStamp, "signature", signature);
+                ImmutableMap<String, String> immutableMap = ImmutableMap.of("symbol", symbol, "side", side, "type", type, "timestamp", timeStamp, "signature", signature);
 
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(url)
