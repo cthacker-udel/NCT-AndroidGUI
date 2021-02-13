@@ -70,7 +70,7 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
-                    announcementMethods.getAnnouncement();
+                    announcementMethods.getUrgentAnnouncement();
                     eventRequests.openStreamOfServerEvents("String_msg_from_RL");
 
                 } catch (IOException e) {

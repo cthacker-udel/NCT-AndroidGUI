@@ -11,4 +11,7 @@ public interface bitmexAccouncementsInterface {
     @GET("https://www.bitmex.com/api/v1/announcement")
     Call<List<bitmexAnnouncement>> getAnnouncement(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
+    @GET("https://www.bitmex.com/api/v1/announcement/urgent")
+    Call<List<bitmexAnnouncement>> getUrgentAnnouncement(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
+
 }

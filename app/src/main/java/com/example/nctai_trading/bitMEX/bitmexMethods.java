@@ -23,8 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class bitmexMethods {
 
-    String apikey = "QL96zz4M6oj2aPGIZBeUGuyq";
-    String secretKey = "aTkRoaagMp7S5edIjoy-bEb7jyubNZphikluLNRrS3Ktlwu4";
+    String apikey = "Zs8JDFABNcAlPQ8gWlWIZrJb";
+    String secretKey = "_lVyrCU8vI_ngFkD7YgCGpBW90pFkJWjTe5x_DLCpCcNsELJ";
     String baseUrl = "https://www.bitmex.com/api/v1";
     HMAC256 hmac256 = new HMAC256();
 
@@ -89,6 +89,43 @@ public class bitmexMethods {
 
             return response.body();
 
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexAnnouncement> getUrgentAnnouncement() throws IOException {
+
+            String url = baseUrl + "/accouncement/urgent/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexAccouncementsInterface bitmexAccouncementsInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexAccouncementsInterface.class);
+
+            String timestamp = getTimeStamp();
+
+            Call<List<bitmexAnnouncement>> call = bitmexAccouncementsInterface.getUrgentAnnouncement(timestamp,apikey,generateSignature("GET","/api/v1/announcement/urgent",timestamp,""));
+
+            Response<List<bitmexAnnouncement>> response = call.execute();
+
+            return response.body();
+
+        }
+
+    }
+
+    public class apiKeyRequests{
+
+        public void getApiKey(String apiKey){
+
+            String url = baseUrl + "/apiKey/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
         }
 
