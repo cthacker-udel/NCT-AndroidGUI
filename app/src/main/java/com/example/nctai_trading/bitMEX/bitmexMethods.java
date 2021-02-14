@@ -60,6 +60,7 @@ public class bitmexMethods {
 
     }
 
+
     public String jsonStringifyMap(Map<String,Object> map){
         return new Gson().toJson(map);
     }
@@ -88,8 +89,6 @@ public class bitmexMethods {
             Response<List<bitmexAnnouncement>> response = call.execute();
 
             return response.body();
-
-
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -188,7 +187,7 @@ public class bitmexMethods {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public List<bitmexFunding> getFunding() throws IOException {
 
-            String url = baseUrl + "/funding/";
+            String url = baseUrl + String.format("/funding/");
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(url)
@@ -198,9 +197,57 @@ public class bitmexMethods {
             bitmexFundingInterface bitmexFundingInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexFundingInterface.class);
 
             String timestamp = getTimeStamp();
-            Call<List<bitmexFunding>> getFundingHistory = bitmexFundingInterface.getFunding(timestamp,apikey,generateSignature("GET","/api/v1/funding",timestamp,""),10);
+            Call<List<bitmexFunding>> getFundingHistory = bitmexFundingInterface.getFunding(timestamp,apikey,generateSignature("GET","/api/v1/funding",timestamp,""));
 
             Response<List<bitmexFunding>> response = getFundingHistory.execute();
+
+            return response.body();
+
+        }
+
+    }
+
+    public class globalNotificationsRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bitmexGlobalNotification getGlobalNotifications() throws IOException {
+
+            String url = baseUrl + "/globalNotification/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexGlobalNotificationInterface bitmexGlobalNotificationInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexGlobalNotificationInterface.class);
+
+            String timeStamp = getTimeStamp();
+            Call<bitmexGlobalNotification> call = bitmexGlobalNotificationInterface.getGlobalNotification(timeStamp,apikey,generateSignature("GET","/api/v1/globalNotification",timeStamp,""));
+
+            Response<bitmexGlobalNotification> response = call.execute();
+
+            return response.body();
+        }
+
+    }
+
+    public class instrumentRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexInstrument> getInstruments() throws IOException {
+
+            String url = baseUrl + "/instrument/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexInstrumentInterface bitmexInstrumentInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexInstrumentInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<bitmexInstrument>> call = bitmexInstrumentInterface.getInstruments(timestamp,apikey,generateSignature("GET","/api/v1/instrument",timestamp,""));
+            Response<List<bitmexInstrument>> response = call.execute();
 
             return response.body();
 

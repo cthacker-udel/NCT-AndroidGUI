@@ -3,6 +3,8 @@ package com.example.nctai_trading.bitMEX;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class bitmexFunding {
 
     @SerializedName("timestamp")
@@ -16,10 +18,10 @@ public class bitmexFunding {
     private String fundingInterval;
     @SerializedName("fundingRate")
     @Expose
-    private Integer fundingRate;
+    private BigDecimal fundingRate;
     @SerializedName("fundingRateDaily")
     @Expose
-    private Integer fundingRateDaily;
+    private BigDecimal fundingRateDaily;
 
     public String getTimestamp() {
         return timestamp;
@@ -45,19 +47,19 @@ public class bitmexFunding {
         this.fundingInterval = fundingInterval;
     }
 
-    public Integer getFundingRate() {
+    public BigDecimal getFundingRate() {
         return fundingRate;
     }
 
-    public void setFundingRate(Integer fundingRate) {
+    public void setFundingRate(BigDecimal fundingRate) {
         this.fundingRate = fundingRate;
     }
 
-    public Integer getFundingRateDaily() {
+    public BigDecimal getFundingRateDaily() {
         return fundingRateDaily;
     }
 
-    public void setFundingRateDaily(Integer fundingRateDaily) {
+    public void setFundingRateDaily(BigDecimal fundingRateDaily) {
         this.fundingRateDaily = fundingRateDaily;
     }
 

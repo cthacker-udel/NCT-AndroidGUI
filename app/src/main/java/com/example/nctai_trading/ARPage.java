@@ -61,6 +61,9 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.bitMEX.bitmexMethods.apiKeyRequests apiMethods = bitmexMethods.new apiKeyRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.executionRequests executionRequests = bitmexMethods.new executionRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests fundingRequests = bitmexMethods.new fundingRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.globalNotificationsRequests globalNotificationsRequests = bitmexMethods.new globalNotificationsRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementRequests = bitmexMethods.new announcementRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests instrumentRequests = bitmexMethods.new instrumentRequests();
 
                 try {
                     //accountRequests.countTransactions();
@@ -73,6 +76,10 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    announcementMethods.getAnnouncement();
+                    fundingRequests.getFunding();
+                    globalNotificationsRequests.getGlobalNotifications();
+                    instrumentRequests.getInstruments();
                     eventRequests.publishAnEvent("event1");
                     eventRequests.openStreamOfServerEvents("event1");
                     //eventRequests.openStreamOfServerEvents("String_msg_from_RL");

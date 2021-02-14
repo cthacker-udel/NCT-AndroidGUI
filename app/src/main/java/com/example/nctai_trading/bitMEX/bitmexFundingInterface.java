@@ -10,6 +10,6 @@ import retrofit2.http.Query;
 public interface bitmexFundingInterface {
 
     @GET("https://www.bitmex.com/api/v1/funding")
-    Call<List<bitmexFunding>> getFunding(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Query("count") long count);
+    Call<List<bitmexFunding>> getFunding(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
 }
