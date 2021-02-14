@@ -8,6 +8,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Binance.us API implementation
 - [x] CoinbasePro API implementation
 - [x] Bithumb API implementation
+- [x] BitMEX API Implementation
 - [x] Alpaca API implementation
 - [x] baseFEX API implementation
 - [x] Mailgun API implementation
@@ -92,6 +93,15 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Account Info implementation
 - [x] Order implementation
 - [x] Trade implementation
+
+### BitMEX Implementation
+
+- [x] Announcement Requests
+- [x] Api Key Requests
+- [x] Execution Requests
+- [x] Funding Requests
+- [x] Global Notification Requests
+- [x] Instrument Requests
 
 ## TODOS
 -------
