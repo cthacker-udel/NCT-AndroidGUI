@@ -19,5 +19,11 @@ allprojects {
         google()
         jcenter()
         //maven{ url 'https://github.com/Walter-Stroebel/JParticle'}
+<<<<<<< Updated upstream
+=======
+        maven{ url 'https://sdk.squareup.com/public/android' }
+        maven { url 'https://jitpack.io' }
+
+>>>>>>> Stashed changes
     }
 }

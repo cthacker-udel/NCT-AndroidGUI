@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +21,80 @@ public class ARPage extends AppCompatActivity {
         ARButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< Updated upstream
+=======
+
+                com.example.nctai_trading.mailgun.mailGunMethods methods = new com.example.nctai_trading.mailgun.mailGunMethods();
+
+                mailGunMethods.messageRequests messageRequests = methods.new messageRequests();
+                mailGunMethods.domainRequests domainRequests = methods.new domainRequests();
+                mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
+
+                com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
+                com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
+                com.example.nctai_trading.particle.particleMethods particleMethods = new com.example.nctai_trading.particle.particleMethods();
+                com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new com.example.nctai_trading.bitMEX.bitmexMethods();
+
+                com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementMethods = bitmexMethods.new announcementRequests();
+                com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
+                com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
+                com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
+                com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
+                com.example.nctai_trading.basefex.basefexMethods.accountRequests accountRequests = basefexMethods.new accountRequests();
+                com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
+
+                com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.apiKeyRequests apiMethods = bitmexMethods.new apiKeyRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.executionRequests executionRequests = bitmexMethods.new executionRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests fundingRequests = bitmexMethods.new fundingRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.globalNotificationsRequests globalNotificationsRequests = bitmexMethods.new globalNotificationsRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementRequests = bitmexMethods.new announcementRequests();
+                com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests instrumentRequests = bitmexMethods.new instrumentRequests();
+
+                try {
+                    //accountRequests.countTransactions();
+                    //ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
+                    //List<Map<String,Object>> orderList = new LinkedList<Map<String,Object>>();
+                    //Map<String,Object> orders = new HashMap<>();
+                    //orders.put("price",11234);
+                    //orders.put("size",200);
+                    //orders.put("side","BUY");
+                    //orderList.add(orders);
+                    //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
+                    //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    announcementMethods.getAnnouncement();
+                    fundingRequests.getFunding();
+                    globalNotificationsRequests.getGlobalNotifications();
+                    instrumentRequests.getCompositeIndex("XBL");
+                    eventRequests.publishAnEvent("event1");
+                    eventRequests.openStreamOfServerEvents("event1");
+                    Log.i("Retro","event1");
+                    //eventRequests.openStreamOfServerEvents("String_msg_from_RL");
+                    fundingRequests.getFunding();
+                    executionRequests.getExecutionTradeHistory();
+                    apiMethods.getApiKeys();
+                    announcementMethods.getUrgentAnnouncement();
+
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                //accountMethods.getAccount();
+                    //orderRequests.getListOfOrders();
+                    //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
+                    //orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
+                    //positionRequests.getOpenPositions();
+                    //positionRequests.getOpenPosition("YUM");
+                    //assetRequests.getAssets();
+                    //assetRequests.getAsset("AAT");
+
+
+
+                //validationRequests.singleEmailValidationPOST("cthacker@udel.edu");
+                    //messageRequests.sendMessage("cthacker@udel.edu","NCT <Noreply@sales.nextcapitaltech.com>","Message",methods.generateCode());
+                    //domainRequests.getDomainsUnderAccount();
+
+
+>>>>>>> Stashed changes
                 Intent backToMainPage = new Intent(getApplicationContext(),mainPage.class);
                 startActivity(backToMainPage);
             }

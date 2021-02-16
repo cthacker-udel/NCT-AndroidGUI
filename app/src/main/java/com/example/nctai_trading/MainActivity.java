@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // MONGO CONNECTION FINALLY
 
-                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+          /*      MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
 
                 MongoClient mongoClient = new MongoClient(uri);
                 MongoDatabase database = mongoClient.getDatabase("test");
@@ -334,8 +334,11 @@ public class MainActivity extends AppCompatActivity {
                     correctPassword = false;
                 }
                 if(passResult != null){
-                    correctPassword = true;
-                }
+                    corctPassworerd = true;
+                }*/
+                correctUsername = true;
+                correctPassword = true;
+
 
                 if(!correctUsername && !correctPassword){
                     wrongUsernameAndPassword.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
