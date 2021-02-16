@@ -1,5 +1,6 @@
 package com.example.nctai_trading.bitMEX;
 
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -9,13 +10,20 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -39,6 +47,31 @@ public class bitmexMethods {
         String result = URLEncoder.encode(queryString,"UTF-8");
         return result;
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String generateQueryParams(Map<String,Object> body){
+        ArrayList<String> strList = new ArrayList<>();
+        for(String eachKey: body.keySet()){
+            strList.add(eachKey + "=" + body.get(eachKey));
+        }
+        return String.join("&",strList);
+
+    }
+
+    public String generateSingleQueryParam(Map<String,Object> body){
+
+        String emptystring = "";
+        for(String eachKey: body.keySet()){
+            emptystring += eachKey + "=" + body.get(eachKey);
+        }
+        return emptystring;
+
+    }
+
+    public String temp(String path, String queryString) throws URISyntaxException {
+        URI uri = new URI("https","www.bitmex.com",path,queryString,"");
+        return uri.toASCIIString();
     }
 
 
@@ -289,6 +322,60 @@ public class bitmexMethods {
             Call<List<bitmexInstrument>> call = bitmexInstrumentInterface.getActiveIndiceInstrument(timestamp,apikey,generateSignature("GET","/api/v1/instrument/activeAndIndices",timestamp,""));
 
             Response<List<bitmexInstrument>> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bitmexInstrumentActiveIntervals getActiveIntervals() throws IOException {
+
+            String url = baseUrl + "/instrument/activeIntervals/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexInstrumentInterface bitmexInstrumentInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexInstrumentInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<bitmexInstrumentActiveIntervals> call = bitmexInstrumentInterface.getActiveIntervals(timestamp,apikey,generateSignature("GET","/api/v1/instrument/activeIntervals",timestamp,""));
+
+            Response<bitmexInstrumentActiveIntervals> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bitmexInstrumentCompositeIndex getCompositeIndex(String symbol) throws IOException, URISyntaxException {
+
+            String url = baseUrl + "/instrument/compositeIndex/";
+
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor)
+                    .connectTimeout(100, TimeUnit.SECONDS)
+                    .readTimeout(0,TimeUnit.SECONDS)
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexInstrumentInterface bitmexInstrumentInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexInstrumentInterface.class);
+
+            Map<String,Object> queryParams = new LinkedHashMap<>();
+            queryParams.put("symbol",symbol);
+
+            String timestamp = getTimeStamp();
+
+            Call<bitmexInstrumentCompositeIndex> call = bitmexInstrumentInterface.getCompositeIndex(timestamp,apikey,generateSignature("GET",temp("/api/v1/instrument/compositeIndex",generateSingleQueryParam(queryParams)),timestamp,""),symbol);
+
+            Response<bitmexInstrumentCompositeIndex> response = call.execute();
 
             return response.body();
 

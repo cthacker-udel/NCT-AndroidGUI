@@ -16,6 +16,7 @@ import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -79,7 +80,7 @@ public class ARPage extends AppCompatActivity {
                     announcementMethods.getAnnouncement();
                     fundingRequests.getFunding();
                     globalNotificationsRequests.getGlobalNotifications();
-                    instrumentRequests.getActiveInstrument();
+                    instrumentRequests.getCompositeIndex("XBL");
                     eventRequests.publishAnEvent("event1");
                     eventRequests.openStreamOfServerEvents("event1");
                     //eventRequests.openStreamOfServerEvents("String_msg_from_RL");
@@ -88,7 +89,7 @@ public class ARPage extends AppCompatActivity {
                     apiMethods.getApiKeys();
                     announcementMethods.getUrgentAnnouncement();
 
-                } catch (IOException e) {
+                } catch (IOException | URISyntaxException e) {
                     e.printStackTrace();
                 }
                 //accountMethods.getAccount();

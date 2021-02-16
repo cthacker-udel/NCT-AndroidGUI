@@ -5,6 +5,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Query;
 
 public interface bitmexInstrumentInterface {
 
@@ -17,4 +18,9 @@ public interface bitmexInstrumentInterface {
     @GET("https://www.bitmex.com/api/v1/instrument/activeAndIndices")
     Call<List<bitmexInstrument>> getActiveIndiceInstrument(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature);
 
+    @GET("https://www.bitmex.com/api/v1/instrument/activeIntervals")
+    Call<bitmexInstrumentActiveIntervals> getActiveIntervals(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature);
+
+    @GET("https://www.bitmex.com/api/v1/instrument/compositeIndex")
+    Call<bitmexInstrumentCompositeIndex> getCompositeIndex(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature, @Query("symbol") String symbol);
 }
