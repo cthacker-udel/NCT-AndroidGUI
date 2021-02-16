@@ -4,8 +4,6 @@ import com.squareup.okhttp.ResponseBody;
 
 import java.util.Map;
 
-
-import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -20,13 +18,13 @@ import retrofit2.http.Streaming;
 
 public interface particleEventsInterface {
 
-    @Streaming
-    @GET("https://api.particle.io/v1/events/{eventPrefix}")
-    Call<Observable<ResponseBody>> startStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);
+    //@Streaming
+    //@GET("https://api.particle.io/v1/events/{eventPrefix}")
+    //Call<Observable<ResponseBody>> startStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);
 
-    @Streaming
-    @GET("https://api.particle.io/v1/events/{eventPrefix}")
-    Observable<ResponseBody> altStartStreamOfEvents(@Path("eventPrefix") String eventPrefix, @Query("access_token") String accesstoken);
+    //@Streaming
+    //@GET("https://api.particle.io/v1/events/{eventPrefix}")
+    //Observable<ResponseBody> altStartStreamOfEvents(@Path("eventPrefix") String eventPrefix, @Query("access_token") String accesstoken);
 
     @GET("https://api.particle.io/v1/devices/events/{eventPrefix}")
     Call<particleStreamOfEventsResponse> startServerSentStreamOfEvents(@Path("eventPrefix") String eventPrefix, @QueryMap Map<String,String> queryMap);

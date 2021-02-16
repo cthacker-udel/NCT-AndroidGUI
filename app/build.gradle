@@ -35,7 +35,7 @@ android {
 repositories {
     google()
     jcenter()
-    maven { url "https://oss.jfrog.org/libs-snapshot" }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -45,10 +45,9 @@ dependencies {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
     }
 
-    // rxandroid-java
+    // Oksse
 
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
+    implementation 'com.github.heremaps:oksse:0.9.0'
 
     // particle
 

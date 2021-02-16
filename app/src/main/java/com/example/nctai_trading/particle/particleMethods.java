@@ -12,6 +12,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import com.here.oksse.OkSse;
+import com.here.oksse.ServerSentEvent;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.ResponseBody;
 
 import org.apache.commons.codec.binary.Base64;
@@ -30,25 +33,14 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
 
-import io.particle.android.sdk.cloud.ParticleCloudSDK;
-import io.particle.android.sdk.cloud.ParticleEvent;
-import io.particle.android.sdk.cloud.ParticleEventHandler;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.HttpUrl;
+
 import okhttp3.OkHttpClient;
+
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import retrofit.http.Streaming;
+
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -677,126 +669,105 @@ public class particleMethods {
         }
 
         // error : malformedjsonException expected value at line 1 column 1 path $
-        public particleStreamOfEventsResponse openStreamOfServerEvents(String eventPrefix) throws IOException {
+        public particleStreamOfEventsResponse openStreamOfServerEvents(String prefix) throws IOException {
 
-            String url = baseUrl + String.format("/v1/events/%s/",eventPrefix);
-
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor)
-                    .connectTimeout(100, TimeUnit.SECONDS)
-                    .readTimeout(0,TimeUnit.SECONDS)
-                    .build();
-
-            // okhttp3 / rxjava
-
+            String eventPrefix= prefix;
+            String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
             HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s",eventPrefix)).newBuilder();
             urlBuilder.addQueryParameter("access_token",accesstoken);
             String urlokhttp3 = urlBuilder.build().toString();
+            Log.i("Retro",urlokhttp3);
+            ServerSentEvent.Listener listener=new ServerSentEvent.Listener() {
+                @Override
+                public void onOpen(ServerSentEvent sse, okhttp3.Response response)
+                {
+                    Log.i("Retro","OnOpen");
+                }
+                @Override
+                public void onMessage(ServerSentEvent sse, String id, String event, String message) {
+                    Log.i("Retro","OnMessage "+ id + "," +event +","+message);
+                }
+                @Override
+                public void onComment(ServerSentEvent sse, String comment) {
+                    Log.i("Retro","Oncomment " + comment );
+                }
+                @Override
+                public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
+                    Log.i("Retro","OnRetryTime " + milliseconds );
+                    return true;
+                }
+                @Override
+                public boolean onRetryError(ServerSentEvent sse, Throwable throwable, okhttp3.Response response) {
+                    Log.i("Retro","OnRetryError "  );
+                    return true;
+                }
+                @Override
+                public void onClosed(ServerSentEvent sse) {
+                    Log.i("Retro","Onclose "  );
+                }
+                @Override
+                public Request onPreRetry(ServerSentEvent sse, Request originalRequest) {
+                    Log.i("Retro","OnPreRetry "  );
+                    return originalRequest;
+                }
+            };
+            Request request = new Request.Builder().url(urlokhttp3).build();
+            OkSse okSse = new OkSse();
+            ServerSentEvent sse = okSse.newServerSentEvent(request, listener);
 
-            Request request = new Request.Builder()
-                    .url(urlokhttp3)
-                    .build();
-
-
-
-
-
-            // retrofit
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
-
-            //Call<com.squareup.okhttp.ResponseBody> startEventStream = particleEventsInterface.startStreamOfEvents(eventPrefix,getTokenQueryString());
-
-            //Response<ResponseBody> response = startEventStream.execute();
-
-            Call<Observable<ResponseBody>> call = particleEventsInterface.startStreamOfEvents(eventPrefix,getTokenQueryString());
-
-            //Response<Observable<ResponseBody>> response = call.execute();
-
-            Observable<ResponseBody> observable = particleEventsInterface.altStartStreamOfEvents(eventPrefix,accesstoken);
-
-            observable.subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe(new Observer<ResponseBody>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(@NonNull ResponseBody responseBody) {
-                            InputStream inputStream = null;
-                            try {
-                                inputStream = responseBody.byteStream();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            BufferedReader br = null;
-                            StringBuilder sb = new StringBuilder();
-
-                            String line;
-                            try{
-                                br = new BufferedReader(new InputStreamReader(inputStream));
-                                while(br.ready()){
-                                    line = br.readLine();
-                                    sb.append(line);
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            finally{
-                                if(br != null){
-                                    try{
-                                        br.close();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            System.out.println(("streamed string" + sb.toString()));
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
 
             return null;
         }
 
 
         // test
-        public particleStreamOfEventsResponse openStreamOfServerSentEvents(String eventPrefix) throws IOException {
+        public String openStreamOfServerSentEvents(String prefix) throws IOException {
 
-            String url = baseUrl + String.format("/v1/devices/events/%s/",eventPrefix);
+            String eventPrefix= prefix;
+            String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s",eventPrefix)).newBuilder();
+            urlBuilder.addQueryParameter("access_token",accesstoken);
+            String urlokhttp3 = urlBuilder.build().toString();
+            Log.i("Retro",urlokhttp3);
+            ServerSentEvent.Listener listener=new ServerSentEvent.Listener() {
+                @Override
+                public void onOpen(ServerSentEvent sse, okhttp3.Response response)
+                {
+                    Log.i("Retro","OnOpen");
+                }
+                @Override
+                public void onMessage(ServerSentEvent sse, String id, String event, String message) {
+                    Log.i("Retro","OnMessage "+ id + "," +event +","+message);
+                }
+                @Override
+                public void onComment(ServerSentEvent sse, String comment) {
+                    Log.i("Retro","Oncomment " + comment );
+                }
+                @Override
+                public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
+                    Log.i("Retro","OnRetryTime " + milliseconds );
+                    return true;
+                }
+                @Override
+                public boolean onRetryError(ServerSentEvent sse, Throwable throwable, okhttp3.Response response) {
+                    Log.i("Retro","OnRetryError "  );
+                    return true;
+                }
+                @Override
+                public void onClosed(ServerSentEvent sse) {
+                    Log.i("Retro","Onclose "  );
+                }
+                @Override
+                public Request onPreRetry(ServerSentEvent sse, Request originalRequest) {
+                    Log.i("Retro","OnPreRetry "  );
+                    return originalRequest;
+                }
+            };
+            Request request = new Request.Builder().url(urlokhttp3).build();
+            OkSse okSse = new OkSse();
+            ServerSentEvent sse = okSse.newServerSentEvent(request, listener);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
-
-            Call<particleStreamOfEventsResponse> call = particleEventsInterface.startServerSentStreamOfEvents(eventPrefix,getTokenQueryString());
-
-            Response<particleStreamOfEventsResponse> response = call.execute();
-
-            particleStreamOfEventsResponse result = response.body();
-
-            return result;
+            return "";
 
         }
         // test
