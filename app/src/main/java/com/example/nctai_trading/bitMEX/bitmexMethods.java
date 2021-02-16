@@ -253,6 +253,26 @@ public class bitmexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bitmexInstrument> getActiveInstrument() throws IOException {
+
+            String url = baseUrl + "/instrument/active/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexInstrumentInterface bitmexInstrumentInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexInstrumentInterface.class);
+
+            String timestamp = getTimeStamp();
+            Call<List<bitmexInstrument>>  call = bitmexInstrumentInterface.getActiveInstrument(timestamp,apikey,generateSignature("GET","/api/v1/instrument/active",timestamp,""));
+
+            Response<List<bitmexInstrument>> response = call.execute();
+
+            return response.body();
+        }
+
     }
 
 }

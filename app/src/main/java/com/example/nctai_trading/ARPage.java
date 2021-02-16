@@ -79,7 +79,7 @@ public class ARPage extends AppCompatActivity {
                     announcementMethods.getAnnouncement();
                     fundingRequests.getFunding();
                     globalNotificationsRequests.getGlobalNotifications();
-                    instrumentRequests.getInstruments();
+                    instrumentRequests.getActiveInstrument();
                     eventRequests.publishAnEvent("event1");
                     eventRequests.openStreamOfServerEvents("event1");
                     //eventRequests.openStreamOfServerEvents("String_msg_from_RL");

@@ -11,4 +11,7 @@ public interface bitmexInstrumentInterface {
     @GET("https://www.bitmex.com/api/v1/instrument")
     Call<List<bitmexInstrument>> getInstruments(@Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
+    @GET("https://www.bitmex.com/api/v1/instrument/active")
+    Call<List<bitmexInstrument>> getActiveInstrument(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
+
 }
