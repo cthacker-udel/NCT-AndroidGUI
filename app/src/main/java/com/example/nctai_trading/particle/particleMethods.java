@@ -56,6 +56,7 @@ public class particleMethods {
     String clientId = "nct-app-3115";
     String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
     String refreshToken = "529c17ca203cb064bd556ed10168cc6ecbd95f5f";
+    String data = " ";
 
     // new client id generate by create a client
     // clientid = nct-app-3115-1752
@@ -686,6 +687,8 @@ public class particleMethods {
                 @Override
                 public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                     Log.i("Retro","OnMessage "+ id + "," +event +","+message);
+                    data = message.split("\\:")[1].split(",")[0].replaceAll("\"","");
+                    System.out.println(data);
                 }
                 @Override
                 public void onComment(ServerSentEvent sse, String comment) {
