@@ -12,4 +12,6 @@ public interface sellCurrencyMarketQuantity {
     @POST("https://api.binance.us/api/v3/order")
     Call<Sale> sellCurrencyMarketCall(@QueryMap Map<String,String> map, @Header("X-MBX-APIKEY") String apiKey);
 
+    @POST("https://api.binance.us/api/v3/order")
+    Call<binanceLimitOrder> placeLimitOrder(@QueryMap Map<String,String> map, @Header("X-MBX-APIKEY") String apiKey);
 }

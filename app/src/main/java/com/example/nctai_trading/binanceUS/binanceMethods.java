@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -733,6 +734,47 @@ public class binanceMethods {
                 return new ArrayList<String>();
             }
 
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public binanceLimitOrder buyLimitOrder(String symbol1, long quantity1, long price1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/api/v3/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            sellCurrencyMarketQuantity sellCurrencyMarketQuantity = retrofit.create(com.example.nctai_trading.binanceUS.sellCurrencyMarketQuantity.class);
+
+            String symbol = symbol1;
+            String side = "BUY";
+            String type = "LIMIT";
+            String timeInForce = "GTC";
+            long quantity = quantity1;
+            long price = price1;
+            String timestamp = synchronize() + "";
+
+            HashMap<String,String> data = new LinkedHashMap<>();
+            data.put("symbol",symbol);
+            data.put("side",side);
+            data.put("type",type);
+            data.put("timeInForce",timeInForce);
+            data.put("quantity",quantity + "");
+            data.put("price",price + "");
+            data.put("timestamp",timestamp);
+
+            String signature = getSignature(url,data);
+
+            data.put("signature",signature);
+
+            Call<binanceLimitOrder> call = sellCurrencyMarketQuantity.placeLimitOrder(data,apiKey);
+
+            Response<binanceLimitOrder> response = call.execute();
+
+            return response.body();
 
         }
 

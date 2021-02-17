@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
+import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
@@ -41,6 +42,8 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.mailgun.mailGunMethods methods = new com.example.nctai_trading.mailgun.mailGunMethods();
 
+                com.example.nctai_trading.binanceUS.binanceMethods binanceMethods = new com.example.nctai_trading.binanceUS.binanceMethods();
+
                 mailGunMethods.messageRequests messageRequests = methods.new messageRequests();
                 mailGunMethods.domainRequests domainRequests = methods.new domainRequests();
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
@@ -66,6 +69,8 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementRequests = bitmexMethods.new announcementRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests instrumentRequests = bitmexMethods.new instrumentRequests();
 
+                binanceMethods.buyCurrency binanceBuyRequests = binanceMethods.new buyCurrency();
+
                 try {
                     //accountRequests.countTransactions();
                     //ordersRequests.placeOrder(1000,"BTCUSD","MARKET","BUY");
@@ -77,6 +82,7 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    binanceBuyRequests.baseBuy("BTCUSDT",10);
                     announcementMethods.getAnnouncement();
                     fundingRequests.getFunding();
                     globalNotificationsRequests.getGlobalNotifications();
@@ -90,6 +96,10 @@ public class ARPage extends AppCompatActivity {
                     announcementMethods.getUrgentAnnouncement();
 
                 } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
                 //accountMethods.getAccount();
