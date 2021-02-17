@@ -686,6 +686,8 @@ public class particleMethods {
                 @Override
                 public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                     Log.i("Retro","OnMessage "+ id + "," +event +","+message);
+                    String data = message.split("\\:")[1].split(",")[0].replaceAll("\"","");
+                    System.out.println(data);
                 }
                 @Override
                 public void onComment(ServerSentEvent sse, String comment) {

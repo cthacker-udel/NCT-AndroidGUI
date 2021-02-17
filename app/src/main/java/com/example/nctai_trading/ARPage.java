@@ -81,8 +81,8 @@ public class ARPage extends AppCompatActivity {
                     fundingRequests.getFunding();
                     globalNotificationsRequests.getGlobalNotifications();
                     instrumentRequests.getCompositeIndex("XBL");
-                    eventRequests.publishAnEvent("event1");
                     eventRequests.openStreamOfServerEvents("event1");
+                    eventRequests.publishAnEvent("event1");
                     //eventRequests.openStreamOfServerEvents("String_msg_from_RL");
                     fundingRequests.getFunding();
                     executionRequests.getExecutionTradeHistory();
