@@ -130,4 +130,40 @@ public class bilaxyMethods {
 
     }
 
+    public class transactionRequests{
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bilaxyRecentTransaction> getRecentTransactions(String symbol, Integer size) throws IOException {
+
+            String url = baseUrl + "/v1/orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyTransactionInterface bilaxyTransactionInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyTransactionInterface.class);
+
+            String signature = generateSignatureGET(apiKey,symbol,size,secretKey);
+
+            Call<List<bilaxyRecentTransaction>> call = bilaxyTransactionInterface.getRecentTransactions(symbol,size,apiKey,signature);
+
+            Response<List<bilaxyRecentTransaction>> response = call.execute();
+
+            return response.body();
+
+        }
+
+
+    }
+
+    public class accountRequests{
+
+        public void getAccountInfo(){
+            return;
+        }
+
+
+    }
+
 }
