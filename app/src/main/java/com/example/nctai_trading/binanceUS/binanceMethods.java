@@ -738,7 +738,7 @@ public class binanceMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public binanceLimitOrder buyLimitOrder(String symbol1, long quantity1, long price1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+        public binanceLimitOrder buyLimitOrder(String symbol1, long quantity1, String price1) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
             String url = baseUrl + "/api/v3/order/";
 
@@ -754,7 +754,7 @@ public class binanceMethods {
             String type = "LIMIT";
             String timeInForce = "GTC";
             long quantity = quantity1;
-            long price = price1;
+            String price = price1;
             String timestamp = synchronize() + "";
 
             HashMap<String,String> data = new LinkedHashMap<>();
