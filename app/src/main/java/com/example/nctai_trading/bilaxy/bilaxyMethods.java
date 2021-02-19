@@ -10,6 +10,7 @@ import org.spongycastle.util.Arrays;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -157,10 +158,135 @@ public class bilaxyMethods {
 
     }
 
-    public class accountRequests{
+    public class interfaceRequests{
 
-        public void getAccountInfo(){
-            return;
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bilaxyAccount> getAccountInfo() throws IOException {
+
+            String url = baseUrl + "/v1/balances/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyAccountInterface bilaxyAccountInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyAccountInterface.class);
+
+            String signature = generateSignatureGET(apiKey,secretKey);
+            Call<List<bilaxyAccount>> call = bilaxyAccountInterface.getAccountInformation(apiKey,signature);
+
+            Response<List<bilaxyAccount>> repsonse = call.execute();
+
+            return repsonse.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bilaxyDepositAddress getDepositAddress(String symbol) throws IOException {
+
+            String url = baseUrl + "/v1/coin_address/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyInterfacesInterface bilaxyInterfacesInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyInterfacesInterface.class);
+
+            String signature = generateSignatureGET(symbol,apiKey,secretKey);
+            Call<bilaxyDepositAddress> call = bilaxyInterfacesInterface.getDepositAddress(symbol,apiKey,signature);
+
+            Response<bilaxyDepositAddress> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bilaxyOrderQuery> ordersQuery(String symbol, String type) throws IOException {
+
+            String url = baseUrl + "/v1/trade_list/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyInterfacesInterface bilaxyInterfacesInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyInterfacesInterface.class);
+
+            String timestamp = Instant.now().getEpochSecond() + "";
+            String signature = generateSignatureGET(symbol, timestamp,type,secretKey,apiKey);
+
+            Call<List<bilaxyOrderQuery>> getOrderQueries = bilaxyInterfacesInterface.getOrderQueries(symbol,timestamp,type,apiKey,signature);
+
+            Response<List<bilaxyOrderQuery>> response = getOrderQueries.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bilaxyOrderQuery queryOrdersInformation(String id) throws IOException {
+
+            String url = baseUrl + "/v1/trade_view/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyInterfacesInterface bilaxyInterfacesInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyInterfacesInterface.class);
+
+            String signature = generateSignatureGET(id,apiKey,secretKey);
+            Call<bilaxyOrderQuery> getOrderQuery = bilaxyInterfacesInterface.getOrderQuery(id,apiKey,signature);
+
+            Response<bilaxyOrderQuery> response = getOrderQuery.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bilaxyDepositAddress cancelOrders(String id) throws IOException {
+
+            String url = baseUrl + "/v1/cancel_trade/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyInterfacesInterface bilaxyInterfacesInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyInterfacesInterface.class);
+
+            String signature = generateSignatureGET(id,apiKey,secretKey);
+
+            Call<bilaxyDepositAddress> call = bilaxyInterfacesInterface.cancelOrder(id,apiKey,signature);
+
+            Response<bilaxyDepositAddress> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bilaxyDepositAddress placeOrder(String symbol, String amount, Double price, String type) throws IOException {
+
+            String url = baseUrl + "/v1/trade/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bilaxyInterfacesInterface bilaxyInterfacesInterface = retrofit.create(com.example.nctai_trading.bilaxy.bilaxyInterfacesInterface.class);
+
+            String signature = generateSignatureGET(symbol,amount,price,type,apiKey,secretKey);
+
+            Call<bilaxyDepositAddress> placeOrder = bilaxyInterfacesInterface.placeOrder(symbol,amount,price,type,apiKey,signature);
+
+            Response<bilaxyDepositAddress> response = placeOrder.execute();
+
+            return response.body();
+
         }
 
 
