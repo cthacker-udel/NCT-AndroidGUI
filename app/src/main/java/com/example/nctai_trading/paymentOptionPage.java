@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,9 +41,17 @@ import com.squareup.square.models.OrderLineItemTax;
 import com.squareup.square.models.OrderQuantityUnit;
 import com.squareup.square.models.OrderSource;
 
+import org.apache.http.impl.client.HttpClients;
+import org.brunocvcunha.coinpayments.CoinPayments;
+import org.brunocvcunha.coinpayments.model.BasicInfoResponse;
+import org.brunocvcunha.coinpayments.model.CreateTransactionResponse;
+import org.brunocvcunha.coinpayments.model.ResponseWrapper;
+import org.brunocvcunha.coinpayments.requests.CoinPaymentsBasicAccountInfoRequest;
+import org.brunocvcunha.coinpayments.requests.CoinPaymentsCreateTransactionRequest;
 import org.bson.BSONObject;
 import org.bson.Document;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +65,7 @@ public class paymentOptionPage extends AppCompatActivity {
     String passedEmail;
     EditText discountCodeCheckText;
     String discountCode;
+    Button payByCryptoBtn;
 
 
 
@@ -79,6 +89,19 @@ public class paymentOptionPage extends AppCompatActivity {
         passedEmail = "";
         discountCodeCheckText = findViewById(R.id.enterDiscountCodeText);
         discountCode = discountCodeCheckText.getText().toString();
+        payByCryptoBtn = findViewById(R.id.payByCryptoButton);
+
+        CoinPayments api = CoinPayments.builder()
+                .publicKey("publicKey")
+                .privateKey("privateKey")
+                .client(HttpClients.createDefault()).build();
+
+        try {
+            ResponseWrapper<BasicInfoResponse> accountInfo = api.sendRequest(new CoinPaymentsBasicAccountInfoRequest());
+            Log.println(Log.INFO,"Account", accountInfo.getResult() + "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         AlertDialog.Builder discountCodeAlert = new AlertDialog.Builder(paymentOptionPage.this);
 
@@ -93,6 +116,22 @@ public class paymentOptionPage extends AppCompatActivity {
 
         String locationId = "4H2EQKT97R4PF";
 
+        payByCryptoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ResponseWrapper<CreateTransactionResponse> txResponse = api.sendRequest(CoinPaymentsCreateTransactionRequest.builder().amount(25)
+                    .currencyPrice("USD")
+                    .currencyTransfer("Crypto currency selected")
+                    .callbackUrl("Callback url")
+                    .custom("Order XYZ")
+                    .build());
+                    Log.println(Log.INFO,"Transaction : ",txResponse.getResult().getTransactionId() + " - " + txResponse.getResult().getStatusUrl());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         termsOfServiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
