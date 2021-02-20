@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.alibaba.fastjson.JSON;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -28,8 +29,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class huobiMethods {
+
+    String baseUrl = "https://api.hbdm.com";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static class apiSignature{
@@ -289,6 +296,30 @@ public class huobiMethods {
                 throw new SDKException(SDKException.RUNTIME_ERROR,
                         "[URL] UTF-8 encoding not supported!");
             }
+        }
+
+    }
+
+
+    public class marketDataRequests{
+
+        public swapMarketInfo getMarketData() throws IOException {
+
+            String url = baseUrl + "/swap-api/v1/swap_contract_info/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<swapMarketInfo> call = huobiMarketInterface.getSwapMarketInfo();
+
+            Response<swapMarketInfo> response = call.execute();
+
+            return response.body();
+
+
         }
 
     }

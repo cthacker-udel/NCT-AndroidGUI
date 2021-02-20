@@ -13,6 +13,7 @@ import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
+import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
 
@@ -44,6 +45,8 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.binanceUS.binanceMethods binanceMethods = new com.example.nctai_trading.binanceUS.binanceMethods();
 
+                com.example.nctai_trading.huobiApi.huobiMethods huobiMethods = new com.example.nctai_trading.huobiApi.huobiMethods();
+
                 mailGunMethods.messageRequests messageRequests = methods.new messageRequests();
                 mailGunMethods.domainRequests domainRequests = methods.new domainRequests();
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
@@ -69,6 +72,9 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementRequests = bitmexMethods.new announcementRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests instrumentRequests = bitmexMethods.new instrumentRequests();
 
+                com.example.nctai_trading.huobiApi.huobiMethods.marketDataRequests marketDataRequests = huobiMethods.new marketDataRequests();
+
+
                 binanceMethods.buyCurrency binanceBuyRequests = binanceMethods.new buyCurrency();
 
                 try {
@@ -82,6 +88,7 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    marketDataRequests.getMarketData();
                     binanceBuyRequests.buyLimitOrder("BNBBTC",100,"0.00001");
                     binanceBuyRequests.baseBuy("BTCUSDT",10);
                     announcementMethods.getAnnouncement();
