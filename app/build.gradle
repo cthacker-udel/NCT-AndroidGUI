@@ -57,6 +57,14 @@ dependencies {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
     }
 
+    // alibaba
+
+    implementation 'com.alibaba:fastjson:1.2.47'
+
+    // lombok
+
+    implementation 'org.projectlombok:lombok:1.18.8'
+
     //coinpayments
 
     implementation 'org.brunocvcunha.coinpayments:coinpayments-java:1.3'
