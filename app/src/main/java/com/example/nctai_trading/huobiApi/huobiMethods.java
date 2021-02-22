@@ -322,6 +322,99 @@ public class huobiMethods {
 
         }
 
+        public huobiSwapMarketIndex getSwapIndexPriceInfo() throws IOException {
+
+            String url = baseUrl + "/swap-api/v1/swap_index/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiSwapMarketIndex> call = huobiMarketInterface.getSwapMarketIndex();
+
+            Response<huobiSwapMarketIndex> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public huobiSwapMarketLimitation getSwapPriceLimitation(String contractCode) throws IOException {
+            String url = baseUrl + "/swap-api/v1/swap_price_limit/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiSwapMarketLimitation> getSwapMarketLimitation = huobiMarketInterface.getSwapMarketLimitation(contractCode);
+
+            Response<huobiSwapMarketLimitation> response = getSwapMarketLimitation.execute();
+
+            return response.body();
+
+        }
+
+        public huobiSwapMarketOpenInterest getSwapOpenInterest() throws IOException {
+
+            String url = baseUrl + "/swap-api/v1/swap_open_interest/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiSwapMarketOpenInterest> call = huobiMarketInterface.getSwapMarketOpenInterest();
+
+            Response<huobiSwapMarketOpenInterest> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public huobiSwapMarketDepth getMarketDepth(String contractCode, String type) throws IOException {
+
+            String url = baseUrl + "/swap-ex/market/depth/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiSwapMarketDepth> call = huobiMarketInterface.getSwapMarketDepth(contractCode, type);
+
+            Response<huobiSwapMarketDepth> response = call.execute();
+
+            return response.body();
+        }
+
+        public huobiSwapMarketKlineData getKLineData(String contractCode, String period) throws IOException {
+
+            String url = baseUrl + "/swap-ex/market/history/kline/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiSwapMarketKlineData> call = huobiMarketInterface.getSwapMarketKline(contractCode,period);
+
+            Response<huobiSwapMarketKlineData> response = call.execute();
+
+            return response.body();
+
+        }
+
     }
 
 

@@ -88,7 +88,12 @@ public class ARPage extends AppCompatActivity {
                     //orderList.add(orders);
                     //ordersRequests.placeOrderInBatches("BTCUSD",orderList);
                     //ordersRequests.getActiveOrderList("BTCUSD","10");
+                    marketDataRequests.getKLineData("BTC-USD","1min");
+                    marketDataRequests.getMarketDepth("BTC-USD","step5");
+                    marketDataRequests.getSwapOpenInterest();
                     marketDataRequests.getMarketData();
+                    marketDataRequests.getSwapIndexPriceInfo();
+                    marketDataRequests.getSwapPriceLimitation("BTC-USD");
                     binanceBuyRequests.buyLimitOrder("BNBBTC",100,"0.00001");
                     binanceBuyRequests.baseBuy("BTCUSDT",10);
                     announcementMethods.getAnnouncement();
