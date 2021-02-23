@@ -54,6 +54,7 @@ import org.bson.Document;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class paymentOptionPage extends AppCompatActivity {
@@ -94,14 +95,14 @@ public class paymentOptionPage extends AppCompatActivity {
         CoinPayments api = CoinPayments.builder()
                 .publicKey("89820a81e29adf82afcc77bc4bcfebc783845195011436dbf57977a0612674f1")
                 .privateKey("91Fdd19bd361414edf47E15AB7aa31d5EC02c01e43359072ae13822acdC4aDE0")
-                .client(HttpClients.createDefault()).build();
+                .build();
 
-        try {
-            ResponseWrapper<BasicInfoResponse> accountInfo = api.sendRequest(new CoinPaymentsBasicAccountInfoRequest());
-            Log.println(Log.INFO,"Account", accountInfo.getResult() + "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    ResponseWrapper<BasicInfoResponse> accountInfo = api.sendRequest(new CoinPaymentsBasicAccountInfoRequest());
+        //    Log.println(Log.INFO,"Account", accountInfo.getResult() + "");
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
 
         AlertDialog.Builder discountCodeAlert = new AlertDialog.Builder(paymentOptionPage.this);
 
@@ -157,20 +158,20 @@ public class paymentOptionPage extends AppCompatActivity {
 
 
                 // taxes
-                List<OrderLineItemAppliedTax> bodyOrderOrderLineItem0AppliedTaxes = new LinkedList<>();
+                //List<OrderLineItemAppliedTax> bodyOrderOrderLineItem0AppliedTaxes = new LinkedList<>();
 
-                Money bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney = new Money.Builder()
-                        .amount(53L) // money amount
-                        .currency("GBP")
-                        .build();
+                //Money bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney = new Money.Builder()
+                //        .amount(53L) // money amount
+                //        .currency("GBP")
+                //        .build();
 
-                OrderLineItemAppliedTax bodyOrderOrderLineItems0AppliedTaxes0 = new OrderLineItemAppliedTax.Builder(
-                        "38ze1696-z1e3-5628-af6d-f1e04d947fg3")
-                        .uid("uid3")
-                        .appliedMoney(bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney)
-                        .build();
+                //OrderLineItemAppliedTax bodyOrderOrderLineItems0AppliedTaxes0 = new OrderLineItemAppliedTax.Builder(
+                //        "38ze1696-z1e3-5628-af6d-f1e04d947fg3")
+                //        .uid("uid3")
+                //        .appliedMoney(bodyOrderOrderLineItems0AppliedTaxes0AppliedMoney)
+                //        .build();
 
-
+                /*
                 // applied discounts
                 List<OrderLineItemAppliedDiscount> bodyOrderOrderLineItems0AppliedDiscounts = new LinkedList<>();
 
@@ -180,6 +181,7 @@ public class paymentOptionPage extends AppCompatActivity {
                         .currency("LSL")
                         .build();
 
+
                 // setting up discount
                 OrderLineItemAppliedDiscount bodyOrderOrderLineItems0AppliedDiscounts0 = new OrderLineItemAppliedDiscount.Builder(
                         "56ae1696-z1e3-9328-af6d-f1e04d947gd4")
@@ -188,20 +190,22 @@ public class paymentOptionPage extends AppCompatActivity {
                         .build();
                 bodyOrderOrderLineItems0AppliedDiscounts.add(bodyOrderOrderLineItems0AppliedDiscounts0);
 
+
+                 */
+
                 // amount of money service is
                 Money bodyOrderOrderLineItems0BasePriceMoney = new Money.Builder()
-                        .amount(1500L)
+                        .amount(25L)
                         .currency("USD")
                         .build();
 
 
                 // creating item they are ordering
                 OrderLineItem bodyOrderOrderLineItems0 = new OrderLineItem.Builder("1")
-                        .uid("uid3")
+                        .uid(UUID.randomUUID().toString())
                         .name("Next Capital Tech AI Services")
                         .note("Buying next capital tech AI services!")
-                        .appliedTaxes(bodyOrderOrderLineItem0AppliedTaxes)
-                        .appliedDiscounts(bodyOrderOrderLineItems0AppliedDiscounts)
+                        //.appliedTaxes(bodyOrderOrderLineItem0AppliedTaxes)
                         .basePriceMoney(bodyOrderOrderLineItems0BasePriceMoney)
                         .build();
 
@@ -213,6 +217,7 @@ public class paymentOptionPage extends AppCompatActivity {
 
 
                 // item with taxes
+                /*
                 OrderLineItemTax bodyOrderOrderTaxes0 = new OrderLineItemTax.Builder()
                         .uid("38ze1696-z1e3-5628-af6d-f1e04d947fg3")
                         .catalogObjectId("catalogObjectID7")
@@ -222,18 +227,24 @@ public class paymentOptionPage extends AppCompatActivity {
                         .scope("LINE_ITEM")
                         .build();
 
-                bodyOrderOrderTaxes.add(bodyOrderOrderTaxes0);
+                 */
+
+                //bodyOrderOrderTaxes.add(bodyOrderOrderTaxes0);
 
                 // DISCOUNTS
 
                 List<OrderLineItemDiscount> bodyOrderOrderDiscounts = new LinkedList<>();
 
+                /*
                 Money bodyOrderOrderDiscounts0AmountMoney = new Money.Builder()
                         .amount(100L)
                         .currency("USD")
                         .build();
 
+                 */
+
                 // set up discount percentage
+                /*
                 OrderLineItemDiscount bodyOrderOrderDiscounts0 = new OrderLineItemDiscount.Builder()
                         .uid("56ae1696-z1e3-9328-af6d-f1e04d947gd4")
                         .catalogObjectId("catalogObjectId1")
@@ -244,6 +255,7 @@ public class paymentOptionPage extends AppCompatActivity {
                         .scope("LINE_ITEM")
                         .build();
                 bodyOrderOrderDiscounts.add(bodyOrderOrderDiscounts0);
+                 */
 
                 // Order
 
@@ -257,16 +269,22 @@ public class paymentOptionPage extends AppCompatActivity {
                         .discounts(bodyOrderOrderDiscounts)
                         .build();
 
+                Order bodyOrderList = new Order.Builder(locationId)
+                        .lineItems(bodyOrderOrderLineItems)
+                        .build();
+
+
                 // Create order request
 
                 CreateOrderRequest bodyOrder = new CreateOrderRequest.Builder()
-                        .order(bodyOrderOrder)
-                        .locationId("locationId4")
-                        .idempotencyKey("12ae1696-z1e3-4328-af6d-f1e04d947gd4")
+                        .order(bodyOrderList)
+                        .locationId("F0J53AJW9S8JC")
+                        .idempotencyKey(UUID.randomUUID().toString())
                         .build();
 
                 // address
 
+                /*
                 Address bodyPrePopulateShippingAddress = new Address.Builder()
                         .addressLine1("1455 Market St.")
                         .addressLine2("Suite 600")
@@ -279,6 +297,7 @@ public class paymentOptionPage extends AppCompatActivity {
                         .firstName("Jane")
                         .lastName("Doe")
                         .build();
+                 */
 
                 // Additional Recipient
 
@@ -289,19 +308,19 @@ public class paymentOptionPage extends AppCompatActivity {
                         .currency("USD")
                         .build();
 
-                ChargeRequestAdditionalRecipient bodyAdditionalRecipients0 = new ChargeRequestAdditionalRecipient.Builder(
-                "057P5VYJ4A5X1","Application fees",bodyAdditionalRecipients0AmountMoney)
-                        .build();
+                //ChargeRequestAdditionalRecipient bodyAdditionalRecipients0 = new ChargeRequestAdditionalRecipient.Builder(
+                //"057P5VYJ4A5X1","Application fees",bodyAdditionalRecipients0AmountMoney)
+                //        .build();
 
-                bodyAdditionalRecipients.add(bodyAdditionalRecipients0);
+                //bodyAdditionalRecipients.add(bodyAdditionalRecipients0);
 
                 // Create Checkout Request
 
-                CreateCheckoutRequest body = new CreateCheckoutRequest.Builder("86ae1696-b1e3-4328-af6d-f1e04d947ad6",bodyOrder)
-                        .askForShippingAddress(true)
-                        .merchantSupportEmail("merchant+support@website.com")
-                        .prePopulateBuyerEmail("example@email.com")
-                        .prePopulateShippingAddress(bodyPrePopulateShippingAddress)
+                CreateCheckoutRequest body = new CreateCheckoutRequest.Builder(UUID.randomUUID() + "",bodyOrder)
+                        //.askForShippingAddress(true)
+                        //.merchantSupportEmail("merchant+support@website.com")
+                        //.prePopulateBuyerEmail("example@email.com")
+                        //.prePopulateShippingAddress(bodyPrePopulateShippingAddress)
                         .redirectUrl("https://merchant.website.com/order-confirm")
                         .additionalRecipients(bodyAdditionalRecipients)
                         .build();
@@ -310,8 +329,10 @@ public class paymentOptionPage extends AppCompatActivity {
 
                 checkoutApi.createCheckoutAsync(locationId,body).thenAccept(result -> {
                     // TODO SUCCESS CALLBACK HANDLER
+                    System.out.println("Successfull transaction!");
                 }).exceptionally(exception -> {
                     // TODO FAILURE CALLBACK HANDLER
+                    System.out.println("EXCEPTION THROWN");
                     return null;
                 });
 
