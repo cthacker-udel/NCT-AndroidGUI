@@ -25,4 +25,12 @@ public interface huobiMarketInterface {
     @GET("https://api.hbdm.com/swap-ex/market/history/kline")
     Call<huobiSwapMarketKlineData> getSwapMarketKline(@Query("contract_code") String contractCode, @Query("period") String period);
 
+    @GET("https://api.hbdm.com/index/market/history/swap_mark_price_kline")
+    Call<huobiSwapMarketKlineDataSize> getSwapMarketKlineSize(@Query("contract-code") String contractCode, @Query("period") String period, @Query("size") Integer size);
+
+    @GET("https://api.hbdm.com/swap-ex/market/detail/merged")
+    Call<huobiMarketDetail> getMarketDetail(@Query("contract-code") String contractCode);
+
+    @GET("https://api.hbdm.com/swap-ex/market/detail/batch_merged")
+    Call<huobiMarketDetailBatch> getMarketDetailBatch(@Query("contract-code") String contractCode);
 }

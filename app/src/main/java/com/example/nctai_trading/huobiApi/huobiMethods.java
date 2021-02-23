@@ -37,6 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class huobiMethods {
 
     String baseUrl = "https://api.hbdm.com";
+    String testUrl = "https://api.testnet.huobi.pro";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static class apiSignature{
@@ -410,6 +411,66 @@ public class huobiMethods {
             Call<huobiSwapMarketKlineData> call = huobiMarketInterface.getSwapMarketKline(contractCode,period);
 
             Response<huobiSwapMarketKlineData> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public huobiSwapMarketKlineDataSize getKlineData(String contractCode, String period, Integer size) throws IOException {
+
+            String url = baseUrl + "/index/market/history/swap_mark_price_kline/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+
+            Call<huobiSwapMarketKlineDataSize> call = huobiMarketInterface.getSwapMarketKlineSize(contractCode,period,size);
+
+            Response<huobiSwapMarketKlineDataSize> response = call.execute();
+
+            return response.body();
+
+
+        }
+
+        public huobiMarketDetail getMarketDataOverview(String contractCode) throws IOException {
+
+            String url = baseUrl + "/swap-ex/market/detail/merged/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiMarketDetail> call = huobiMarketInterface.getMarketDetail(contractCode);
+
+            Response<huobiMarketDetail> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public huobiMarketDetailBatch getMarketDetailOverviewBatch(String contractCode) throws IOException {
+
+            String url = baseUrl + "/swap-ex/market/detail/batch_merged";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            huobiMarketInterface huobiMarketInterface = retrofit.create(com.example.nctai_trading.huobiApi.huobiMarketInterface.class);
+
+            Call<huobiMarketDetailBatch> call = huobiMarketInterface.getMarketDetailBatch(contractCode);
+
+            Response<huobiMarketDetailBatch> response = call.execute();
 
             return response.body();
 

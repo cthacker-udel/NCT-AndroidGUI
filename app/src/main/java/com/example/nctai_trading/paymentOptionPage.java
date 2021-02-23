@@ -92,8 +92,8 @@ public class paymentOptionPage extends AppCompatActivity {
         payByCryptoBtn = findViewById(R.id.payByCryptoButton);
 
         CoinPayments api = CoinPayments.builder()
-                .publicKey("publicKey")
-                .privateKey("privateKey")
+                .publicKey("89820a81e29adf82afcc77bc4bcfebc783845195011436dbf57977a0612674f1")
+                .privateKey("91Fdd19bd361414edf47E15AB7aa31d5EC02c01e43359072ae13822acdC4aDE0")
                 .client(HttpClients.createDefault()).build();
 
         try {
