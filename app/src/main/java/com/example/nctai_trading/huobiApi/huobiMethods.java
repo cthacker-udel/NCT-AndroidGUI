@@ -478,5 +478,17 @@ public class huobiMethods {
 
     }
 
+    public class accountRequests{
+
+        public void getAccountInformation(){
+
+
+
+
+        }
+
+
+    }
+
 
 }
