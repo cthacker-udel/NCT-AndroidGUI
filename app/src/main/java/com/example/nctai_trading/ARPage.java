@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,18 @@ public class ARPage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+
+                com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new com.example.nctai_trading.bitforex.bitforexMethods();
+
+                Map<String,Object> testParams = new HashMap<>();
+
+                testParams.put("price",1000);
+                testParams.put("amount",1);
+                testParams.put("tradeType",1);
+                testParams.put("symbol","coin-usd-eth");
+                testParams.put("nonce",1501234567890L);
+
+                bitforexMethods.generateSignaturePOST("/api/v1/trade/placeOrder",testParams);
 
                 com.example.nctai_trading.mailgun.mailGunMethods methods = new com.example.nctai_trading.mailgun.mailGunMethods();
 
