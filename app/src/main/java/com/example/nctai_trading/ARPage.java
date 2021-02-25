@@ -13,6 +13,7 @@ import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
+import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
@@ -53,6 +54,20 @@ public class ARPage extends AppCompatActivity {
                 testParams.put("nonce",1501234567890L);
 
                 bitforexMethods.generateSignaturePOST("/api/v1/trade/placeOrder",testParams);
+
+                com.example.nctai_trading.bitforex.bitforexMethods.symbolRequests symbolRequests = bitforexMethods.new symbolRequests();
+
+                com.example.nctai_trading.bitforex.bitforexMethods.tickerRequests tickerRequests = bitforexMethods.new tickerRequests();
+
+                com.example.nctai_trading.bitforex.bitforexMethods.orderRequests forexOrderRequests = bitforexMethods.new orderRequests();
+
+                try {
+                    //forexOrderRequests.placeOrder("coin-usd-eth",1000.0,1.0,1);
+                    tickerRequests.getTickerInformation("coin-usd-eth");
+                    symbolRequests.getSymbolInformation();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 com.example.nctai_trading.mailgun.mailGunMethods methods = new com.example.nctai_trading.mailgun.mailGunMethods();
 
