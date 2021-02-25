@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // MONGO CONNECTION FINALLY
 
-                MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+             /*   MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
 
                 MongoClient mongoClient = new MongoClient(uri);
                 MongoDatabase database = mongoClient.getDatabase("test");
@@ -369,15 +369,18 @@ public class MainActivity extends AppCompatActivity {
                     correctUsernameAndWrongPassword.setCancelable(true);
                     correctUsernameAndWrongPassword.create().show();
                     return;
-                }
+                }*/
 
                 /*
+
 
                 @author Cameron Thacker
 
                 Shared Preferences validator for api key and secret key
 
                  */
+                correctUsername = true;
+                correctPassword = true;
 
                 if(apiKey.equals("defaultBinanceApiKey") && secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
                     bothKeysNotCreated = true;

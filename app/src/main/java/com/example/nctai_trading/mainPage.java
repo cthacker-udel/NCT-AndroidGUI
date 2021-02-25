@@ -240,6 +240,14 @@ public class mainPage extends AppCompatActivity {
         mainPageBinanceSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent tostockechangepage = new Intent(getApplicationContext(),stockexchangePage.class);
+                startActivity(tostockechangepage);
+            }
+        });
+
+       /* mainPageBinanceSignInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 if(apiKey.equals("defaultBinanceApiKey") && secretKey.equals("defaultBinanceSecretKey")){
                     userContainsApiKeyAndSecretKey.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -275,7 +283,7 @@ public class mainPage extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
         mainPageCoinBaseProBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
