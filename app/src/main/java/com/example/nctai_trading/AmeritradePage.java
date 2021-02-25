@@ -14,9 +14,9 @@ public class AmeritradePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ameritrade_page);
+        setContentView(R.layout.activity_stockexchange_page);
 
-        testButton = findViewById(R.id.ameritradePageTestButton);
+        testButton = findViewById(R.id.stockexchangePageButton);
 
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override

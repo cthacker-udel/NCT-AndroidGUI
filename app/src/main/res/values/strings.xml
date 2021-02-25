@@ -52,4 +52,5 @@
     <string name="secretKeyHint">Enter secret key here</string>
     <string name="apiKeyHint">Enter api key here</string>
     <string name="title_activity_coin_base_pro_page">coinBaseProPage</string>
+    <string name="exchange">Exchange :</string>
 </resources>

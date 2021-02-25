@@ -54,7 +54,7 @@ public class mainPage extends AppCompatActivity {
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
         mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
-        mainPageBinanceSignInBtn = findViewById(R.id.mainPageAmeritradeSignIn);
+        mainPageBinanceSignInBtn = findViewById(R.id.mainPageStockExchangeSignIn);
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
         mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
         mainPageCoinBaseProBtn = findViewById(R.id.mainPageCoinBaseProSignInButton);

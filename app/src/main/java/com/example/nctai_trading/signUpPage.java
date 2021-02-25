@@ -100,12 +100,12 @@ public class signUpPage extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_sign_up_page);
-        confirmButton = findViewById(R.id.signUpPageConfirmBtn);
-        backButton = findViewById(R.id.signUpPageBackBtn);
+        confirmButton = findViewById(R.id.stockexchangePageLoginBtn);
+        backButton = findViewById(R.id.stockexchangePageBackBtn);
 
-        usernameText = findViewById(R.id.signUpUsernameEditText);
+        usernameText = findViewById(R.id.stockexchangeUsernameEditText);
         emailText = findViewById(R.id.signUpEmailEditText);
-        passwordText = findViewById(R.id.signUpPasswordEditText);
+        passwordText = findViewById(R.id.stockexchangePasswordEditText);
         confirmPasswordText = findViewById(R.id.signUpConfirmPasswordEditText);
         firstNameText = findViewById(R.id.signUpFirstNameEditText);
         lastNameText = findViewById(R.id.signUpLastNameEditText);
