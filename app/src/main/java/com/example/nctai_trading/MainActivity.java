@@ -40,9 +40,15 @@ import org.bson.Document;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     // TODO: [MAIN ACTIVITY] Implement reset password functionality
     // TODO: [MAIN ACTIVITY] Implement create button functionality
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +122,32 @@ public class MainActivity extends AppCompatActivity {
         String coinBaseApiKey = sharedPreferences.getString("coinBaseApiKey","defaultCoinBaseApiKey");
 
         String coinBaseSecretKey = sharedPreferences.getString("coinBaseSecretKey","defaultCoinBaseSecretKey");
+
+        String date = sharedPreferences.getString("currentLogin","defaultCurrentLogin");
+
+        if(!date.equals("defaultCurrentLogin")){ // they have logged in before
+            // for tokens that need to be refreshed, refresh here if the expiration date is close to near.
+            // ameritrade
+            Date savedLogin = null;
+            Date currentLogin = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+            String currentDate = String.format("%d/%d/%d", LocalDate.now().getMonth(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear());
+            try {
+                savedLogin = sdf.parse(date);
+                currentLogin = sdf.parse(currentDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            long diffInMillies = Math.abs(savedLogin.getTime() - currentLogin.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies,TimeUnit.MILLISECONDS);
+
+
+        }
+        else{
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("currentLogin",String.format("%d/%d/%d",LocalDate.now().getMonth(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear()));
+        }
 
 
         // ALERT BUTTONS

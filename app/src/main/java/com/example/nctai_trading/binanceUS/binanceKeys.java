@@ -1,11 +1,13 @@
 package com.example.nctai_trading.binanceUS;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,11 @@ import android.widget.Toast;
 
 import com.example.nctai_trading.R;
 import com.example.nctai_trading.mainPage;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class binanceKeys extends AppCompatActivity {
 
@@ -44,6 +51,7 @@ public class binanceKeys extends AppCompatActivity {
 
 
         closeAndApplyBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 secretKeyText = secretKey.getText().toString();
@@ -56,6 +64,7 @@ public class binanceKeys extends AppCompatActivity {
                 // temp test
                 editor.putString("binanceApiKey","htyenIoeQKFaAxpAEfo6SJvXPguZPPREnZ431YHh1fMjCPgx8cwuaF4d4IMWimdq");
                 editor.putString("binanceSecretKey","RGjp6S0I1JQrzwUFGw0rLVvBMqHEvKnn8etPC82MwKVskhLKvLNd2QUYC8b6mVxs");
+
                 //editor.putString("binanceApiKey",apiKeyText);
                 //editor.putString("binanceSecretKey",secretKeyText);
                 editor.apply();
