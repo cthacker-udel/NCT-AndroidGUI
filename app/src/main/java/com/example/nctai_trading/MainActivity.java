@@ -141,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
             long diffInMillies = Math.abs(savedLogin.getTime() - currentLogin.getTime());
             long diff = TimeUnit.DAYS.convert(diffInMillies,TimeUnit.MILLISECONDS);
+            if(diff == 30){
+                // refresh tokens
+            }
 
 
         }
