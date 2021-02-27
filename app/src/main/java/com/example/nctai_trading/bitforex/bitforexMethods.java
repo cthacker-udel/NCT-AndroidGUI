@@ -175,6 +175,34 @@ public class bitforexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrdder(String symbol, Long orderId) throws IOException {
+
+            String url = baseUrl + "/api/v1/trade/cancelOrder/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitforexOrderInterface bitforexOrderInterface = retrofit.create(com.example.nctai_trading.bitforex.bitforexOrderInterface.class);
+
+            Map<String,Object> params = new HashMap<>();
+
+            params.put("symbol",symbol);
+            params.put("orderId",orderId);
+            params.put("accessKey",apiKey);
+            Long nonce = getTimeStamp();
+            params.put("nonce",nonce);
+            String signature = generateSignaturePOST("/api/v1/trade/cancelOrder",params);
+
+            Call<bitforexCancelOrderResponse> call = bitforexOrderInterface.cancelOrder(apiKey,nonce,orderId,signature,symbol);
+
+            Response<bitforexCancelOrderResponse> response = call.execute();
+
+            return response.isSuccessful();
+        }
+
 
     }
 
