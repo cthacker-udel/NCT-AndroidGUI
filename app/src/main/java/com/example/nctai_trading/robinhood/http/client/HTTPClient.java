@@ -1,5 +1,9 @@
 package com.example.nctai_trading.robinhood.http.client;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -33,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HTTPClient {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Optional<HTTPResult> executeHTTPPostRequest(final HTTPQuery httpQuery) {
         HttpPost httpPost = new HttpPost(httpQuery.getUrl());
 
@@ -44,13 +49,14 @@ public class HTTPClient {
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
         } catch (final UnsupportedEncodingException e) {
-            log.warn(e.getMessage(), e);
+
         }
 
         return executeHTTPRequest(httpPost, httpQuery.getHeaders());
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public Optional<HTTPResult> executeHTTPGetRequest(final HTTPQuery httpQuery) {
         String paramString = "";
         if (httpQuery.getParameters().size() > 0) {
@@ -60,7 +66,7 @@ public class HTTPClient {
                 try {
                     urlParameter = URLEncoder.encode(paramEntry.getKey(), "UTF-8");
                 } catch (UnsupportedEncodingException e) {
-                    log.warn("Cannot encode parameter {}!", paramEntry.getKey());
+
                     continue;
                 }
                 if (httpQuery.getUrl().contains(urlParameter+"=")) {
@@ -77,6 +83,7 @@ public class HTTPClient {
         return executeHTTPRequest(httpGet, httpQuery.getHeaders());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private Optional<HTTPResult> executeHTTPRequest(final HttpUriRequest httpRequest,
                                                     final Map<String, String> headers) {
 
@@ -104,7 +111,6 @@ public class HTTPClient {
 
             httpResultOptional = Optional.of(result);
         } catch (final IOException e) {
-            log.warn(e.getMessage(), e);
         }
 
         return httpResultOptional;
