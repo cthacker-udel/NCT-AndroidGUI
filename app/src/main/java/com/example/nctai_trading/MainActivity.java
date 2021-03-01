@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             Date savedLogin = null;
             Date currentLogin = null;
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-            String currentDate = String.format("%d/%d/%d", LocalDate.now().getMonth(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear());
+            String currentDate = String.format("%d/%d/%d", LocalDate.now().getMonthValue(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear());
             try {
                 savedLogin = sdf.parse(date);
                 currentLogin = sdf.parse(currentDate);
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("currentLogin",String.format("%d/%d/%d",LocalDate.now().getMonth(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear()));
+            editor.putString("currentLogin",String.format("%d/%d/%d",LocalDate.now().getMonthValue(),LocalDate.now().getDayOfMonth(),LocalDate.now().getYear()));
         }
 
 

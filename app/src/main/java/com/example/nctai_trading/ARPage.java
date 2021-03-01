@@ -14,6 +14,7 @@ import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
+import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
@@ -44,6 +45,19 @@ public class ARPage extends AppCompatActivity {
             public void onClick(View v) {
 
                 com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new com.example.nctai_trading.bitforex.bitforexMethods();
+
+                com.example.nctai_trading.bitrue.bitrueMethods bitrueMethods = new com.example.nctai_trading.bitrue.bitrueMethods();
+
+                com.example.nctai_trading.bitrue.bitrueMethods.serverRequests serverRequests = bitrueMethods.new serverRequests();
+
+                com.example.nctai_trading.bitrue.bitrueMethods.exchangeInfoRequests exchangeInfoRequests = bitrueMethods.new exchangeInfoRequests();
+
+                try {
+                    serverRequests.getServerTime();
+                    serverRequests.getExchangeInfo();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 Map<String,Object> testParams = new HashMap<>();
 
