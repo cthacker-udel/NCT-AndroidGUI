@@ -14,6 +14,8 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Mailgun API implementation
 - [x] Square Checkout API implementation
 - [x] Particle Cloud API Implementation
+- [x] Bitforex Implementation
+- [x] Bilaxy Implementation 
 
 ### MongoDB Implementation
 
