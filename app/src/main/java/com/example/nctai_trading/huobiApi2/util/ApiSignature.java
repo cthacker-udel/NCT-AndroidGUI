@@ -1,5 +1,9 @@
 package com.example.nctai_trading.huobiApi2.util;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +23,7 @@ import java.util.TreeMap;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class ApiSignature {
 
     final Logger log = LoggerFactory.getLogger(getClass());
@@ -36,13 +41,12 @@ public class ApiSignature {
      *            AppKeySecret.
      * @param method
      *            请求方法，"GET"或"POST"
-     * @param host
-     *            请求域名，例如"be.huobi.com"
      * @param uri
      *            请求路径，注意不含?以及后的参数，例如"/v1/api/info"
      * @param params
      *            原始请求参数，以Key-Value存储，注意Value不要编码
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void createSignature(String appKey, String appSecretKey, String method, String uri,
                                 Map<String, String> params) {
         StringBuilder sb = new StringBuilder(1024);
@@ -110,10 +114,12 @@ public class ApiSignature {
     /**
      * Return epoch seconds
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     long epochNow() {
         return Instant.now().getEpochSecond();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     String gmtNow() {
         return Instant.ofEpochSecond(epochNow()).atZone(ZONE_GMT).format(DT_FORMAT);
     }
