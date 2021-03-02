@@ -50,9 +50,10 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.bitrue.bitrueMethods.serverRequests serverRequests = bitrueMethods.new serverRequests();
 
-                com.example.nctai_trading.bitrue.bitrueMethods.exchangeInfoRequests exchangeInfoRequests = bitrueMethods.new exchangeInfoRequests();
+                bitrueMethods.marketDataRequests bitrueMarketDataRequests = bitrueMethods.new marketDataRequests();
 
                 try {
+                    bitrueMarketDataRequests.getMarketDataEndpoints("LTCBTC");
                     serverRequests.getServerTime();
                     serverRequests.getExchangeInfo();
                 } catch (IOException e) {
