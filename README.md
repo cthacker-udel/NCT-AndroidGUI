@@ -16,6 +16,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Particle Cloud API Implementation
 - [x] Bitforex Implementation
 - [x] Bilaxy Implementation 
+- [x] Huobi Implementation
 
 ### MongoDB Implementation
 
