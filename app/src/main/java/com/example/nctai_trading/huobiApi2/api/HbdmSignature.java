@@ -9,6 +9,7 @@ package com.example.nctai_trading.huobiApi2.api;
         }
 
         public HbdmSignature(String accessKey, String secretKey) {
+            //
             super();
             this.accessKey = accessKey;
             this.secretKey = secretKey;
