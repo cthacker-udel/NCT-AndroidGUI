@@ -15,6 +15,7 @@ import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
+import com.example.nctai_trading.bybit.bybitMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
@@ -52,11 +53,23 @@ public class ARPage extends AppCompatActivity {
 
                 bitrueMethods.marketDataRequests bitrueMarketDataRequests = bitrueMethods.new marketDataRequests();
 
+                com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+
+                com.example.nctai_trading.bybit.bybitMethods bitbymethods = new com.example.nctai_trading.bybit.bybitMethods();
+
+                bybitMethods.orderRequests bitbyorderRequests = bitbymethods.new orderRequests();
+
                 try {
+                    bitbyorderRequests.placeOrder("Buy","BTCUSD","Market","10","GoodTillCancel","false","false");
+                    bitrueOrderRequests.placeOrder("LTCBTC","BUY","MARKET",1);
                     bitrueMarketDataRequests.getMarketDataEndpoints("LTCBTC");
                     serverRequests.getServerTime();
                     serverRequests.getExchangeInfo();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
 

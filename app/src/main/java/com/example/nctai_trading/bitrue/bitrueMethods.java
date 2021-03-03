@@ -25,8 +25,15 @@ public class bitrueMethods {
 
     String baseUrl = "https://www.bitrue.com";
 
-    String apiKey = "4d52b03ce5feb11781490b77696aeab7bc7a76a0f8c4bf0d2c575d983f4ba4e7";
-    String secretKey = "592d0d53611f643790607b4e9f36006fcb71bf273d22fcf78a5ab11ac92c726f";
+    //String apiKey = "4d52b03ce5feb11781490b77696aeab7bc7a76a0f8c4bf0d2c575d983f4ba4e7";
+    //String secretKey = "592d0d53611f643790607b4e9f36006fcb71bf273d22fcf78a5ab11ac92c726f";
+
+    String apiKey = "87e1225818ae7dc056b546dfb2e3fbef4cd1878bf78a6f5ebda630241a5800e0";
+    String secretKey = "a9755fc88f7f9182b7fbffdacc159f2662cef90016e7070e4df885dbc2b68e54";
+
+
+    // my api key 87e1225818ae7dc056b546dfb2e3fbef4cd1878bf78a6f5ebda630241a5800e0
+    // my secret key a9755fc88f7f9182b7fbffdacc159f2662cef90016e7070e4df885dbc2b68e54
 
     // require X-MBX-APIKEY header
     // signed require : signature (query string) HMAC 256 secretkey as key and totalParams as value for HMAC encryption
@@ -43,6 +50,16 @@ public class bitrueMethods {
         return signature;
 
     }
+
+    public long synchronize() throws IOException {
+        com.example.nctai_trading.bitrue.bitrueMethods.serverRequests serverRequests = new serverRequests();
+        long serverTime = Math.round(serverRequests.getServerTime());
+        long systemTime = System.currentTimeMillis() * 1000;
+        long offset = systemTime - serverTime + 500;
+        return systemTime - offset;
+    }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String generateQueryString(Map<String,Object> map, Long timestamp){
@@ -83,7 +100,7 @@ public class bitrueMethods {
 
         }
 
-        public boolean getServerTime() throws IOException {
+        public long getServerTime() throws IOException {
 
             String url = baseUrl + "/api/v1/time/";
 
@@ -98,7 +115,7 @@ public class bitrueMethods {
 
             Response<com.example.nctai_trading.bitrue.serverObject.serverTimeResponse> response = getServerTime.execute();
 
-            return response.isSuccessful();
+            return Math.round(response.body().getServerTime());
 
 
         }
@@ -188,7 +205,9 @@ public class bitrueMethods {
     public class orderRequests{
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public bitrueOrderResponse placeOrder(String symbol, String side, String type, Double quantity) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        public bitrueOrderResponse placeOrder(String symbol, String side, String type, int quantity) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            //small fix to fix error {1102, "msg": "timestamp IllegalArgumentException"
 
             Map<String,Object> queryParams = new LinkedHashMap<>();
             queryParams.put("symbol",symbol);
@@ -203,9 +222,9 @@ public class bitrueMethods {
                     .build();
             orderInterface orderInterface = retrofit.create(com.example.nctai_trading.bitrue.orderInterface.class);
 
-            Long timestamp = getTimestamp();
+            Long timestamp = synchronize();
 
-            Call<bitrueOrderResponse> call = orderInterface.placeOrder(symbol,side,type,quantity,timestamp,generateSignature(generateQueryString(queryParams,timestamp)));
+            Call<bitrueOrderResponse> call = orderInterface.placeOrder(apiKey,symbol,side,type,quantity,timestamp,generateSignature(generateQueryString(queryParams,timestamp)));
 
             Response<bitrueOrderResponse> response = call.execute();
 
