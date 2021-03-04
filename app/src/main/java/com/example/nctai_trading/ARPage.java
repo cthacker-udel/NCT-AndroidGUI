@@ -16,6 +16,7 @@ import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
+import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
@@ -59,7 +60,12 @@ public class ARPage extends AppCompatActivity {
 
                 bybitMethods.orderRequests bitbyorderRequests = bitbymethods.new orderRequests();
 
+                com.example.nctai_trading.digifinex.digifinexMethods digifinexMethods = new digifinexMethods();
+
+                com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digiOrderRequests = digifinexMethods.new orderRequests();
+
                 try {
+                    digiOrderRequests.placeOrder("usdt_btc","buy",6000.12,0.1);
                     bitbyorderRequests.placeOrder("Buy","BTCUSD","Market","10","GoodTillCancel","false","false");
                     bitrueOrderRequests.placeOrder("LTCBTC","BUY","MARKET",1);
                     bitrueMarketDataRequests.getMarketDataEndpoints("LTCBTC");
@@ -88,6 +94,7 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.bitforex.bitforexMethods.tickerRequests tickerRequests = bitforexMethods.new tickerRequests();
 
                 com.example.nctai_trading.bitforex.bitforexMethods.orderRequests forexOrderRequests = bitforexMethods.new orderRequests();
+
 
                 try {
                     //forexOrderRequests.placeOrder("coin-usd-eth",1000.0,1.0,1);
