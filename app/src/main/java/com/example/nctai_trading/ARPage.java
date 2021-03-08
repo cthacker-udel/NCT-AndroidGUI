@@ -18,6 +18,7 @@ import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
+import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
 
@@ -46,6 +47,8 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                com.example.nctai_trading.idcm.idcmMethods idcmMethods = new com.example.nctai_trading.idcm.idcmMethods();
+
                 com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new com.example.nctai_trading.bitforex.bitforexMethods();
 
                 com.example.nctai_trading.bitrue.bitrueMethods bitrueMethods = new com.example.nctai_trading.bitrue.bitrueMethods();
@@ -64,7 +67,10 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digiOrderRequests = digifinexMethods.new orderRequests();
 
+                com.example.nctai_trading.idcm.idcmMethods.orderRequests idcmOrderRequests = idcmMethods.new orderRequests();
+
                 try {
+                    idcmOrderRequests.placeOrder("BTC-USDT",1,1,1,1,10);
                     digiOrderRequests.placeOrder("usdt_btc","buy",6000.12,0.1);
                     bitbyorderRequests.placeOrder("Buy","BTCUSD","Market","10","GoodTillCancel","false","false");
                     bitrueOrderRequests.placeOrder("LTCBTC","BUY","MARKET",1);

@@ -19,6 +19,7 @@ public class HMAC256 {
     private String secretKey;
     private String applicationString;
 
+
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
