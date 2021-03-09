@@ -109,6 +109,20 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Global Notification Requests
 - [x] Instrument Requests
 
+### WBF Implementation
+
+- [x] Transaction History Requests
+
+### KiteConnect Implementation
+
+- [x] Order Requests
+- [x] Order History Requests
+
+### Kraken Implementation
+
+- [x] Order Requests
+- [x] Order History Requests
+
 ## TODOS
 -------
 
