@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".stockexchangePage">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".signUpPage"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="344dp"
+            android:alpha=".5"
+            android:text="Next Capital Tech LLC"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.733"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stockexchangePageBackBtn" />
+
+        <TextView
+            android:id="@+id/stockexchangepage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:text="Stock Exchange Page"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/stockexchangeexchg"
+            android:layout_width="71dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="23dp"
+            android:text="@string/exchange"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stockexchangepage" />
+
+        <Button
+            android:id="@+id/stockexchangePageLoginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/login"
+            app:backgroundTint="@android:color/darker_gray"
+            app:layout_constraintEnd_toStartOf="@+id/stockexchangePageBackBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/stockexchangeexchg" />
+
+        <Button
+            android:id="@+id/stockexchangePageBackBtn"
+            android:layout_width="93dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="104dp"
+            android:text="@string/back"
+            app:backgroundTint="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/stockexchangePageLoginBtn"
+            app:layout_constraintTop_toBottomOf="@+id/exchangedropdown" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/nct_logo" />
+
+        <Spinner
+            android:id="@+id/exchangedropdown"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="19dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"
+            app:layout_constraintStart_toEndOf="@+id/stockexchangeexchg"
+            app:layout_constraintTop_toBottomOf="@+id/stockexchangepage" />
+
+        <WebView
+            android:id="@+id/stockwebview"
+            android:layout_width="407dp"
+            android:layout_height="325dp"
+            android:layout_marginTop="26dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/stockexchangePageLoginBtn"
+            tools:layout_editor_absoluteX="-2dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

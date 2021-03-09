@@ -1,14 +1,21 @@
 package com.example.nctai_trading;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.nctai_trading.robinhood.robinhood.client.RobinhoodClient;
+import com.example.nctai_trading.robinhood.robinhood.exception.RobinhoodException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -55,8 +62,20 @@ public class stockexchangePage extends AppCompatActivity {
             stockexchangePageLoginBtn = findViewById(R.id.stockexchangePageLoginBtn);
 
         stockexchangePageLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                EditText stockexchangeUsernameEditText=findViewById(R.id.stockexchangeUsernameEditText);
+                EditText stockexchangePasswordEditText=findViewById(R.id.stockexchangePasswordEditText);
+
+                RobinhoodClient client = new RobinhoodClient(stockexchangeUsernameEditText.getText().toString(),stockexchangePasswordEditText.getText().toString());
+
+                try {
+                    client.getPortfolio();
+                } catch (RobinhoodException e) {
+                    e.printStackTrace();
+                    Log.e("Robin","Exception",e);
+                }
                 return;
             }
 

@@ -92,7 +92,8 @@ public class HTTPClient {
 
         final HttpClient httpClient = HttpClients.custom()
                 .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
-                .setDefaultHeaders(headerList).setConnectionTimeToLive(2000, TimeUnit.MILLISECONDS).build();
+                .setDefaultHeaders(headerList).build();
+        //.setDefaultHeaders(headerList).setConnectionTimeToLive(2000, TimeUnit.MILLISECONDS).build();
 
         Optional<HTTPResult> httpResultOptional = Optional.empty();
 

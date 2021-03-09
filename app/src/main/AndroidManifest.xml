@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NCTAITrading">
-        <activity android:name=".stockexchangePage"></activity>
+        <activity android:name=".ameritradeaccountpage"></activity>
+        <activity android:name=".stockexchg" />
+        <activity android:name=".stockexchangePage" />
         <activity android:name=".ARPage" />
         <activity android:name=".alternateInvestments" />
         <activity android:name=".donationPage" />

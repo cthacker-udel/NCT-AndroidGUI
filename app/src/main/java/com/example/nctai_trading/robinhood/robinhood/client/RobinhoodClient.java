@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,7 +43,8 @@ public class RobinhoodClient implements RobinhoodAPI {
     }};
 
     private final HashMap<String, String> endpoints = new HashMap<String, String>() {{
-        put("login", "https://api.robinhood.com/api-token-auth/");
+        //put("login", "https://api.robinhood.com/api-token-auth/");
+        put("login", "https://api.robinhood.com/oauth2/token/");
         put("investment_profile", "https://api.robinhood.com/user/investment_profile/");
         put("accounts", "https://api.robinhood.com/accounts/");
         put("ach_iav_auth", "https://api.robinhood.com/ach/iav/auth/");

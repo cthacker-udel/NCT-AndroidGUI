@@ -240,7 +240,7 @@ public class mainPage extends AppCompatActivity {
         mainPageBinanceSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent tostockechangepage = new Intent(getApplicationContext(),stockexchangePage.class);
+                Intent tostockechangepage = new Intent(getApplicationContext(),stockexchg.class);
                 startActivity(tostockechangepage);
             }
         });
