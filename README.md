@@ -138,6 +138,14 @@ CAMERON THACKER - NCT ANDROID GUI
 ## TODOS
 -------
 
+TRANSACTION HISTORY:
+
+  > bybit
+  > digifinex
+  > exante
+  > idcm
+  > 
+
 1. Square
   1. Add square implementation within app
 2. Particle
