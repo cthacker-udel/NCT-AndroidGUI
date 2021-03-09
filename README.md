@@ -37,7 +37,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Exchange limit requests
 - [x] Account information requests
 
-### Binance Implementation
+### Binance/BinanceUS Implementation
 
 - [x] Buy requests
 - [x] Sell requests
