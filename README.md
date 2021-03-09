@@ -6,6 +6,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] MongoDB Server Implementation
 - [x] Shared Preferences Implementation
 - [x] Binance.us API implementation
+- [x] Binance.com API Implementation
 - [x] CoinbasePro API implementation
 - [x] Bithumb API implementation
 - [x] BitMEX API Implementation
@@ -20,6 +21,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Kiteconnect Implementation
 - [x] Kraken Implementation
 - [x] Wbf Implementation
+- [x] Bitrue Implementation
 
 ### MongoDB Implementation
 
@@ -127,6 +129,11 @@ CAMERON THACKER - NCT ANDROID GUI
 
 - [x] Order Requests
 - [x] Order History Requests
+
+### Bitrue Implementation
+
+- [x] Order Requests
+- [x] Order History Requests 
 
 ## TODOS
 -------
