@@ -17,6 +17,9 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Bitforex Implementation
 - [x] Bilaxy Implementation 
 - [x] Huobi Implementation
+- [x] Kiteconnect Implementation
+- [x] Kraken Implementation
+- [x] Wbf Implementation
 
 ### MongoDB Implementation
 
