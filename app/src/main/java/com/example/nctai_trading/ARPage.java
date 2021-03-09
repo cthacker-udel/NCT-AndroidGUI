@@ -21,6 +21,7 @@ import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
 import com.example.nctai_trading.particle.particleMethods;
+import com.example.nctai_trading.wbf.wbfMethods;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -47,6 +48,8 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                com.example.nctai_trading.wbf.wbfMethods wbfMethods = new com.example.nctai_trading.wbf.wbfMethods();
+
                 com.example.nctai_trading.idcm.idcmMethods idcmMethods = new com.example.nctai_trading.idcm.idcmMethods();
 
                 com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new com.example.nctai_trading.bitforex.bitforexMethods();
@@ -69,7 +72,10 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.idcm.idcmMethods.orderRequests idcmOrderRequests = idcmMethods.new orderRequests();
 
+                com.example.nctai_trading.wbf.wbfMethods.transactionRequests transactionRequests = wbfMethods.new transactionRequests();
+
                 try {
+                    transactionRequests.getTransactionRecords("BTC");
                     idcmOrderRequests.placeOrder("BTC-USDT",1,1,1,1,10);
                     digiOrderRequests.placeOrder("usdt_btc","buy",6000.12,0.1);
                     bitbyorderRequests.placeOrder("Buy","BTCUSD","Market","10","GoodTillCancel","false","false");

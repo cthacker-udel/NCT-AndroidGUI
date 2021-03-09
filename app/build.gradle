@@ -109,6 +109,10 @@ dependencies {
 
     implementation 'com.squareup:square:8.1.0.20210121'
 
+    // supercsv
+
+    implementation 'net.sf.supercsv:super-csv:2.4.0'
+
     // android layout
 
     implementation 'androidx.navigation:navigation-ui:2.3.3'

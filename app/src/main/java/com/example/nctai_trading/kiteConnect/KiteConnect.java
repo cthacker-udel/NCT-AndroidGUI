@@ -2,11 +2,7 @@ package com.example.nctai_trading.kiteConnect;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import com.zerodhatech.kiteconnect.kitehttp.KiteRequestHandler;
-import com.zerodhatech.kiteconnect.kitehttp.SessionExpiryHook;
-import com.zerodhatech.kiteconnect.kitehttp.exceptions.KiteException;
-import com.zerodhatech.kiteconnect.utils.Constants;
-import com.zerodhatech.models.*;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +17,9 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.Proxy;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -174,7 +173,7 @@ public class KiteConnect {
      * @throws JSONException is thrown when there is exception while parsing response.
      * @throws IOException is thrown when there is connection error.
      */
-    public User generateSession(String requestToken, String apiSecret) throws KiteException, JSONException, IOException {
+    public User generateSession(String requestToken, String apiSecret) throws KiteException, JSONException, IOException, NoSuchAlgorithmException {
 
         // Create the checksum needed for authentication.
         String hashableText = this.apiKey + requestToken + apiSecret;
@@ -195,7 +194,7 @@ public class KiteConnect {
      * @return TokenSet contains user id, refresh token, api secret.
      * @throws IOException is thrown when there is connection error.
      * @throws KiteException is thrown for all Kite trade related errors. */
-    public TokenSet renewAccessToken(String refreshToken, String apiSecret) throws IOException, KiteException, JSONException {
+    public TokenSet renewAccessToken(String refreshToken, String apiSecret) throws IOException, KiteException, JSONException, NoSuchAlgorithmException {
         String hashableText = this.apiKey + refreshToken + apiSecret;
         String sha256hex = sha256Hex(hashableText);
 
@@ -212,8 +211,10 @@ public class KiteConnect {
      * @return Hex encoded String.
      * @param str is the String that has to be encrypted.
      * */
-    public String sha256Hex(String str) {
-        byte[] a = DigestUtils.sha256(str);
+    public String sha256Hex(String str) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] a = digest.digest(str.getBytes(StandardCharsets.UTF_8));
+        //byte[] a = DigestUtils.sha256(str);
         StringBuilder sb = new StringBuilder(a.length * 2);
         for(byte b: a)
             sb.append(String.format("%02x", b));
