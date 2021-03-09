@@ -123,6 +123,11 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Order Requests
 - [x] Order History Requests
 
+### Bilaxy Implementation
+
+- [x] Order Requests
+- [x] Order History Requests
+
 ## TODOS
 -------
 
