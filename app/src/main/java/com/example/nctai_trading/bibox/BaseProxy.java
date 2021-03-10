@@ -1,9 +1,15 @@
 package com.example.nctai_trading.bibox;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.alibaba.fastjson.JSON;
 
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +31,7 @@ public abstract class BaseProxy
         return params;
     }
 
-    private Map<String, Object> postSignCmds(Map<String, Object> body)
-    {
+    private Map<String, Object> postSignCmds(Map<String, Object> body) throws InvalidKeyException, NoSuchAlgorithmException {
         if ("".equals(config.getApiKey())) {
             throw new ApiKeyException("ApiKey is require");
         }
@@ -39,16 +44,18 @@ public abstract class BaseProxy
         return params;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected String post(Map<String, Object> body) throws IOException
     {
         return helper.postForm(getUrl(), postCmds(body));
     }
 
-    protected String postSign(Map<String, Object> body) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    protected String postSign(Map<String, Object> body) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return helper.postForm(getUrl(), postSignCmds(body));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     protected String get(Map<String, Object> params) throws IOException
     {
         return helper.get(getUrl(), params);

@@ -1,7 +1,13 @@
 package com.example.nctai_trading.bibox;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class V1CTradeQueryProxy extends BaseProxy
@@ -19,38 +25,38 @@ public class V1CTradeQueryProxy extends BaseProxy
         return config.getHost().concat(UrlConstants.V1_C_QUERY);
     }
 
-    public String cQueryAssets() throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryAssets() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryAssetsCmd());
     }
 
-    public String cQueryDeals(String index, String pair, Integer size) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryDeals(String index, String pair, Integer size) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryDealsGetCmd(index,pair, size));
     }
 
-    public String cQueryOrder(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrder(String pair) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryOrderCmd(pair));
     }
 
-    public String cQueryOrderAll(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderAll(String pair) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryOrderAllCmd(pair));
     }
 
-    public String cQueryOrderPending(CQueryOrderPendingParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderPending(CQueryOrderPendingParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryOrderPendingCmd(params));
     }
 
-    public String cQueryOrderPendingByIds(List<Long> ids) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderPendingByIds(List<Long> ids) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryOrderPendingCmd(ids));
     }
 
-    public String cQueryOrderList(CQueryOrderListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderList(CQueryOrderListParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCQueryOrderListCmd(params));
     }
 }

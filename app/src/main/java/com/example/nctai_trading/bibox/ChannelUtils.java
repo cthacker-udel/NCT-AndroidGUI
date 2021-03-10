@@ -2,6 +2,8 @@ package com.example.nctai_trading.bibox;
 
 import com.alibaba.fastjson.JSON;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,8 +66,7 @@ public class ChannelUtils
         return JSON.toJSONString(map);
     }
 
-    public static String loginSubChannel(String apiKey, String secret)
-    {
+    public static String loginSubChannel(String apiKey, String secret) throws InvalidKeyException, NoSuchAlgorithmException {
         Map<String, String> params = new TreeMap<>();
         params.put("event", "addChannel");
         params.put("channel", "bibox_sub_spot_ALL_ALL_login");

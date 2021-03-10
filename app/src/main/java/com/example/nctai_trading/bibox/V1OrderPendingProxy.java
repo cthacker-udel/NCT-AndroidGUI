@@ -2,7 +2,13 @@ package com.example.nctai_trading.bibox;
 
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,8 +34,8 @@ public class V1OrderPendingProxy extends BaseProxy
         return get(params);
     }
 
-    public String orderPendingTrade(String index, String pair, OrderSideEnum orderSide, Double price, Double amount) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingTrade(String index, String pair, OrderSideEnum orderSide, Double price, Double amount) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         TradeParams params = new TradeParams();
         params.setPair(pair);
         params.setAccountType(AccountTypeEnum.MAIN);
@@ -41,33 +47,33 @@ public class V1OrderPendingProxy extends BaseProxy
         return postSign(V1ParamsUtils.createOrderPendingTradeCmd(params));
     }
 
-    public String orderPendingCancelTrade(String index, String id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingCancelTrade(String index, String id) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCancelTradeCmd(index, id));
     }
 
-    public String orderPendingOrderPendingList(OrderPendingListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderPendingList(OrderPendingListParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createOrderPendingListCmd(params));
     }
 
-    public String orderPendingPendingHistoryList(OrderPendingHistoryListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingPendingHistoryList(OrderPendingHistoryListParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createOrderPendingHistoryListCmd(params));
     }
 
-    public String orderPendingOrderDetail(String id, AccountTypeEnum accountType) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderDetail(String id, AccountTypeEnum accountType) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createOrderPendingOderDetailCmd(id, accountType));
     }
 
-    public String orderPendingOrder(String id, AccountTypeEnum accountType) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrder(String id, AccountTypeEnum accountType) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createOrderPendingOrderCmd(id, accountType));
     }
 
-    public String orderPendingOrderHistoryList(OrderPendingListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderHistoryList(OrderPendingListParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createOrderPendingOrderHistoryListCmd(params));
     }
 }

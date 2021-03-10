@@ -1,9 +1,15 @@
 package com.example.nctai_trading.bibox;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -149,8 +155,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferAssets(Integer select) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferAssets(Integer select) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferAssets(select);
     }
 
@@ -161,8 +167,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferMainAssets(Integer select) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferMainAssets(Integer select) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferMainAssets(select);
     }
 
@@ -173,8 +179,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferCreditAssets(Integer select) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferCreditAssets(Integer select) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferCreditAssets(select);
     }
 
@@ -185,8 +191,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferTransferIn(String symbol) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferTransferIn(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferTransferIn(symbol);
     }
 
@@ -197,8 +203,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferTransferOut(TransferOutParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferTransferOut(TransferOutParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferTransferOut(params);
     }
 
@@ -209,8 +215,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferTransferInList(TransferInListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferTransferInList(TransferInListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferTransferInList(params);
     }
 
@@ -221,8 +227,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferTransferOutList(TransferOutListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferTransferOutList(TransferOutListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferTransferOutList(params);
     }
 
@@ -233,8 +239,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferCoinConfig(String symbol) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferCoinConfig(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferCoinConfig(symbol);
     }
 
@@ -245,8 +251,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferWithdrawInfo(Long id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferWithdrawInfo(Long id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return v1MTransferProxy.transferWithdrawInfo(id);
     }
 
@@ -261,8 +267,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingTrade(String index, String pair, OrderSideEnum orderSide, Double price, Double amount) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingTrade(String index, String pair, OrderSideEnum orderSide, Double price, Double amount) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingTrade(index, pair, orderSide, price, amount);
     }
 
@@ -274,8 +280,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingCancelTrade(String index, String id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingCancelTrade(String index, String id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingCancelTrade(index, id);
     }
 
@@ -286,8 +292,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingOrderPendingList(OrderPendingListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderPendingList(OrderPendingListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingOrderPendingList(params);
     }
 
@@ -298,8 +304,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingPendingHistoryList(OrderPendingHistoryListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingPendingHistoryList(OrderPendingHistoryListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingPendingHistoryList(params);
     }
 
@@ -311,8 +317,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingOrderDetail(String id, AccountTypeEnum accountType) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderDetail(String id, AccountTypeEnum accountType) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingOrderDetail(id, accountType);
     }
 
@@ -324,8 +330,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingOrder(String id, AccountTypeEnum accountType) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrder(String id, AccountTypeEnum accountType) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingOrder(id, accountType);
     }
 
@@ -336,8 +342,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String orderPendingOrderHistoryList(OrderPendingListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderPendingOrderHistoryList(OrderPendingListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mOrderPendingProxy.orderPendingOrderHistoryList(params);
     }
 
@@ -348,8 +354,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String lendOrderBookPublish(LendPublishParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String lendOrderBookPublish(LendPublishParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.lendOrderBookPublish(params);
     }
 
@@ -360,8 +366,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String lendOrderBookCancel(String id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String lendOrderBookCancel(String id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.lendOrderBookCancel(id);
     }
 
@@ -372,8 +378,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String lendOrderBookGet(LendOrderBookGetParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String lendOrderBookGet(LendOrderBookGetParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.lendOrderBookGet(params);
     }
 
@@ -384,8 +390,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String lendOrderGet(LendOrderGetParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String lendOrderGet(LendOrderGetParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.lendOrderGet(params);
     }
 
@@ -396,8 +402,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferAssetsLendAssets(String symbol) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferAssetsLendAssets(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.transferAssetsLendAssets(symbol);
     }
 
@@ -408,8 +414,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String borrowOrderBook(BorrowOrderBookParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String borrowOrderBook(BorrowOrderBookParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.borrowOrderBook(params);
     }
 
@@ -420,8 +426,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String borrowOrderCancel(Long id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String borrowOrderCancel(Long id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.borrowOrderCancel(id);
     }
 
@@ -433,8 +439,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String borrowOrderRefund(Long id, String amount) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String borrowOrderRefund(Long id, String amount) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.borrowOrderRefund(id, amount);
     }
 
@@ -445,8 +451,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String borrowOrderGet(BorrowOrderGetParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String borrowOrderGet(BorrowOrderGetParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.borrowOrderGet(params);
     }
 
@@ -458,8 +464,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String borrowDepthGet(String symbol, String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String borrowDepthGet(String symbol, String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.borrowDepthGet(symbol, pair);
     }
 
@@ -471,8 +477,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferAssetsBorrowAssets(String symbol, String currency) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferAssetsBorrowAssets(String symbol, String currency) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.transferAssetsBorrowAssets(symbol, currency);
     }
 
@@ -483,8 +489,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String creditTrade(TradeParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String creditTrade(TradeParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.creditTrade(params);
     }
 
@@ -496,8 +502,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String creditTradeCancel(String index, String id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String creditTradeCancel(String index, String id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.creditTradeCancel(index, id);
     }
 
@@ -510,8 +516,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferAssetsBase2credit(String symbol, String amount, String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferAssetsBase2credit(String symbol, String amount, String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.transferAssetsBase2credit(symbol, amount, pair);
     }
 
@@ -524,8 +530,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferAssetsCredit2Base(String symbol, String amount, String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferAssetsCredit2Base(String symbol, String amount, String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCreditProxy.transferAssetsCredit2Base(symbol, amount, pair);
     }
 
@@ -538,8 +544,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String transferSpot(String symbol, String amount, TransferSpotTypeEnum type) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferSpot(String symbol, String amount, TransferSpotTypeEnum type) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return spotProxy.transferSpot(symbol, amount, type);
     }
 
@@ -552,8 +558,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryDeals(String index, String pair, Integer size) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryDeals(String index, String pair, Integer size) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryDeals(index, pair, size);
     }
 
@@ -563,8 +569,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryAssets() throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryAssets() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryAssets();
     }
 
@@ -575,8 +581,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryOrder(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrder(String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryOrder(pair);
     }
 
@@ -587,8 +593,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryOrderAll(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderAll(String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryOrderAll(pair);
     }
 
@@ -599,8 +605,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryOrderPending(CQueryOrderPendingParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderPending(CQueryOrderPendingParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryOrderPending(params);
     }
 
@@ -611,8 +617,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryOrderPendingByIds(List<Long> ids) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderPendingByIds(List<Long> ids) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryOrderPendingByIds(ids);
     }
 
@@ -624,8 +630,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cQueryOrderList(CQueryOrderListParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cQueryOrderList(CQueryOrderListParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeQueryProxy.cQueryOrderList(params);
     }
 
@@ -636,8 +642,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderOpen(CTradeOrderOpenParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderOpen(CTradeOrderOpenParams params) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderOpen(params);
     }
 
@@ -648,8 +654,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderClose(String id) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderClose(String id) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderClose(id);
     }
 
@@ -660,8 +666,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderCloseBatch(List<String> orderIds) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderCloseBatch(List<String> orderIds) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderCloseBatch(orderIds);
     }
 
@@ -673,8 +679,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderCloseAll(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderCloseAll(String pair) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderCloseAll(pair);
     }
 
@@ -687,8 +693,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderChangeLeverage(String pair, Integer leverage, Integer cross) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderChangeLeverage(String pair, Integer leverage, Integer cross) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderChangeLeverage(pair, leverage, cross);
     }
 
@@ -700,8 +706,8 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cOrderChangeMargin(String pair, Double margin) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cOrderChangeMargin(String pair, Double margin) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.orderChangeMargin(pair, margin);
     }
 
@@ -712,13 +718,13 @@ public class BiBoxHttpClient
      * @return
      * @throws IOException
      */
-    public String cTransferIn(String amount) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String cTransferIn(String amount) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return mCTradeProxy.transferIn(amount);
     }
 
-    public static void main(String[] args) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void main(String[] args) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         String apiKey = "Yours ApiKey";
         String secret = "Yours ApiSecret";
         // 不需要apikey

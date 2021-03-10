@@ -3,6 +3,8 @@ package com.example.nctai_trading.bibox;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * ps：each client channel max 20
@@ -18,8 +20,7 @@ public class BiBoxWebSocketClient
         endpoint = new WebSocketClientEndpoint(new URI(config.getHost()));
     }
 
-    public void login(String apiKey, String secret)
-    {
+    public void login(String apiKey, String secret) throws NoSuchAlgorithmException, InvalidKeyException {
         endpoint.subChannel(ChannelUtils.getLoginChannel(), ChannelUtils.loginSubChannel(apiKey, secret));
     }
 
@@ -38,8 +39,7 @@ public class BiBoxWebSocketClient
         endpoint.registerMessageHandler(handler);
     }
 
-    public static void main(String[] args) throws URISyntaxException
-    {
+    public static void main(String[] args) throws URISyntaxException, InvalidKeyException, NoSuchAlgorithmException {
         String apiKey = "Yours apiKey";
         String secret = "Yours secret";
         String host = "wss://push.bibox365.com/";

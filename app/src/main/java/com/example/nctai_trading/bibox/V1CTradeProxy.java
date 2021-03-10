@@ -2,7 +2,13 @@ package com.example.nctai_trading.bibox;
 
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class V1CTradeProxy extends BaseProxy
@@ -21,8 +27,8 @@ public class V1CTradeProxy extends BaseProxy
     }
 
 
-    public String orderOpen(CTradeOrderOpenParams params) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderOpen(CTradeOrderOpenParams params) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderOpenCmd(params));
     }
 
@@ -32,33 +38,33 @@ public class V1CTradeProxy extends BaseProxy
         return null;
     }
 
-    public String orderClose(String orderId) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderClose(String orderId) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderCloseCmd(orderId));
     }
 
-    public String orderCloseBatch(List<String> orderId) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderCloseBatch(List<String> orderId) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderCloseBatchCmd(orderId));
     }
 
-    public String orderCloseAll(String pair) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderCloseAll(String pair) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderCloseAllCmd(pair));
     }
 
-    public String orderChangeLeverage(String pair, Integer leverage, Integer cross) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderChangeLeverage(String pair, Integer leverage, Integer cross) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderChangeLeveragelCmd(pair, leverage, cross));
     }
 
-    public String orderChangeMargin(String pair, Double margin) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String orderChangeMargin(String pair, Double margin) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeOrderChangeMarginCmd(pair, margin));
     }
 
-    public String transferIn(String amount) throws IOException
-    {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String transferIn(String amount) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         return postSign(V1ParamsUtils.createCTradeTransferInCmd(amount));
     }
 }
