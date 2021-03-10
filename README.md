@@ -22,6 +22,7 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Kraken Implementation
 - [x] Wbf Implementation
 - [x] Bitrue Implementation
+- [x] Bibox Implementation
 
 ### MongoDB Implementation
 
@@ -131,6 +132,11 @@ CAMERON THACKER - NCT ANDROID GUI
 - [x] Order History Requests
 
 ### Bitrue Implementation
+
+- [x] Order Requests
+- [x] Order History Requests 
+
+### Bibox Implementation
 
 - [x] Order Requests
 - [x] Order History Requests 
