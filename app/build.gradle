@@ -113,6 +113,10 @@ dependencies {
 
     implementation 'net.sf.supercsv:super-csv:2.4.0'
 
+    // javax websocket
+
+    implementation 'javax.websocket:javax.websocket-api:1.1'
+
     // android layout
 
     implementation 'androidx.navigation:navigation-ui:2.3.3'
