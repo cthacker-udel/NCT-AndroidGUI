@@ -1,6 +1,8 @@
 package com.example.nctai_trading.bidesk.domain.general;
 
-import io.broker.api.client.constant.BrokerConstants;
+
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

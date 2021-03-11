@@ -1,6 +1,8 @@
 package com.example.nctai_trading.bidesk.domain.contract.request;
 
-import io.broker.api.client.domain.contract.PositionSide;
+
+import com.example.nctai_trading.bidesk.domain.contract.PositionSide;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,14 @@ public class ContractPositionRequest {
      * If not sent, positions for all contracts will be returned.
      */
     private String symbol;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public PositionSide getSide() {
+        return side;
+    }
 
     /**
      * Direction of the position.

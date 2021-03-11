@@ -1,9 +1,9 @@
 package com.example.nctai_trading.bidesk.domain.contract;
 
+import com.example.nctai_trading.bidesk.domain.account.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.broker.api.client.domain.account.OrderStatus;
-import io.broker.api.client.domain.option.OrderMatchFeeInfo;
+
 import lombok.Data;
 import lombok.Singular;
 
@@ -99,5 +99,5 @@ public class ContractOrderResult {
      * Fees incurred for this order.
      */
     @Singular
-    private List<OrderMatchFeeInfo> fees;
+    private List<Object> fees;
 }

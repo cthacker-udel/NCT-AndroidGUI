@@ -30,11 +30,6 @@ public class BrokerLoggingInterceptor implements Interceptor {
             body = buffer.readString(charset);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Request method：[{}] url：[{}] headers: [{}] body：[{}]",
-                    request.method(), request.url(), request.headers(), body);
-        }
-
         long startNs = System.nanoTime();
         Response response = chain.proceed(request);
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
@@ -51,10 +46,6 @@ public class BrokerLoggingInterceptor implements Interceptor {
             rBody = buffer.clone().readString(charset);
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Response code: [{}] message: [{}] body：[{}] reqTime: [{}]ms",
-                    response.code(), response.message(), rBody, tookMs);
-        }
 
         return response;
     }

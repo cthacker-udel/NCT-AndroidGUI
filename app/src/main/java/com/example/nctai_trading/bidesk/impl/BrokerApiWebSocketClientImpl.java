@@ -1,21 +1,22 @@
 package com.example.nctai_trading.bidesk.impl;
 
+import com.example.nctai_trading.bidesk.BrokerApiCallback;
+import com.example.nctai_trading.bidesk.BrokerApiWebSocketClient;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+import com.example.nctai_trading.bidesk.domain.account.SocketUserResponse;
+import com.example.nctai_trading.bidesk.domain.channel.ChannelRequest;
+import com.example.nctai_trading.bidesk.domain.channel.EventTopic;
+import com.example.nctai_trading.bidesk.domain.channel.EventType;
+import com.example.nctai_trading.bidesk.domain.event.CandlestickEvent;
+import com.example.nctai_trading.bidesk.domain.event.DepthEvent;
+import com.example.nctai_trading.bidesk.domain.event.IndexEvent;
+import com.example.nctai_trading.bidesk.domain.event.TickerEvent;
+import com.example.nctai_trading.bidesk.domain.event.TradeEvent;
+import com.example.nctai_trading.bidesk.domain.market.CandlestickInterval;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import io.broker.api.client.BrokerApiCallback;
-import io.broker.api.client.BrokerApiWebSocketClient;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.account.SocketUserResponse;
-import io.broker.api.client.domain.channel.ChannelRequest;
-import io.broker.api.client.domain.channel.EventTopic;
-import io.broker.api.client.domain.channel.EventType;
-import io.broker.api.client.domain.event.CandlestickEvent;
-import io.broker.api.client.domain.event.DepthEvent;
-import io.broker.api.client.domain.event.IndexEvent;
-import io.broker.api.client.domain.event.TickerEvent;
-import io.broker.api.client.domain.event.TradeEvent;
-import io.broker.api.client.domain.market.CandlestickInterval;
+
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -239,12 +240,11 @@ public class BrokerApiWebSocketClientImpl implements BrokerApiWebSocketClient, C
 
                         Thread.sleep(200);
                         if (listener.getFailure() && retry) {
-                            log.debug("socket monitor : retry to connect");
                             createNewWebSocket(channel, listener, true);
                             break;
                         }
                     } catch (Exception e) {
-                        log.error(" socket monitor catch Exception: ", e);
+                        System.out.println(" socket monitor catch Exception: " + e);
                     }
                 }
             }
@@ -257,12 +257,12 @@ public class BrokerApiWebSocketClientImpl implements BrokerApiWebSocketClient, C
                 try {
                     Thread.sleep(200);
                     if (listener.getFailure()) {
-                        log.debug("user socket monitor : retry to connect");
+
                         createNewUserWebSocket(channel, listenKey, listener, true);
                         break;
                     }
                 } catch (Exception e) {
-                    log.error(" user socket monitor catch Exception: ", e);
+                    System.out.println(" user socket monitor catch Exception: " + e);
                 }
             }
         };

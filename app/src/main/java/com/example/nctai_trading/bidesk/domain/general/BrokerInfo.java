@@ -1,8 +1,8 @@
 package com.example.nctai_trading.bidesk.domain.general;
 
+import com.example.nctai_trading.bidesk.domain.contract.ContractSymbol;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.contract.ContractSymbol;
+import com.example.nctai_trading.bidesk.BrokerConstants;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;

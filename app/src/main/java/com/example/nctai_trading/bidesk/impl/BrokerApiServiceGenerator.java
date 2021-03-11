@@ -1,11 +1,15 @@
 package com.example.nctai_trading.bidesk.impl;
 
+import com.example.nctai_trading.bidesk.BrokerApiError;
+import com.example.nctai_trading.bidesk.domain.contract.BatchCancelOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractOrderResult;
+import com.example.nctai_trading.bidesk.domain.general.BrokerInfo;
+import com.example.nctai_trading.bidesk.exception.BrokerApiException;
+import com.example.nctai_trading.bidesk.security.AuthenticationInterceptor;
+import com.example.nctai_trading.bidesk.service.BrokerApiService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.broker.api.client.BrokerApiError;
-import io.broker.api.client.exception.BrokerApiException;
-import io.broker.api.client.security.AuthenticationInterceptor;
-import io.broker.api.client.service.BrokerApiService;
+
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -79,6 +83,48 @@ public class BrokerApiServiceGenerator {
     public static <T> T executeSync(Call<T> call) {
         try {
             Response<T> response = call.execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                BrokerApiError apiError = getBrokerApiError(response);
+                throw new BrokerApiException(apiError);
+            }
+        } catch (IOException e) {
+            throw new BrokerApiException(e);
+        }
+    }
+
+    public static <T> T executeSync2(Call<BrokerInfo> call) {
+        try {
+            Response<T> response = (Response<T>) call.execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                BrokerApiError apiError = getBrokerApiError(response);
+                throw new BrokerApiException(apiError);
+            }
+        } catch (IOException e) {
+            throw new BrokerApiException(e);
+        }
+    }
+
+    public static <T> T executeSync3(Call<ContractOrderResult> call) {
+        try {
+            Response<T> response = (Response<T>) call.execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                BrokerApiError apiError = getBrokerApiError(response);
+                throw new BrokerApiException(apiError);
+            }
+        } catch (IOException e) {
+            throw new BrokerApiException(e);
+        }
+    }
+
+    public static <T> T executeSync4(Call<BatchCancelOrderResult> call) {
+        try {
+            Response<T> response = (Response<T>) call.execute();
             if (response.isSuccessful()) {
                 return response.body();
             } else {

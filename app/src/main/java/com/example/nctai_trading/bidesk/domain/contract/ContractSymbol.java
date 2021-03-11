@@ -1,8 +1,9 @@
 package com.example.nctai_trading.bidesk.domain.contract;
 
+import com.example.nctai_trading.bidesk.domain.general.SymbolFilter;
+import com.example.nctai_trading.bidesk.domain.general.SymbolStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.broker.api.client.domain.general.SymbolFilter;
-import io.broker.api.client.domain.general.SymbolStatus;
+
 import lombok.Data;
 
 import java.io.Serializable;

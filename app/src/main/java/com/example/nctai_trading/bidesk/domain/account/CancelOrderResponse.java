@@ -1,15 +1,11 @@
 package com.example.nctai_trading.bidesk.domain.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.account.request.CancelOrderRequest;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * Response object returned when an order is canceled.
- *
- * @see CancelOrderRequest for the request
- */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CancelOrderResponse {
 

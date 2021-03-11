@@ -1,6 +1,6 @@
 package com.example.nctai_trading.bidesk.security;
 
-import io.broker.api.client.constant.BrokerConstants;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
 import okhttp3.*;
 import okio.Buffer;
 import org.apache.commons.lang3.StringUtils;

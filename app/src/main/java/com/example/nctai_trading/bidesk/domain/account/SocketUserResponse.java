@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.net.Socket;
 import java.util.List;
 
 @Data
@@ -15,10 +16,19 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SocketUserResponse {
 
-    private Long pingTime;
+    public Long pingTime;
 
-    private List<SocketOrder> orderList;
+    public List<SocketOrder> orderList;
 
-    private List<SocketAccount> accountList;
+    public List<SocketAccount> accountList;
 
+    public SocketUserResponse() {
+
+    }
+
+    public SocketUserResponse(Long pingTime, List<SocketOrder> orderList, List<SocketAccount> accountList){
+        this.pingTime = pingTime;
+        this.orderList = orderList;
+        this.accountList = accountList;
+    }
 }

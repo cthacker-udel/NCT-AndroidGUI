@@ -1,6 +1,8 @@
 package com.example.nctai_trading.bidesk.domain.contract.request;
 
-import io.broker.api.client.domain.contract.PositionSide;
+
+import com.example.nctai_trading.bidesk.domain.contract.PositionSide;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,18 @@ public class ModifyMarginRequest {
      * The symbol's margin to be modified.
      */
     private String symbol;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public PositionSide getSide() {
+        return side;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
 
     /**
      * Direction of the position.

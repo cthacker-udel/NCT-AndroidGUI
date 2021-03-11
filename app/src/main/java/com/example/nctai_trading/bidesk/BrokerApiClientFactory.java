@@ -1,15 +1,15 @@
 package com.example.nctai_trading.bidesk;
 
-import io.broker.api.client.impl.BrokerApiRestClientImpl;
-import io.broker.api.client.impl.BrokerApiWebSocketClientImpl;
-import io.broker.api.client.impl.BrokerContractApiRestClientImpl;
 
-import static io.broker.api.client.impl.BrokerApiServiceGenerator.getSharedClient;
+import com.example.nctai_trading.bidesk.impl.BrokerApiRestClientImpl;
+import com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator;
+import com.example.nctai_trading.bidesk.impl.BrokerApiWebSocketClientImpl;
+import com.example.nctai_trading.bidesk.impl.BrokerContractApiRestClientImpl;
 
 /**
  * A factory for creating BrokerApi client objects.
  */
-public final class BrokerApiClientFactory {
+public final class BrokerApiClientFactory extends BrokerApiServiceGenerator {
 
     /**
      * API Key

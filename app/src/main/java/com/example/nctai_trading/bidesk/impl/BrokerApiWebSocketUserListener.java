@@ -1,21 +1,24 @@
 package com.example.nctai_trading.bidesk.impl;
 
+import com.example.nctai_trading.bidesk.BrokerApiCallback;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+import com.example.nctai_trading.bidesk.domain.account.SocketAccount;
+import com.example.nctai_trading.bidesk.domain.account.SocketOrder;
+import com.example.nctai_trading.bidesk.domain.account.SocketUserResponse;
+import com.example.nctai_trading.bidesk.domain.channel.EventType;
+import com.example.nctai_trading.bidesk.exception.BrokerApiException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.broker.api.client.BrokerApiCallback;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.account.SocketAccount;
-import io.broker.api.client.domain.account.SocketOrder;
-import io.broker.api.client.domain.account.SocketUserResponse;
-import io.broker.api.client.domain.channel.EventType;
-import io.broker.api.client.exception.BrokerApiException;
+
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 import java.util.Map;
 
@@ -84,12 +87,12 @@ public class BrokerApiWebSocketUserListener<T> extends WebSocketListener {
                 }
 
             }
-
-            SocketUserResponse event = SocketUserResponse.builder()
-                    .pingTime(pingTime)
-                    .orderList(orderList)
-                    .accountList(accountList)
-                    .build();
+            SocketUserResponse event = new SocketUserResponse(pingTime,orderList,accountList);
+            //SocketUserResponse event = SocketUserResponse.builder()
+            //        .pingTime(pingTime)
+            //        .orderList(orderList)
+            //        .accountList(accountList)
+            //        .build();
 
             callback.onResponse((T) event);
         } catch (IOException e) {

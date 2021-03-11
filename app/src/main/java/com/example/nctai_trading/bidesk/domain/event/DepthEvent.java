@@ -1,10 +1,11 @@
 package com.example.nctai_trading.bidesk.domain.event;
 
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+import com.example.nctai_trading.bidesk.domain.market.OrderBookEntry;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.market.OrderBookEntry;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;

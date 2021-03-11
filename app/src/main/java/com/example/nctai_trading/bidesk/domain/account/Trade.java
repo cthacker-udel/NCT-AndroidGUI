@@ -1,9 +1,10 @@
 package com.example.nctai_trading.bidesk.domain.account;
 
+import com.example.nctai_trading.bidesk.domain.general.FeeInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.general.FeeInfo;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**

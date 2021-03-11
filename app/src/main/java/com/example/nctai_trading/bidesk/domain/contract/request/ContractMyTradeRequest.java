@@ -1,6 +1,8 @@
 package com.example.nctai_trading.bidesk.domain.contract.request;
 
-import io.broker.api.client.domain.contract.OrderSide;
+
+import com.example.nctai_trading.bidesk.domain.account.OrderSide;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,26 @@ public class ContractMyTradeRequest {
      * TradeId to fetch from.
      */
     private Long fromId;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public Long getFromId() {
+        return fromId;
+    }
+
+    public Long getToId() {
+        return toId;
+    }
+
+    public OrderSide getSide() {
+        return side;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
 
     /**
      * TradeId to fetch to.

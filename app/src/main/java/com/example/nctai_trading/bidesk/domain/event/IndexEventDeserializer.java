@@ -16,10 +16,6 @@ public class IndexEventDeserializer extends JsonDeserializer<IndexEvent> {
         JsonNode node = oc.readTree(jsonParser);
         JsonNode indexNode = node.get("data").get(0);
 
-        return IndexEvent.builder()
-            .symbol(indexNode.get("symbol").asText())
-            .index(indexNode.get("index").asText())
-            .edp(indexNode.get("edp").asText())
-            .build();
+        return new IndexEvent(indexNode.get("symbol").asText(),indexNode.get("index").asText(),indexNode.get("edp").asText());
     }
 }

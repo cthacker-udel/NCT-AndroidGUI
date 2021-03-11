@@ -1,11 +1,18 @@
 package com.example.nctai_trading.bidesk.service;
 
-import io.broker.api.client.constant.BrokerConstants;
-import io.broker.api.client.domain.contract.*;
-import io.broker.api.client.domain.general.BrokerInfo;
-import io.broker.api.client.domain.market.Candlestick;
-import io.broker.api.client.domain.market.OrderBook;
-import io.broker.api.client.domain.market.TradeHistoryItem;
+import com.example.nctai_trading.bidesk.constant.BrokerConstants;
+import com.example.nctai_trading.bidesk.domain.contract.BatchCancelOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractAccountResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractMatchResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractPositionResult;
+import com.example.nctai_trading.bidesk.domain.contract.ModifyMarginResult;
+import com.example.nctai_trading.bidesk.domain.general.BrokerInfo;
+import com.example.nctai_trading.bidesk.domain.market.Candlestick;
+import com.example.nctai_trading.bidesk.domain.market.OrderBook;
+import com.example.nctai_trading.bidesk.domain.market.TradeHistoryItem;
+
+
 import retrofit2.Call;
 import retrofit2.http.*;
 

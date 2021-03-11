@@ -1,13 +1,28 @@
 package com.example.nctai_trading.bidesk;
 
-import io.broker.api.client.domain.contract.*;
-import io.broker.api.client.domain.contract.request.*;
-import io.broker.api.client.domain.general.BrokerInfo;
-import io.broker.api.client.domain.general.TradeType;
-import io.broker.api.client.domain.market.Candlestick;
-import io.broker.api.client.domain.market.CandlestickInterval;
-import io.broker.api.client.domain.market.OrderBook;
-import io.broker.api.client.domain.market.TradeHistoryItem;
+
+
+import com.example.nctai_trading.bidesk.domain.contract.BatchCancelOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractAccountResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractMatchResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractPositionResult;
+import com.example.nctai_trading.bidesk.domain.contract.ModifyMarginResult;
+import com.example.nctai_trading.bidesk.domain.contract.OrderType;
+import com.example.nctai_trading.bidesk.domain.contract.request.BatchCancelOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.CancelContractOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractHistoryOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractMyTradeRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractOpenOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractPositionRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ModifyMarginRequest;
+import com.example.nctai_trading.bidesk.domain.general.BrokerInfo;
+import com.example.nctai_trading.bidesk.domain.general.TradeType;
+import com.example.nctai_trading.bidesk.domain.market.Candlestick;
+import com.example.nctai_trading.bidesk.domain.market.CandlestickInterval;
+import com.example.nctai_trading.bidesk.domain.market.OrderBook;
+import com.example.nctai_trading.bidesk.domain.market.TradeHistoryItem;
 
 import java.util.List;
 import java.util.Map;

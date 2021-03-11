@@ -13,6 +13,10 @@ import java.util.List;
 @Data
 public class BatchCancelOrderRequest {
 
+    public List<String> getSymbolList() {
+        return symbolList;
+    }
+
     /**
      * The symbol ids of the cancel orders
      */

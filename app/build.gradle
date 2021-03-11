@@ -67,6 +67,11 @@ dependencies {
 
     implementation 'com.alibaba:fastjson:1.2.47'
 
+    // slf4j
+
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
+
     // lombok
 
     implementation 'org.projectlombok:lombok:1.18.8'
@@ -83,6 +88,10 @@ dependencies {
 
     implementation 'io.particle:cloudsdk:1.0.1'
     implementation 'io.particle:devicesetup:0.7.3'
+
+    // jackson converted (retrofit2)
+
+    implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
 
     //retrofit
 

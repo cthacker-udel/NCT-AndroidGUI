@@ -1,13 +1,15 @@
 package com.example.nctai_trading.bidesk;
 
 
-import io.broker.api.client.domain.account.SocketUserResponse;
-import io.broker.api.client.domain.event.CandlestickEvent;
-import io.broker.api.client.domain.event.DepthEvent;
-import io.broker.api.client.domain.event.IndexEvent;
-import io.broker.api.client.domain.event.TickerEvent;
-import io.broker.api.client.domain.event.TradeEvent;
-import io.broker.api.client.domain.market.CandlestickInterval;
+
+
+import com.example.nctai_trading.bidesk.domain.account.SocketUserResponse;
+import com.example.nctai_trading.bidesk.domain.event.CandlestickEvent;
+import com.example.nctai_trading.bidesk.domain.event.DepthEvent;
+import com.example.nctai_trading.bidesk.domain.event.IndexEvent;
+import com.example.nctai_trading.bidesk.domain.event.TickerEvent;
+import com.example.nctai_trading.bidesk.domain.event.TradeEvent;
+import com.example.nctai_trading.bidesk.domain.market.CandlestickInterval;
 
 import java.io.Closeable;
 

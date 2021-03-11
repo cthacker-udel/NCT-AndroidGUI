@@ -13,6 +13,7 @@ import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.binanceUS.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
+import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
@@ -48,6 +49,8 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods();
+
                 com.example.nctai_trading.wbf.wbfMethods wbfMethods = new com.example.nctai_trading.wbf.wbfMethods();
 
                 com.example.nctai_trading.idcm.idcmMethods idcmMethods = new com.example.nctai_trading.idcm.idcmMethods();
@@ -74,7 +77,10 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.wbf.wbfMethods.transactionRequests transactionRequests = wbfMethods.new transactionRequests();
 
+                com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+
                 try {
+                    bitcoincomOrderRequests.placeOrder("eth","buy","market",10);
                     transactionRequests.getTransactionRecords("BTC");
                     idcmOrderRequests.placeOrder("BTC-USDT",1,1,1,1,10);
                     digiOrderRequests.placeOrder("usdt_btc","buy",6000.12,0.1);

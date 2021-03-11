@@ -1,7 +1,9 @@
 package com.example.nctai_trading.bidesk.domain.contract.request;
 
-import io.broker.api.client.domain.contract.OrderSide;
-import io.broker.api.client.domain.contract.OrderType;
+import com.example.nctai_trading.bidesk.domain.account.OrderSide;
+import com.example.nctai_trading.bidesk.domain.contract.OrderType;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +25,26 @@ public class ContractHistoryOrderRequest {
      * Order ID
      */
     private Long orderId;
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public OrderSide getSide() {
+        return side;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
 
     /**
      * Direction of the order.

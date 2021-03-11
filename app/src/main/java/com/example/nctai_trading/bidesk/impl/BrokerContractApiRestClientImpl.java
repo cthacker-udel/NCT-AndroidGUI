@@ -1,22 +1,43 @@
 package com.example.nctai_trading.bidesk.impl;
 
-import io.broker.api.client.BrokerContractApiRestClient;
-import io.broker.api.client.domain.contract.*;
-import io.broker.api.client.domain.contract.request.*;
-import io.broker.api.client.domain.general.BrokerInfo;
-import io.broker.api.client.domain.general.TradeType;
-import io.broker.api.client.domain.market.Candlestick;
-import io.broker.api.client.domain.market.CandlestickInterval;
-import io.broker.api.client.domain.market.OrderBook;
-import io.broker.api.client.domain.market.TradeHistoryItem;
-import io.broker.api.client.service.BrokerContractApiService;
+
+import com.example.nctai_trading.bidesk.BrokerContractApiRestClient;
+import com.example.nctai_trading.bidesk.domain.contract.BatchCancelOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractAccountResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractMatchResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractOrderResult;
+import com.example.nctai_trading.bidesk.domain.contract.ContractPositionResult;
+import com.example.nctai_trading.bidesk.domain.contract.ModifyMarginResult;
+import com.example.nctai_trading.bidesk.domain.contract.OrderType;
+import com.example.nctai_trading.bidesk.domain.contract.request.BatchCancelOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.CancelContractOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractHistoryOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractMyTradeRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractOpenOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractOrderRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ContractPositionRequest;
+import com.example.nctai_trading.bidesk.domain.contract.request.ModifyMarginRequest;
+import com.example.nctai_trading.bidesk.domain.general.BrokerInfo;
+import com.example.nctai_trading.bidesk.domain.general.TradeType;
+import com.example.nctai_trading.bidesk.domain.market.Candlestick;
+import com.example.nctai_trading.bidesk.domain.market.CandlestickInterval;
+import com.example.nctai_trading.bidesk.domain.market.OrderBook;
+import com.example.nctai_trading.bidesk.domain.market.TradeHistoryItem;
+import com.example.nctai_trading.bidesk.service.BrokerContractApiService;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
 
-import static io.broker.api.client.impl.BrokerApiServiceGenerator.createService;
-import static io.broker.api.client.impl.BrokerApiServiceGenerator.executeSync;
+import static com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator.createService;
+
+import static com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator.executeSync;
+import static com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator.executeSync2;
+import static com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator.executeSync3;
+import static com.example.nctai_trading.bidesk.impl.BrokerApiServiceGenerator.executeSync4;
+
+
 
 /**
  * Implementation of Broker's Contract REST API using Retrofit with synchronous/blocking method calls.
@@ -33,7 +54,7 @@ public class BrokerContractApiRestClientImpl implements BrokerContractApiRestCli
 
     @Override
     public BrokerInfo getBrokerInfo(TradeType type) {
-        return executeSync(brokerContractApiService.getBrokerInfo(type == null ? "" : type.getValue()));
+        return (BrokerInfo) executeSync2(brokerContractApiService.getBrokerInfo(type == null ? "" : type.getValue()));
     }
 
     @Override
@@ -43,7 +64,7 @@ public class BrokerContractApiRestClientImpl implements BrokerContractApiRestCli
             clientOrderId = String.valueOf(System.currentTimeMillis());
         }
 
-        return executeSync(brokerContractApiService.newContractOrder(
+        return (ContractOrderResult) executeSync3(brokerContractApiService.newContractOrder(
                 request.getSymbol(),
                 request.getSide() == null ? "" : request.getSide().name(),
                 request.getOrderType() == null ? "" : request.getOrderType().name(),
@@ -68,7 +89,7 @@ public class BrokerContractApiRestClientImpl implements BrokerContractApiRestCli
 
     @Override
     public BatchCancelOrderResult batchCancelContractOrder(BatchCancelOrderRequest request) {
-        return executeSync(brokerContractApiService.batchCancelContractOrder(
+        return (BatchCancelOrderResult) executeSync4(brokerContractApiService.batchCancelContractOrder(
                 StringUtils.join(request.getSymbolList(), PARAMETER_LIST_SEPARATOR)
         ));
     }

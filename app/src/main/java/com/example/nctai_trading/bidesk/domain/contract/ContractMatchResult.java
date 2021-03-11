@@ -1,7 +1,7 @@
 package com.example.nctai_trading.bidesk.domain.contract;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.broker.api.client.domain.account.OrderType;
+
 import lombok.Data;
 
 @Data

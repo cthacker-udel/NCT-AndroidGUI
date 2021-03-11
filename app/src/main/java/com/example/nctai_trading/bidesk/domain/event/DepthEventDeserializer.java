@@ -1,5 +1,6 @@
 package com.example.nctai_trading.bidesk.domain.event;
 
+import com.example.nctai_trading.bidesk.domain.market.OrderBookEntry;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,7 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.broker.api.client.domain.market.OrderBookEntry;
+
 
 import java.io.IOException;
 import java.util.List;

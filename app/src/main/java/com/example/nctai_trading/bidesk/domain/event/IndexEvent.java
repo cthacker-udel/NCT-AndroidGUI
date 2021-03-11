@@ -1,5 +1,6 @@
 package com.example.nctai_trading.bidesk.domain.event;
 
+import com.example.nctai_trading.bidesk.domain.account.NewOrder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
@@ -28,4 +29,10 @@ public class IndexEvent {
      * EDP: Estimated delivery price for those trading pairs.
      */
     private String edp;
+
+    public IndexEvent(String symbol, String index, String edp){
+        this.symbol = symbol;
+        this.index = index;
+        this.edp = edp;
+    }
 }
