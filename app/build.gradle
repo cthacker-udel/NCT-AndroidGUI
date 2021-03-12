@@ -129,6 +129,14 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
+    // signalr4j
+
+    implementation 'com.github.signalr4j:signalr4j:2.0.4'
+
+    // javax
+
+    implementation 'io.apisense:rhino-android:1.0'
+
     // com.google
 
     implementation 'com.google.android.material:material:1.2.1'

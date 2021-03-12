@@ -47,8 +47,6 @@ public class bitcoincomMethods {
 
             return response.body();
         }
-
-
     }
 
 }
