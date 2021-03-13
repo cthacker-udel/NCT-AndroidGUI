@@ -16,6 +16,7 @@ import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
+import com.example.nctai_trading.bkex.bkexMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
@@ -85,8 +86,8 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
 
-
                 try {
+                    bkexOrderRequests.getAllFinishedOrders();
                     bkexOrderRequests.createOrder("ETH_USDT",1.0,2.0);
                     bkexExchangeRequests.getExchangeInfo();
                     bitcoincomOrderRequests.placeOrder("eth","buy","market",10);

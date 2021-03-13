@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
 import com.example.nctai_trading.bkex.order.placeOrderResponse;
+import com.example.nctai_trading.bkex.orderHistory.orderHistoryResponse;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -95,7 +96,54 @@ public class bkexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrder(String pair, String orderNumber) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
+            String url = baseUrl + "/v1/u/trade/order/cancel/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,Object> params = new TreeMap<>();
+            params.put("pair",pair);
+            params.put("orderNo",orderNumber);
+
+            String signature = getSignature(generateQueryString(params));
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            Call<Object> call = bkexOrderInterface.cancelOrder(params,apikey,signature);
+
+            Response<Object> response = call.execute();
+
+            return response.isSuccessful();
+
+        }
+
+
+        public orderHistoryResponse getAllFinishedOrders() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/v1/u/trade/order/history/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            String signature = getSignature("");
+
+            Call<Object> call = bkexOrderInterface.getOrderHistory(apikey,signature);
+
+            Response<Object> response = call.execute();
+
+            return (orderHistoryResponse) response.body();
+
+
+        }
     }
 
 
