@@ -17,6 +17,7 @@ import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bkex.bkexMethods;
+import com.example.nctai_trading.btse.btseMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
@@ -85,6 +86,10 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.bkex.bkexMethods.exchangeRequests bkexExchangeRequests = bkexMethods.new exchangeRequests();
 
                 com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
+
+                com.example.nctai_trading.btse.btseMethods btseMethods = new btseMethods();
+
+                com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
 
                 try {
                     bkexOrderRequests.getAllFinishedOrders();
