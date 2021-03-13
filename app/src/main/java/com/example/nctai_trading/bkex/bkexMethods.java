@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class bkexMethods {
 
     String apikey = "";
@@ -30,6 +33,28 @@ public class bkexMethods {
             paramList.add(String.format("%s=%s",eachKey,params.get(eachKey)));
         }
         return String.join("&",paramList);
+    }
+
+
+
+    public class exchangeRequests{
+
+        public void getExchangeInfo(){
+
+            String url = baseUrl + "/v1/exchangeInfo/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+
+
+
+        }
+
+
+
     }
 
 
