@@ -49,6 +49,8 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                com.example.nctai_trading.bkex.bkexMethods bkexMethods = new com.example.nctai_trading.bkex.bkexMethods();
+
                 com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods();
 
                 com.example.nctai_trading.wbf.wbfMethods wbfMethods = new com.example.nctai_trading.wbf.wbfMethods();
@@ -79,7 +81,14 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
 
+                com.example.nctai_trading.bkex.bkexMethods.exchangeRequests bkexExchangeRequests = bkexMethods.new exchangeRequests();
+
+                com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
+
+
                 try {
+                    bkexOrderRequests.createOrder("ETH_USDT",1.0,2.0);
+                    bkexExchangeRequests.getExchangeInfo();
                     bitcoincomOrderRequests.placeOrder("eth","buy","market",10);
                     transactionRequests.getTransactionRecords("BTC");
                     idcmOrderRequests.placeOrder("BTC-USDT",1,1,1,1,10);
