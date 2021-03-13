@@ -92,6 +92,7 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
 
                 try {
+                    btseOrderRequests.placeOrder("BTC-USD","BUY",0.002,8500,"LIMIT");
                     bkexOrderRequests.getAllFinishedOrders();
                     bkexOrderRequests.createOrder("ETH_USDT",1.0,2.0);
                     bkexExchangeRequests.getExchangeInfo();
