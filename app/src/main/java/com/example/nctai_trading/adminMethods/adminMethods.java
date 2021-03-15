@@ -74,61 +74,112 @@ public class adminMethods {
         listOfAllExchanges = exchangesList.getExchangesList();
         com.example.nctai_trading.mainPage mainPage = new com.example.nctai_trading.mainPage();
         SharedPreferences sharedPreferences = mainPage.getThePreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         for(String eachString: listOfAllExchanges){
             try{
-                // alpaca
-                    com.example.nctai_trading.alpaca.alpacaMethods methods = new alpacaMethods();
-                // basefex
-                    com.example.nctai_trading.basefex.basefexMethods basefexMethods = new basefexMethods();
-                // bibox
-                com.example.nctai_trading.bibox.BiBoxHttpClientConfig client = new BiBoxHttpClientConfig.Builder().apiKey("").secret("").build();
-                BiBoxHttpClient biBoxHttpClient = new BiBoxHttpClient(client);
-                // bidesk
-                com.example.nctai_trading.bidesk.BrokerApiClientFactory brokerApiClientFactory = new BrokerApiClientFactory("https://api.bidesk.com/","","");
-                BrokerApiRestClient restClient = brokerApiClientFactory.newRestClient();
-                // bilaxy
-                com.example.nctai_trading.bilaxy.bilaxyMethods bilaxyMethods = new bilaxyMethods();
-                // binance
-                com.example.nctai_trading.binance.binanceMethods binanceMethods = new binanceMethods();
-                // binanceUS
-                com.example.nctai_trading.binanceUS.binanceMethods binanceMethods1 = new com.example.nctai_trading.binanceUS.binanceMethods();
-                // bitcoincom
-                com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new bitcoincomMethods();
-                // bitforex
-                com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new bitforexMethods();
-                // bithumb
-                com.example.nctai_trading.bithumb.bithumbMethods bithumbMethods = new bithumbMethods("","");
-                // bitMEX
-                com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new bitmexMethods();
-                // bitrue
-                com.example.nctai_trading.bitrue.bitrueMethods bitrueMethods = new bitrueMethods();
-                //bittrex
-                com.example.nctai_trading.bittrex.BittrexExchange bittrexExchange = new BittrexExchange();
-                //  bkex
-                com.example.nctai_trading.bkex.bkexMethods bkexMethods = new bkexMethods();
-                // btse
-                com.example.nctai_trading.btse.btseMethods btseMethods = new btseMethods();
-                // bybit
-                com.example.nctai_trading.bybit.bybitMethods bybitMethods = new bybitMethods();
-                // coinbasePro
-                com.example.nctai_trading.coinbasePro.coinbaseProMethods coinbaseProMethods = new coinbaseProMethods("","","");
-                // digifinex
-                com.example.nctai_trading.digifinex.digifinexMethods digifinexMethods = new digifinexMethods();
-                // exante
-                com.example.nctai_trading.exante.exanteMethods exanteMethods = new exanteMethods();
-                // huobiApi
-                com.example.nctai_trading.huobiApi2.api.HbdmswapRestApiV1 hbdmswapRestApiV1 = new HbdmswapRestApiV1("baseurl","","");
-                // idcm
-                com.example.nctai_trading.idcm.idcmMethods idcmMethods = new idcmMethods();
-                // interactiveBrokers
-                com.example.nctai_trading.interactiveBrokers.interactiveBrokersMethods interactiveBrokersMethods = new interactiveBrokersMethods();
-                // kiteConnect
-                com.example.nctai_trading.kiteConnect.KiteConnect kiteConnect = new KiteConnect("");
-                // kraken
-                com.example.nctai_trading.kraken.KrakenApi krakenApi = new KrakenApi();
-                // wbf
-                com.example.nctai_trading.wbf.wbfMethods wbfMethods = new wbfMethods();
+                switch(eachString) {
+                    case "alpaca":
+                        // alpaca
+                        com.example.nctai_trading.alpaca.alpacaMethods methods = new alpacaMethods();
+                        break;
+                    case "basefex":
+                        // basefex
+                        com.example.nctai_trading.basefex.basefexMethods basefexMethods = new basefexMethods();
+                        break;
+                    case "bibox":
+                        // bibox
+                        com.example.nctai_trading.bibox.BiBoxHttpClientConfig client = new BiBoxHttpClientConfig.Builder().apiKey("").secret("").build();
+                        BiBoxHttpClient biBoxHttpClient = new BiBoxHttpClient(client);
+                        break;
+                    case "bidesk":
+                        // bidesk
+                        com.example.nctai_trading.bidesk.BrokerApiClientFactory brokerApiClientFactory = new BrokerApiClientFactory("https://api.bidesk.com/", "", "");
+                        BrokerApiRestClient restClient = brokerApiClientFactory.newRestClient();
+                        break;
+                    case "bilaxy":
+                        // bilaxy
+                        com.example.nctai_trading.bilaxy.bilaxyMethods bilaxyMethods = new bilaxyMethods();
+                        break;
+                    case "binance":
+                        // binance
+                        com.example.nctai_trading.binance.binanceMethods binanceMethods = new binanceMethods();
+                        break;
+                    case "binanceUS":
+                        // binanceUS
+                        com.example.nctai_trading.binanceUS.binanceMethods binanceMethods1 = new com.example.nctai_trading.binanceUS.binanceMethods();
+                        break;
+                    case "bitcoincom":
+                        // bitcoincom
+                        com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new bitcoincomMethods();
+                        break;
+                    case "bitforex":
+                        // bitforex
+                        com.example.nctai_trading.bitforex.bitforexMethods bitforexMethods = new bitforexMethods();
+                        break;
+                    case "bithumb":
+                        // bithumb
+                        com.example.nctai_trading.bithumb.bithumbMethods bithumbMethods = new bithumbMethods("", "");
+                        break;
+                    case "bitMEX":
+                        // bitMEX
+                        com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new bitmexMethods();
+                        break;
+                    case "bitrue":
+                        // bitrue
+                        com.example.nctai_trading.bitrue.bitrueMethods bitrueMethods = new bitrueMethods();
+                        break;
+                    case "bittrex":
+                        //bittrex
+                        com.example.nctai_trading.bittrex.BittrexExchange bittrexExchange = new BittrexExchange();
+                        break;
+                    case "bkex":
+                        //  bkex
+                        com.example.nctai_trading.bkex.bkexMethods bkexMethods = new bkexMethods();
+                        break;
+                    case "btse":
+                        // btse
+                        com.example.nctai_trading.btse.btseMethods btseMethods = new btseMethods();
+                        break;
+                    case "bybit":
+                        // bybit
+                        com.example.nctai_trading.bybit.bybitMethods bybitMethods = new bybitMethods();
+                        break;
+                    case "coinbasePro":
+                        // coinbasePro
+                        com.example.nctai_trading.coinbasePro.coinbaseProMethods coinbaseProMethods = new coinbaseProMethods("", "", "");
+                        break;
+                    case "digifinex":
+                        // digifinex
+                        com.example.nctai_trading.digifinex.digifinexMethods digifinexMethods = new digifinexMethods();
+                        break;
+                    case "exante":
+                        // exante
+                        com.example.nctai_trading.exante.exanteMethods exanteMethods = new exanteMethods();
+                        break;
+                    case "huobi":
+                        // huobiApi
+                        com.example.nctai_trading.huobiApi2.api.HbdmswapRestApiV1 hbdmswapRestApiV1 = new HbdmswapRestApiV1("baseurl", "", "");
+                        break;
+                    case "idcm":
+                        // idcm
+                        com.example.nctai_trading.idcm.idcmMethods idcmMethods = new idcmMethods();
+                        break;
+                    case "interactiveBrokers":
+                        // interactiveBrokers
+                        com.example.nctai_trading.interactiveBrokers.interactiveBrokersMethods interactiveBrokersMethods = new interactiveBrokersMethods();
+                        break;
+                    case "kite":
+                        // kiteConnect
+                        com.example.nctai_trading.kiteConnect.KiteConnect kiteConnect = new KiteConnect("");
+                        break;
+                    case "kraken":
+                        // kraken
+                        com.example.nctai_trading.kraken.KrakenApi krakenApi = new KrakenApi();
+                        break;
+                    case "wbf":
+                        // wbf
+                        com.example.nctai_trading.wbf.wbfMethods wbfMethods = new wbfMethods();
+                        break;
+                }
             }
             catch(Exception e){
             }
