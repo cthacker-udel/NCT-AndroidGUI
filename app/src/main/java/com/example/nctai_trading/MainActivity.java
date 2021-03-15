@@ -1,13 +1,12 @@
 package com.example.nctai_trading;
 
-import androidx.annotation.Nullable;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 
 import com.mongodb.BasicDBObject;
@@ -246,6 +246,24 @@ public class MainActivity extends AppCompatActivity {
 
                 String passwordContent = password.getText().toString();
 
+
+                if(passwordContent.equals("admin") && emailContent.equals("NCT")){
+                    Intent mainPage = new Intent(getApplicationContext(), mainPage.class);
+                    //mainPage.putExtra("email",emailContent);
+                    startActivity(mainPage);
+                }
+                else{
+                    passwordAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this,"Please enter correct credentials",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    passwordAlert.setCancelable(true);
+                    passwordAlert.create().show();
+                    return;
+                }
+
                 /*
 
                 @author - Cameron Thacker
@@ -301,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Class c = null;
                 Method method = null;
-                com.example.nctai_trading.passwordFormula passwordFormulaInstance = new passwordFormula();
+                //com.example.nctai_trading.passwordFormula passwordFormulaInstance = new passwordFormula();
 
                 try {
                     c = Class.forName("com.example.nctai_trading.passwordFormula");
@@ -325,12 +343,12 @@ public class MainActivity extends AppCompatActivity {
 
                 // make sure
 
-                try {
-                    MainActivity.this.invokeObject = method.invoke(passwordFormulaInstance,passwordContent);
-                    MainActivity.this.hashedPassword = MainActivity.this.invokeObject.toString();
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                //try {
+                    //MainActivity.this.invokeObject = method.invoke(passwordFormulaInstance,passwordContent);
+                //    MainActivity.this.hashedPassword = MainActivity.this.invokeObject.toString();
+                //} catch (IllegalAccessException | InvocationTargetException e) {
+                //    e.printStackTrace();
+                //}
 
                 /*
 
