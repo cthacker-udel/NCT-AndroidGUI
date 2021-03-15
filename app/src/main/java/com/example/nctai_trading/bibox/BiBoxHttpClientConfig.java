@@ -9,7 +9,7 @@ public class BiBoxHttpClientConfig
     private int writeTimeout = 20;
     private int readTimeout = 20;
 
-    private BiBoxHttpClientConfig()
+    public BiBoxHttpClientConfig()
     {
 
     }

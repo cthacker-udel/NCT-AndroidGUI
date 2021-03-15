@@ -596,6 +596,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent toSignUpPage = new Intent(getApplicationContext(),signUpPage.class);
+                toSignUpPage.putExtra("EMAIL",email.getText().toString().trim());
                 startActivity(toSignUpPage);
             }
         });

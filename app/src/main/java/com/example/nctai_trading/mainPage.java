@@ -25,6 +25,7 @@ import java.io.IOException;
 
 public class mainPage extends AppCompatActivity {
 
+    String email = getIntent().getStringExtra("EMAIL");
     Button paymentOptionBtn;
     Button donationBtn;
     Button altInvestmentBtn;
@@ -38,6 +39,7 @@ public class mainPage extends AppCompatActivity {
     int userContainsKeysError;
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
+    Button mainPageKeysButton;
 
     //String passedEmail = getIntent().getStringExtra("email");
 
@@ -53,10 +55,10 @@ public class mainPage extends AppCompatActivity {
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
-        mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
+        mainPageKeysButton = findViewById(R.id.addKeysPageButton);
         mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
-        mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
+
         mainPageCoinBaseProBtn = findViewById(R.id.mainPageCoinBaseProSignInButton);
 
         // show image
@@ -250,5 +252,16 @@ public class mainPage extends AppCompatActivity {
                 startActivity(toCoinBaseProPage);
             }
         });
+        mainPageKeysButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toKeysPage = new Intent(getApplicationContext(),addKeys.class);
+                toKeysPage.putExtra("EMAIL",email);
+                startActivity(toKeysPage);
+            }
+        });
+    }
+    public SharedPreferences getThePreferences(){
+        return getSharedPreferences("test",MODE_PRIVATE);
     }
 }

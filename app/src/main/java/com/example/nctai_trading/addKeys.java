@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class addKeys extends AppCompatActivity {
 
+    String email = getIntent().getStringExtra("EMAIL");
     Spinner exchangeChooser;
     EditText apiKeyText;
     EditText secretKeyText;
