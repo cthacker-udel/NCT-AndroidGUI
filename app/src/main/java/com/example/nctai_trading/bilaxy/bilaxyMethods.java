@@ -28,6 +28,11 @@ public class bilaxyMethods {
     String secretKey = "";
     String baseUrl = "https://api.bilaxy.com";
 
+    public bilaxyMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String generateSignatureGET(Object... params){

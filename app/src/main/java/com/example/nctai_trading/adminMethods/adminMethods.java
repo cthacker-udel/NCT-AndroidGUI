@@ -13,6 +13,8 @@ import com.example.nctai_trading.bibox.BiBoxHttpClientConfig;
 import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
+import com.example.nctai_trading.bidesk.domain.account.Trade;
+import com.example.nctai_trading.bidesk.domain.account.request.MyTradeRequest;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
@@ -118,16 +120,36 @@ public class adminMethods {
                         break;
                     case "bidesk":
                         // bidesk
-                        com.example.nctai_trading.bidesk.BrokerApiClientFactory brokerApiClientFactory = new BrokerApiClientFactory("https://api.bidesk.com/", "", "");
+                        String bideskApiKey = sharedPreferences.getString("bideskApiKey","");
+                        String bideskSecretKey = sharedPreferences.getString("bideskSecretKey","");
+                        if(bideskApiKey.equals("") || bideskSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.bidesk.BrokerApiClientFactory brokerApiClientFactory = new BrokerApiClientFactory("https://api.bidesk.com/", bideskApiKey, bideskSecretKey);
                         BrokerApiRestClient restClient = brokerApiClientFactory.newRestClient();
+                        List<Trade> tradeList = restClient.getMyTrades(new MyTradeRequest(100));
                         break;
                     case "bilaxy":
                         // bilaxy
-                        com.example.nctai_trading.bilaxy.bilaxyMethods bilaxyMethods = new bilaxyMethods();
+                        String bilaxyApiKey = sharedPreferences.getString("bilaxyApiKey","");
+                        String bilaxySecretKey = sharedPreferences.getString("bilaxySecretKey","");
+                        if(bilaxyApiKey.equals("") || bilaxySecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.bilaxy.bilaxyMethods bilaxyMethods = new bilaxyMethods(bilaxyApiKey,bilaxySecretKey);
+                        com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyOrdersRequests = bilaxyMethods.new interfaceRequests();
+                        List<com.example.nctai_trading.bilaxy.bilaxyOrderQuery> orderList = bilaxyOrdersRequests.ordersQuery("","");
                         break;
                     case "binance":
                         // binance
-                        com.example.nctai_trading.binance.binanceMethods binanceMethods = new binanceMethods();
+                        String binanceApiKey = sharedPreferences.getString("binanceApiKey","");
+                        String binanceSecretKey = sharedPreferences.getString("binanceSecretKey","");
+                        if(binanceApiKey.equals("") || binanceSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.binance.binanceMethods binanceMethods = new binanceMethods(binanceApiKey,binanceSecretKey);
+                        com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
+                        List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrderList = binanceOrderRequests.getAllOpenOrdersNoSymbol();
                         break;
                     case "binanceUS":
                         // binanceUS

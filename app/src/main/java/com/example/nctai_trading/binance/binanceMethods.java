@@ -200,7 +200,7 @@ public class binanceMethods {
         AveragePrice result;
         HashMap<String,String> data = new HashMap<>();
         data.put("symbol",symbol);
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.us/api/v3/avgPrice/").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.com/api/v3/avgPrice/").addConverterFactory(GsonConverterFactory.create()).build();
 
         getAveragePrice avgPriceGet = retrofit.create(getAveragePrice.class);
 
@@ -220,9 +220,9 @@ public class binanceMethods {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public List<Order> getOpenOrderList() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
-        String url = "https://api.binance.us/api/v3/openOrderList/";
+        String url = "https://api.binance.com/api/v3/openOrderList/";
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.us/api/v3/openOrderList/").addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.binance.com/api/v3/openOrderList/").addConverterFactory(GsonConverterFactory.create()).build();
 
         HashMap<String,String> data = new HashMap<>();
         data.put("recvWindow","10000");
