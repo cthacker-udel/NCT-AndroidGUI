@@ -6,9 +6,11 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.alpaca.alpacaMethods;
+import com.example.nctai_trading.alpaca.alpacaOrderListOrder;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.bibox.BiBoxHttpClient;
 import com.example.nctai_trading.bibox.BiBoxHttpClientConfig;
+import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
@@ -49,6 +51,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -64,6 +67,7 @@ public class adminMethods {
         MongoDatabase database = mongoClient.getDatabase("test");
         MongoCollection<Document> coll = null;
         MongoCollection<Document> orders = null;
+        orders = database.getCollection("pastOrders");
         //for(String name: database.listCollectionNames()){
         //    if(name.equals("user")){
         //        coll = database.getCollection(name);
@@ -79,16 +83,38 @@ public class adminMethods {
                 switch(eachString) {
                     case "alpaca":
                         // alpaca
-                        com.example.nctai_trading.alpaca.alpacaMethods methods = new alpacaMethods();
+                        String alpacaAPIKey = sharedPreferences.getString("alpacaApiKey","");
+                        String alpacaSecretKey = sharedPreferences.getString("alpacaSecretKey","");
+                        if(alpacaAPIKey.equals("") || alpacaSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new alpacaMethods(alpacaAPIKey,alpacaSecretKey);
+                        com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
+                        List<alpacaOrderListOrder> alpacaOrderList = alpacaOrderRequests.getListOfOrders();
                         break;
                     case "basefex":
                         // basefex
-                        com.example.nctai_trading.basefex.basefexMethods basefexMethods = new basefexMethods();
+                        String baseFexApiKey = sharedPreferences.getString("basefexApiKey","");
+                        String baseFexSecretKey = sharedPreferences.getString("basefexSecretKey","");
+                        if(baseFexApiKey.equals("") || baseFexSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.basefex.basefexMethods basefexMethods = new basefexMethods(baseFexApiKey,baseFexSecretKey);
+                        com.example.nctai_trading.basefex.basefexMethods.ordersRequests baseFexOrderRequests = basefexMethods.new ordersRequests();
+                        List<com.example.nctai_trading.basefex.basefexOrderListOrder> basefexOrderList = baseFexOrderRequests.getOrderList();
                         break;
                     case "bibox":
                         // bibox
-                        com.example.nctai_trading.bibox.BiBoxHttpClientConfig client = new BiBoxHttpClientConfig.Builder().apiKey("").secret("").build();
+                        String biBoxApiKey = sharedPreferences.getString("biboxApiKey","");
+                        String biBoxSecretKey = sharedPreferences.getString("biboxSecretKey","");
+                        if(biBoxApiKey.equals("") || biBoxSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.bibox.BiBoxHttpClientConfig client = new BiBoxHttpClientConfig.Builder().apiKey(biBoxApiKey).secret(biBoxSecretKey).build();
                         BiBoxHttpClient biBoxHttpClient = new BiBoxHttpClient(client);
+                        com.example.nctai_trading.bibox.CQueryOrderListParams orderListParams = new com.example.nctai_trading.bibox.CQueryOrderListParams();
+                        orderListParams.setType(CTypeEnum.CLOSE);
+                        String biboxOrders = biBoxHttpClient.cQueryOrderList(orderListParams);
                         break;
                     case "bidesk":
                         // bidesk

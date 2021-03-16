@@ -23,10 +23,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class basefexMethods {
 
-    String apiKey = "5ce82c1b-c9e7-4e9e-0006-139ff42b18d2";
-    String secretKey = "njB3bdJ0xtrY5J8eg9G4LCsb+DV1wyiBvOKmHFd7/e8=";
+    String apiKey = "";
+    String secretKey = "";
     String baseUrl = "https://api.basefex.com";
     HMAC256 signatureGenerator = new HMAC256();
+
+    public basefexMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
 
     public String generateSignature(String secretKey, String method, String path, String expires, String data) throws InvalidKeyException, NoSuchAlgorithmException {
 

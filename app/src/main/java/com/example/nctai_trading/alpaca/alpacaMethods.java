@@ -13,11 +13,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class alpacaMethods {
 
-    String apiKey = "PKDORC9AVWCD76ORX9G0";
-    String secretKey = "uPmNGZWXp4P6lCgZC0TAMhXWmLuV8J/IPWddKPzD";
+    String apiKey = "";
+    String secretKey = "";
 
     String webBaseUrl = "https://api.alpaca.markets";
     String paperBaseUrl = "https://paper-api.alpaca.markets";
+
+    public alpacaMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
 
 
     public class accountReqeusts{
