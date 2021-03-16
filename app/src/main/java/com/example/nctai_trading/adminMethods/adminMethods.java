@@ -164,7 +164,12 @@ public class adminMethods {
                         break;
                     case "bitcoincom":
                         // bitcoincom
-                        com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new bitcoincomMethods();
+                        String bitcoincomApiKey = sharedPreferences.getString("bitcoincomApiKey","");
+                        String bitcoincomSecretKey = sharedPreferences.getString("bitcoincomSecretKey","");
+                        if(bitcoincomApiKey.equals("") || bitcoincomSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new bitcoincomMethods(bitcoincomApiKey,bitcoincomSecretKey);
                         break;
                     case "bitforex":
                         // bitforex
