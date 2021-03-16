@@ -153,7 +153,14 @@ public class adminMethods {
                         break;
                     case "binanceUS":
                         // binanceUS
-                        com.example.nctai_trading.binanceUS.binanceMethods binanceMethods1 = new com.example.nctai_trading.binanceUS.binanceMethods();
+                        String binanceUSApiKey = sharedPreferences.getString("binanceUSApiKey","");
+                        String binanceUSSecretKey = sharedPreferences.getString("binanceUSSecretKey","");
+                        if(binanceUSApiKey.equals("") || binanceUSSecretKey.equals("")){
+                            break;
+                        }
+                        com.example.nctai_trading.binanceUS.binanceMethods binanceMethods1 = new com.example.nctai_trading.binanceUS.binanceMethods(binanceUSApiKey,binanceUSSecretKey);
+                        com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethods1.new orderRequests();
+                        List<com.example.nctai_trading.binanceUS.binanceOrderListOrder> binanceUSOrderList = binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
                         break;
                     case "bitcoincom":
                         // bitcoincom
