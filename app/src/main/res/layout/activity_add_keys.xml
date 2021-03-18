@@ -133,4 +133,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addKeysSecretKey" />
 
+    <Button
+        android:id="@+id/testprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="230dp"
+        android:text="print out apikey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView70" />
+
+    <Button
+        android:id="@+id/printest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Print out secret key"
+        app:layout_constraintStart_toEndOf="@+id/testprint"
+        app:layout_constraintTop_toBottomOf="@+id/textView70" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

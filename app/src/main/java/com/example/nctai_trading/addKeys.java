@@ -26,6 +26,9 @@ public class addKeys extends AppCompatActivity {
     ArrayList<String> allExchanges;
     Button addKeysBtn;
 
+    Button testBtn1;
+    Button testBtn2;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,10 @@ public class addKeys extends AppCompatActivity {
         apiKeyText = findViewById(R.id.addKeysApiKey);
         secretKeyText = findViewById(R.id.addKeysSecretKey);
         addKeysBtn = findViewById(R.id.addKeysButton);
+
+        testBtn1 = findViewById(R.id.testprint);
+        testBtn2 = findViewById(R.id.printest2);
+
         com.example.nctai_trading.adminMethods.exchangesList exchangesList = new com.example.nctai_trading.adminMethods.exchangesList();
 
         allExchanges.add("Example Exchange");
@@ -71,6 +78,21 @@ public class addKeys extends AppCompatActivity {
                     editor.apply();
                     editor.commit();
                 }
+            }
+        });
+
+        testBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = sharedPreferences.getString("%sApiKey",exchangeChooser.getSelectedItem().toString().trim());
+                testBtn1.setText(key);
+            }
+        });
+        testBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String secretKey = sharedPreferences.getString("%sSecretKey",exchangeChooser.getSelectedItem().toString().trim());
+                testBtn2.setText(secretKey);
             }
         });
     }
