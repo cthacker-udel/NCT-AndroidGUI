@@ -19,6 +19,11 @@ public class alpacaMethods {
     String webBaseUrl = "https://api.alpaca.markets";
     String paperBaseUrl = "https://paper-api.alpaca.markets";
 
+    public alpacaMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
 
     public class accountReqeusts{
 

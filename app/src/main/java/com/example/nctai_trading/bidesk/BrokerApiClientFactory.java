@@ -33,7 +33,7 @@ public final class BrokerApiClientFactory extends BrokerApiServiceGenerator {
      * @param apiKey the API key
      * @param secret the Secret
      */
-    private BrokerApiClientFactory(String baseUrl, String apiKey, String secret) {
+    public BrokerApiClientFactory(String baseUrl, String apiKey, String secret) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
         this.secret = secret;

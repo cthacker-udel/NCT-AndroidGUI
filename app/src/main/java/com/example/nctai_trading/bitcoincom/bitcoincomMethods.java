@@ -22,6 +22,11 @@ public class bitcoincomMethods {
     String secretKey = "";
     String authHeader = String.format("Basic %s", Base64.getEncoder().encodeToString((apiKey + secretKey).getBytes()));
 
+    public bitcoincomMethods(String apikey, String secretKey){
+        this.apiKey = apikey;
+        this.secretKey = secretKey;
+    }
+
 
     public class orderRequests{
 

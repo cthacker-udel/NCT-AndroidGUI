@@ -1,4 +1,4 @@
-package com.example.nctai_trading.binanceUS;
+package com.example.nctai_trading;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -32,8 +32,9 @@ import android.widget.Toast;
 //import com.binance.api.client.domain.market.OrderBookEntry;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.example.nctai_trading.R;
-import com.example.nctai_trading.currencyInfo;
+import com.example.nctai_trading.binanceUS.BinanceAccountDetails;
+import com.example.nctai_trading.binanceUS.binanceBuyPage;
+import com.example.nctai_trading.binanceUS.binanceMethods;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -243,7 +244,7 @@ public class binancePage extends AppCompatActivity {
         showAccountInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),BinanceAccountDetails.class);
+                Intent intent = new Intent(getApplicationContext(), BinanceAccountDetails.class);
                 startActivity(intent);
             }
         });
@@ -454,7 +455,7 @@ public class binancePage extends AppCompatActivity {
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toBuyPage = new Intent(getApplicationContext(),binanceBuyPage.class);
+                Intent toBuyPage = new Intent(getApplicationContext(), binanceBuyPage.class);
                 startActivity(toBuyPage);
             }
         });
@@ -462,7 +463,7 @@ public class binancePage extends AppCompatActivity {
         sellButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toSellPage = new Intent(getApplicationContext(),binanceSellPage.class);
+                Intent toSellPage = new Intent(getApplicationContext(), binanceSellPage.class);
                 startActivity(toSellPage);
             }
         });

@@ -28,6 +28,11 @@ public class basefexMethods {
     String baseUrl = "https://api.basefex.com";
     HMAC256 signatureGenerator = new HMAC256();
 
+    public basefexMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     public String generateSignature(String secretKey, String method, String path, String expires, String data) throws InvalidKeyException, NoSuchAlgorithmException {
 
         String signature = signatureGenerator.hmacDigest(method + path + expires + data,secretKey,"HmacSHA256");
