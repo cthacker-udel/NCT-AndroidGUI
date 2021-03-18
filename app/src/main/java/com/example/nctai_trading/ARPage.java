@@ -51,9 +51,11 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                /*
+
                 com.example.nctai_trading.bkex.bkexMethods bkexMethods = new com.example.nctai_trading.bkex.bkexMethods();
 
-                com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods();
+                com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods("","");
 
                 com.example.nctai_trading.wbf.wbfMethods wbfMethods = new com.example.nctai_trading.wbf.wbfMethods();
 
@@ -148,8 +150,8 @@ public class ARPage extends AppCompatActivity {
                 mailGunMethods.domainRequests domainRequests = methods.new domainRequests();
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
 
-                com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
-                com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
+                com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods("","");
+                com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods("","");
                 com.example.nctai_trading.particle.particleMethods particleMethods = new com.example.nctai_trading.particle.particleMethods();
                 com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new com.example.nctai_trading.bitMEX.bitmexMethods();
 
@@ -226,7 +228,7 @@ public class ARPage extends AppCompatActivity {
                 //validationRequests.singleEmailValidationPOST("cthacker@udel.edu");
                     //messageRequests.sendMessage("cthacker@udel.edu","NCT <Noreply@sales.nextcapitaltech.com>","Message",methods.generateCode());
                     //domainRequests.getDomainsUnderAccount();
-
+                */
 
                 Intent backToMainPage = new Intent(getApplicationContext(),mainPage.class);
                 startActivity(backToMainPage);
