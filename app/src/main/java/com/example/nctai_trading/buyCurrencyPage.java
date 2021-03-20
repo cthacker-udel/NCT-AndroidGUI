@@ -19,6 +19,7 @@ public class buyCurrencyPage extends AppCompatActivity {
     Spinner buyCurrencySpinner;
     Spinner buyCurrencyExchangeSpinner;
     Spinner buyCurrencyAmountSpinner;
+    Spinner buyCurrencyPurchaseType;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -30,6 +31,13 @@ public class buyCurrencyPage extends AppCompatActivity {
         buyCurrencyExchangeSpinner = findViewById(R.id.buyCurrencyExchangeSpinner);
 
         buyCurrencyAmountSpinner = findViewById(R.id.buyCurrencyExchangeSpinner2);
+
+        buyCurrencyPurchaseType = findViewById(R.id.buyCurrencyPurchaseType);
+
+        ArrayList<String> purchaseTypes = new ArrayList<>();
+        purchaseTypes.add("Example : Market");
+        purchaseTypes.add("market");
+        purchaseTypes.add("limit");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
         adapter.add("---- select currency ----");
@@ -52,6 +60,12 @@ public class buyCurrencyPage extends AppCompatActivity {
         adapter3.addAll(IntStream.range(1,999).mapToObj(e -> e+"").toArray(String[]::new));
 
         buyCurrencyAmountSpinner.setAdapter(adapter3);
+
+        ArrayAdapter<String> adapter4 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+
+        adapter4.addAll(purchaseTypes);
+
+        buyCurrencyPurchaseType.setAdapter(adapter4);
 
     }
 }
