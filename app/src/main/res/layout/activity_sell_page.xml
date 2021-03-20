@@ -7,6 +7,17 @@
     android:background="@color/black"
     tools:context=".sellPage">
 
+    <Spinner
+        android:id="@+id/sellCurrencySpinner"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="175dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView77" />
+
     <TextView
         android:id="@+id/textView75"
         android:layout_width="wrap_content"
@@ -25,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
+        android:layout_marginEnd="175dp"
         android:text="Select Currency"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,13 +44,13 @@
         app:layout_constraintTop_toBottomOf="@+id/sellPageExchangeSpinner" />
 
     <Spinner
-        android:id="@+id/sellCurrencySpinner"
+        android:id="@+id/sellCurrencySpinner2"
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView77" />
+        app:layout_constraintTop_toBottomOf="@+id/textView80" />
 
     <Button
         android:id="@+id/button2"
@@ -48,7 +60,7 @@
         android:text="Sell Currency"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sellCurrencySpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/sellCurrencySpinner2" />
 
     <TextView
         android:id="@+id/textView78"
@@ -69,4 +81,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView78" />
+
+    <TextView
+        android:id="@+id/textView80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="75dp"
+        android:text="Select Amount"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.728"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sellPageExchangeSpinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>
