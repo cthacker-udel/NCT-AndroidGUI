@@ -9,6 +9,7 @@ import android.widget.Spinner;
 public class sellPage extends AppCompatActivity {
 
     Spinner sellCurrencyPage;
+    Spinner buyCurrencyExchanges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,8 @@ public class sellPage extends AppCompatActivity {
         setContentView(R.layout.activity_sell_page);
 
         sellCurrencyPage = findViewById(R.id.sellCurrencySpinner);
+
+        buyCurrencyExchanges = findViewById(R.id.sellPageExchangeSpinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
 
