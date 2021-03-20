@@ -12,11 +12,13 @@ import com.example.nctai_trading.R;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class buyCurrencyPage extends AppCompatActivity {
 
     Spinner buyCurrencySpinner;
     Spinner buyCurrencyExchangeSpinner;
+    Spinner buyCurrencyAmountSpinner;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -26,6 +28,8 @@ public class buyCurrencyPage extends AppCompatActivity {
         buyCurrencySpinner = findViewById(R.id.buyCurrencySpinner);
 
         buyCurrencyExchangeSpinner = findViewById(R.id.buyCurrencyExchangeSpinner);
+
+        buyCurrencyAmountSpinner = findViewById(R.id.buyCurrencyExchangeSpinner2);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
         adapter.add("---- select currency ----");
@@ -42,6 +46,12 @@ public class buyCurrencyPage extends AppCompatActivity {
         adapter2.addAll(new exchangesList().getExchangesList());
 
         buyCurrencyExchangeSpinner.setAdapter(adapter2);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item);
+
+        adapter3.addAll(IntStream.range(1,999).mapToObj(e -> e+"").toArray(String[]::new));
+
+        buyCurrencyAmountSpinner.setAdapter(adapter3);
 
     }
 }
