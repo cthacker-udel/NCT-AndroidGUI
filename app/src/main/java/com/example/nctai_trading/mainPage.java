@@ -34,6 +34,7 @@ public class mainPage extends AppCompatActivity {
     Button mainPageListeningBtn;
     Button mainPageCoinbaseKeys;
     Button mainPageCoinBaseProBtn;
+    Button addKeysBtn;
     int userContainsKeysError;
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
@@ -57,6 +58,7 @@ public class mainPage extends AppCompatActivity {
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
         mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
         mainPageCoinBaseProBtn = findViewById(R.id.mainPageCoinBaseProSignInButton);
+        addKeysBtn = findViewById(R.id.mainPageAddKeys);
 
         // show image
 
@@ -247,6 +249,13 @@ public class mainPage extends AppCompatActivity {
                 }
                 Intent toCoinBaseProPage = new Intent(getApplicationContext(), coinBaseProPage.class);
                 startActivity(toCoinBaseProPage);
+            }
+        });
+        addKeysBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toAddKeysPage = new Intent(getApplicationContext(),addKeys.class);
+                startActivity(toAddKeysPage);
             }
         });
 
