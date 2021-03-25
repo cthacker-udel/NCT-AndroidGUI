@@ -10,6 +10,8 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.concurrent.TimeUnit;
+
 public class particleInterfaceModel {
 
     private WorkManager workManager;
@@ -19,7 +21,9 @@ public class particleInterfaceModel {
     }
 
     void applyRequest(){
-        workManager.enqueue(OneTimeWorkRequest.from(particleInterface.class));
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(particleInterface.class,16, TimeUnit.MINUTES).build();
+        workManager.enqueue(periodicWorkRequest);
+        //workManager.enqueue(OneTimeWorkRequest.from(particleInterface.class));
     }
 
 }

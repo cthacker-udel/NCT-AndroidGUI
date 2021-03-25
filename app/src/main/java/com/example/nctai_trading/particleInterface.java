@@ -32,6 +32,6 @@ public class particleInterface extends Worker {
         System.out.println("Running doWork!");
         WorkerUtils.makeStatusNotification("Running do work",applicationContext);
 
-        return null;
+        return Result.success();
     }
 }

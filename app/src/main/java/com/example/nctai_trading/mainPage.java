@@ -152,8 +152,8 @@ public class mainPage extends AppCompatActivity {
                     com.example.nctai_trading.particle.particleMethods methods = new com.example.nctai_trading.particle.particleMethods();
                     particleMethods.eventRequests tokenMethods = methods.new eventRequests();
 
-
                     particleInterfaceModel particleInterfaceModel = new particleInterfaceModel(mainPage.this.getApplicationContext());
+
                     particleInterfaceModel.applyRequest();
 
                     //Intent notificationIntent = new Intent(getApplicationContext(), particleInterface.class);
