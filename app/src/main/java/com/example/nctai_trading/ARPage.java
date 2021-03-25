@@ -51,9 +51,23 @@ public class ARPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // Test implementation of particle methods
+
+
+                particleMethods particleMethods = new particleMethods();
+
+                com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
+
+                try {
+                    String result = eventRequests.openStreamOfServerSentEvents("NCT-AI,OPENORDER,GET");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 com.example.nctai_trading.bkex.bkexMethods bkexMethods = new com.example.nctai_trading.bkex.bkexMethods();
 
-                com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods();
+                //com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new com.example.nctai_trading.bitcoincom.bitcoincomMethods();
 
                 com.example.nctai_trading.wbf.wbfMethods wbfMethods = new com.example.nctai_trading.wbf.wbfMethods();
 
@@ -81,7 +95,7 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.wbf.wbfMethods.transactionRequests transactionRequests = wbfMethods.new transactionRequests();
 
-                com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+                //com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
 
                 com.example.nctai_trading.bkex.bkexMethods.exchangeRequests bkexExchangeRequests = bkexMethods.new exchangeRequests();
 
@@ -96,7 +110,7 @@ public class ARPage extends AppCompatActivity {
                     bkexOrderRequests.getAllFinishedOrders();
                     bkexOrderRequests.createOrder("ETH_USDT",1.0,2.0);
                     bkexExchangeRequests.getExchangeInfo();
-                    bitcoincomOrderRequests.placeOrder("eth","buy","market",10);
+                    //bitcoincomOrderRequests.placeOrder("eth","buy","market",10);
                     transactionRequests.getTransactionRecords("BTC");
                     idcmOrderRequests.placeOrder("BTC-USDT",1,1,1,1,10);
                     digiOrderRequests.placeOrder("usdt_btc","buy",6000.12,0.1);
@@ -148,20 +162,18 @@ public class ARPage extends AppCompatActivity {
                 mailGunMethods.domainRequests domainRequests = methods.new domainRequests();
                 mailGunMethods.validationRequests validationRequests = methods.new validationRequests();
 
-                com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
-                com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
-                com.example.nctai_trading.particle.particleMethods particleMethods = new com.example.nctai_trading.particle.particleMethods();
+                //com.example.nctai_trading.alpaca.alpacaMethods alpacaMethods = new com.example.nctai_trading.alpaca.alpacaMethods();
+                //com.example.nctai_trading.basefex.basefexMethods basefexMethods = new com.example.nctai_trading.basefex.basefexMethods();
                 com.example.nctai_trading.bitMEX.bitmexMethods bitmexMethods = new com.example.nctai_trading.bitMEX.bitmexMethods();
 
                 com.example.nctai_trading.bitMEX.bitmexMethods.announcementRequests announcementMethods = bitmexMethods.new announcementRequests();
-                com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
-                com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
-                com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
-                com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
-                com.example.nctai_trading.basefex.basefexMethods.accountRequests accountRequests = basefexMethods.new accountRequests();
-                com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
+                //com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts accountMethods = alpacaMethods.new accountReqeusts();
+                //com.example.nctai_trading.alpaca.alpacaMethods.orderRequests orderRequests = alpacaMethods.new orderRequests();
+                //com.example.nctai_trading.alpaca.alpacaMethods.positionRequests positionRequests = alpacaMethods.new positionRequests();
+                //com.example.nctai_trading.alpaca.alpacaMethods.assetRequests assetRequests = alpacaMethods.new assetRequests();
+                //com.example.nctai_trading.basefex.basefexMethods.accountRequests accountRequests = basefexMethods.new accountRequests();
+                //com.example.nctai_trading.basefex.basefexMethods.ordersRequests ordersRequests = basefexMethods.new ordersRequests();
 
-                com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.apiKeyRequests apiMethods = bitmexMethods.new apiKeyRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.executionRequests executionRequests = bitmexMethods.new executionRequests();
                 com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests fundingRequests = bitmexMethods.new fundingRequests();
@@ -213,19 +225,19 @@ public class ARPage extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //accountMethods.getAccount();
-                    //orderRequests.getListOfOrders();
-                    //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
-                    //orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
-                    //positionRequests.getOpenPositions();
-                    //positionRequests.getOpenPosition("YUM");
-                    //assetRequests.getAssets();
-                    //assetRequests.getAsset("AAT");
+                //orderRequests.getListOfOrders();
+                //orderRequests.placeOrder("AAPL",20,"buy","market","gtc");
+                //orderRequests.getOrderOrderId("db2c0948-7815-4085-8958-5e00f56e2faa");
+                //positionRequests.getOpenPositions();
+                //positionRequests.getOpenPosition("YUM");
+                //assetRequests.getAssets();
+                //assetRequests.getAsset("AAT");
 
 
 
                 //validationRequests.singleEmailValidationPOST("cthacker@udel.edu");
-                    //messageRequests.sendMessage("cthacker@udel.edu","NCT <Noreply@sales.nextcapitaltech.com>","Message",methods.generateCode());
-                    //domainRequests.getDomainsUnderAccount();
+                //messageRequests.sendMessage("cthacker@udel.edu","NCT <Noreply@sales.nextcapitaltech.com>","Message",methods.generateCode());
+                //domainRequests.getDomainsUnderAccount();
 
 
                 Intent backToMainPage = new Intent(getApplicationContext(),mainPage.class);

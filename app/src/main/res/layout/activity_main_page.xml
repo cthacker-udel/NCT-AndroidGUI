@@ -57,39 +57,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <Button
-        android:id="@+id/mainPageBinanceKeysButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/binanceKeys"
-        android:textColor="@color/white"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-    <Button
-        android:id="@+id/coinBaseKeysButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Coinbase Keys"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPageBinanceKeysButton"
-        tools:text="Enter Coinbase Keys" />
-
-    <Button
         android:id="@+id/mainPagePaymentOptionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="185dp"
         android:text="@string/paymentOptions"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton2"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageAddKeys"
         tools:text="@string/paymentOptions" />
 
     <Button
@@ -97,12 +73,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="185dp"
-        android:layout_marginTop="5dp"
         android:text="@string/editCredentials"
         app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinBaseKeysButton2"
+        app:layout_constraintTop_toBottomOf="@+id/mainPageAddKeys"
         tools:text="@string/editCredentials" />
 
     <Button
@@ -189,8 +164,10 @@
         android:id="@+id/mainPageAddKeys"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
         android:text="ADD KEYS"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPageCoinBaseProSignInButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 </androidx.constraintlayout.widget.ConstraintLayout>

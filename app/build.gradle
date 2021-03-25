@@ -53,8 +53,10 @@ repositories {
 dependencies {
 
 
+    implementation 'androidx.work:work-runtime:2.3.3'
     configurations {
         all*.exclude group: 'org.glassfish.hk2.external', module:'javax.inject'
+        all*.exclude group: 'com.google.guava',module:'listenablefuture'
     }
 
 

@@ -17,12 +17,11 @@ import java.util.ArrayList;
 
 public class addKeys extends AppCompatActivity {
 
-    String email = getIntent().getStringExtra("EMAIL");
     Spinner exchangeChooser;
     EditText apiKeyText;
     EditText secretKeyText;
     EditText passPhraseText;
-    ArrayList<String> allExchanges;
+    ArrayList<String> allExchanges = new ArrayList<>();
     Button addKeysBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.N)

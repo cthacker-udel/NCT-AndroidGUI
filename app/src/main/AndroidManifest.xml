@@ -6,13 +6,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NCTAITrading">
-        <activity android:name=".sellPage"></activity>
+        <activity android:name=".addKeys" />
+        <activity android:name=".sellPage" />
         <activity android:name=".buyCurrencyPage" />
         <activity android:name=".binanceSellPage" />
         <activity android:name=".binanceUS.binanceBuyPage" />

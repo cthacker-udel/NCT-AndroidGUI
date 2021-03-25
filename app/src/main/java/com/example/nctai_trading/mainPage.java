@@ -1,14 +1,24 @@
 package com.example.nctai_trading;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
+import android.app.Application;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,24 +49,26 @@ public class mainPage extends AppCompatActivity {
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
 
+    private particleInterfaceModel particleInterfaceModel;
+
     //String passedEmail = getIntent().getStringExtra("email");
 
     // TODO: [MAIN PAGE] Implement sign/stop listening functionality
     // TODO: [MAIN PAGE] Implement edit credentials -
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
+
         paymentOptionBtn = findViewById(R.id.mainPagePaymentOptionButton);
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
         mainPageARBtn = findViewById(R.id.mainPageARButton);
-        mainPageBinanceKeys = findViewById(R.id.mainPageBinanceKeysButton);
         mainPageBinanceSignInBtn = findViewById(R.id.mainPageBinanceSignIn);
         mainPageListeningBtn = findViewById(R.id.mainPageStartStopListening);
-        mainPageCoinbaseKeys = findViewById(R.id.coinBaseKeysButton2);
         mainPageCoinBaseProBtn = findViewById(R.id.mainPageCoinBaseProSignInButton);
         addKeysBtn = findViewById(R.id.mainPageAddKeys);
 
@@ -111,7 +123,7 @@ public class mainPage extends AppCompatActivity {
         });
 
         mainPageListeningBtn.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 if(apiKey.equals("defaultBinanceApiKey") || secretKey.equals("defaultBinanceSecretKey")){
@@ -139,15 +151,24 @@ public class mainPage extends AppCompatActivity {
                 else{
                     com.example.nctai_trading.particle.particleMethods methods = new com.example.nctai_trading.particle.particleMethods();
                     particleMethods.eventRequests tokenMethods = methods.new eventRequests();
-                    try {
-                        tokenMethods.publishAnEvent("Event2");
-                        tokenMethods.openStreamOfServerEvents("Event2");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
 
-                    return;
+                    particleInterfaceModel particleInterfaceModel = new particleInterfaceModel(mainPage.this.getApplicationContext());
+                    particleInterfaceModel.applyRequest();
+
+                    //Intent notificationIntent = new Intent(getApplicationContext(), particleInterface.class);
+                    //PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,notificationIntent,0);
+                    //Notification notification = new Notification.Builder(getApplicationContext(),"CHANNEL_ID")
+                    //        .setContentTitle("Next Capital Tech A.I.")
+                    //        .setContentText("The A.I. is running")
+                    //        .setSmallIcon(R.drawable.nct_logo)
+                    //        .setContentIntent(pendingIntent)
+                    //        .setTicker("This is a ticker")
+                    //        .build();
+
+                    //mainPage.this.startService(notificationIntent);
+
+
                 }
 
             }
@@ -174,22 +195,6 @@ public class mainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toARPage = new Intent(getApplicationContext(),ARPage.class);
                 startActivity(toARPage);
-            }
-        });
-
-        mainPageBinanceKeys.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toBinanceKeysPage = new Intent(getApplicationContext(), binanceKeys.class);
-                startActivity(toBinanceKeysPage);
-            }
-        });
-
-        mainPageCoinbaseKeys.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toCoinBaseKeysPage = new Intent(getApplicationContext(), coinBaseKeys.class);
-                startActivity(toCoinBaseKeysPage);
             }
         });
 
@@ -254,10 +259,11 @@ public class mainPage extends AppCompatActivity {
         addKeysBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toAddKeysPage = new Intent(getApplicationContext(),addKeys.class);
+                Intent toAddKeysPage = new Intent(getApplicationContext(),com.example.nctai_trading.addKeys.class);
                 startActivity(toAddKeysPage);
             }
         });
+
 
     }
     public SharedPreferences getThePreferences(){
