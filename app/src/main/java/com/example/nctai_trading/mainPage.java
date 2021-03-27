@@ -10,6 +10,8 @@ import androidx.work.WorkRequest;
 
 import android.app.Application;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -34,6 +36,7 @@ import java.io.IOException;
 
 public class mainPage extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "exampleServiceChannel";
     Button paymentOptionBtn;
     Button donationBtn;
     Button altInvestmentBtn;
@@ -49,7 +52,6 @@ public class mainPage extends AppCompatActivity {
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
 
-    private particleInterfaceModel particleInterfaceModel;
 
     //String passedEmail = getIntent().getStringExtra("email");
 
@@ -60,6 +62,9 @@ public class mainPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final String CHANNEL_ID = "exampleServiceChannel";
+        createNotificationChannel();
+
         setContentView(R.layout.activity_main_page);
 
 
@@ -149,26 +154,7 @@ public class mainPage extends AppCompatActivity {
                     }
                 }
                 else{
-                    com.example.nctai_trading.particle.particleMethods methods = new com.example.nctai_trading.particle.particleMethods();
-                    particleMethods.eventRequests tokenMethods = methods.new eventRequests();
-
-                    particleInterfaceModel particleInterfaceModel = new particleInterfaceModel(mainPage.this.getApplicationContext());
-
-                    particleInterfaceModel.applyRequest();
-
-                    //Intent notificationIntent = new Intent(getApplicationContext(), particleInterface.class);
-                    //PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,notificationIntent,0);
-                    //Notification notification = new Notification.Builder(getApplicationContext(),"CHANNEL_ID")
-                    //        .setContentTitle("Next Capital Tech A.I.")
-                    //        .setContentText("The A.I. is running")
-                    //        .setSmallIcon(R.drawable.nct_logo)
-                    //        .setContentIntent(pendingIntent)
-                    //        .setTicker("This is a ticker")
-                    //        .build();
-
-                    //mainPage.this.startService(notificationIntent);
-
-
+                    startService();
                 }
 
             }
@@ -268,5 +254,28 @@ public class mainPage extends AppCompatActivity {
     }
     public SharedPreferences getThePreferences(){
         return getSharedPreferences("test",MODE_PRIVATE);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void createNotificationChannel(){
+        NotificationChannel serviceChannel = null;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            serviceChannel = new NotificationChannel(CHANNEL_ID,"Example Service Channel", NotificationManager.IMPORTANCE_DEFAULT);
+        }
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(serviceChannel);
+    }
+
+    public void startService(){
+        String exampleText = "Hello there";
+
+        Intent serviceIntent = new Intent(this,particleService.class);
+        serviceIntent.putExtra("inputExtra","theTextThatIsExtraInput");
+
+        startService(serviceIntent);
+    }
+
+    public void stopService(){
+        Intent serviceIntent = new Intent(this,particleService.class);
+        stopService(serviceIntent);
     }
 }
