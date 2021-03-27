@@ -11,8 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.example.nctai_trading.particle.particleMethods;
+
 public class particleService extends Service {
     private static final String CHANNEL_ID = "exampleServiceChannel";
+    particleMethods particleMethods = new particleMethods();
+    com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
 
     @Nullable
     @Override
@@ -30,8 +34,8 @@ public class particleService extends Service {
                 0,notificationIntent,0);
 
         Notification notifcation = new NotificationCompat.Builder(this,CHANNEL_ID)
-                .setContentTitle("Example foreground service")
-                .setContentText("This is example foreground text")
+                .setContentTitle("Next Capital Tech")
+                .setContentText("AI is running")
                 .setSmallIcon(R.drawable.nct_logo)
                 .setContentIntent(pendingIntent)
                 .build();
@@ -39,8 +43,6 @@ public class particleService extends Service {
         startForeground(1,notifcation);
 
         return START_NOT_STICKY;
-
-
     }
 
     @Override
