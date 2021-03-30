@@ -13,6 +13,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.nctai_trading.particle.particleMethods;
 
+import java.io.IOException;
+
 public class particleService extends Service {
     private static final String CHANNEL_ID = "exampleServiceChannel";
     particleMethods particleMethods = new particleMethods();
@@ -40,7 +42,30 @@ public class particleService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
 
-        startForeground(1,notifcation);
+        NotificationCompat.Builder notification2 = new NotificationCompat.Builder(this,CHANNEL_ID);
+
+        Notification updatedNotification;
+
+        while(true){
+            try {
+                eventRequests.openStreamOfServerSentEvents("nctai-test");
+                if(particleMethods.getSSEData().equals("")){
+                    continue;
+                }
+                else{
+                    notification2.setContentText(particleMethods.getSSEData());
+                    notification2.setContentTitle("Next Capital Tech - AI Notification");
+                    notification2.setSmallIcon(R.drawable.nct_logo);
+                    notification2.setContentIntent(pendingIntent);
+                    updatedNotification = notification2.build();
+                    break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        startForeground(1,updatedNotification);
 
         return START_NOT_STICKY;
     }

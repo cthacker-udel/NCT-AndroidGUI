@@ -57,6 +57,8 @@ public class particleMethods {
     String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
     String refreshToken = "529c17ca203cb064bd556ed10168cc6ecbd95f5f";
 
+    final static String[] contents = {""};
+
     // new client id generate by create a client
     // clientid = nct-app-3115-1752
     // client name = nct-app-3115
@@ -70,6 +72,17 @@ public class particleMethods {
         String encodedString = new String(result);
         return encodedString;
 
+    }
+
+    public String getSSEData(){
+        String result = "";
+        result = contents[0];
+        if(result.equals("")){
+            return "";
+        }
+        else{
+            return result;
+        }
     }
 
     public String getAuthString(){
@@ -722,6 +735,8 @@ public class particleMethods {
         }
 
 
+
+
         // test
         public String openStreamOfServerSentEvents(String prefix) throws IOException {
 
@@ -740,6 +755,8 @@ public class particleMethods {
                 @Override
                 public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                     Log.i("Retro","OnMessage "+ id + "," +event +","+message);
+                    contents[0] = event + "," + message;
+
                 }
                 @Override
                 public void onComment(ServerSentEvent sse, String comment) {
