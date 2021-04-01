@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.currencyInfo;
+import com.example.nctai_trading.exchangesList;
 
 import java.util.stream.IntStream;
 

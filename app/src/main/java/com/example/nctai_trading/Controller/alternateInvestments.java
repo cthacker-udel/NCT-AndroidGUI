@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.Locale;
 
 import android.content.DialogInterface;
@@ -20,6 +18,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.mainPage;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -162,7 +162,7 @@ public class alternateInvestments extends AppCompatActivity {
                 investmentAlert.create();
                 investmentAlert.show();
 
-                Intent toMainPage = new Intent(getApplicationContext(),mainPage.class);
+                Intent toMainPage = new Intent(getApplicationContext(), mainPage.class);
                 startActivity(toMainPage);
             }
         });

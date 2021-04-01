@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.nctai_trading.R;
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.binanceUS.binanceMethods;
@@ -23,6 +24,7 @@ import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.huobiApi.huobiMethods;
 import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.mailgun.mailGunMethods;
+import com.example.nctai_trading.mainPage;
 import com.example.nctai_trading.particle.particleMethods;
 import com.example.nctai_trading.wbf.wbfMethods;
 
@@ -240,7 +242,7 @@ public class ARPage extends AppCompatActivity {
                 //domainRequests.getDomainsUnderAccount();
 
 
-                Intent backToMainPage = new Intent(getApplicationContext(),mainPage.class);
+                Intent backToMainPage = new Intent(getApplicationContext(), mainPage.class);
                 startActivity(backToMainPage);
             }
         });

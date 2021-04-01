@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -32,9 +32,11 @@ import android.widget.Toast;
 //import com.binance.api.client.domain.market.OrderBookEntry;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.example.nctai_trading.R;
 import com.example.nctai_trading.binanceUS.BinanceAccountDetails;
 import com.example.nctai_trading.binanceUS.binanceBuyPage;
 import com.example.nctai_trading.binanceUS.binanceMethods;
+import com.example.nctai_trading.currencyInfo;
 
 import java.io.IOException;
 import java.math.RoundingMode;

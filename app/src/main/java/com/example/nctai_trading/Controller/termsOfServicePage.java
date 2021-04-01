@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nctai_trading.R;
+import com.example.nctai_trading.paymentOptionPage;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -149,7 +151,7 @@ public class termsOfServicePage extends AppCompatActivity {
                 document.put("Term",termSelected);
                 document.put("terms_agreed",true);
 
-                Intent toPaymentOptionPage = new Intent(getApplicationContext(),paymentOptionPage.class);
+                Intent toPaymentOptionPage = new Intent(getApplicationContext(), paymentOptionPage.class);
                 startActivity(toPaymentOptionPage);
             }
         });

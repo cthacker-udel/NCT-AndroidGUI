@@ -1,6 +1,5 @@
 package com.example.nctai_trading;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,14 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.nctai_trading.Controller.termsOfServicePage;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -26,27 +24,19 @@ import com.mongodb.client.MongoDatabase;
 import com.squareup.square.Environment;
 import com.squareup.square.SquareClient;
 import com.squareup.square.api.CheckoutApi;
-import com.squareup.square.api.LocationsApi;
-import com.squareup.square.models.Address;
 import com.squareup.square.models.ChargeRequestAdditionalRecipient;
 import com.squareup.square.models.CreateCheckoutRequest;
 import com.squareup.square.models.CreateOrderRequest;
 import com.squareup.square.models.Money;
 import com.squareup.square.models.Order;
 import com.squareup.square.models.OrderLineItem;
-import com.squareup.square.models.OrderLineItemAppliedDiscount;
-import com.squareup.square.models.OrderLineItemAppliedTax;
 import com.squareup.square.models.OrderLineItemDiscount;
 import com.squareup.square.models.OrderLineItemTax;
-import com.squareup.square.models.OrderQuantityUnit;
 import com.squareup.square.models.OrderSource;
 
-import org.apache.http.impl.client.HttpClients;
 import org.brunocvcunha.coinpayments.CoinPayments;
-import org.brunocvcunha.coinpayments.model.BasicInfoResponse;
 import org.brunocvcunha.coinpayments.model.CreateTransactionResponse;
 import org.brunocvcunha.coinpayments.model.ResponseWrapper;
-import org.brunocvcunha.coinpayments.requests.CoinPaymentsBasicAccountInfoRequest;
 import org.brunocvcunha.coinpayments.requests.CoinPaymentsCreateTransactionRequest;
 import org.bson.BSONObject;
 import org.bson.Document;
@@ -137,7 +127,7 @@ public class paymentOptionPage extends AppCompatActivity {
         termsOfServiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toTermsOfService = new Intent(getApplicationContext(),termsOfServicePage.class);
+                Intent toTermsOfService = new Intent(getApplicationContext(), termsOfServicePage.class);
                 startActivity(toTermsOfService);
             }
         });

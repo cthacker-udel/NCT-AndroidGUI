@@ -1,4 +1,4 @@
-package com.example.nctai_trading;
+package com.example.nctai_trading.Controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -14,8 +14,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.nctai_trading.R;
 import com.example.nctai_trading.binanceUS.PriceTicker;
 import com.example.nctai_trading.binanceUS.binanceMethods;
+import com.example.nctai_trading.currencyInfo;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;

@@ -1,38 +1,28 @@
 package com.example.nctai_trading;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 
-import android.app.Application;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.example.nctai_trading.binanceUS.binanceKeys;
-import com.example.nctai_trading.coinbasePro.coinBaseKeys;
+import com.example.nctai_trading.Controller.ARPage;
+import com.example.nctai_trading.Controller.addKeys;
+import com.example.nctai_trading.Controller.alternateInvestments;
+import com.example.nctai_trading.Controller.binancePage;
+import com.example.nctai_trading.Controller.donationPage;
 import com.example.nctai_trading.coinbasePro.coinBaseProPage;
-import com.example.nctai_trading.particle.particleMethods;
-
-import java.io.IOException;
 
 public class mainPage extends AppCompatActivity {
 
@@ -163,7 +153,7 @@ public class mainPage extends AppCompatActivity {
         donationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toDonationPage = new Intent(getApplicationContext(),donationPage.class);
+                Intent toDonationPage = new Intent(getApplicationContext(), donationPage.class);
                 startActivity(toDonationPage);
             }
         });
@@ -171,7 +161,7 @@ public class mainPage extends AppCompatActivity {
         altInvestmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toAlternateInvestmentPage = new Intent(getApplicationContext(),alternateInvestments.class);
+                Intent toAlternateInvestmentPage = new Intent(getApplicationContext(), alternateInvestments.class);
                 startActivity(toAlternateInvestmentPage);
             }
         });
@@ -179,7 +169,7 @@ public class mainPage extends AppCompatActivity {
         mainPageARBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toARPage = new Intent(getApplicationContext(),ARPage.class);
+                Intent toARPage = new Intent(getApplicationContext(), ARPage.class);
                 startActivity(toARPage);
             }
         });
@@ -245,7 +235,7 @@ public class mainPage extends AppCompatActivity {
         addKeysBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toAddKeysPage = new Intent(getApplicationContext(),com.example.nctai_trading.addKeys.class);
+                Intent toAddKeysPage = new Intent(getApplicationContext(), addKeys.class);
                 startActivity(toAddKeysPage);
             }
         });
