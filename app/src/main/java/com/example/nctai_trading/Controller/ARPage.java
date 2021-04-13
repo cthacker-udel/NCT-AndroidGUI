@@ -60,6 +60,7 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
 
+
                 try {
                     String result = eventRequests.openStreamOfServerSentEvents("NCT-AI,OPENORDER,GET");
                 } catch (IOException e) {
@@ -109,7 +110,7 @@ public class ARPage extends AppCompatActivity {
 
                 try {
                     btseOrderRequests.placeOrder("BTC-USD","BUY",0.002,8500,"LIMIT");
-                    bkexOrderRequests.getAllFinishedOrders();
+//                    bkexOrderRequests.getAllFinishedOrders();
                     bkexOrderRequests.createOrder("ETH_USDT",1.0,2.0);
                     bkexExchangeRequests.getExchangeInfo();
                     //bitcoincomOrderRequests.placeOrder("eth","buy","market",10);

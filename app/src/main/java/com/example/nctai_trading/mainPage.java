@@ -56,11 +56,9 @@ public class mainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final String CHANNEL_ID = "exampleServiceChannel";
-        createNotificationChannel();
 
         setContentView(R.layout.activity_main_page);
 
-        alarmManager  = (AlarmManager)getSystemService(ALARM_SERVICE);
         paymentOptionBtn = findViewById(R.id.mainPagePaymentOptionButton);
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
@@ -124,6 +122,8 @@ public class mainPage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                alarmManager  = (AlarmManager)getSystemService(ALARM_SERVICE);
+                createNotificationChannel();
                 startService();
             }
         });
