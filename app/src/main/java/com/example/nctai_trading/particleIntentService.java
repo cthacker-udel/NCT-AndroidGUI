@@ -64,7 +64,7 @@ public class particleIntentService extends IntentService {
         int iterations = 1;
 
         try {
-            eventRequests.openStreamOfServerSentEvents("TEST_APL_msg");
+            eventRequests.openStreamOfServerSentEvents("test");
         } catch (IOException e) {
             e.printStackTrace();
         }

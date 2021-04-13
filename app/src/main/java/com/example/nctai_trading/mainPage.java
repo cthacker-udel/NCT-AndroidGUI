@@ -51,6 +51,8 @@ public class mainPage extends AppCompatActivity {
     // TODO: [MAIN PAGE] Implement sign/stop listening functionality
     // TODO: [MAIN PAGE] Implement edit credentials -
 
+    
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

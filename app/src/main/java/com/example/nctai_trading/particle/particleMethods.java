@@ -744,8 +744,10 @@ public class particleMethods {
         // test
         public String openStreamOfServerSentEvents(String prefix) throws IOException {
 
+            com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = new accessTokenRequests();
+
             String eventPrefix= prefix;
-            String accesstoken = "597d74aa67e9c6200009a804f37c4252ce671fc1";
+            String accesstoken = accessTokenRequests.getAccessToken("password").getAccessToken();
             HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s",eventPrefix)).newBuilder();
             urlBuilder.addQueryParameter("access_token",accesstoken);
             String urlokhttp3 = urlBuilder.build().toString();
@@ -765,8 +767,6 @@ public class particleMethods {
                 @Override
                 public void onComment(ServerSentEvent sse, String comment) {
                     Log.i("Retro","Oncomment " + comment );
-                    contents[0] = comment;
-                    return;
                 }
                 @Override
                 public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {

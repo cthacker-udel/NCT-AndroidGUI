@@ -60,6 +60,17 @@ public class ARPage extends AppCompatActivity {
 
                 com.example.nctai_trading.particle.particleMethods.eventRequests eventRequests = particleMethods.new eventRequests();
 
+                com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = particleMethods.new accessTokenRequests();
+
+                try {
+                    eventRequests.publishAnEvent("test");
+                    eventRequests.openStreamOfServerEvents("test");
+                    eventRequests.openStreamOfServerEvents("test");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*
+
 
                 try {
                     String result = eventRequests.openStreamOfServerSentEvents("NCT-AI,OPENORDER,GET");
@@ -245,6 +256,8 @@ public class ARPage extends AppCompatActivity {
 
                 Intent backToMainPage = new Intent(getApplicationContext(), mainPage.class);
                 startActivity(backToMainPage);
+
+                 */
             }
         });
     }

@@ -89,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParticleCloudSDK.init(this);
-        ParticleDeviceSetupLibrary.initWithSetupOnly(this);
-
 
         lstView = (ListView)findViewById(R.id.lstView);
         btnAdd = (Button)findViewById(R.id.btnAdd);
