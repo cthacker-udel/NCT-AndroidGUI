@@ -756,11 +756,13 @@ public class particleMethods {
                 public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                     Log.i("Retro","OnMessage "+ id + "," +event +","+message);
                     contents[0] = event + "," + message;
-
+                    return;
                 }
                 @Override
                 public void onComment(ServerSentEvent sse, String comment) {
                     Log.i("Retro","Oncomment " + comment );
+                    contents[0] = comment;
+                    return;
                 }
                 @Override
                 public boolean onRetryTime(ServerSentEvent sse, long milliseconds) {
@@ -786,7 +788,7 @@ public class particleMethods {
             OkSse okSse = new OkSse();
             ServerSentEvent sse = okSse.newServerSentEvent(request, listener);
 
-            return "";
+            return contents[0];
 
         }
         // test

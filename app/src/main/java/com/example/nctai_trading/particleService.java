@@ -48,7 +48,7 @@ public class particleService extends Service {
 
         while(true){
             try {
-                eventRequests.openStreamOfServerSentEvents("nctai-test");
+                eventRequests.openStreamOfServerSentEvents("TEST_APL_msg");
                 if(particleMethods.getSSEData().equals("")){
                     continue;
                 }
