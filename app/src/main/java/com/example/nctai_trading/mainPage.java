@@ -124,32 +124,7 @@ public class mainPage extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                if(apiKey.equals("defaultBinanceApiKey") || secretKey.equals("defaultBinanceSecretKey")){
-                    userContainsKeysError++;
-                    userContainsBinanceKeysError = true;
-                }
-                if(coinBaseApiKey.equals("defualtCoinBaseApiKey") || coinBaseSecretKey.equals("defaultCoinBaseSecretKey")){
-                    userContainsKeysError++;
-                    userContainsCoinBaseKeysError = true;
-                }
-                if(userContainsKeysError == 2){
-                    Toast.makeText(mainPage.this,"Please add coinbase or binance api keys",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if(userContainsKeysError == 1){
-                    if(userContainsBinanceKeysError){
-                        Toast.makeText(mainPage.this,"Please add binance api keys",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    else{
-                        Toast.makeText(mainPage.this,"Please add coinbase keys",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                else{
-                    startService();
-                }
-
+                startService();
             }
         });
 
