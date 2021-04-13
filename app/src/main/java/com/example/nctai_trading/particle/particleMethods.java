@@ -85,6 +85,10 @@ public class particleMethods {
         }
     }
 
+    public void setSSEData(String setter){
+        contents[0] = setter;
+    }
+
     public String getAuthString(){
 
         return String.format("%s:%s",username,password);

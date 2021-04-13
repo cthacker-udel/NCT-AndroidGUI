@@ -66,6 +66,7 @@ public class particleService extends Service {
         }
 
         startForeground(1,updatedNotification);
+        particleMethods.setSSEData("");
 
         return START_NOT_STICKY;
     }
