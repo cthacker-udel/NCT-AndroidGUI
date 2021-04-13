@@ -166,6 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:text="ADD KEYS"
+        app:backgroundTint="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,8 +4,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +43,7 @@ public class mainPage extends AppCompatActivity {
     int userContainsKeysError;
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
+    AlarmManager alarmManager;
 
 
     //String passedEmail = getIntent().getStringExtra("email");
@@ -57,7 +60,7 @@ public class mainPage extends AppCompatActivity {
 
         setContentView(R.layout.activity_main_page);
 
-
+        alarmManager  = (AlarmManager)getSystemService(ALARM_SERVICE);
         paymentOptionBtn = findViewById(R.id.mainPagePaymentOptionButton);
         donationBtn = findViewById(R.id.donationButton);
         altInvestmentBtn = findViewById(R.id.alternateInvestmentButton);
@@ -255,13 +258,19 @@ public class mainPage extends AppCompatActivity {
         manager.createNotificationChannel(serviceChannel);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void startService(){
         String exampleText = "Hello there";
 
-        Intent serviceIntent = new Intent(this,particleService.class);
-        serviceIntent.putExtra("inputExtra","theTextThatIsExtraInput");
+        //Intent serviceIntent = new Intent(this,particleService.class);
+        //serviceIntent.putExtra("inputExtra","theTextThatIsExtraInput");
 
-        startService(serviceIntent);
+        Intent serviceIntent2 = new Intent(this,particleIntentService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this,0,serviceIntent2,0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+10000,60000,pendingIntent);
+        startForegroundService(serviceIntent2);
+
+        //startService(serviceIntent);
     }
 
     public void stopService(){

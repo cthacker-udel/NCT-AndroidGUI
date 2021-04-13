@@ -15,6 +15,8 @@ import com.example.nctai_trading.particle.particleMethods;
 
 import java.io.IOException;
 
+import static com.example.nctai_trading.particle.Sleep.sleep;
+
 public class particleService extends Service {
     private static final String CHANNEL_ID = "exampleServiceChannel";
     particleMethods particleMethods = new particleMethods();
@@ -29,6 +31,7 @@ public class particleService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        /*
         String input = intent.getStringExtra("inputExtra");
 
         Intent notificationIntent = new Intent(this,mainPage.class);
@@ -58,6 +61,7 @@ public class particleService extends Service {
                     notification2.setSmallIcon(R.drawable.nct_logo);
                     notification2.setContentIntent(pendingIntent);
                     updatedNotification = notification2.build();
+                    startForeground(1,updatedNotification);
                     break;
                 }
             } catch (IOException e) {
@@ -65,15 +69,52 @@ public class particleService extends Service {
             }
         }
 
-        startForeground(1,updatedNotification);
-        particleMethods.setSSEData("");
-
-        return START_NOT_STICKY;
+        //startForeground(1,updatedNotification);
+        //sleep(1000);
+        //stopSelf();
+        */
+        return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Intent notificationIntent = new Intent(this,mainPage.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0,notificationIntent,0);
+
+        Notification notifcation = new NotificationCompat.Builder(this,CHANNEL_ID)
+                .setContentTitle("Next Capital Tech")
+                .setContentText("AI is running")
+                .setSmallIcon(R.drawable.nct_logo)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        NotificationCompat.Builder notification2 = new NotificationCompat.Builder(this,CHANNEL_ID);
+
+        Notification updatedNotification;
+
+        while(true){
+            try {
+                eventRequests.openStreamOfServerSentEvents("TEST_APL_msg");
+                if(particleMethods.getSSEData().equals("")){
+                    continue;
+                }
+                else{
+                    notification2.setContentText(particleMethods.getSSEData());
+                    notification2.setContentTitle("Next Capital Tech - AI Notification");
+                    notification2.setSmallIcon(R.drawable.nct_logo);
+                    notification2.setContentIntent(pendingIntent);
+                    updatedNotification = notification2.build();
+                    startForeground(1,updatedNotification);
+                    particleMethods.setSSEData("");
+                    sleep(10);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
