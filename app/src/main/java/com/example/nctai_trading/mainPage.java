@@ -252,6 +252,7 @@ public class mainPage extends AppCompatActivity {
         String exampleText = "Hello there";
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent start_alarm = new Intent(mainPage.this,MyBroadcastReceivcer.class);
+        start_alarm.putExtra("prefix","test");
         start_alarm.setAction("ALARM_START");
         PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,start_alarm,0);
         alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+10000,pi);

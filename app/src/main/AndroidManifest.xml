@@ -51,6 +51,7 @@
         </receiver>
 
         <service android:name=".particleIntentService" />
+        <service android:name=".exampleIntentService"/>
 
 
 

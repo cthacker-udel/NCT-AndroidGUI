@@ -18,9 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
+import com.example.nctai_trading.particle.particleMethods;
 import com.here.oksse.OkSse;
 import com.here.oksse.ServerSentEvent;
 
+import java.io.IOException;
+
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 public class exampleIntentService extends IntentService {
@@ -28,7 +32,13 @@ public class exampleIntentService extends IntentService {
 
     private PowerManager.WakeLock mWakeLock;
 
+    private static final String TAG = "ExampleIntentService";
+
     private static final String CHANNEL_ID = "exampleServiceChannel";
+
+    public exampleIntentService(){
+        super(TAG);
+    }
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -37,6 +47,7 @@ public class exampleIntentService extends IntentService {
      */
     public exampleIntentService(String name) {
         super(name);
+        System.out.println("In constructor");
     }
 
 
@@ -74,6 +85,22 @@ public class exampleIntentService extends IntentService {
 
         System.out.println("in onstart command");
 
+        String prefix = intent.getStringExtra("prefix");
+
+        com.example.nctai_trading.particle.particleMethods particleMethods = new particleMethods();
+
+        com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = particleMethods.new accessTokenRequests();
+
+        String accesstoken = null;
+        try {
+            accesstoken = accessTokenRequests.getAccessToken("password").getAccessToken();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s",prefix)).newBuilder();
+        urlBuilder.addQueryParameter("access_token",accesstoken);
+        String urlokhttp3 = urlBuilder.build().toString();
+
         ServerSentEvent.Listener listener=new ServerSentEvent.Listener() {
             @Override
             public void onOpen(ServerSentEvent sse, okhttp3.Response response)
@@ -109,7 +136,7 @@ public class exampleIntentService extends IntentService {
                 return originalRequest;
             }
         };
-        Request request = new Request.Builder().url("url").build();
+        Request request = new Request.Builder().url(urlokhttp3).build();
         OkSse okSse = new OkSse();
         ServerSentEvent sse = okSse.newServerSentEvent(request, listener);
 
@@ -131,11 +158,12 @@ public class exampleIntentService extends IntentService {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        System.out.println("in onbind");
         return null;
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-
+        System.out.println("in onhandle intent");
     }
 }
