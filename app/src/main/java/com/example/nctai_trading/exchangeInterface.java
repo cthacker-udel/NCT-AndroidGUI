@@ -32,7 +32,12 @@ import com.example.nctai_trading.kiteConnect.KiteConnect;
 import com.example.nctai_trading.kraken.KrakenApi;
 import com.example.nctai_trading.wbf.wbfMethods;
 
+import org.apache.http.HttpException;
 import org.spongycastle.asn1.cms.KeyAgreeRecipientIdentifier;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class exchangeInterface {
@@ -124,7 +129,199 @@ public class exchangeInterface {
         this.dataReceived = dataReceived;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void collectAllAccountHoldings() throws IOException, InvalidKeyException, NoSuchAlgorithmException, HttpException {
+
+        /*
+
+        alpaca
+
+         */
+
+        com.example.nctai_trading.alpaca.alpacaMethods.orderRequests aorderRequests = alpacaMethods.new orderRequests();
+        aorderRequests.getListOfOrders();
+
+        /*
+
+        basefex
+
+         */
+
+        com.example.nctai_trading.basefex.basefexMethods.ordersRequests bordersRequests = basefexMethods.new ordersRequests();
+        bordersRequests.getOrderList();
+
+        /*
+
+        bibox
+
+         */
+
+        biBoxHttpClient.cQueryOrderList(new com.example.nctai_trading.bibox.CQueryOrderListParams());
+
+        /*
+
+        bidesk
+
+         */
+
+        bideskClient.getMyTrades(new com.example.nctai_trading.bidesk.domain.account.request.MyTradeRequest());
+
+        /*
+
+        bilaxy
+
+         */
+
+        com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bInterfaceRequests = bilaxyMethods.new interfaceRequests();
+
+        bInterfaceRequests.getAccountInfo();
+
+        /*
+
+        binance
+
+         */
+
+        com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
+
+        binanceOrderRequests.getAllOpenOrdersNoSymbol();
+
+        /*
+
+        binanceUS
+
+         */
+
+        com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethodsUS.new orderRequests();
+
+        binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
+
+        /*
+
+        bitcoincom
+
+         */
+
+        com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bitforex
+
+         */
+
+        com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bithumb
+
+         */
+
+        com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordRequests = bithumbMethods.new tradeRecordRequests();
+
+        bithumbTradeRecordRequests.getTradeRecords(""); // provide symbol or implement trade records with no symbol
+
+        /*
+
+        bitMex
+
+         */
+
+        com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests bitmexfunding = bitmexMethods.new fundingRequests();
+
+        // implement getting order information
+
+        /*
+
+        bitrue
+
+         */
+
+        com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+
+        // implement getting order information
+
+
+        /*
+
+        bittrex
+
+         */
+
+        bittrexExchange.getOrderHistory("US");
+
+        /*
+
+        bkex
+
+         */
+
+        com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
+
+        bkexOrderRequests.getAllFinishedOrders();
+
+        /*
+
+        btse
+
+         */
+
+        com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bybit
+
+         */
+
+        com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitOrderRequests = bybitMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        coinbasePro
+
+         */
+
+        com.example.nctai_trading.coinbasePro.coinbaseProMethods.orderRequests coinbaseProOrderRequests = coinbaseProMethods.new orderRequests();
+
+        coinbaseProOrderRequests.getOpenOrderList();
+
+        /*
+
+        digifinex
+
+         */
+
+        com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digiFinexOrderRequests = digifinexMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        huobi
+
+         */
+
+        hbdmswapRestApiV1.futureContractHisorders("contractcode","tradeType","type","status","createDate","pageIndex","pageSize");
+
+    }
+
     public void followParticleCommand(){
+
+        String[] fields = getDataReceived().split(" ");
+
+        if(fields[0].equalsIgnoreCase("all") && fields[1].equalsIgnoreCase("ex")){
+
+        }
 
         //{"data":"TTTTTTEEEESSSTTTTT","ttl":60,"published_at":"2021-05-05T08:26:19.211Z","coreid":"api"}
 

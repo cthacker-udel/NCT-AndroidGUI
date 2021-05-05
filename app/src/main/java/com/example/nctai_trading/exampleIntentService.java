@@ -10,12 +10,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SymbolTable;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
@@ -85,6 +87,7 @@ public class exampleIntentService extends IntentService {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -164,6 +167,7 @@ public class exampleIntentService extends IntentService {
         }
         System.out.println("About to build notification");
         exchangeInterface.setDataReceived(particleCommand.split("\\{\"data\":\"")[0].replaceAll("\"",""));
+        exchangeInterface.followParticleCommand();
         //{"data":"TTTTTTEEEESSSTTTTT","ttl":60,"published_at":"2021-05-05T08:26:19.211Z","coreid":"api"}
         notification2.setContentText(particleCommand);
         notification2.setContentTitle("Next Capital Tech - AI Notification");
