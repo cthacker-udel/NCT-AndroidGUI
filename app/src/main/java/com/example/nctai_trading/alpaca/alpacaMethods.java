@@ -53,7 +53,7 @@ public class alpacaMethods {
 
     public class orderRequests{
 
-        public List<alpacaOrderListOrder> getListOfOrders() throws IOException {
+        public List<alpacaOrderListOrder> getListOfOrders(String status) throws IOException {
 
             String url = paperBaseUrl + "/v2/orders/";
 
@@ -66,7 +66,7 @@ public class alpacaMethods {
 
             alpacaOrderInterface alpacaOrderInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaOrderInterface.class);
 
-            Call<List<alpacaOrderListOrder>> getOrderList = alpacaOrderInterface.getListOfOrders(apiKey,secretKey);
+            Call<List<alpacaOrderListOrder>> getOrderList = alpacaOrderInterface.getListOfOrders(apiKey,secretKey,status);
 
             Response<List<alpacaOrderListOrder>> response = getOrderList.execute();
 

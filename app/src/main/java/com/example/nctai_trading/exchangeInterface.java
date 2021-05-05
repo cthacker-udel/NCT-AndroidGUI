@@ -7,10 +7,14 @@ import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexMethods;
+import com.example.nctai_trading.basefex.basefexOrderListOrder;
 import com.example.nctai_trading.bibox.BiBoxHttpClient;
 import com.example.nctai_trading.bibox.BiBoxHttpClientConfig;
+import com.example.nctai_trading.bibox.CQueryOrderListParams;
+import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
+import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
@@ -18,6 +22,7 @@ import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bithumb.bithumbMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
+import com.example.nctai_trading.bittrex.ApiKeySecret;
 import com.example.nctai_trading.bittrex.BittrexExchange;
 import com.example.nctai_trading.bkex.bkexMethods;
 import com.example.nctai_trading.btse.btseMethods;
@@ -29,15 +34,21 @@ import com.example.nctai_trading.huobiApi2.api.HbdmswapRestApiV1;
 import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.interactiveBrokers.interactiveBrokersMethods;
 import com.example.nctai_trading.kiteConnect.KiteConnect;
+import com.example.nctai_trading.kiteConnect.KiteException;
 import com.example.nctai_trading.kraken.KrakenApi;
 import com.example.nctai_trading.wbf.wbfMethods;
 
 import org.apache.http.HttpException;
+import org.json.JSONException;
 import org.spongycastle.asn1.cms.KeyAgreeRecipientIdentifier;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class exchangeInterface {
@@ -130,7 +141,7 @@ public class exchangeInterface {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void collectAllAccountHoldings() throws IOException, InvalidKeyException, NoSuchAlgorithmException, HttpException {
+    public void collectPastOrders() throws IOException, InvalidKeyException, NoSuchAlgorithmException, HttpException, KiteException, JSONException {
 
         /*
 
@@ -139,7 +150,7 @@ public class exchangeInterface {
          */
 
         com.example.nctai_trading.alpaca.alpacaMethods.orderRequests aorderRequests = alpacaMethods.new orderRequests();
-        aorderRequests.getListOfOrders();
+        List<com.example.nctai_trading.alpaca.alpacaOrderListOrder> alpacaOrders = aorderRequests.getListOfOrders("closed");
 
         /*
 
@@ -148,7 +159,7 @@ public class exchangeInterface {
          */
 
         com.example.nctai_trading.basefex.basefexMethods.ordersRequests bordersRequests = basefexMethods.new ordersRequests();
-        bordersRequests.getOrderList();
+        List<basefexOrderListOrder> orders = bordersRequests.getOrderList("FILLED");
 
         /*
 
@@ -156,7 +167,11 @@ public class exchangeInterface {
 
          */
 
-        biBoxHttpClient.cQueryOrderList(new com.example.nctai_trading.bibox.CQueryOrderListParams());
+        CQueryOrderListParams cQueryOrderListParams = new com.example.nctai_trading.bibox.CQueryOrderListParams();
+
+        cQueryOrderListParams.setType(CTypeEnum.CLOSE);
+
+        String allOrders = biBoxHttpClient.cQueryOrderList(cQueryOrderListParams);
 
         /*
 
@@ -164,7 +179,7 @@ public class exchangeInterface {
 
          */
 
-        bideskClient.getMyTrades(new com.example.nctai_trading.bidesk.domain.account.request.MyTradeRequest());
+        List<com.example.nctai_trading.bidesk.domain.account.Order> bideskOrders = bideskClient.getHistoryOrders(new HistoryOrderRequest());
 
         /*
 
@@ -172,9 +187,9 @@ public class exchangeInterface {
 
          */
 
-        com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bInterfaceRequests = bilaxyMethods.new interfaceRequests();
+        com.example.nctai_trading.bilaxy.bilaxyMethods.transactionRequests bilaxyTransactionRequests = bilaxyMethods.new transactionRequests();
 
-        bInterfaceRequests.getAccountInfo();
+        List<com.example.nctai_trading.bilaxy.bilaxyRecentTransaction> bilaxyTrades = bilaxyTransactionRequests.getRecentTransactions("symbol",100);
 
         /*
 
@@ -184,7 +199,7 @@ public class exchangeInterface {
 
         com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
 
-        binanceOrderRequests.getAllOpenOrdersNoSymbol();
+        List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllOpenOrdersNoSymbol();
 
         /*
 
@@ -194,7 +209,7 @@ public class exchangeInterface {
 
         com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethodsUS.new orderRequests();
 
-        binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
+        List<com.example.nctai_trading.binanceUS.binanceOrderListOrder> binanceUSOrders = binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
 
         /*
 
@@ -224,7 +239,7 @@ public class exchangeInterface {
 
         com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordRequests = bithumbMethods.new tradeRecordRequests();
 
-        bithumbTradeRecordRequests.getTradeRecords(""); // provide symbol or implement trade records with no symbol
+        List<com.example.nctai_trading.bithumb.bithumbmyTrades> bithumbmyTrades = bithumbTradeRecordRequests.getMyTradeRecords("BTC"); // provide symbol or implement trade records with no symbol
 
         /*
 
@@ -253,7 +268,7 @@ public class exchangeInterface {
 
          */
 
-        bittrexExchange.getOrderHistory("US");
+        List<com.example.nctai_trading.bittrex.Order> bittrexOrders = (List<com.example.nctai_trading.bittrex.Order>)(bittrexExchange.getOrderHistoryNoArg(new ApiKeySecret(sharedPreferences.getString("bittrexApiKey",""),sharedPreferences.getString("bittrexSecretKey","")))).body();
 
         /*
 
@@ -313,6 +328,52 @@ public class exchangeInterface {
 
         hbdmswapRestApiV1.futureContractHisorders("contractcode","tradeType","type","status","createDate","pageIndex","pageSize");
 
+        /*
+
+        idcm
+
+         */
+
+        com.example.nctai_trading.idcm.idcmMethods.orderRequests idcmOrderRequests = idcmMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        interactive brokers
+
+         */
+
+        interactiveBrokersMethods interactiveBrokersMethods = new interactiveBrokersMethods("","");
+
+        // implement getting order information
+
+        /*
+
+        kite
+
+         */
+
+        kiteConnect.getOrders();
+
+        /*
+
+        kraken
+
+         */
+
+        krakenApi.queryPrivate(KrakenApi.Method.TRADES_HISTORY);
+
+        /*
+
+        wbf
+
+         */
+
+        com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
+
+        wbfTransactionRequests.getTransactionRecords("symbol");
+
     }
 
     public void followParticleCommand(){
@@ -320,7 +381,9 @@ public class exchangeInterface {
         String[] fields = getDataReceived().split(" ");
 
         if(fields[0].equalsIgnoreCase("all") && fields[1].equalsIgnoreCase("ex")){
+            if(fields[2].equals("OPEN_ORDERS")){
 
+            }
         }
 
         //{"data":"TTTTTTEEEESSSTTTTT","ttl":60,"published_at":"2021-05-05T08:26:19.211Z","coreid":"api"}

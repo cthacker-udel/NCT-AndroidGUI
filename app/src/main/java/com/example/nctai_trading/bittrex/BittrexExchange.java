@@ -466,6 +466,14 @@ public class BittrexExchange implements AutoCloseable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public retrofit2.Response<Object> getOrderHistoryNoArg(ApiKeySecret apiKeySecret) {
+        return getResponse(new TypeReference<Response<Order[]>>(){}, UrlBuilder.v1_1()
+                .withApiKey(apiKeySecret.getKey(),apiKeySecret.getSecret())
+                .withGroup(ACCOUNT)
+                .withMethod("getorderhistory"));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public retrofit2.Response<Object> getBalances() {
         return getBalances(apiKeySecret);
     }

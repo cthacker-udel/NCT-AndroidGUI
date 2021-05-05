@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface basefexOrdersInterface {
@@ -26,7 +27,7 @@ public interface basefexOrdersInterface {
     Response cancelOrder(@Path("orderId") String orderId, @Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
     @GET("https://api.basefex.com/orders")
-    Call<List<basefexOrderListOrder>> getOrderList(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature);
+    Call<List<basefexOrderListOrder>> getOrderList(@Header("api-expires") String timestamp, @Header("api-key") String apikey, @Header("api-signature") String signature, @Query("status") String orderStatus);
 
     @POST("https://api.basefex.com/orders/batch")
     Call<List<basefexOrderListOrder>> placeOrderBatch(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Body Map<String,Object> body);

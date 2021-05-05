@@ -197,7 +197,7 @@ public class basefexMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public List<basefexOrderListOrder> getOrderList() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        public List<basefexOrderListOrder> getOrderList(String status) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
             String url = baseUrl + "/orders/";
 
@@ -209,7 +209,7 @@ public class basefexMethods {
             basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
 
             String timestamp = getTimeStamp();
-            Call<List<basefexOrderListOrder>> call = basefexOrdersInterface.getOrderList(timestamp,apiKey,generateSignature(secretKey,"GET","/orders",timestamp,""));
+            Call<List<basefexOrderListOrder>> call = basefexOrdersInterface.getOrderList(timestamp,apiKey,generateSignature(secretKey,"GET","/orders",timestamp,""),status);
             Response<List<basefexOrderListOrder>> response = call.execute();
 
             return response.body();

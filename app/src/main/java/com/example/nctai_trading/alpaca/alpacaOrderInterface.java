@@ -14,11 +14,12 @@ import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface alpacaOrderInterface {
 
     @GET("https://paper-api.alpaca.markets/v2/orders")
-    Call<List<alpacaOrderListOrder>> getListOfOrders(@Header("APCA-API-KEY-ID") String apiKey, @Header("APCA-API-SECRET-KEY") String secretKey);
+    Call<List<alpacaOrderListOrder>> getListOfOrders(@Header("APCA-API-KEY-ID") String apiKey, @Header("APCA-API-SECRET-KEY") String secretKey, @Query("status") String orderStatus);
 
     @POST("https://paper-api.alpaca.markets/v2/orders")
     Call<alpacaOrderListOrder> placeOrder(@Header("APCA-API-KEY-ID") String apiKey, @Header("APCA-API-SECRET-KEY") String secretKey, @Body Map<Object,Object> body);

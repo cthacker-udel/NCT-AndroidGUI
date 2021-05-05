@@ -11,6 +11,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -263,6 +264,35 @@ public class bithumbMethods {
             Call<bithumbTradeRecordResponse> call = bithumbTradeRecordInterface.getTradeRecord(authHeader);
 
             Response<bithumbTradeRecordResponse> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bithumbmyTrades> getMyTradeRecords(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/spot/myTrades/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+
+            authHeader.put("apiKey",apiKey);
+
+            authHeader.put("timestamp",getTimeStamp());
+
+            authHeader.put("signature",getSignature(authHeader));
+
+            bithumbTradeRecordInterface bithumbTradeRecordInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbTradeRecordInterface.class);
+
+            Call<List<bithumbmyTrades>> call = bithumbTradeRecordInterface.getMyTrades(authHeader);
+
+            Response<List<bithumbmyTrades>> response = call.execute();
 
             return response.body();
         }
