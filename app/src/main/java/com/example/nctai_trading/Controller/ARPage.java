@@ -63,10 +63,10 @@ public class ARPage extends AppCompatActivity {
                 com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = particleMethods.new accessTokenRequests();
 
                 try {
-                    eventRequests.openStreamOfServerSentEvents("test");
-                    //eventRequests.getAllEvents();
-                    System.out.println(eventRequests.publishAnEvent("test"));
-                    //eventRequests.openStreamOfServerSentEvents("test");
+                    eventRequests.openStreamOfServerEvents("test");
+                    //eventRequests.openStreamOfServerEvents("test");
+                    eventRequests.publishAnEvent("test");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
