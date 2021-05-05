@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SymbolTable;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
@@ -36,6 +37,10 @@ public class exampleIntentService extends IntentService {
 
     private static final String CHANNEL_ID = "exampleServiceChannel";
 
+    public static String particleCommand = " ";
+
+    Notification updatedNotification;
+
     public exampleIntentService(){
         super(TAG);
     }
@@ -59,10 +64,9 @@ public class exampleIntentService extends IntentService {
 
        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
 
-        Notification updatedNotification;
 
-
-        NotificationCompat.Builder notification2 = new NotificationCompat.Builder(this,CHANNEL_ID);
+       /*
+       NotificationCompat.Builder notification2 = new NotificationCompat.Builder(this,CHANNEL_ID);
 
         Intent notificationIntent = new Intent(this,mainPage.class);
 
@@ -76,6 +80,8 @@ public class exampleIntentService extends IntentService {
         notification2.setContentIntent(pendingIntent);
         updatedNotification = notification2.build();
         startForeground(1,updatedNotification);
+        */
+
 
     }
 
@@ -110,7 +116,9 @@ public class exampleIntentService extends IntentService {
             @Override
             public void onMessage(ServerSentEvent sse, String id, String event, String message) {
                 Log.i("Retro","OnMessage "+ id + "," +event +","+message);
-                return;
+                sse.close();
+                particleCommand = message;
+                System.out.println("-----------PARTICLE COMMAND = " + particleCommand + "--------------");
             }
             @Override
             public void onComment(ServerSentEvent sse, String comment) {
@@ -140,6 +148,27 @@ public class exampleIntentService extends IntentService {
         OkSse okSse = new OkSse();
         ServerSentEvent sse = okSse.newServerSentEvent(request, listener);
 
+        NotificationCompat.Builder notification2 = new NotificationCompat.Builder(this,CHANNEL_ID);
+
+        Intent notificationIntent = new Intent(this,mainPage.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0,notificationIntent,0);
+
+        System.out.println("BUILDING NOTIFICATION");
+        if(particleCommand.equals(" ")) {
+            System.out.println("REACHED FIRST IF : PARTICLE COMMAND = " + particleCommand);
+            return START_NOT_STICKY;
+        }
+        System.out.println("About to build notification");
+        notification2.setContentText(particleCommand);
+        notification2.setContentTitle("Next Capital Tech - AI Notification");
+        notification2.setSmallIcon(R.drawable.nct_logo);
+        notification2.setContentIntent(pendingIntent);
+        updatedNotification = notification2.build();
+        startForeground(1,updatedNotification);
+        System.out.println("STARTING NOTIFICATION");
+        particleCommand = " ";
 
         return START_NOT_STICKY;
     }
