@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -236,6 +237,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
 
+                /*
+
+                Remove after pushing
+
+                 */
+
+                Intent mainPage2 = new Intent(getApplicationContext(), mainPage.class);
+                //mainPage.putExtra("email",emailContent);
+                startActivity(mainPage2);
+
+                /*
+
+                Remove after pushing
+
+                 */
+
                 boolean correctUsername = false;
                 boolean correctPassword = false;
 
@@ -251,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
                  */
 
+                /*
                 if(passwordContent.trim().length() < 1 ){//|| !checkCredentials.checkForNumbers(passwordContent) || !checkCredentials.checkForSymbols(passwordContent) || !checkCredentials.checkForUpperCase(passwordContent)){ // TODO: [IMPORTANT : MAIN LOGIN PAGE] || password is not password on file
                     passwordAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -262,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
                     passwordAlert.create().show();
                     return;
                 }
+                */
 
                 /*
 
@@ -272,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                  */
 
 
-
+                /*
                 Matcher matcher = emailValidator.matcher(emailContent);
                 if(!matcher.matches() || !checkCredentials.quickEmailValidator(emailContent)) {
                     emailAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -285,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
                     emailAlert.create().show();
                     return;
                 }
+                */
 
                 /*
 
@@ -295,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
                  */
 
-
+                /*
                 Class c = null;
                 Method method = null;
                 com.example.nctai_trading.passwordFormula passwordFormulaInstance = new passwordFormula();
@@ -328,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
+                */
 
                 /*
 
@@ -339,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // MONGO CONNECTION FINALLY
 
+                /*
                 MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
 
                 MongoClient mongoClient = new MongoClient(uri);
@@ -405,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                     correctUsernameAndWrongPassword.create().show();
                     return;
                 }
-
+                */
                 /*
 
                 @author Cameron Thacker
@@ -413,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
                 Shared Preferences validator for api key and secret key
 
                  */
-
+                /*
                 if(apiKey.equals("defaultBinanceApiKey") && secretKey.equals("defaultBinanceSecretKey") && !bothKeysNotCreated){
                     bothKeysNotCreated = true;
                 }
@@ -564,6 +586,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     userContainsCoinBaseSecretKey.create().show();
                 }
+                */
                 if(!coinBaseSecretKeyError && !coinBaseApiKeyError && !binanceSecretKeyError && !binanceApiKeyError && !bothCoinBaseKeysNotCreated && !bothKeysNotCreated) {
                     Intent mainPage = new Intent(getApplicationContext(), mainPage.class);
                     //mainPage.putExtra("email",emailContent);

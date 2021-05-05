@@ -8,6 +8,7 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,9 @@ import com.example.nctai_trading.Controller.binancePage;
 import com.example.nctai_trading.Controller.donationPage;
 import com.example.nctai_trading.coinbasePro.coinBaseProPage;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class mainPage extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "exampleServiceChannel";
@@ -43,7 +47,7 @@ public class mainPage extends AppCompatActivity {
     int userContainsKeysError;
     boolean userContainsBinanceKeysError;
     boolean userContainsCoinBaseKeysError;
-    AlarmManager alarmManager;
+    static AlarmManager alarmManager;
 
 
     //String passedEmail = getIntent().getStringExtra("email");
@@ -58,6 +62,10 @@ public class mainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final String CHANNEL_ID = "exampleServiceChannel";
+
+        Intent start_alarm = new Intent(mainPage.this,MyBroadcastReceivcer.class);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         setContentView(R.layout.activity_main_page);
 
@@ -75,6 +83,10 @@ public class mainPage extends AppCompatActivity {
 
         imageView = findViewById(R.id.nctLogoMainPage);
         imageView.isShown();
+
+        // set alarm manager
+
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
         // alert dialog
 
@@ -238,16 +250,28 @@ public class mainPage extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startService(){
         String exampleText = "Hello there";
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Intent start_alarm = new Intent(mainPage.this,MyBroadcastReceivcer.class);
+        start_alarm.setAction("ALARM_START");
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(),0,start_alarm,0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+10000,pi);
+        System.out.println("Broadcast fired");
 
-        //Intent serviceIntent = new Intent(this,particleService.class);
-        //serviceIntent.putExtra("inputExtra","theTextThatIsExtraInput");
 
-        Intent serviceIntent2 = new Intent(this,particleIntentService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this,0,serviceIntent2,0);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+10000,60000,pendingIntent);
-        startForegroundService(serviceIntent2);
+
+
+        //Intent serviceIntent2 = new Intent(this,particleIntentService.class);
+        //Intent serviceIntent2 = new Intent(this,exampleIntentService.class);
+        //PendingIntent pendingIntent = PendingIntent.getService(this,0,serviceIntent2,0);
+        //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,System.currentTimeMillis(),3000,pendingIntent);
+        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),60000L,pendingIntent);
+        //startForegroundService(serviceIntent2);
 
         //startService(serviceIntent);
+    }
+
+    public void setAlarm(Context context){
+        AlarmManager manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
     }
 
     public void stopService(){

@@ -8,28 +8,37 @@ package com.example.nctai_trading.particle;
 
 
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
+
 import com.here.oksse.OkSse;
 import com.here.oksse.ServerSentEvent;
+import com.launchdarkly.eventsource.EventSource;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.ResponseBody;
 
 import org.apache.commons.codec.binary.Base64;
-import org.kaazing.net.sse.impl.legacy.EventSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -46,7 +55,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class particleMethods {
+public class particleMethods extends SimpleEventHandler {
 
     String baseUrl = "https://api.particle.io";
 
@@ -75,13 +84,11 @@ public class particleMethods {
     }
 
     public String getSSEData(){
-        String result = "";
-        result = contents[0];
-        if(result.equals("")){
+        if(super.messageContents.equals("")){
             return "";
         }
         else{
-            return result;
+            return super.messageContents;
         }
     }
 
@@ -685,6 +692,10 @@ public class particleMethods {
             super();
         }
 
+        /*
+
+        ----- DEPRECATED
+
         // error : malformedjsonException expected value at line 1 column 1 path $
         public particleStreamOfEventsResponse openStreamOfServerEvents(String prefix) throws IOException {
 
@@ -738,10 +749,13 @@ public class particleMethods {
             return null;
         }
 
+        */
+
 
 
 
         // test
+        /*
         public String openStreamOfServerSentEvents(String prefix) throws IOException {
 
             com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = new accessTokenRequests();
@@ -794,7 +808,62 @@ public class particleMethods {
 
             return contents[0];
 
+
         }
+        */
+
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void getAllEvents() throws IOException {
+
+            com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = new accessTokenRequests();
+
+            SimpleEventHandler eventHandler = new SimpleEventHandler();
+
+            String accesstoken = accessTokenRequests.getAccessToken("password").getAccessToken();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.particle.io/v1/events").newBuilder();
+            urlBuilder.addQueryParameter("access_token",accesstoken);
+
+            EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(urlBuilder.build().toString())).reconnectTime(Duration.ofMillis(3000));
+
+            try(EventSource eventSource = builder.build()){
+                eventSource.start();
+                TimeUnit.MINUTES.sleep(1);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public void openStreamOfServerSentEvents(String prefix) throws IOException {
+
+            SleepTask sleepTask = new SleepTask();
+            Timer timer = new Timer();
+            /*
+            com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = new accessTokenRequests();
+
+            SimpleEventHandler eventHandler = new SimpleEventHandler();
+
+            String accesstoken = accessTokenRequests.getAccessToken("password").getAccessToken();
+            HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s",prefix)).newBuilder();
+            urlBuilder.addQueryParameter("access_token",accesstoken);
+
+            EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(urlBuilder.build().toString())).reconnectTime(Duration.ofMillis(3000));
+
+            try(EventSource eventSource = builder.build()) {
+                System.out.println("In event source try");
+                eventSource.start();
+                //timer.schedule(sleepTask,500);
+            }
+            */
+            timer.schedule(sleepTask,500);
+
+        }
+
         // test
         public particleStreamOfEventsResponse getStreamOfEventsForDevice(String deviceId, String eventPrefix) throws IOException {
 
@@ -850,7 +919,7 @@ public class particleMethods {
 
             particleEventsInterface particleEventsInterface = retrofit.create(com.example.nctai_trading.particle.particleEventsInterface.class);
 
-            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishEvent(name,"HELLO WORLD",false, 100, accesstoken);
+            Call<particleDeleteTokenResponse> call = particleEventsInterface.publishEvent(name,"HELLO WORLD",true, 100, accesstoken);
 
             Response<particleDeleteTokenResponse> response = call.execute();
 
@@ -1379,6 +1448,34 @@ public class particleMethods {
         }
 
 
+    }
+
+    public class SleepTask extends TimerTask {
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void run() {
+            try {
+                com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = new accessTokenRequests();
+
+                SimpleEventHandler eventHandler = new SimpleEventHandler();
+
+                String accesstoken = accessTokenRequests.getAccessToken("password").getAccessToken();
+                HttpUrl.Builder urlBuilder = HttpUrl.parse(String.format("https://api.particle.io/v1/events/%s","test")).newBuilder();
+                urlBuilder.addQueryParameter("access_token",accesstoken);
+
+                EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(urlBuilder.build().toString())).reconnectTime(Duration.ofMillis(3000));
+
+                try(EventSource eventSource = builder.build()) {
+                    System.out.println("In event source try");
+                    eventSource.start();
+                    //timer.schedule(sleepTask,500);
+                }
+                System.out.println("Sleeptask try");
+                Thread.sleep(120000);
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
