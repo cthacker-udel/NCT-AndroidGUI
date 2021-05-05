@@ -26,7 +26,7 @@ public class exchangesList {
         exchangesList.add("bkex");
         exchangesList.add("btse");
         exchangesList.add("bybit");
-        exchangesList.add("coinBase");
+        exchangesList.add("coinbase");
         exchangesList.add("digifinex");
         exchangesList.add("huobi");
         exchangesList.add("idcm");

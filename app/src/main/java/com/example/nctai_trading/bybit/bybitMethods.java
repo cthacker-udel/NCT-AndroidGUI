@@ -25,6 +25,11 @@ public class bybitMethods {
 
     // headers required for auth, 1) api_key 2) timestamp 3) sign
 
+    public bybitMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     private static String getSignature(TreeMap<String, String> params, String secret) throws NoSuchAlgorithmException, InvalidKeyException {
         Set<String> keySet = params.keySet();
         Iterator<String> iter = keySet.iterator();

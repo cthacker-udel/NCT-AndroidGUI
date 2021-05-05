@@ -28,6 +28,11 @@ public class btseMethods {
     //String secretKey = "c3078b36858560175bd0c7703a82e6cf264d5c9e56f7e67482ba772dd52c0095";
     String baseUrl = "https://testapi.btse.io/spot"; //https://api.btse.com/spot
 
+    public btseMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     public String generateSignature(String urlPath, String timeStamp, Map<String,Object> params) throws InvalidKeyException, NoSuchAlgorithmException {
         HMAC256 hmac256 = new HMAC256();
         String jsonBody = jsonStringifyMap(params);

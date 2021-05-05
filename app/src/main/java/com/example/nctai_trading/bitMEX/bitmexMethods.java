@@ -36,6 +36,11 @@ public class bitmexMethods {
     String baseUrl = "https://www.bitmex.com/api/v1";
     HMAC256 hmac256 = new HMAC256();
 
+    public bitmexMethods(String apikey, String secretkey){
+        this.apikey = apikey;
+        this.secretKey = secretkey;
+    }
+
     public String generateSignature(String verb, String path, String timestamp, String data){
         String prehash = verb + path + timestamp + data;
         String result = hmac256.hmacDigest(prehash,secretKey,"HmacSHA256");

@@ -38,6 +38,11 @@ public class idcmMethods {
     // three headers required, X-IDCM-APIKEY, X-IDCM-SIGNATURE, X-IDCM-INPUT
     static final String HMAC_SHA384 = "HmacSHA384";
 
+    public idcmMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getSignature(String params) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
 

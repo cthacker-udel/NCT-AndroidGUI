@@ -30,6 +30,11 @@ public class bitforexMethods {
     String secretKey = "e7a3ea02da128f2b74f332fba15c2b31";
     String baseUrl = "https://api.bitforex.com";
 
+    public bitforexMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String generateSignaturePOST(String path, Map<String,Object> params){
 

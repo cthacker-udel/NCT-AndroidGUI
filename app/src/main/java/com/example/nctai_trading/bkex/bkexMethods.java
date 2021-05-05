@@ -26,6 +26,11 @@ public class bkexMethods {
     String secretKey = "f575bf4218d62f0f328cf61a5a514bbc4f7fca095999133954675d014a2390ac";
     String baseUrl = "https://api.bkex.com";
 
+    public bkexMethods(String apikey, String secretKey){
+        this.apikey = apikey;
+        this.secretKey = secretKey;
+    }
+
     public String getSignature(String params) throws InvalidKeyException, NoSuchAlgorithmException {
         HMAC256 hmac256 = new HMAC256();
         return hmac256.HMAC256Algorithm(secretKey,params);

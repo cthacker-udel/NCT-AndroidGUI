@@ -15,6 +15,10 @@ public class exanteMethods {
     String access_key = "6ZxHHjl8qnRWscZubtSU";
     String baseUrl = "https://api-demo.exante.eu/";
 
+    public exanteMethods(String apiKey, String secretKey){
+
+    }
+
     public class orderRequests{
 
         public exanteOrderResponse placeOrder(String accountId, String instrument, String side, String quantity, String orderType, String duration) throws IOException {

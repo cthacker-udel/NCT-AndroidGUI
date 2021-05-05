@@ -20,6 +20,11 @@ public class wbfMethods {
     String api_key = "43f3210b1d268ce0a2308cd3761b2e3d";
     String secret_key = "315c8ec2df6b2095c4a904a642e24cb9";
 
+    public wbfMethods(String api_key, String secret_key){
+        this.api_key = api_key;
+        this.secret_key = secret_key;
+    }
+
     TreeMap<String,String> generateSignature(TreeMap<String,String> params){
         params.put("api_key", api_key);
         params.put("time", new Date().getTime() + "");

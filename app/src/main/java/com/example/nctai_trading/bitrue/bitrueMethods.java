@@ -31,6 +31,11 @@ public class bitrueMethods {
     String apiKey = "87e1225818ae7dc056b546dfb2e3fbef4cd1878bf78a6f5ebda630241a5800e0";
     String secretKey = "a9755fc88f7f9182b7fbffdacc159f2662cef90016e7070e4df885dbc2b68e54";
 
+    public bitrueMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
 
     // my api key 87e1225818ae7dc056b546dfb2e3fbef4cd1878bf78a6f5ebda630241a5800e0
     // my secret key a9755fc88f7f9182b7fbffdacc159f2662cef90016e7070e4df885dbc2b68e54

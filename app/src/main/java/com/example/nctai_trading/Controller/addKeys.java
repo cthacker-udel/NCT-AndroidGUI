@@ -66,7 +66,7 @@ public class addKeys extends AppCompatActivity {
                     editor.putString(String.format("%sApiKey",exchange),apiKey);
                     editor.putString(String.format("%sSecretKey",exchange),secretKey);
                     if(passPhrase.length() > 0){
-                        editor.putString("%sPassPhrase",passPhrase);
+                        editor.putString("%sPassphrase",passPhrase);
                     }
                     editor.apply();
                     editor.commit();

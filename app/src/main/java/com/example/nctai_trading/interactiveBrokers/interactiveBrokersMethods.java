@@ -16,6 +16,10 @@ public class interactiveBrokersMethods {
     String signatureMethod = "RSA-SHA256";
     String httpEncryptKey = "TESTCOINSKEY";
 
+    public interactiveBrokersMethods(String apiKey, String secretKey){
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getTimeStamp(){
         return Instant.now().getEpochSecond() + "";

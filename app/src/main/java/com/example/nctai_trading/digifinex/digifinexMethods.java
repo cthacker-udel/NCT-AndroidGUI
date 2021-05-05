@@ -20,6 +20,11 @@ public class digifinexMethods {
     String secretKey = "59a94280f6eb2c2c0d4ed48ed9d91bb5921f534b90";
 
 
+    public digifinexMethods(String apiKey, String secretKey){
+        this.apiKey = apiKey;
+        this.secretKey = secretKey;
+    }
+
     private static String md5(String s) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

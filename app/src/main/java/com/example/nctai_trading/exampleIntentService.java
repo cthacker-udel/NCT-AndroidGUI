@@ -95,6 +95,8 @@ public class exampleIntentService extends IntentService {
 
         com.example.nctai_trading.particle.particleMethods particleMethods = new particleMethods();
 
+        exchangeInterface exchangeInterface = new exchangeInterface();
+
         com.example.nctai_trading.particle.particleMethods.accessTokenRequests accessTokenRequests = particleMethods.new accessTokenRequests();
 
         String accesstoken = null;
@@ -161,6 +163,8 @@ public class exampleIntentService extends IntentService {
             return START_NOT_STICKY;
         }
         System.out.println("About to build notification");
+        exchangeInterface.setDataReceived(particleCommand.split("\\{\"data\":\"")[0].replaceAll("\"",""));
+        //{"data":"TTTTTTEEEESSSTTTTT","ttl":60,"published_at":"2021-05-05T08:26:19.211Z","coreid":"api"}
         notification2.setContentText(particleCommand);
         notification2.setContentTitle("Next Capital Tech - AI Notification");
         notification2.setSmallIcon(R.drawable.nct_logo);
