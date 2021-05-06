@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -283,11 +285,32 @@ public class signUpPage extends AppCompatActivity {
                 /// TODO: [IMPORTANT : SIGN UP PAGE] initiate putting username and password into database, along with firstname and lastname, then switch back to sign in screen,
                 //List<Document> documentList = new ArrayList<>();
                 // TODO: [MAILGUN IMPLEMENTATION] Display message saying that an email has been sent to their email address, then add a link and that will verify them, or add an code and then I will create a separate page which will have two credentials to be entered: email and verification code, if they enter the correct verification code then the data in the database is switched to verified
-                Document createdUser = new Document("_id",new ObjectId());
+
+                ObjectId _id = new ObjectId();
+                ObjectId userID = new ObjectId();
+                ObjectId wallet = new ObjectId();
+
+                Gson gson = new Gson();
+
+                Document createdUser = new Document("_id",_id);
                 //createdUser.append("twoFactor",new Object[]{new Document("active",false),new Document("secret","")});
                 createdUser.append("email",emailContent);
                 createdUser.append("password",hashedPassword);
-                createdUser.append("wallet",new ObjectId());
+                createdUser.append("wallet",wallet);
+                createdUser.append("userID",userID);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("test",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                String _idStr = gson.toJson(_id);
+                String userIdStr = gson.toJson(userID);
+
+                editor.putString("MongoUserId",userIdStr);
+                editor.putString("Mongo_ID",_idStr);
+
+                editor.apply();
+                editor.commit();
+
                 //documentList.add(createdUser);
 
                 //coll.insertMany(documentList);

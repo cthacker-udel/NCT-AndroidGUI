@@ -5,6 +5,12 @@ import java.util.TreeMap;
 
 public class currencyInfo {
 
+    TreeMap<String,String> currList = new TreeMap<>();
+
+    public currencyInfo(){
+        currList = currencyList();
+    }
+
     public static TreeMap<String,String> currencyList(){
         TreeMap<String,String> currencyList = new TreeMap<>();
         currencyList.put("Bitcoin","BTC");

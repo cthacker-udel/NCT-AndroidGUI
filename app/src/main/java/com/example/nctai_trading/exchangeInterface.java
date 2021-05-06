@@ -37,14 +37,23 @@ import com.example.nctai_trading.kiteConnect.KiteConnect;
 import com.example.nctai_trading.kiteConnect.KiteException;
 import com.example.nctai_trading.kraken.KrakenApi;
 import com.example.nctai_trading.wbf.wbfMethods;
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import org.apache.http.HttpException;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONException;
 import org.spongycastle.asn1.cms.KeyAgreeRecipientIdentifier;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +71,58 @@ public class exchangeInterface {
     com.example.nctai_trading.mainPage mainPage = new mainPage();
 
     SharedPreferences sharedPreferences = mainPage.getThePreferences();
+
+    /*
+
+    Initializing currency info list
+
+     */
+
+    currencyInfo currencyInfo = new currencyInfo();
+
+    /*
+
+    Set global gson variable
+
+     */
+
+    Gson gson = new Gson();
+
+    /*
+
+    Creating global MongoClient connection to database
+
+     */
+
+    MongoClientURI uri = new MongoClientURI("mongodb://admin:CompeteToWin*13@cluster0-shard-00-00.jhtaz.mongodb.net:27017,cluster0-shard-00-01.jhtaz.mongodb.net:27017,cluster0-shard-00-02.jhtaz.mongodb.net:27017/test?ssl=true&replicaSet=atlas-79gy36-shard-0&authSource=admin&retryWrites=true&w=majority");
+
+    MongoClient mongoClient = new MongoClient(uri);
+
+    /*
+
+    Create global BasicDbObject
+
+     */
+
+    BasicDBObject basicDBObject = new BasicDBObject();
+
+    BasicDBObject eachOrderObj = new BasicDBObject();
+
+    /*
+
+    Initializing userId, _id variables, and orderNumber variables
+
+     */
+
+    String _idStr = sharedPreferences.getString("Mongo_ID","");
+
+    ObjectId _id = gson.fromJson(_idStr,ObjectId.class);
+
+    String userIdStr = sharedPreferences.getString("MongoUserId","");
+
+    ObjectId userId = gson.fromJson(userIdStr,ObjectId.class);
+
+    int orderNumber = 0;
 
     /*
 
@@ -140,8 +201,21 @@ public class exchangeInterface {
         this.dataReceived = dataReceived;
     }
 
+    public void resetDBObjects(){
+        basicDBObject = new BasicDBObject();
+        basicDBObject.append("_id",_id);
+        basicDBObject.append("userID",userId);
+        eachOrderObj = new BasicDBObject();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void collectPastOrders() throws IOException, InvalidKeyException, NoSuchAlgorithmException, HttpException, KiteException, JSONException {
+
+        MongoDatabase pastOrders = mongoClient.getDatabase("test");
+
+        MongoCollection<Document> pastOrderCollection = pastOrders.getCollection("pastOrders");
+
+        ArrayList<List<Object>> orders = new ArrayList<>();
 
         /*
 
@@ -151,6 +225,31 @@ public class exchangeInterface {
 
         com.example.nctai_trading.alpaca.alpacaMethods.orderRequests aorderRequests = alpacaMethods.new orderRequests();
         List<com.example.nctai_trading.alpaca.alpacaOrderListOrder> alpacaOrders = aorderRequests.getListOfOrders("closed");
+        resetDBObjects();
+        basicDBObject.append("exchange","alpaca");
+        if(alpacaOrders.size() > 0){
+            for(com.example.nctai_trading.alpaca.alpacaOrderListOrder eachOrder : alpacaOrders){
+                if(eachOrder.getStatus().equalsIgnoreCase("closed")) {
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("clientOrderId", eachOrder.getClientOrderId()),
+                            new Document("symbol", eachOrder.getSymbol()),
+                            new Document("updateTime", eachOrder.getTimeInForce()),
+                            new Document("origQty", eachOrder.getQty()),
+                            new Document("origQuoteOrderQty", eachOrder.getFilledQty()),
+                            new Document("executedQty", eachOrder.getFilledQty()),
+                            new Document("side", eachOrder.getSide()),
+                            new Document("price", eachOrder.getStopPrice()),
+                            new Document("time", eachOrder.getCreatedAt()),
+                            new Document("orderId", eachOrder.getId()),
+                            new Document("status", eachOrder.getStatus()),
+                            new Document("stopPrice",eachOrder.getStopPrice())
+                    });
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         /*
 
@@ -159,7 +258,28 @@ public class exchangeInterface {
          */
 
         com.example.nctai_trading.basefex.basefexMethods.ordersRequests bordersRequests = basefexMethods.new ordersRequests();
-        List<basefexOrderListOrder> orders = bordersRequests.getOrderList("FILLED");
+        List<basefexOrderListOrder> basefexOrderList = bordersRequests.getOrderList("FILLED");
+        for(basefexOrderListOrder eachOrder : basefexOrderList){
+            if(eachOrder.getStatus().equals("FILLED")){
+                eachOrderObj.append("" + orderNumber++,new Object[]{
+                        new Document("clientOrderId",eachOrder.getId()),
+                        new Document("symbol",eachOrder.getSymbol()),
+                        new Document("origQty",eachOrder.getSize()),
+                        new Document("origQuoteOrderQty",eachOrder.getSize()),
+                        new Document("executedQty",eachOrder.getSize()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("type",eachOrder.getType()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("time",eachOrder.getTs()),
+                        new Document("orderId",eachOrder.getId()),
+                        new Document("status",eachOrder.getStatus()),
+                        new Document("stopPrice",eachOrder.getPrice())
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         /*
 
@@ -181,6 +301,29 @@ public class exchangeInterface {
 
         List<com.example.nctai_trading.bidesk.domain.account.Order> bideskOrders = bideskClient.getHistoryOrders(new HistoryOrderRequest());
 
+        for(com.example.nctai_trading.bidesk.domain.account.Order eachOrder: bideskOrders){
+            if(eachOrder.getStatus().toString().equalsIgnoreCase("filled")){
+                eachOrderObj.append("" + orderNumber++, new Object[]{
+                        new Document("clientOrderId",eachOrder.getClientOrderId()),
+                        new Document("symbol",eachOrder.getSymbol()),
+                        new Document("updateTime",eachOrder.getTime()),
+                        new Document("origQty",eachOrder.getOrigQty()),
+                        new Document("origQuoteOrderQty",eachOrder.getCummulativeQuoteQty()),
+                        new Document("executedQty",eachOrder.getExecutedQty()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("time",eachOrder.getTime()),
+                        new Document("orderId",eachOrder.getOrderId()),
+                        new Document("status",eachOrder.getStatus()),
+                        new Document("stopPrice",eachOrder.getStopPrice())
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+
         /*
 
         bilaxy
@@ -199,7 +342,34 @@ public class exchangeInterface {
 
         com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
 
-        List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllOpenOrdersNoSymbol();
+        for(String eachCurrency : currencyInfo.currList.values()) {
+
+            List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllAccountOrders(eachCurrency);
+            if(binanceOrders.size() > 0){
+                for(com.example.nctai_trading.binance.binanceOrderListOrder eachOrder : binanceOrders){
+                    if(eachOrder.getStatus().equalsIgnoreCase("filled")){
+                        eachOrderObj.append("" + orderNumber++, new Object[]{
+                                new Document("clientOrderId",eachOrder.getClientOrderId()),
+                                new Document("symbol",eachOrder.getSymbol()),
+                                new Document("updateTime",eachOrder.getUpdateTime()),
+                                new Document("origQty",eachOrder.getOrigQty()),
+                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                                new Document("executedQty",eachOrder.getExecutedQty()),
+                                new Document("side",eachOrder.getSide()),
+                                new Document("type",eachOrder.getType()),
+                                new Document("price",eachOrder.getPrice()),
+                                new Document("time",eachOrder.getTime()),
+                                new Document("orderId",eachOrder.getOrderId()),
+                                new Document("status",eachOrder.getStatus()),
+                                new Document("stopPrice",eachOrder.getStopPrice())
+                        });
+                    }
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         /*
 
