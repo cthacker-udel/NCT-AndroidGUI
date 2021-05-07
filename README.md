@@ -1,3 +1,4 @@
+![NCT-LOGO](app/src/main/res/drawable/nct_new.png) 
 # NCT-AndroidGUI
 > CAMERON THACKER - NCT ANDROID GUI
 
