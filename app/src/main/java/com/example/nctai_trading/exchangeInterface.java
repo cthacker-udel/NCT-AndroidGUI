@@ -528,7 +528,26 @@ public class exchangeInterface {
 
         com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
 
-        bkexOrderRequests.getAllFinishedOrders();
+        com.example.nctai_trading.bkex.orderHistory.orderHistoryResponse bkexFinishedOrders = bkexOrderRequests.getAllFinishedOrders();
+
+        basicDBObject.append("exchange","bkex");
+
+        for(com.example.nctai_trading.bkex.orderHistory.orderHistoryDatum eachOrder : bkexFinishedOrders.getData().getData()){
+            if(eachOrder.getDirection().equalsIgnoreCase("buy")){
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("orderId",eachOrder.getId()),
+                            new Document("price",eachOrder.getPrice()),
+                            new Document("origQty",eachOrder.getDealAmount()),
+                            new Document("symbol",eachOrder.getPair()),
+                            new Document("type",eachOrder.getOrderType())
+
+                    });
+
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         /*
 
@@ -558,7 +577,27 @@ public class exchangeInterface {
 
         com.example.nctai_trading.coinbasePro.coinbaseProMethods.orderRequests coinbaseProOrderRequests = coinbaseProMethods.new orderRequests();
 
-        coinbaseProOrderRequests.getOpenOrderList();
+        List<com.example.nctai_trading.coinbasePro.coinbaseOpenOrderListOrder> coinbaseProOrders = coinbaseProOrderRequests.getOpenOrderList();
+
+        basicDBObject.append("exchange","coinbasePro");
+
+        for(com.example.nctai_trading.coinbasePro.coinbaseOpenOrderListOrder eachOrder : coinbaseProOrders){
+           if(eachOrder.getSettled()){
+               eachOrderObj.append("" + orderNumber++, new Object[]{
+                       new Document("orderId",eachOrder.getId()),
+                       new Document("price",eachOrder.getPrice()),
+                       new Document("size",eachOrder.getSize()),
+                       new Document("side",eachOrder.getSide()),
+                       new Document("time",eachOrder.getCreatedAt()),
+                       new Document("executed_value",eachOrder.getExecutedValue())
+               });
+           }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+
 
         /*
 
@@ -604,7 +643,28 @@ public class exchangeInterface {
 
          */
 
-        kiteConnect.getOrders();
+        List<com.example.nctai_trading.kiteConnect.Order> kiteOrders = kiteConnect.getOrders();
+
+        basicDBObject.append("exchange","kiteconnect");
+
+        for(com.example.nctai_trading.kiteConnect.Order eachOrder : kiteOrders){
+            if(eachOrder.status.toLowerCase().charAt(0) == 'f'){
+                eachOrderObj.append("" + orderNumber++,new Object[]{
+
+                        new Document("accountId", eachOrder.accountId),
+                        new Document("orderId",eachOrder.orderId),
+                        new Document("time",eachOrder.orderTimestamp),
+                        new Document("symbol",eachOrder.symbol),
+                        new Document("price",eachOrder.price),
+                        new Document("origQty",eachOrder.filledQuantity),
+                        new Document("type",eachOrder.orderType),
+
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         /*
 
