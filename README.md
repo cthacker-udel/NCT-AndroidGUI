@@ -1,5 +1,30 @@
 # NCT-AndroidGUI
-CAMERON THACKER - NCT ANDROID GUI
+> CAMERON THACKER - NCT ANDROID GUI
+
+
+![dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green)
+
+
+![guava](https://img.shields.io/badge/guava-24.1--jre-brightgreen)
+![alibaba](https://img.shields.io/badge/alibaba-1.2.47-brightgreen)
+![lombok](https://img.shields.io/badge/lombok-1.18.8-brightgreen)
+![coinpayments](https://img.shields.io/badge/coinpayments-1.3-brightgreen)
+![launchdarkly](https://img.shields.io/badge/launchdarkly-2.3.1-brightgreen)
+![particle](https://img.shields.io/badge/particle-1.0.1-brightgreen)
+![jackson](https://img.shields.io/badge/jackson-2.5.0-brightgreen)
+![retrofit](https://img.shields.io/badge/retrofit-2.9.0-brightgreen)
+![oksse](https://img.shields.io/badge/oksse-0.9.0-brightgreen)
+![gson](https://img.shields.io/badge/gson-2.8.6-brightgreen)
+![org.apache](https://img.shields.io/badge/org.apache-3.11-brightgreen)
+![mailgun](https://img.shields.io/badge/mailgun-1.9.2-brightgreen)
+![square](https://img.shields.io/badge/square-8.1.20210121-brightgreen)
+![supercsv](https://img.shields.io/badge/supercsv-2.4.0-brightgreen)
+![javax-websocket](https://img.shields.io/badge/javaxwebsocket-1.1-brightgreen)
+![android-layout](https://img.shields.io/badge/androidlayout-2.0.4-brightgreen)
+![signalr4j](https://img.shields.io/badge/signalr4j-2.0.4-brightgreen)
+![javax](https://img.shields.io/badge/javax-1.0-brightgreen)
+![com.google](https://img.shields.io/badge/com.google-1.2.1-brightgreen)
+![mongoDB](https://img.shields.io/badge/mongoDB-3.4.0-brightgreen)
 
 ## Functions supported:
 
