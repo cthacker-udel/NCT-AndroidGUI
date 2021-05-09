@@ -297,6 +297,35 @@ public class bithumbMethods {
             return response.body();
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<bithumbOpenOrder> getOpenOrders(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/spot/openOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+
+            authHeader.put("apiKey",apiKey);
+
+            authHeader.put("timestamp",getTimeStamp());
+
+            authHeader.put("signature",getSignature(authHeader));
+
+            bithumbTradeRecordInterface bithumbTradeRecordInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbTradeRecordInterface.class);
+
+            Call<List<bithumbOpenOrder>> call = bithumbTradeRecordInterface.getOpenOrders(authHeader);
+
+            Response<List<bithumbOpenOrder>> response = call.execute();
+
+            return response.body();
+        }
+
     }
 
     public class klineRequests{

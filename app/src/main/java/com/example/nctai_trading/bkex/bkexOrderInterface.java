@@ -20,4 +20,7 @@ public interface bkexOrderInterface {
 
     @GET("https://api.bkex.com/v1/u/trade/order/history")
     Call<Object> getOrderHistory(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
+
+    @GET("https://api.bkex.com/v1/u/trade/order/listUnfinished")
+    Call<Object> getOpenOrders(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
 }

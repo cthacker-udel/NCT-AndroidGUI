@@ -149,6 +149,29 @@ public class bkexMethods {
 
 
         }
+
+        public orderHistoryResponse getAllOpenOrders() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/v1/u/trade/order/listUnfinished/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            String signature = getSignature("");
+
+            Call<Object> call = bkexOrderInterface.getOpenOrders(apikey,signature);
+
+            Response<Object> response = call.execute();
+
+            return (orderHistoryResponse) response.body();
+
+
+        }
+
     }
 
 

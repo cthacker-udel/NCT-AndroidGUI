@@ -16,4 +16,7 @@ public interface bithumbTradeRecordInterface {
     @POST("https://global-openapi.bithumb.pro/openapi/v1/spot/myTrades")
     Call<List<bithumbmyTrades>> getMyTrades(@HeaderMap Map<String,String> authHeader);
 
+    @POST("https://global-openapi.bithumb.pro/openapi/v1/spot/openOrders")
+    Call<List<bithumbOpenOrder>> getOpenOrders(@HeaderMap Map<String,String> authHeader);
+
 }

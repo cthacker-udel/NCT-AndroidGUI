@@ -15,6 +15,7 @@ import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
+import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.binanceMethods;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
@@ -687,6 +688,485 @@ public class exchangeInterface {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
+    public void collectOpenOrders() throws IOException, InvalidKeyException, NoSuchAlgorithmException, HttpException, KiteException, JSONException {
+
+        MongoDatabase pastOrders = mongoClient.getDatabase("test");
+
+        MongoCollection<Document> pastOrderCollection = pastOrders.getCollection("pastOrders");
+
+        ArrayList<List<Object>> orders = new ArrayList<>();
+
+        /*
+
+        alpaca
+
+         */
+
+        com.example.nctai_trading.alpaca.alpacaMethods.orderRequests aorderRequests = alpacaMethods.new orderRequests();
+        List<com.example.nctai_trading.alpaca.alpacaOrderListOrder> alpacaOrders = aorderRequests.getListOfOrders("open");
+        resetDBObjects();
+        basicDBObject.append("exchange","alpaca");
+        if(alpacaOrders.size() > 0){
+            for(com.example.nctai_trading.alpaca.alpacaOrderListOrder eachOrder : alpacaOrders){
+                if(eachOrder.getStatus().equalsIgnoreCase("open")) {
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("clientOrderId", eachOrder.getClientOrderId()),
+                            new Document("symbol", eachOrder.getSymbol()),
+                            new Document("updateTime", eachOrder.getTimeInForce()),
+                            new Document("origQty", eachOrder.getQty()),
+                            new Document("origQuoteOrderQty", eachOrder.getFilledQty()),
+                            new Document("executedQty", eachOrder.getFilledQty()),
+                            new Document("side", eachOrder.getSide()),
+                            new Document("price", eachOrder.getStopPrice()),
+                            new Document("time", eachOrder.getCreatedAt()),
+                            new Document("orderId", eachOrder.getId()),
+                            new Document("status", eachOrder.getStatus()),
+                            new Document("stopPrice",eachOrder.getStopPrice())
+                    });
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        basefex
+
+         */
+
+        com.example.nctai_trading.basefex.basefexMethods.ordersRequests bordersRequests = basefexMethods.new ordersRequests();
+        List<basefexOrderListOrder> basefexOrderList = bordersRequests.getOrderList("NEW");
+        basicDBObject.append("exchange","basefex");
+        for(basefexOrderListOrder eachOrder : basefexOrderList){
+            if(eachOrder.getStatus().equals("OPEN")){
+                eachOrderObj.append("" + orderNumber++,new Object[]{
+                        new Document("clientOrderId",eachOrder.getId()),
+                        new Document("symbol",eachOrder.getSymbol()),
+                        new Document("origQty",eachOrder.getSize()),
+                        new Document("origQuoteOrderQty",eachOrder.getSize()),
+                        new Document("executedQty",eachOrder.getSize()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("type",eachOrder.getType()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("time",eachOrder.getTs()),
+                        new Document("orderId",eachOrder.getId()),
+                        new Document("status",eachOrder.getStatus()),
+                        new Document("stopPrice",eachOrder.getPrice())
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        bibox
+
+         */
+
+        CQueryOrderListParams cQueryOrderListParams = new com.example.nctai_trading.bibox.CQueryOrderListParams();
+
+        cQueryOrderListParams.setType(CTypeEnum.CLOSE);
+
+        String allOrders = biBoxHttpClient.cQueryOrderList(cQueryOrderListParams);
+
+        /*
+
+        bidesk
+
+         */
+
+
+        List<com.example.nctai_trading.bidesk.domain.account.Order> bideskOrders = bideskClient.getOpenOrders(new OpenOrderRequest());
+
+        basicDBObject.append("exchange","bidesk");
+        for(com.example.nctai_trading.bidesk.domain.account.Order eachOrder: bideskOrders){
+            if(eachOrder.getStatus().toString().equalsIgnoreCase("open")){
+                eachOrderObj.append("" + orderNumber++, new Object[]{
+                        new Document("clientOrderId",eachOrder.getClientOrderId()),
+                        new Document("symbol",eachOrder.getSymbol()),
+                        new Document("updateTime",eachOrder.getTime()),
+                        new Document("origQty",eachOrder.getOrigQty()),
+                        new Document("origQuoteOrderQty",eachOrder.getCummulativeQuoteQty()),
+                        new Document("executedQty",eachOrder.getExecutedQty()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("time",eachOrder.getTime()),
+                        new Document("orderId",eachOrder.getOrderId()),
+                        new Document("status",eachOrder.getStatus()),
+                        new Document("stopPrice",eachOrder.getStopPrice())
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+
+        /*
+
+        bilaxy
+
+         */
+
+        com.example.nctai_trading.bilaxy.bilaxyMethods.transactionRequests bilaxyTransactionRequests = bilaxyMethods.new transactionRequests();
+
+        List<com.example.nctai_trading.bilaxy.bilaxyRecentTransaction> bilaxyTrades = bilaxyTransactionRequests.getRecentTransactions("symbol",100);
+
+        /*
+
+        binance
+
+         */
+
+        com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
+
+        basicDBObject.append("exchange","binance");
+
+        for(String eachCurrency : currencyInfo.currList.values()) {
+
+            List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllAccountOrders(eachCurrency);
+            if(binanceOrders.size() > 0){
+                for(com.example.nctai_trading.binance.binanceOrderListOrder eachOrder : binanceOrders){
+                    if(eachOrder.getStatus().equalsIgnoreCase("open")){
+                        eachOrderObj.append("" + orderNumber++, new Object[]{
+                                new Document("clientOrderId",eachOrder.getClientOrderId()),
+                                new Document("symbol",eachOrder.getSymbol()),
+                                new Document("updateTime",eachOrder.getUpdateTime()),
+                                new Document("origQty",eachOrder.getOrigQty()),
+                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                                new Document("executedQty",eachOrder.getExecutedQty()),
+                                new Document("side",eachOrder.getSide()),
+                                new Document("type",eachOrder.getType()),
+                                new Document("price",eachOrder.getPrice()),
+                                new Document("time",eachOrder.getTime()),
+                                new Document("orderId",eachOrder.getOrderId()),
+                                new Document("status",eachOrder.getStatus()),
+                                new Document("stopPrice",eachOrder.getStopPrice())
+                        });
+                    }
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        binanceUS
+
+         */
+
+        basicDBObject.append("exchange","binanceUS");
+
+        com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethodsUS.new orderRequests();
+
+        List<com.example.nctai_trading.binanceUS.binanceOrderListOrder> binanceUSOrders = binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
+
+        for(String eachCurrency : currencyInfo.currList.values()) {
+
+            if(binanceUSOrders.size() > 0){
+                for(com.example.nctai_trading.binanceUS.binanceOrderListOrder eachOrder : binanceUSOrders){
+                    if(eachOrder.getStatus().equalsIgnoreCase("open")){
+                        eachOrderObj.append("" + orderNumber++, new Object[]{
+                                new Document("clientOrderId",eachOrder.getClientOrderId()),
+                                new Document("symbol",eachOrder.getSymbol()),
+                                new Document("updateTime",eachOrder.getUpdateTime()),
+                                new Document("origQty",eachOrder.getOrigQty()),
+                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                                new Document("executedQty",eachOrder.getExecutedQty()),
+                                new Document("side",eachOrder.getSide()),
+                                new Document("type",eachOrder.getType()),
+                                new Document("price",eachOrder.getPrice()),
+                                new Document("time",eachOrder.getTime()),
+                                new Document("orderId",eachOrder.getOrderId()),
+                                new Document("status",eachOrder.getStatus()),
+                                new Document("stopPrice",eachOrder.getStopPrice())
+                        });
+                    }
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        bitcoincom
+
+         */
+
+        com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bitforex
+
+         */
+
+        com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bithumb
+
+         */
+
+        com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordRequests = bithumbMethods.new tradeRecordRequests();
+
+        //List<com.example.nctai_trading.bithumb.bithumbmyTrades> bithumbmyTrades = bithumbTradeRecordRequests.getMyTradeRecords("BTC"); // provide symbol or implement trade records with no symbol
+
+        basicDBObject.append("exchange","bithumb");
+
+        for(String eachCurrency : currencyInfo.currList.values()){
+            List<com.example.nctai_trading.bithumb.bithumbOpenOrder> bithumbmyTrades = bithumbTradeRecordRequests.getOpenOrders(eachCurrency);
+            if(bithumbmyTrades.size() > 0){
+                for(com.example.nctai_trading.bithumb.bithumbOpenOrder eachTrade: bithumbmyTrades){
+                    for(com.example.nctai_trading.bithumb.bithumbOpenOrderList tradeData : eachTrade.getData().getList()){
+                            eachOrderObj.append("" + orderNumber++, new Object[]{
+                                    new Document("origQty",tradeData.getQuantity()),
+                                    new Document("orderId",tradeData.getOrderId()),
+                                    new Document("time",tradeData.getCreateTime()),
+                                    new Document("side",tradeData.getType()),
+                                    new Document("price",tradeData.getPrice()),
+                                    new Document("direction",tradeData.getSide())
+                            });
+                    }
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        bitMex
+
+         */
+
+        com.example.nctai_trading.bitMEX.bitmexMethods.fundingRequests bitmexfunding = bitmexMethods.new fundingRequests();
+
+        // implement getting order information
+
+        /*
+
+        bitrue
+
+         */
+
+        com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+
+        // implement getting order information
+
+
+        /*
+
+        bittrex
+
+         */
+
+        basicDBObject.append("exchange","bittrex");
+
+        bittrexExchange.getOpenOrders("US");
+
+        List<com.example.nctai_trading.bittrex.Order> bittrexOrders = (List<com.example.nctai_trading.bittrex.Order>)(bittrexExchange.getOpenOrders("US")).body();
+
+        for(com.example.nctai_trading.bittrex.Order eachOrder : bittrexOrders){
+            if(eachOrder.getClosed() != null){
+                if(eachOrder.getType().equalsIgnoreCase("buy")){
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+
+                            new Document("accountId",eachOrder.getAccountId()),
+                            new Document("orderId",eachOrder.getId()),
+                            new Document("price",eachOrder.getPrice()),
+                            new Document("origQty",eachOrder.getQuantity()),
+                            new Document("symbol",eachOrder.getExchange())
+
+                    });
+                }
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        bkex
+
+         */
+
+        com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrderRequests = bkexMethods.new orderRequests();
+
+        com.example.nctai_trading.bkex.orderHistory.orderHistoryResponse bkexFinishedOrders = bkexOrderRequests.getAllOpenOrders();
+
+        basicDBObject.append("exchange","bkex");
+
+        for(com.example.nctai_trading.bkex.orderHistory.orderHistoryDatum eachOrder : bkexFinishedOrders.getData().getData()){
+            if(eachOrder.getDirection().equalsIgnoreCase("buy")){
+                eachOrderObj.append("" + orderNumber++, new Object[]{
+                        new Document("orderId",eachOrder.getId()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("origQty",eachOrder.getDealAmount()),
+                        new Document("symbol",eachOrder.getPair()),
+                        new Document("type",eachOrder.getOrderType())
+
+                });
+
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        btse
+
+         */
+
+        com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        bybit
+
+         */
+
+        com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitOrderRequests = bybitMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        coinbasePro
+
+         */
+
+        com.example.nctai_trading.coinbasePro.coinbaseProMethods.orderRequests coinbaseProOrderRequests = coinbaseProMethods.new orderRequests();
+
+        List<com.example.nctai_trading.coinbasePro.coinbaseOpenOrderListOrder> coinbaseProOrders = coinbaseProOrderRequests.getOpenOrderList();
+
+        basicDBObject.append("exchange","coinbasePro");
+
+        for(com.example.nctai_trading.coinbasePro.coinbaseOpenOrderListOrder eachOrder : coinbaseProOrders){
+            if(!eachOrder.getSettled()){
+                eachOrderObj.append("" + orderNumber++, new Object[]{
+                        new Document("orderId",eachOrder.getId()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("size",eachOrder.getSize()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("time",eachOrder.getCreatedAt()),
+                        new Document("executed_value",eachOrder.getExecutedValue())
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+
+
+        /*
+
+        digifinex
+
+         */
+
+        com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digiFinexOrderRequests = digifinexMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        huobi
+
+         */
+
+        hbdmswapRestApiV1.futureContractHisorders("contractcode","tradeType","type","status","createDate","pageIndex","pageSize");
+
+        /*
+
+        idcm
+
+         */
+
+        com.example.nctai_trading.idcm.idcmMethods.orderRequests idcmOrderRequests = idcmMethods.new orderRequests();
+
+        // implement getting order information
+
+        /*
+
+        interactive brokers
+
+         */
+
+        interactiveBrokersMethods interactiveBrokersMethods = new interactiveBrokersMethods("","");
+
+        // implement getting order information
+
+        /*
+
+        kite
+
+         */
+
+        List<com.example.nctai_trading.kiteConnect.Order> kiteOrders = kiteConnect.getOrders();
+
+        basicDBObject.append("exchange","kiteconnect");
+
+        for(com.example.nctai_trading.kiteConnect.Order eachOrder : kiteOrders){
+            if(eachOrder.status.toLowerCase().charAt(0) == 'o'){
+                eachOrderObj.append("" + orderNumber++,new Object[]{
+
+                        new Document("accountId", eachOrder.accountId),
+                        new Document("orderId",eachOrder.orderId),
+                        new Document("time",eachOrder.orderTimestamp),
+                        new Document("symbol",eachOrder.symbol),
+                        new Document("price",eachOrder.price),
+                        new Document("origQty",eachOrder.filledQuantity),
+                        new Document("type",eachOrder.orderType),
+
+                });
+            }
+        }
+        basicDBObject.append("orders",eachOrderObj);
+        pastOrderCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+        /*
+
+        kraken
+
+         */
+
+        krakenApi.queryPrivate(KrakenApi.Method.TRADES_HISTORY);
+
+        /*
+
+        wbf
+
+         */
+
+        com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
+
+        wbfTransactionRequests.getTransactionRecords("symbol");
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void followParticleCommand() throws KiteException, NoSuchAlgorithmException, IOException, JSONException, HttpException, InvalidKeyException {
 
         String[] fields = getDataReceived().split(" ");
@@ -694,6 +1174,9 @@ public class exchangeInterface {
         if(fields[0].equalsIgnoreCase("all") && fields[1].equalsIgnoreCase("ex")){
             if(fields[2].equals("HISTORY")){
                 collectPastOrders();
+            }
+            else if(fields[2].equalsIgnoreCase("open_orders")){
+                collectOpenOrders();
             }
         }
 
