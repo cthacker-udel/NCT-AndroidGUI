@@ -76,6 +76,7 @@ public class particleService extends Service {
         return START_REDELIVER_INTENT;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();

@@ -1166,17 +1166,27 @@ public class exchangeInterface {
 
     }
 
+    public void collectAccountInformation(){
+
+
+
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void followParticleCommand() throws KiteException, NoSuchAlgorithmException, IOException, JSONException, HttpException, InvalidKeyException {
 
         String[] fields = getDataReceived().split(" ");
 
         if(fields[0].equalsIgnoreCase("all") && fields[1].equalsIgnoreCase("ex")){
-            if(fields[2].equals("HISTORY")){
+            if(fields[2].equalsIgnoreCase("HISTORY")){
                 collectPastOrders();
             }
             else if(fields[2].equalsIgnoreCase("open_orders")){
                 collectOpenOrders();
+            }
+            else if(fields[2].equalsIgnoreCase("collect")){
+                collectAccountInformation();
             }
         }
 
