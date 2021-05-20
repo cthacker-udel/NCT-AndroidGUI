@@ -1169,6 +1169,12 @@ public class exchangeInterface {
     public void collectAccountInformation(){
 
 
+        com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+        com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
+        com.example.nctai_trading.bidesk.domain.account.Account biDeskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
+        com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyAccountRequests = bilaxyMethods.new interfaceRequests();
+        // update binance/us folder with api made
+
 
 
     }
