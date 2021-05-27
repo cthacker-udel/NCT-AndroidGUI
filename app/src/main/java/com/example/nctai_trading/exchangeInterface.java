@@ -31,7 +31,7 @@ import com.example.nctai_trading.bybit.bybitMethods;
 import com.example.nctai_trading.coinbasePro.coinbaseProMethods;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.exante.exanteMethods;
-import com.example.nctai_trading.huobiApi2.api.HbdmswapRestApiV1;
+import com.example.nctai_trading.huobi.Client.HuobiClient;
 import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.interactiveBrokers.interactiveBrokersMethods;
 import com.example.nctai_trading.kiteConnect.KiteConnect;
@@ -169,7 +169,7 @@ public class exchangeInterface {
 
     //com.example.nctai_trading.exante.exanteMethods exanteMethods = new exanteMethods(sharedPreferences.getString("exanteApiKey",""),sharedPreferences.getString("exanteSecretKey",""));
 
-    com.example.nctai_trading.huobiApi2.api.HbdmswapRestApiV1 hbdmswapRestApiV1 = new HbdmswapRestApiV1("https://api.huobi.us/v1",sharedPreferences.getString("huobiApiKey",""),sharedPreferences.getString("huobiSecretKey",""));
+    com.example.nctai_trading.huobi.Client.HuobiClient huobiClient = new HuobiClient(sharedPreferences.getString("huobiApiKey",""),sharedPreferences.getString("huobiSecretKey",""));
 
     com.example.nctai_trading.idcm.idcmMethods idcmMethods = new idcmMethods(sharedPreferences.getString("idcmApiKey",""),sharedPreferences.getString("idcmSecretKey",""));
 
@@ -607,7 +607,7 @@ public class exchangeInterface {
 
          */
 
-        hbdmswapRestApiV1.futureContractHisorders("contractcode","tradeType","type","status","createDate","pageIndex","pageSize");
+        com.example.nctai_trading.huobi.Controller.AccountAPI.PositionInformation.AccountPositionInformation getOrders = huobiClient.queryUserPositionInformation(huobiClient);
 
         /*
 
@@ -1073,7 +1073,7 @@ public class exchangeInterface {
 
          */
 
-        hbdmswapRestApiV1.futureContractHisorders("contractcode","tradeType","type","status","createDate","pageIndex","pageSize");
+        com.example.nctai_trading.huobi.Controller.AccountAPI.PositionInformation.AccountPositionInformation getOrders = huobiClient.queryUserPositionInformation(huobiClient);
 
         /*
 
