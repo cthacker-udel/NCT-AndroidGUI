@@ -17,7 +17,7 @@ import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
-import com.example.nctai_trading.binance.binanceMethods;
+import com.example.nctai_trading.binance.Client.BinanceClient;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
@@ -141,9 +141,9 @@ public class exchangeInterface {
 
     com.example.nctai_trading.bilaxy.bilaxyMethods bilaxyMethods = new bilaxyMethods(sharedPreferences.getString("bilaxyApiKey",""),sharedPreferences.getString("bilaxyApiKey",""));
 
-    com.example.nctai_trading.binance.binanceMethods binanceMethods = new binanceMethods(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceApiKey",""));
+    com.example.nctai_trading.binance.Client.BinanceClient binanceMethods = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
 
-    com.example.nctai_trading.binanceUS.binanceMethods binanceMethodsUS = new com.example.nctai_trading.binanceUS.binanceMethods(sharedPreferences.getString("binanceUSApiKey",""),sharedPreferences.getString("binanceUSApiKey",""));
+    com.example.nctai_trading.binanceUS.Client.BinanceClient binanceUSMethods = new com.example.nctai_trading.binanceUS.Client.BinanceClient(sharedPreferences.getString("binanceUSApiKey",""),sharedPreferences.getString("binanceUSSecretKey",""));
 
     com.example.nctai_trading.bitcoincom.bitcoincomMethods bitcoincomMethods = new bitcoincomMethods(sharedPreferences.getString("bitcoincomApiKey",""),sharedPreferences.getString("bitcoincomApiKey",""));
 
@@ -343,35 +343,31 @@ public class exchangeInterface {
 
          */
 
-        com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
+        List<com.example.nctai_trading.binance.Controller.AccountAPI.Order> binanceOrders = binanceMethods.getListOfAllOrders(binanceMethods);
 
         basicDBObject.append("exchange","binance");
-
-        for(String eachCurrency : currencyInfo.currList.values()) {
-
-            List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllAccountOrders(eachCurrency);
-            if(binanceOrders.size() > 0){
-                for(com.example.nctai_trading.binance.binanceOrderListOrder eachOrder : binanceOrders){
-                    if(eachOrder.getStatus().equalsIgnoreCase("filled")){
-                        eachOrderObj.append("" + orderNumber++, new Object[]{
-                                new Document("clientOrderId",eachOrder.getClientOrderId()),
-                                new Document("symbol",eachOrder.getSymbol()),
-                                new Document("updateTime",eachOrder.getUpdateTime()),
-                                new Document("origQty",eachOrder.getOrigQty()),
-                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
-                                new Document("executedQty",eachOrder.getExecutedQty()),
-                                new Document("side",eachOrder.getSide()),
-                                new Document("type",eachOrder.getType()),
-                                new Document("price",eachOrder.getPrice()),
-                                new Document("time",eachOrder.getTime()),
-                                new Document("orderId",eachOrder.getOrderId()),
-                                new Document("status",eachOrder.getStatus()),
-                                new Document("stopPrice",eachOrder.getStopPrice())
-                        });
-                    }
+        if(binanceOrders.size() > 0){
+            for(com.example.nctai_trading.binance.Controller.AccountAPI.Order eachOrder : binanceOrders){
+                if(eachOrder.getStatus().equalsIgnoreCase("filled")){
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("clientOrderId",eachOrder.getClientOrderId()),
+                            new Document("symbol",eachOrder.getSymbol()),
+                            new Document("updateTime",eachOrder.getUpdateTime()),
+                            new Document("origQty",eachOrder.getOrigQty()),
+                            new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                            new Document("executedQty",eachOrder.getExecutedQty()),
+                            new Document("side",eachOrder.getSide()),
+                            new Document("type",eachOrder.getType()),
+                            new Document("price",eachOrder.getPrice()),
+                            new Document("time",eachOrder.getTime()),
+                            new Document("orderId",eachOrder.getOrderId()),
+                            new Document("status",eachOrder.getStatus()),
+                            new Document("stopPrice",eachOrder.getStopPrice())
+                    });
                 }
             }
-        }
+            }
+
         basicDBObject.append("orders",eachOrderObj);
         pastOrderCollection.insertOne(new Document(basicDBObject));
         resetDBObjects();
@@ -382,36 +378,31 @@ public class exchangeInterface {
 
          */
 
+        List<com.example.nctai_trading.binanceUS.Controller.AccountAPI.Order> binanceUSOrders = binanceUSMethods.getListOfAllOrders(binanceUSMethods);
+
         basicDBObject.append("exchange","binanceUS");
-
-        com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethodsUS.new orderRequests();
-
-        List<com.example.nctai_trading.binanceUS.binanceOrderListOrder> binanceUSOrders = binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
-
-        for(String eachCurrency : currencyInfo.currList.values()) {
-
-            if(binanceUSOrders.size() > 0){
-                for(com.example.nctai_trading.binanceUS.binanceOrderListOrder eachOrder : binanceUSOrders){
-                    if(eachOrder.getStatus().equalsIgnoreCase("filled")){
-                        eachOrderObj.append("" + orderNumber++, new Object[]{
-                                new Document("clientOrderId",eachOrder.getClientOrderId()),
-                                new Document("symbol",eachOrder.getSymbol()),
-                                new Document("updateTime",eachOrder.getUpdateTime()),
-                                new Document("origQty",eachOrder.getOrigQty()),
-                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
-                                new Document("executedQty",eachOrder.getExecutedQty()),
-                                new Document("side",eachOrder.getSide()),
-                                new Document("type",eachOrder.getType()),
-                                new Document("price",eachOrder.getPrice()),
-                                new Document("time",eachOrder.getTime()),
-                                new Document("orderId",eachOrder.getOrderId()),
-                                new Document("status",eachOrder.getStatus()),
-                                new Document("stopPrice",eachOrder.getStopPrice())
-                        });
-                    }
+        if(binanceOrders.size() > 0){
+            for(com.example.nctai_trading.binanceUS.Controller.AccountAPI.Order eachOrder : binanceUSOrders){
+                if(eachOrder.getStatus().equalsIgnoreCase("filled")){
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("clientOrderId",eachOrder.getClientOrderId()),
+                            new Document("symbol",eachOrder.getSymbol()),
+                            new Document("updateTime",eachOrder.getUpdateTime()),
+                            new Document("origQty",eachOrder.getOrigQty()),
+                            new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                            new Document("executedQty",eachOrder.getExecutedQty()),
+                            new Document("side",eachOrder.getSide()),
+                            new Document("type",eachOrder.getType()),
+                            new Document("price",eachOrder.getPrice()),
+                            new Document("time",eachOrder.getTime()),
+                            new Document("orderId",eachOrder.getOrderId()),
+                            new Document("status",eachOrder.getStatus()),
+                            new Document("stopPrice",eachOrder.getStopPrice())
+                    });
                 }
             }
         }
+
         basicDBObject.append("orders",eachOrderObj);
         pastOrderCollection.insertOne(new Document(basicDBObject));
         resetDBObjects();
@@ -822,33 +813,27 @@ public class exchangeInterface {
 
          */
 
-        com.example.nctai_trading.binance.binanceMethods.orderRequests binanceOrderRequests = binanceMethods.new orderRequests();
+        List<com.example.nctai_trading.binance.Controller.AccountAPI.OpenOrder> openOrders =  binanceMethods.getCurrentOpenOrders(binanceMethods);
 
         basicDBObject.append("exchange","binance");
 
-        for(String eachCurrency : currencyInfo.currList.values()) {
-
-            List<com.example.nctai_trading.binance.binanceOrderListOrder> binanceOrders = binanceOrderRequests.getAllAccountOrders(eachCurrency);
-            if(binanceOrders.size() > 0){
-                for(com.example.nctai_trading.binance.binanceOrderListOrder eachOrder : binanceOrders){
-                    if(eachOrder.getStatus().equalsIgnoreCase("open")){
-                        eachOrderObj.append("" + orderNumber++, new Object[]{
-                                new Document("clientOrderId",eachOrder.getClientOrderId()),
-                                new Document("symbol",eachOrder.getSymbol()),
-                                new Document("updateTime",eachOrder.getUpdateTime()),
-                                new Document("origQty",eachOrder.getOrigQty()),
-                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
-                                new Document("executedQty",eachOrder.getExecutedQty()),
-                                new Document("side",eachOrder.getSide()),
-                                new Document("type",eachOrder.getType()),
-                                new Document("price",eachOrder.getPrice()),
-                                new Document("time",eachOrder.getTime()),
-                                new Document("orderId",eachOrder.getOrderId()),
-                                new Document("status",eachOrder.getStatus()),
-                                new Document("stopPrice",eachOrder.getStopPrice())
-                        });
-                    }
-                }
+        if(openOrders.size() > 0){
+            for(com.example.nctai_trading.binance.Controller.AccountAPI.OpenOrder eachOrder : openOrders){
+                    eachOrderObj.append("" + orderNumber++, new Object[]{
+                            new Document("clientOrderId",eachOrder.getClientOrderId()),
+                            new Document("symbol",eachOrder.getSymbol()),
+                            new Document("updateTime",eachOrder.getUpdateTime()),
+                            new Document("origQty",eachOrder.getOrigQty()),
+                            new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                            new Document("executedQty",eachOrder.getExecutedQty()),
+                            new Document("side",eachOrder.getSide()),
+                            new Document("type",eachOrder.getType()),
+                            new Document("price",eachOrder.getPrice()),
+                            new Document("time",eachOrder.getTime()),
+                            new Document("orderId",eachOrder.getOrderId()),
+                            new Document("status",eachOrder.getStatus()),
+                            new Document("stopPrice",eachOrder.getStopPrice())
+                    });
             }
         }
         basicDBObject.append("orders",eachOrderObj);
@@ -863,32 +848,25 @@ public class exchangeInterface {
 
         basicDBObject.append("exchange","binanceUS");
 
-        com.example.nctai_trading.binanceUS.binanceMethods.orderRequests binanceUSOrderRequests = binanceMethodsUS.new orderRequests();
+        List<com.example.nctai_trading.binanceUS.Controller.AccountAPI.OpenOrder> openUSOrders =  binanceUSMethods.getCurrentOpenOrders(binanceUSMethods);
 
-        List<com.example.nctai_trading.binanceUS.binanceOrderListOrder> binanceUSOrders = binanceUSOrderRequests.getAllOpenOrdersNoSymbol();
-
-        for(String eachCurrency : currencyInfo.currList.values()) {
-
-            if(binanceUSOrders.size() > 0){
-                for(com.example.nctai_trading.binanceUS.binanceOrderListOrder eachOrder : binanceUSOrders){
-                    if(eachOrder.getStatus().equalsIgnoreCase("open")){
-                        eachOrderObj.append("" + orderNumber++, new Object[]{
-                                new Document("clientOrderId",eachOrder.getClientOrderId()),
-                                new Document("symbol",eachOrder.getSymbol()),
-                                new Document("updateTime",eachOrder.getUpdateTime()),
-                                new Document("origQty",eachOrder.getOrigQty()),
-                                new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
-                                new Document("executedQty",eachOrder.getExecutedQty()),
-                                new Document("side",eachOrder.getSide()),
-                                new Document("type",eachOrder.getType()),
-                                new Document("price",eachOrder.getPrice()),
-                                new Document("time",eachOrder.getTime()),
-                                new Document("orderId",eachOrder.getOrderId()),
-                                new Document("status",eachOrder.getStatus()),
-                                new Document("stopPrice",eachOrder.getStopPrice())
-                        });
-                    }
-                }
+        if(openOrders.size() > 0){
+            for(com.example.nctai_trading.binance.Controller.AccountAPI.OpenOrder eachOrder : openOrders){
+                eachOrderObj.append("" + orderNumber++, new Object[]{
+                        new Document("clientOrderId",eachOrder.getClientOrderId()),
+                        new Document("symbol",eachOrder.getSymbol()),
+                        new Document("updateTime",eachOrder.getUpdateTime()),
+                        new Document("origQty",eachOrder.getOrigQty()),
+                        new Document("origQuoteOrderQty",eachOrder.getOrigQuoteOrderQty()),
+                        new Document("executedQty",eachOrder.getExecutedQty()),
+                        new Document("side",eachOrder.getSide()),
+                        new Document("type",eachOrder.getType()),
+                        new Document("price",eachOrder.getPrice()),
+                        new Document("time",eachOrder.getTime()),
+                        new Document("orderId",eachOrder.getOrderId()),
+                        new Document("status",eachOrder.getStatus()),
+                        new Document("stopPrice",eachOrder.getStopPrice())
+                });
             }
         }
         basicDBObject.append("orders",eachOrderObj);

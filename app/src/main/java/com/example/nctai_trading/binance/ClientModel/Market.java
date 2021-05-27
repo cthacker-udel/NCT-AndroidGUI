@@ -1,6 +1,6 @@
 package com.example.nctai_trading.binance.ClientModel;
 
-import Client.BinanceClient;
+import com.example.nctai_trading.binance.Client.BinanceClient;
 
 import java.util.HashMap;
 import java.util.Map;
