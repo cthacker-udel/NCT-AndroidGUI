@@ -5,6 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
+import com.example.nctai_trading.bitforex.AccountAsset.AccountAssets;
+import com.example.nctai_trading.huobi.ClientModel.Account;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +15,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Interceptor;
@@ -77,6 +80,32 @@ public class bitforexMethods {
         return Instant.now().getEpochSecond();
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<AccountAssets> getAccountAssets() throws IOException {
+
+        String url = baseUrl + "/api/v1/fund/allAccount/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        accountInterface accountInterface = retrofit.create(com.example.nctai_trading.bitforex.accountInterface.class);
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("accessKey",apiKey);
+        params.put("nonce",getTimeStamp());
+        String signature = generateSignaturePOST("/api/v1/fund/allAccount",params);
+
+        Call<List<AccountAssets>> call = accountInterface.getAccountAssets(apiKey,(Long)params.get("nonce"),signature);
+
+        Response<List<AccountAssets>> response = call.execute();
+
+        return response.body();
+
+    }
+
 
 
     public class symbolRequests{

@@ -5,6 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
+import com.example.nctai_trading.bitrue.accountOrder.accountOrder;
+import com.example.nctai_trading.bitrue.accountTradeList.accountTrade;
 import com.example.nctai_trading.bitrue.orderBook.marketDataOrderBook;
 import com.example.nctai_trading.bitrue.recentTrades.marketDataRecentTrades;
 
@@ -13,7 +15,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -83,6 +87,8 @@ public class bitrueMethods {
     public Long getTimestamp(){
         return Instant.now().getEpochSecond();
     }
+
+
 
 
     public class serverRequests{
@@ -232,6 +238,54 @@ public class bitrueMethods {
             Call<bitrueOrderResponse> call = orderInterface.placeOrder(apiKey,symbol,side,type,quantity,timestamp,generateSignature(generateQueryString(queryParams,timestamp)));
 
             Response<bitrueOrderResponse> response = call.execute();
+
+            return response.body();
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<accountTrade> getAccountTradeList() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/api/v1/myTrades/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.bitrue.orderInterface.class);
+
+            Long timestamp = synchronize();
+
+            Map<String,Object> queries = new HashMap<>();
+
+            Call<List<accountTrade>>  call =  orderInterface.getAccountTradeList(apiKey,timestamp,generateSignature(generateQueryString(queries,timestamp)));
+
+            Response<List<accountTrade>> response = call.execute();
+
+            return response.body();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public List<accountOrder> getAllOrders(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/api/v1/allOrders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.bitrue.orderInterface.class);
+
+            Long timestamp = synchronize();
+
+            Map<String,Object> queries = new HashMap<>();
+            queries.put("symbol",symbol);
+
+            Call<List<accountOrder>> call = orderInterface.getAccountOrders(apiKey,timestamp,symbol,generateSignature(generateQueryString(queries,timestamp)));
+
+            Response<List<accountOrder>> response = call.execute();
 
             return response.body();
 

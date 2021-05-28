@@ -1,5 +1,8 @@
 package com.example.nctai_trading.bkex;
 
+import com.example.nctai_trading.bkex.account.DepositRecord.depositRecord;
+import com.example.nctai_trading.bkex.account.WalletBalance.walletBalance;
+import com.example.nctai_trading.bkex.account.WithdrawRecord.withdrawRecord;
 import com.example.nctai_trading.bkex.order.placeOrderResponse;
 
 import java.util.Map;
@@ -23,4 +26,14 @@ public interface bkexOrderInterface {
 
     @GET("https://api.bkex.com/v1/u/trade/order/listUnfinished")
     Call<Object> getOpenOrders(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
+
+    @GET("https://api.bkex.com/v1/u/wallet/balance")
+    Call<walletBalance> getAccountWalletBalance(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
+
+    @GET("https://api.bkex.com/v1/u/wallet/depositRecord")
+    Call<depositRecord> getAccountWalletDepositRecord(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
+
+    @GET("https://api.bkex.com/v1/u/wallet/withdrawRecord")
+    Call<withdrawRecord> getAccountWithdrawRecord(@Header("X_ACCESS_KEY") String apiKey, @Header("X_SIGNATURE") String signature);
+
 }

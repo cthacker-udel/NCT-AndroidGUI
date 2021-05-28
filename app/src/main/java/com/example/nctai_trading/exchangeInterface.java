@@ -25,6 +25,9 @@ import com.example.nctai_trading.bithumb.bithumbMethods;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bittrex.ApiKeySecret;
 import com.example.nctai_trading.bittrex.BittrexExchange;
+import com.example.nctai_trading.bittrexV2.BittrexClient;
+import com.example.nctai_trading.bittrexV2.Controller.accountOrderHistory.Result;
+import com.example.nctai_trading.bittrexV2.Controller.accountOrderHistory.accountOrder;
 import com.example.nctai_trading.bkex.bkexMethods;
 import com.example.nctai_trading.btse.btseMethods;
 import com.example.nctai_trading.bybit.bybitMethods;
@@ -155,7 +158,7 @@ public class exchangeInterface {
 
     com.example.nctai_trading.bitrue.bitrueMethods bitrueMethods = new bitrueMethods(sharedPreferences.getString("bitrueApiKey",""),sharedPreferences.getString("bitrueSecretKey",""));
 
-    com.example.nctai_trading.bittrex.BittrexExchange bittrexExchange = new BittrexExchange(sharedPreferences.getString("bittrexApiKey",""),sharedPreferences.getString("bittrexSecretKey",""));
+    com.example.nctai_trading.bittrexV2.BittrexClient bittrexMethods = new BittrexClient(sharedPreferences.getString("bittrexApiKey",""),sharedPreferences.getString("bittrexSecretKey",""));
 
     com.example.nctai_trading.bkex.bkexMethods bkexMethods = new bkexMethods(sharedPreferences.getString("bkexApiKey",""),sharedPreferences.getString("bkexSecretKey",""));
 
@@ -491,15 +494,15 @@ public class exchangeInterface {
 
         basicDBObject.append("exchange","bittrex");
 
-        List<com.example.nctai_trading.bittrex.Order> bittrexOrders = (List<com.example.nctai_trading.bittrex.Order>)(bittrexExchange.getOrderHistoryNoArg(new ApiKeySecret(sharedPreferences.getString("bittrexApiKey",""),sharedPreferences.getString("bittrexSecretKey","")))).body();
+        accountOrder bittrexOrders = bittrexMethods.getAccountOrderHistory(bittrexMethods);
 
-        for(com.example.nctai_trading.bittrex.Order eachOrder : bittrexOrders){
-            if(eachOrder.getClosed() != null){
-                if(eachOrder.getType().equalsIgnoreCase("buy")){
+        List<Result> bittrexOrderResults = bittrexOrders.getResult();
+
+        for(Result eachOrder : bittrexOrderResults){
+            if(eachOrder.getClosed().length() > 6){
+                if(eachOrder.getOrderType().equalsIgnoreCase("buy")){
                     eachOrderObj.append("" + orderNumber++, new Object[]{
-
-                            new Document("accountId",eachOrder.getAccountId()),
-                            new Document("orderId",eachOrder.getId()),
+                            new Document("orderId",eachOrder.getOrderUuid()),
                             new Document("price",eachOrder.getPrice()),
                             new Document("origQty",eachOrder.getQuantity()),
                             new Document("symbol",eachOrder.getExchange())
@@ -955,17 +958,15 @@ public class exchangeInterface {
 
         basicDBObject.append("exchange","bittrex");
 
-        bittrexExchange.getOpenOrders("US");
+        accountOrder bittrexOrders = bittrexMethods.getAccountOrderHistory(bittrexMethods);
 
-        List<com.example.nctai_trading.bittrex.Order> bittrexOrders = (List<com.example.nctai_trading.bittrex.Order>)(bittrexExchange.getOpenOrders("US")).body();
+        List<Result> bittrexOrderResults = bittrexOrders.getResult();
 
-        for(com.example.nctai_trading.bittrex.Order eachOrder : bittrexOrders){
-            if(eachOrder.getClosed() != null){
-                if(eachOrder.getType().equalsIgnoreCase("buy")){
+        for(Result eachOrder : bittrexOrderResults){
+            if(eachOrder.getClosed().length() < 6){
+                if(eachOrder.getOrderType().equalsIgnoreCase("buy")){
                     eachOrderObj.append("" + orderNumber++, new Object[]{
-
-                            new Document("accountId",eachOrder.getAccountId()),
-                            new Document("orderId",eachOrder.getId()),
+                            new Document("orderId",eachOrder.getOrderUuid()),
                             new Document("price",eachOrder.getPrice()),
                             new Document("origQty",eachOrder.getQuantity()),
                             new Document("symbol",eachOrder.getExchange())
@@ -1144,14 +1145,26 @@ public class exchangeInterface {
 
     }
 
-    public void collectAccountInformation(){
+    public void collectAccountInformation() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
 
         com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
         com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
         com.example.nctai_trading.bidesk.domain.account.Account biDeskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
         com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyAccountRequests = bilaxyMethods.new interfaceRequests();
-        // update binance/us folder with api made
+        binanceMethods.getAccountInformation(binanceMethods);
+        binanceUSMethods.getAccountInformation(binanceUSMethods);
+        List<com.example.nctai_trading.bitforex.AccountAsset.AccountAssets> bitForexAccountAssets = bitforexMethods.getAccountAssets();
+        com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordReq = bithumbMethods.new tradeRecordRequests();
+        bitmexMethods.getAccountWalletHistory();
+        com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueorder = bitrueMethods.new orderRequests();
+        bitrueorder.getAccountTradeList();
+        bittrexMethods.getAccountBalances(bittrexMethods);
+        com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrder = bkexMethods.new orderRequests();
+        bkexOrder.getAccountBalance();
+        bkexOrder.getDepositRecord();
+        bkexOrder.getWithdrawRecord();
+
 
 
 

@@ -14,4 +14,9 @@ public interface bitmexExecutionInterface {
     @GET("https://www.bitmex.com/api/v1/execution/tradeHistory")
     Call<List<bitmexRawExecution>> getExecutionTradeHistory(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
+    @GET("https://www.bitmex.com/api/v1/user/executionHistory")
+    Call<List<bitmexRawExecution>> getAccountExecutionHistory(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
+
+    @GET("https://www.bitmex.com/api/v1/user/walletHistory")
+    Call<List<userWalletHistory>> getAccountWalletHistory(@Header("api-expires") String timestamp, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 }

@@ -5,6 +5,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
+import com.example.nctai_trading.bkex.account.DepositRecord.depositRecord;
+import com.example.nctai_trading.bkex.account.WalletBalance.walletBalance;
+import com.example.nctai_trading.bkex.account.WithdrawRecord.withdrawRecord;
 import com.example.nctai_trading.bkex.order.placeOrderResponse;
 import com.example.nctai_trading.bkex.orderHistory.orderHistoryResponse;
 
@@ -171,6 +174,70 @@ public class bkexMethods {
 
 
         }
+
+        public walletBalance getAccountBalance() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/v1/u/wallet/balance/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            String signature = getSignature("");
+
+            Call<walletBalance> call = bkexOrderInterface.getAccountWalletBalance(apikey,signature);
+
+            Response<walletBalance> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public depositRecord getDepositRecord() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/v1/u/wallet/depositRecord/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            String signature = getSignature("");
+
+            Call<depositRecord> call = bkexOrderInterface.getAccountWalletDepositRecord(apikey,signature);
+
+            Response<depositRecord> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public withdrawRecord getWithdrawRecord() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/v1/u/wallet/withdrawRecord/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bkexOrderInterface bkexOrderInterface = retrofit.create(com.example.nctai_trading.bkex.bkexOrderInterface.class);
+
+            String signature = getSignature("");
+
+            Call<withdrawRecord> call = bkexOrderInterface.getAccountWithdrawRecord(apikey,signature);
+
+            Response<withdrawRecord> response = call.execute();
+
+            return response.body();
+
+        }
+
 
     }
 

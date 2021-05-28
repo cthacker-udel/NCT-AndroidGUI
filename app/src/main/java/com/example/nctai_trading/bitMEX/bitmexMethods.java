@@ -98,10 +98,51 @@ public class bitmexMethods {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<bitmexRawExecution> getAccountExecutionHistory() throws IOException {
+        String url = baseUrl + "/user/executionHistory";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        bitmexExecutionInterface bitmexExecutionInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexExecutionInterface.class);
+
+        String timestamp = getTimeStamp();
+        Call<List<bitmexRawExecution>> call = bitmexExecutionInterface.getAccountExecutionHistory(timestamp, apikey, generateSignature("GET", "/user/executionHistory", timestamp, ""));
+
+        Response<List<bitmexRawExecution>> response = call.execute();
+
+        return response.body();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public List<userWalletHistory> getAccountWalletHistory() throws IOException {
+        String url = baseUrl + "/user/walletHistory";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        bitmexExecutionInterface bitmexExecutionInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexExecutionInterface.class);
+
+        String timestamp = getTimeStamp();
+        Call<List<userWalletHistory>> call = bitmexExecutionInterface.getAccountWalletHistory(timestamp, apikey, generateSignature("GET", "/user/executionHistory", timestamp, ""));
+
+        Response<List<userWalletHistory>> response = call.execute();
+
+        return response.body();
+    }
+
+
 
     public String jsonStringifyMap(Map<String,Object> map){
         return new Gson().toJson(map);
     }
+
+
 
     public class announcementRequests{
 
