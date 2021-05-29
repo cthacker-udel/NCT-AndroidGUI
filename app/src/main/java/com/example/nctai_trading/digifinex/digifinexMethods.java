@@ -1,6 +1,8 @@
 package com.example.nctai_trading.digifinex;
 
 import com.example.nctai_trading.digifinex.order.orderResponse;
+import com.example.nctai_trading.digifinex.openOrders.openOrder;
+import com.example.nctai_trading.digifinex.orderHistory.orderHistory;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -103,6 +105,80 @@ public class digifinexMethods {
             Response<orderResponse> response = call.execute();
 
             return response.body();
+
+        }
+
+        public openOrder getOpenOrders() throws IOException {
+
+            String url = "https://openapi.digifinex.vip/v2/open_orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.digifinex.orderInterface.class);
+
+            Map<String,Object> treeMap = new TreeMap<>();
+            Long timestamp = new Date().getTime()/1000;
+            treeMap.put("timestamp",timestamp);
+            treeMap.put("apiKey",apiKey);
+            treeMap.put("apiSecret",secretKey);
+
+            String str = "";
+            Iterator titer = treeMap.entrySet().iterator();
+            while(titer.hasNext()){
+                Map.Entry ent = (Map.Entry)titer.next();
+                String key = ent.getKey().toString();
+                String value = ent.getValue().toString();
+                str += value;
+            }
+
+            treeMap.put("sign",md5(str));
+
+            Call<openOrder> call = orderInterface.getOpenOrders(treeMap);
+
+            Response<openOrder> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public orderHistory getOrderHistory() throws IOException {
+
+            String url = "https://openapi.digifinex.vip/v2/order_history/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.digifinex.orderInterface.class);
+
+            Map<String,Object> treeMap = new TreeMap<>();
+            Long timestamp = new Date().getTime()/1000;
+            treeMap.put("timestamp",timestamp);
+            treeMap.put("apiKey",apiKey);
+            treeMap.put("apiSecret",secretKey);
+
+            String str = "";
+            Iterator titer = treeMap.entrySet().iterator();
+            while(titer.hasNext()){
+                Map.Entry ent = (Map.Entry)titer.next();
+                String key = ent.getKey().toString();
+                String value = ent.getValue().toString();
+                str += value;
+            }
+
+            treeMap.put("sign",md5(str));
+
+            Call<orderHistory> call = orderInterface.getOrderHistory(treeMap);
+
+            Response<orderHistory> response = call.execute();
+
+            return response.body();
+
+
 
         }
 

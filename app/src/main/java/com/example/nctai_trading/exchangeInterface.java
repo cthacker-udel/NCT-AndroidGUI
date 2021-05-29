@@ -1145,28 +1145,49 @@ public class exchangeInterface {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void collectAccountInformation() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
 
         com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+
         com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
+
         com.example.nctai_trading.bidesk.domain.account.Account biDeskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
+
         com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyAccountRequests = bilaxyMethods.new interfaceRequests();
+
         binanceMethods.getAccountInformation(binanceMethods);
         binanceUSMethods.getAccountInformation(binanceUSMethods);
+
         List<com.example.nctai_trading.bitforex.AccountAsset.AccountAssets> bitForexAccountAssets = bitforexMethods.getAccountAssets();
+
         com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordReq = bithumbMethods.new tradeRecordRequests();
+
         bitmexMethods.getAccountWalletHistory();
+
         com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueorder = bitrueMethods.new orderRequests();
         bitrueorder.getAccountTradeList();
+
         bittrexMethods.getAccountBalances(bittrexMethods);
+
         com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrder = bkexMethods.new orderRequests();
         bkexOrder.getAccountBalance();
         bkexOrder.getDepositRecord();
         bkexOrder.getWithdrawRecord();
+
         com.example.nctai_trading.btse.btseMethods.orderRequests btseOrder = btseMethods.new orderRequests();
         btseOrder.getWalletHistory();
+
         com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitorder = bybitMethods.new orderRequests();
+        bybitorder.getWalletFundRecords();
+
+        coinbaseProMethods.withdrawRequests coinbaseWithdraw = coinbaseProMethods.new withdrawRequests();
+        coinbaseWithdraw.getListOfWithdrawls();
+        com.example.nctai_trading.coinbasePro.coinbaseProMethods.depositRequests coinbaseDeposit = coinbaseProMethods.new depositRequests();
+        coinbaseDeposit.getListOfDeposits();
+
+        com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrder = digifinexMethods.new orderRequests();
 
 
     }
