@@ -12,6 +12,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -35,8 +36,13 @@ public class btseMethods {
 
     public String generateSignature(String urlPath, String timeStamp, Map<String,Object> params) throws InvalidKeyException, NoSuchAlgorithmException {
         HMAC256 hmac256 = new HMAC256();
-        String jsonBody = jsonStringifyMap(params);
-        return hmac256.HMAC256Algorithm(secretKey,urlPath + timeStamp + jsonBody);
+        if(!params.isEmpty()) {
+            String jsonBody = jsonStringifyMap(params);
+            return hmac256.HMAC256Algorithm(secretKey, urlPath + timeStamp + jsonBody);
+        }
+        else{
+            return hmac256.HMAC256Algorithm(secretKey,urlPath + timeStamp);
+        }
 
     }
 
@@ -81,6 +87,77 @@ public class btseMethods {
 
 
         }
+
+        public List<openOrder> getOpenOrders(String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/api/v3.2/user/open_orders/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            btseOrderInterface btseOrderInterface = retrofit.create(com.example.nctai_trading.btse.btseOrderInterface.class);
+
+            Long timestamp = generateTimestamp() * 1000;
+
+            Map<String,Object> params = new LinkedHashMap<>();
+            params.put("symbol",symbol);
+
+            Call<List<openOrder>> call = btseOrderInterface.getListOfOpenOrders(params,timestamp,apiKey,generateSignature("/api/v3.2/user/open_orders",timestamp+"",params));
+
+            Response<List<openOrder>> response = call.execute();
+
+            return response.body();
+        }
+
+        public List<historyTrade> getTradeHistory(String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/api/v3.2/user/trade_history/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            btseOrderInterface btseOrderInterface = retrofit.create(com.example.nctai_trading.btse.btseOrderInterface.class);
+
+            Long timestamp = generateTimestamp() * 1000;
+
+            Map<String,Object> params = new LinkedHashMap<>();
+
+            Call<List<historyTrade>> call = btseOrderInterface.getTradeHistory(timestamp,apiKey,generateSignature("/api/v3.2/user/trade_history",timestamp+"",params));
+
+            Response<List<historyTrade>> response = call.execute();
+
+            return response.body();
+        }
+
+        public List<walletHistory> getWalletHistory() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/api/v3.2/user/wallet_history/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            btseOrderInterface btseOrderInterface = retrofit.create(com.example.nctai_trading.btse.btseOrderInterface.class);
+
+            Long timestamp = generateTimestamp() * 1000;
+
+            Map<String,Object> params = new LinkedHashMap<>();
+
+            Call<List<walletHistory>> call = btseOrderInterface.getWalletHistory(timestamp,apiKey,generateSignature("/api/v3.2/user/wallet_history",timestamp+"",params));
+
+            Response<List<walletHistory>> response = call.execute();
+
+            return response.body();
+
+        }
+
+
+
 
     }
 

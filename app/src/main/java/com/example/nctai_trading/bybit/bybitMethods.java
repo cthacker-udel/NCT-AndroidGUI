@@ -15,6 +15,9 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.nctai_trading.bybit.openOrders.openOrder;
+import com.example.nctai_trading.bybit.tradeRecords.tradeRecord;
+import com.example.nctai_trading.bybit.walletFunds.walletFund;
 
 public class bybitMethods {
 
@@ -129,6 +132,99 @@ public class bybitMethods {
             return response.body();
 
 
+
+        }
+
+        public openOrder getOpenOrders(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/v2/private/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bybitOrderInterface bybitOrderInterface = retrofit.create(com.example.nctai_trading.bybit.bybitOrderInterface.class);
+
+            TreeMap map = new TreeMap<String, String>(
+                    new Comparator<String>() {
+                        public int compare(String obj1, String obj2) {
+                            //sort in alphabet order
+                            return obj1.compareTo(obj2);
+                        }
+                    });
+
+            map.put("symbol",symbol);
+            map.put("timestamp",synchronize());
+
+            String signature = getSignature(map,secretKey);
+
+            Call<openOrder> call = bybitOrderInterface.getOpenOrders(apiKey,map.get("timestamp"),signature,map);
+
+            Response<openOrder> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public tradeRecord getTradeRecord(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/v2/private/execution/list/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bybitOrderInterface bybitOrderInterface = retrofit.create(com.example.nctai_trading.bybit.bybitOrderInterface.class);
+
+            TreeMap map = new TreeMap<String, String>(
+                    new Comparator<String>() {
+                        public int compare(String obj1, String obj2) {
+                            //sort in alphabet order
+                            return obj1.compareTo(obj2);
+                        }
+                    });
+
+            map.put("symbol",symbol);
+            map.put("timestamp",synchronize());
+
+            String signature = getSignature(map,secretKey);
+
+            Call<tradeRecord> call = bybitOrderInterface.getTradeRecords(apiKey,map.get("timestamp"),signature,map);
+
+            Response<tradeRecord> response = call.execute();
+
+            return response.body();
+
+        }
+
+        public walletFund getWalletFundRecords() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = baseUrl + "/v2/private/wallet/fund/records/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bybitOrderInterface bybitOrderInterface = retrofit.create(com.example.nctai_trading.bybit.bybitOrderInterface.class);
+
+            TreeMap map = new TreeMap<String, String>(
+                    new Comparator<String>() {
+                        public int compare(String obj1, String obj2) {
+                            //sort in alphabet order
+                            return obj1.compareTo(obj2);
+                        }
+                    });
+
+            map.put("timestamp",synchronize());
+
+            Call<walletFund> call = bybitOrderInterface.getWalletFunds(apiKey,map.get("timestamp"),getSignature(map,secretKey));
+
+            Response<walletFund> response = call.execute();
+
+            return response.body();
 
         }
 

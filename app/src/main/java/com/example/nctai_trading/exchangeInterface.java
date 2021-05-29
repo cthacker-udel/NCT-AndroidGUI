@@ -1164,8 +1164,9 @@ public class exchangeInterface {
         bkexOrder.getAccountBalance();
         bkexOrder.getDepositRecord();
         bkexOrder.getWithdrawRecord();
-
-
+        com.example.nctai_trading.btse.btseMethods.orderRequests btseOrder = btseMethods.new orderRequests();
+        btseOrder.getWalletHistory();
+        com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitorder = bybitMethods.new orderRequests();
 
 
     }
