@@ -1,6 +1,6 @@
 package com.example.nctai_trading.huobi.ClientModel;
 
-import Client.HuobiClient;
+import com.example.nctai_trading.huobi.Client.HuobiClient;
 
 import java.util.TreeMap;
 

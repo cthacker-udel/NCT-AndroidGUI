@@ -1,6 +1,6 @@
 package com.example.nctai_trading.huobi.ClientModel;
 
-import Client.HuobiClient;
+import com.example.nctai_trading.huobi.Client.HuobiClient;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,11 +30,23 @@ public class Trade extends HuobiClient {
     private Integer pageSize;
     private String sortBy;
     private Integer tradeType;
+    private Integer type;
+    private String orderStatus;
+    private Integer createDate;
 
 
     public TreeMap<String,Object> generateQueries(){
 
         TreeMap<String,Object> queries = new TreeMap<>();
+        if(this.type != null){
+            queries.put("type",this.type);
+        }
+        if(this.orderStatus != null){
+            queries.put("status",this.orderStatus);
+        }
+        if(this.createDate != null){
+            queries.put("createDate",this.createDate);
+        }
         if(this.contractCode != null){
             queries.put("contract_code",this.contractCode);
         }
@@ -128,6 +140,97 @@ public class Trade extends HuobiClient {
         this.pageSize= null;
         this.sortBy = null;
         this.tradeType = null;
+        this.type = null;
+        this.orderStatus = null;
+        this.createDate = null;
+    }
+
+    public List<Object> getOrders_data() {
+        return orders_data;
+    }
+
+    public void setOrders_data(List<Object> orders_data) {
+        this.orders_data = orders_data;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
+    }
+
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public Integer getTradeType() {
+        return tradeType;
+    }
+
+    public void setTradeType(Integer tradeType) {
+        this.tradeType = tradeType;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Integer getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Integer createDate) {
+        this.createDate = createDate;
     }
 
     public String getContractCode() {

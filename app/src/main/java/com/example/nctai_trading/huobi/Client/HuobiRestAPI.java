@@ -30,6 +30,7 @@ import com.example.nctai_trading.huobi.Controller.ServerAPI.ServerStatus.*;
 
 import com.example.nctai_trading.huobi.Controller.TradeAPI.BatchOrder.*;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.CancelOrder.*;
+import com.example.nctai_trading.huobi.Controller.TradeAPI.HistoryOrder.HistoryOrder;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderDetailsAcquisition.*;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderDetailsAcquisition.UnfilledOrder.UnfilledOrder;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderInfo.*;
@@ -627,6 +628,30 @@ public class HuobiRestAPI {
         Call<UnfilledOrder> call = tradeInterface.getUnfilledOrderAcquisition(queries);
 
         Response<UnfilledOrder> response = call.execute();
+
+        return response.body();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public HistoryOrder getHistoryOrders(HuobiClient client) throws IOException {
+
+        String url = baseUrl + "/swap-api/v1/swap_hisorders/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        tradeInterface tradeInterface = retrofit.create(com.example.nctai_trading.huobi.InterfaceModel.tradeInterface.class);
+
+        TreeMap<String,Object> queries = client.getTrade().generateQueries();
+
+        queries.put("signature",client.getAuth().createSignature("POST","https://api.hbdm.com/swap-api/v1/swap_hisorders",queries));
+
+        Call<HistoryOrder> call = tradeInterface.getHistoricalOrders(queries);
+
+        Response<HistoryOrder> response = call.execute();
 
         return response.body();
 

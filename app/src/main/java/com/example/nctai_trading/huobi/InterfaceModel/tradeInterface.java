@@ -2,6 +2,7 @@ package com.example.nctai_trading.huobi.InterfaceModel;
 
 import com.example.nctai_trading.huobi.Controller.TradeAPI.BatchOrder.BatchOrder;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.CancelOrder.CancelOrder;
+import com.example.nctai_trading.huobi.Controller.TradeAPI.HistoryOrder.HistoryOrder;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderDetailsAcquisition.OrderDetailsAcquisition;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderDetailsAcquisition.UnfilledOrder.UnfilledOrder;
 import com.example.nctai_trading.huobi.Controller.TradeAPI.OrderInfo.OrderInfo;
@@ -36,5 +37,8 @@ public interface tradeInterface {
 
     @POST("https://api.hbdm.com/swap-api/v1/swap_openorders")
     Call<UnfilledOrder> getUnfilledOrderAcquisition(@Body TreeMap<String,Object> queries);
+
+    @POST("https://api.hbdm.com/swap-api/v1/swap_hisorders")
+    Call<HistoryOrder> getHistoricalOrders(@Body TreeMap<String,Object> queries);
 
 }
