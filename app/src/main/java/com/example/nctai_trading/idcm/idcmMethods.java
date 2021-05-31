@@ -5,6 +5,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.nctai_trading.HMAC256;
+import com.example.nctai_trading.idcm.OrderInfo.OrderInfo;
+import com.example.nctai_trading.idcm.UserInfo.UserInfo;
 import com.google.gson.Gson;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -148,6 +150,62 @@ public class idcmMethods {
             return response.body();
 
         }
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public UserInfo getUserInformation() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+        String url = baseUrl + "/getuserinfo/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Map<String,Object> params = new LinkedHashMap<>();
+
+        params.put("1","1");
+
+        idcmOrderInterface idcmOrderInterface = retrofit.create(com.example.nctai_trading.idcm.idcmOrderInterface.class);
+
+        String signature = getSignature(jsonStringifyMap(params));
+
+        Call<UserInfo> call = idcmOrderInterface.getAccountInfo(apiKey,signature,encodedUTF8(jsonStringifyMap(params)),params);
+
+        Response<UserInfo> response = call.execute();
+
+        return response.body();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public OrderInfo getHistoricalOrderInformation(String symbol, Integer pageIndex, Integer pageSize, Integer orderStatus) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+        String url = baseUrl + "/gethistoryorder/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Map<String,Object> params = new LinkedHashMap<>();
+
+        params.put("Symbol",symbol);
+        params.put("PageIndex",pageIndex);
+        params.put("PageSize",pageSize);
+        params.put("Status",orderStatus);
+
+        idcmOrderInterface idcmOrderInterface = retrofit.create(com.example.nctai_trading.idcm.idcmOrderInterface.class);
+
+        String signature = getSignature(jsonStringifyMap(params));
+
+        Call<OrderInfo> call = idcmOrderInterface.getHistoricalOrderInfo(apiKey,signature,encodedUTF8(jsonStringifyMap(params)),params);
+
+        Response<OrderInfo> response = call.execute();
+
+        return response.body();
 
 
     }
