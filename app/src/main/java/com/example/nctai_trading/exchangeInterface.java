@@ -1148,8 +1148,12 @@ public class exchangeInterface {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void collectAccountInformation() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
+        resetDBObjects();
 
         com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+
+        basicDBObject.append("exchange","alpaca");
+
 
         com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
 
@@ -1188,6 +1192,8 @@ public class exchangeInterface {
         coinbaseDeposit.getListOfDeposits();
 
         com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrder = digifinexMethods.new orderRequests();
+
+        krakenApi.queryPrivate(KrakenApi.Method.QUERY_LEDGERS);
 
 
     }

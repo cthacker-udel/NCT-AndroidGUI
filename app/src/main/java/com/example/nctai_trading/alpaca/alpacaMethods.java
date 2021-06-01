@@ -49,6 +49,25 @@ public class alpacaMethods {
 
         }
 
+        public List<alpacaAsset> getAssets() throws IOException {
+
+            String url = webBaseUrl + "/v2/assets/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaAccountInterface alpacaAccountInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaAccountInterface.class);
+
+            Call<List<alpacaAsset>> call = alpacaAccountInterface.getAccountAssets(apiKey,secretKey);
+
+            Response<List<alpacaAsset>> response = call.execute();
+
+            return response.body();
+
+        }
+
     }
 
     public class orderRequests{
