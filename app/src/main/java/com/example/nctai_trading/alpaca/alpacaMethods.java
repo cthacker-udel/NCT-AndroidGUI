@@ -68,6 +68,24 @@ public class alpacaMethods {
 
         }
 
+        public List<NonTradeActivity> getAccountNonTradeActivitiesWithdrawlsDeposits() throws IOException {
+
+            String url = webBaseUrl + "/v2/account/activites/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            alpacaAccountInterface alpacaAccountInterface = retrofit.create(com.example.nctai_trading.alpaca.alpacaAccountInterface.class);
+
+            Call<List<NonTradeActivity>> call = alpacaAccountInterface.getAccountNonTradeActivity(apiKey,secretKey,"TRANS,CSD,CSW,");
+
+            Response<List<NonTradeActivity>> response = call.execute();
+
+            return response.body();
+        }
+
     }
 
     public class orderRequests{

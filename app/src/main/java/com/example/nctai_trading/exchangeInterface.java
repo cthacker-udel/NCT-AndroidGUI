@@ -5,7 +5,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.nctai_trading.alpaca.NonTradeActivity;
+import com.example.nctai_trading.alpaca.alpacaAsset;
 import com.example.nctai_trading.alpaca.alpacaMethods;
+import com.example.nctai_trading.basefex.basefexAccountDepositWithdrawHistory;
+import com.example.nctai_trading.basefex.basefexGetAccountCashAndPositionDetail;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.basefex.basefexOrderListOrder;
 import com.example.nctai_trading.bibox.BiBoxHttpClient;
@@ -14,24 +18,37 @@ import com.example.nctai_trading.bibox.CQueryOrderListParams;
 import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
+import com.example.nctai_trading.bidesk.domain.account.AssetBalance;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
+import com.example.nctai_trading.bilaxy.bilaxyAccount;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.Client.BinanceClient;
+import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountInfo;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
+import com.example.nctai_trading.bitMEX.userWalletHistory;
 import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bithumb.bithumbMethods;
+import com.example.nctai_trading.bitrue.accountTradeList.accountTrade;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bittrex.ApiKeySecret;
 import com.example.nctai_trading.bittrex.BittrexExchange;
 import com.example.nctai_trading.bittrexV2.BittrexClient;
+import com.example.nctai_trading.bittrexV2.Controller.accountBalances.accountBalance;
 import com.example.nctai_trading.bittrexV2.Controller.accountOrderHistory.Result;
 import com.example.nctai_trading.bittrexV2.Controller.accountOrderHistory.accountOrder;
+import com.example.nctai_trading.bkex.account.DepositRecord.depositRecord;
+import com.example.nctai_trading.bkex.account.WalletBalance.walletBalance;
+import com.example.nctai_trading.bkex.account.WithdrawRecord.withdrawRecord;
 import com.example.nctai_trading.bkex.bkexMethods;
 import com.example.nctai_trading.btse.btseMethods;
+import com.example.nctai_trading.btse.walletHistory;
 import com.example.nctai_trading.bybit.bybitMethods;
+import com.example.nctai_trading.bybit.walletFunds.walletFund;
+import com.example.nctai_trading.coinbasePro.coinbaseProDeposit;
 import com.example.nctai_trading.coinbasePro.coinbaseProMethods;
+import com.example.nctai_trading.coinbasePro.coinbaseProWithdrawl;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.exante.exanteMethods;
 import com.example.nctai_trading.huobi.Client.HuobiClient;
@@ -111,6 +128,12 @@ public class exchangeInterface {
     BasicDBObject basicDBObject = new BasicDBObject();
 
     BasicDBObject eachOrderObj = new BasicDBObject();
+
+    BasicDBObject accountHoldingsObj = new BasicDBObject();
+
+    BasicDBObject depositsObj = new BasicDBObject();
+
+    BasicDBObject withdrawlsObj = new BasicDBObject();
 
     /*
 
@@ -210,6 +233,9 @@ public class exchangeInterface {
         basicDBObject.append("_id",_id);
         basicDBObject.append("userID",userId);
         eachOrderObj = new BasicDBObject();
+        accountHoldingsObj = new BasicDBObject();
+        depositsObj = new BasicDBObject();
+        withdrawlsObj = new BasicDBObject();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -1148,50 +1174,160 @@ public class exchangeInterface {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void collectAccountInformation() throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 
+
+        MongoDatabase accountInfo = mongoClient.getDatabase("test");
+
+        MongoCollection<Document> accountInfoCollection = accountInfo.getCollection("accountInfo");
+
+        ArrayList<List<Object>> accHoldings = new ArrayList<>();
+
+        ArrayList<List<Object>> deposits = new ArrayList<>();
+
+        ArrayList<List<Object>> withdrawls = new ArrayList<>();
+
         resetDBObjects();
 
-        com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+        // alpaca
 
         basicDBObject.append("exchange","alpaca");
 
+        com.example.nctai_trading.alpaca.alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+
+        List<alpacaAsset> alpacaAssets = alpacaAccountRequests.getAssets();
+
+        List<NonTradeActivity> alpacaNonTradeActivities = alpacaAccountRequests.getAccountNonTradeActivitiesWithdrawlsDeposits();
+
+        for(alpacaAsset eachAsset : alpacaAssets){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachAsset.getExchange()),
+
+            });
+        }
+        orderNumber = 0;
+        for(NonTradeActivity eachNonTradeActivity : alpacaNonTradeActivities){
+            if(eachNonTradeActivity.getActivityType().equalsIgnoreCase("CSD")){
+                depositsObj.append("" + orderNumber++, new Object[]{
+
+                        new Document("currency",eachNonTradeActivity.getSymbol()),
+                        new Document("amount",eachNonTradeActivity.getQty()),
+                        new Document("date",eachNonTradeActivity.getDate())
+
+                });
+            }
+        }
+        orderNumber = 0;
+        for(NonTradeActivity eachNonTradeActivity : alpacaNonTradeActivities){
+            if(eachNonTradeActivity.getActivityType().equalsIgnoreCase("CSW")){
+                withdrawlsObj.append("" + orderNumber++, new Object[]{
+
+                        new Document("currency",eachNonTradeActivity.getSymbol()),
+                        new Document("amount",eachNonTradeActivity.getQty()),
+                        new Document("date",eachNonTradeActivity.getDate())
+
+                });
+            }
+        }
+
+        /*
+        for(com.example.nctai_trading.kiteConnect.Order eachOrder : kiteOrders){
+            if(eachOrder.status.toLowerCase().charAt(0) == 'o'){
+                eachOrderObj.append("" + orderNumber++,new Object[]{
+
+                        new Document("accountId", eachOrder.accountId),
+                        new Document("orderId",eachOrder.orderId),
+                        new Document("time",eachOrder.orderTimestamp),
+                        new Document("symbol",eachOrder.symbol),
+                        new Document("price",eachOrder.price),
+                        new Document("origQty",eachOrder.filledQuantity),
+                        new Document("type",eachOrder.orderType),
+
+                });
+            }
+        }
+         */
+        basicDBObject.append("deposits",depositsObj);
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        basicDBObject.append("withdrawls",withdrawlsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+
+
+        // basefex
 
         com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
 
+        List<basefexAccountDepositWithdrawHistory> basefexAccountDepositWithdrawHistories = basefexAccountRequests.getDepositAndWithdrawHistory();
+
+        List<basefexGetAccountCashAndPositionDetail> basefexGetAccountCashAndPositionDetails = basefexAccountRequests.getCashAndPositionDetail();
+
+        // bidesk
+
         com.example.nctai_trading.bidesk.domain.account.Account biDeskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
+
+        List<AssetBalance> bideskBalances = biDeskAccount.getBalances();
+
+        // bilaxy
 
         com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyAccountRequests = bilaxyMethods.new interfaceRequests();
 
-        binanceMethods.getAccountInformation(binanceMethods);
-        binanceUSMethods.getAccountInformation(binanceUSMethods);
+        List<bilaxyAccount> bilaxyAccounts = bilaxyAccountRequests.getAccountInfo();
+
+        // binance & binanceUS
+
+
+        AccountInfo binanceAccountInfo = binanceMethods.getAccountInformation(binanceMethods);
+        com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountInfo binanceUSAccountInfo = binanceUSMethods.getAccountInformation(binanceUSMethods);
+
+        // bitforex
 
         List<com.example.nctai_trading.bitforex.AccountAsset.AccountAssets> bitForexAccountAssets = bitforexMethods.getAccountAssets();
 
+        // bithumb
+
         com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordReq = bithumbMethods.new tradeRecordRequests();
 
-        bitmexMethods.getAccountWalletHistory();
+        // bitmex
+
+        List<userWalletHistory> bitmwxAccountWalletHistory = bitmexMethods.getAccountWalletHistory();
+
+        // bitrue
 
         com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueorder = bitrueMethods.new orderRequests();
-        bitrueorder.getAccountTradeList();
+        List<accountTrade> bitrueAccountTradeList = bitrueorder.getAccountTradeList();
 
-        bittrexMethods.getAccountBalances(bittrexMethods);
+        // bittrex
+
+        List<accountBalance> bittrexAccountBalances = bittrexMethods.getAccountBalances(bittrexMethods);
+
+        // bkex
 
         com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrder = bkexMethods.new orderRequests();
-        bkexOrder.getAccountBalance();
-        bkexOrder.getDepositRecord();
-        bkexOrder.getWithdrawRecord();
+        walletBalance bkexAccountBalance = bkexOrder.getAccountBalance();
+        depositRecord bkexDepositRecord = bkexOrder.getDepositRecord();
+        withdrawRecord bkexWithdrawRecord = bkexOrder.getWithdrawRecord();
+
+        // btse
 
         com.example.nctai_trading.btse.btseMethods.orderRequests btseOrder = btseMethods.new orderRequests();
-        btseOrder.getWalletHistory();
+        List<walletHistory> btseAccountWalletHistory = btseOrder.getWalletHistory();
+
+        // bybit
 
         com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitorder = bybitMethods.new orderRequests();
-        bybitorder.getWalletFundRecords();
+        walletFund bybitAccountWalletFund = bybitorder.getWalletFundRecords();
+
+        // coinbase
 
         coinbaseProMethods.withdrawRequests coinbaseWithdraw = coinbaseProMethods.new withdrawRequests();
-        coinbaseWithdraw.getListOfWithdrawls();
+        coinbaseProWithdrawl coinbaseProWithdrawl = coinbaseWithdraw.getListOfWithdrawls();
         com.example.nctai_trading.coinbasePro.coinbaseProMethods.depositRequests coinbaseDeposit = coinbaseProMethods.new depositRequests();
-        coinbaseDeposit.getListOfDeposits();
+        List<coinbaseProDeposit> coinbaseProDeposits = coinbaseDeposit.getListOfDeposits();
+
+        // digifinex
 
         com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrder = digifinexMethods.new orderRequests();
+
+        // kraken
 
         krakenApi.queryPrivate(KrakenApi.Method.QUERY_LEDGERS);
 
