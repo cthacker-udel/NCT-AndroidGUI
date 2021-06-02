@@ -1490,31 +1490,166 @@ public class exchangeInterface {
 
         List<userWalletHistory> bitmwxAccountWalletHistory = bitmexMethods.getAccountWalletHistory();
 
+        basicDBObject.append("exchange","bitmex");
+
+        for(userWalletHistory userWalletHistory: bitmwxAccountWalletHistory){
+
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",userWalletHistory.getCurrency()),
+                    new Document("amount",userWalletHistory.getAmount())
+
+            });
+
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // bitrue
 
         com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueorder = bitrueMethods.new orderRequests();
         List<accountTrade> bitrueAccountTradeList = bitrueorder.getAccountTradeList();
 
+        basicDBObject.append("exchange","bitrue");
+
+        for(accountTrade eachAccountTrade : bitrueAccountTradeList){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachAccountTrade.getSymbol()),
+                    new Document("amount",eachAccountTrade.getQty()),
+                    new Document("price",eachAccountTrade.getPrice())
+
+
+            });
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // bittrex
+
+        basicDBObject.append("exchange","bittrex");
 
         List<accountBalance> bittrexAccountBalances = bittrexMethods.getAccountBalances(bittrexMethods);
 
+        for(accountBalance eachBittrexAccountBalance : bittrexAccountBalances){
+
+            List<com.example.nctai_trading.bittrexV2.Controller.accountBalances.Result> bittrexResult = eachBittrexAccountBalance.getResult();
+
+            for(com.example.nctai_trading.bittrexV2.Controller.accountBalances.Result eachResult : bittrexResult){
+                accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                        new Document("currency",eachResult.getCurrency()),
+                        new Document("amount",eachResult.getBalance())
+
+                });
+            }
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // bkex
+
+        basicDBObject.append("exchange","bkex");
 
         com.example.nctai_trading.bkex.bkexMethods.orderRequests bkexOrder = bkexMethods.new orderRequests();
         walletBalance bkexAccountBalance = bkexOrder.getAccountBalance();
         depositRecord bkexDepositRecord = bkexOrder.getDepositRecord();
         withdrawRecord bkexWithdrawRecord = bkexOrder.getWithdrawRecord();
 
+        List<com.example.nctai_trading.bkex.account.WalletBalance.Datum> bkexWalletBalanceDatum = bkexAccountBalance.getData();
+        List<com.example.nctai_trading.bkex.account.WithdrawRecord.Datum> bkexWithdrawDatum = bkexWithdrawRecord.getData().getData();
+        List<com.example.nctai_trading.bkex.account.DepositRecord.Datum> bkexDepositDatum = bkexDepositRecord.getData().getData();
+
+        for(com.example.nctai_trading.bkex.account.WalletBalance.Datum eachBalance : bkexWalletBalanceDatum){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachBalance.getCoinType()),
+                    new Document("amount",eachBalance.getTotal()),
+                    new Document("frozen",eachBalance.getFrozen()),
+                    new Document("available",eachBalance.getAvailable())
+
+            });
+        }
+
+        orderNumber = 0;
+        for(com.example.nctai_trading.bkex.account.DepositRecord.Datum eachDeposit: bkexDepositDatum){
+            depositsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachDeposit.getCoinType()),
+                    new Document("amount",eachDeposit.getAmount()),
+                    new Document("confirmed",eachDeposit.getConfirmed()),
+                    new Document("date",eachDeposit.getCreateTime()),
+                    new Document("from address",eachDeposit.getFromAddress()),
+                    new Document("to address",eachDeposit.getToAddress())
+
+            });
+        }
+        orderNumber = 0;
+        for(com.example.nctai_trading.bkex.account.WithdrawRecord.Datum eachWithdraw :  bkexWithdrawDatum) {
+            withdrawlsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency", eachWithdraw.getCoinType()),
+                    new Document("amount", eachWithdraw.getAmount()),
+                    new Document("date", eachWithdraw.getCreateTime()),
+                    new Document("from address", eachWithdraw.getFromAddress()),
+                    new Document("to address", eachWithdraw.getToAddress())
+
+            });
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        basicDBObject.append("withdrawls",withdrawlsObj);
+        basicDBObject.append("deposits",depositsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
+
         // btse
+
+        basicDBObject.append("exchange","btse");
 
         com.example.nctai_trading.btse.btseMethods.orderRequests btseOrder = btseMethods.new orderRequests();
         List<walletHistory> btseAccountWalletHistory = btseOrder.getWalletHistory();
+
+        for(walletHistory eachWalletHistory : btseAccountWalletHistory){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachWalletHistory.getCurrency()),
+                    new Document("amount",eachWalletHistory.getAmount()),
+                    new Document("date",eachWalletHistory.getTimestamp())
+
+            });
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // bybit
 
         com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitorder = bybitMethods.new orderRequests();
         walletFund bybitAccountWalletFund = bybitorder.getWalletFundRecords();
+
+        List<com.example.nctai_trading.bybit.walletFunds.Datum> bybitWalletData = bybitAccountWalletFund.getResult().getData();
+
+        for(com.example.nctai_trading.bybit.walletFunds.Datum eachWalletFund : bybitWalletData){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachWalletFund.getCoin()),
+                    new Document("amount",eachWalletFund.getAmount()),
+                    new Document("date",eachWalletFund.getExecTime())
+
+            });
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // coinbase
 
