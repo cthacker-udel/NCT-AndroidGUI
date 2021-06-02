@@ -1654,9 +1654,34 @@ public class exchangeInterface {
         // coinbase
 
         coinbaseProMethods.withdrawRequests coinbaseWithdraw = coinbaseProMethods.new withdrawRequests();
-        coinbaseProWithdrawl coinbaseProWithdrawl = coinbaseWithdraw.getListOfWithdrawls();
+        List<coinbaseProWithdrawl> coinbaseProWithdrawl = coinbaseWithdraw.getListOfWithdrawls();
         com.example.nctai_trading.coinbasePro.coinbaseProMethods.depositRequests coinbaseDeposit = coinbaseProMethods.new depositRequests();
         List<coinbaseProDeposit> coinbaseProDeposits = coinbaseDeposit.getListOfDeposits();
+
+        for(coinbaseProDeposit eachDeposit : coinbaseProDeposits){
+            depositsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("amount",eachDeposit.getAccountId()),
+                    new Document("date",eachDeposit.getProcessedAt()),
+                    new Document("id",eachDeposit.getId())
+
+            });
+        }
+
+        for(coinbaseProWithdrawl eachWithdrawl : coinbaseProWithdrawl){
+            withdrawlsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("amount",eachWithdrawl.getAmount()),
+                    new Document("date",eachWithdrawl.getProcessedAt()),
+                    new Document("id",eachWithdrawl.getId())
+
+            });
+        }
+
+        basicDBObject.append("withdrawls",withdrawlsObj);
+        basicDBObject.append("deposits",depositsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // digifinex
 

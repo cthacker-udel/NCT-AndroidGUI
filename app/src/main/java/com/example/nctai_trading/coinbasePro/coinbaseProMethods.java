@@ -858,7 +858,7 @@ public class coinbaseProMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.R)
-        public coinbaseProWithdrawl getListOfWithdrawls() throws IOException {
+        public List<coinbaseProWithdrawl> getListOfWithdrawls() throws IOException {
 
             String url = baseUrl + "/transfers";
 
@@ -871,11 +871,11 @@ public class coinbaseProMethods {
 
             HashMap<String,String> authMap = getAuthHeadersGET("GET","/transfers",passPhrase);
 
-            Call<coinbaseProWithdrawl> withdrawlCall = getCoinbaseWithdrawList.getCoinbaseWithdrawList(authMap);
+            Call<List<coinbaseProWithdrawl>> withdrawlCall = getCoinbaseWithdrawList.getCoinbaseWithdrawList(authMap);
 
-            Response<coinbaseProWithdrawl> coinbaseProWithdrawlResponse = withdrawlCall.execute();
+            Response<List<coinbaseProWithdrawl>> coinbaseProWithdrawlResponse = withdrawlCall.execute();
 
-            coinbaseProWithdrawl result = coinbaseProWithdrawlResponse.body();
+            List<coinbaseProWithdrawl> result = coinbaseProWithdrawlResponse.body();
 
             return result;
 
