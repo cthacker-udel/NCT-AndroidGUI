@@ -1,5 +1,6 @@
 package com.example.nctai_trading.digifinex;
 
+import com.example.nctai_trading.digifinex.myPositions.myPosition;
 import com.example.nctai_trading.digifinex.order.orderResponse;
 
 import java.util.Map;
@@ -24,5 +25,8 @@ public interface orderInterface {
 
     @GET("https://openapi.digifinex.vip/v2/order_history")
     Call<orderHistory> getOrderHistory(@QueryMap Map<String,Object> queries);
+
+    @GET("https://openapi.digifinex.vip/v2/myposition")
+    Call<myPosition> getMyPosition(@QueryMap Map<String,Object> queries);
 
 }

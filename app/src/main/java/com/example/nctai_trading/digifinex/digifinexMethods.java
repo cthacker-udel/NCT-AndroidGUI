@@ -1,5 +1,6 @@
 package com.example.nctai_trading.digifinex;
 
+import com.example.nctai_trading.digifinex.myPositions.myPosition;
 import com.example.nctai_trading.digifinex.order.orderResponse;
 import com.example.nctai_trading.digifinex.openOrders.openOrder;
 import com.example.nctai_trading.digifinex.orderHistory.orderHistory;
@@ -179,6 +180,41 @@ public class digifinexMethods {
             return response.body();
 
 
+
+        }
+
+        public myPosition getMyPositions() throws IOException {
+
+            String url = "https://openapi.digifinex.vip/v2/myposition/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.digifinex.orderInterface.class);
+
+            Map<String,Object> treeMap = new TreeMap<>();
+            Long timestamp = new Date().getTime() / 1000;
+            treeMap.put("timestamp",timestamp);
+            treeMap.put("apiKey",apiKey);
+            treeMap.put("apiSecret",secretKey);
+
+            String str = "";
+            Iterator titer = treeMap.entrySet().iterator();
+            while(titer.hasNext()){
+                Map.Entry ent = (Map.Entry)titer.next();
+                String key = ent.getKey().toString();
+                String value = ent.getValue().toString();
+                str += value;
+            }
+            treeMap.put("sign",md5(str));
+
+            Call<myPosition> call = orderInterface.getMyPosition(treeMap);
+
+            Response<myPosition> response = call.execute();
+
+            return response.body();
 
         }
 

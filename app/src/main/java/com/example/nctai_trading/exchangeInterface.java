@@ -1694,10 +1694,58 @@ public class exchangeInterface {
 
     }
 
+    public void cancelOrderSpecificExchange(String exchange){
+
+    }
+
+    public void marginOrderSpecificExchange(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String limitPrice, String stopLossPrice){
+
+    }
+
+    public void cancelAllOrders(){
+
+    }
+
+    public void liquidateAllCurrencyAssetsBuy(String exchange, String currency){
+        // buy all currency from exchange as possible
+    }
+
+    public void liquidateAllCurrencyAssetsSell(String exchange){
+        // sell all currency from exchange
+    }
+
+    public void placeOrderPrice(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String price){
+
+    }
+
+    public void placeOrderPriceStopLossPrice(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String price, String stopLossPrice){
+
+    }
+
+    public void placeOrder(String exchange, String fromCurrency, String toCurrency, String direction, String amount){
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void followParticleCommand() throws KiteException, NoSuchAlgorithmException, IOException, JSONException, HttpException, InvalidKeyException {
 
         String[] fields = getDataReceived().split(" ");
+
+        /*
+
+        List:
+
+        // (all)collect account holdings <--- check
+        // (all)collect all history orders <--- check
+        // (all)collect all open orders <---- check
+
+        // (currency)cancel orders <--- set up
+        // (exchange) margin orders <--- set up
+        // (exchange) regular order <--- set up
+        // (exchange) liquidate order <--- set up
+
+         */
+
 
         if(fields[0].equalsIgnoreCase("all") && fields[1].equalsIgnoreCase("ex")){
             if(fields[2].equalsIgnoreCase("HISTORY")){
@@ -1710,6 +1758,37 @@ public class exchangeInterface {
                 collectAccountInformation();
             }
         }
+        else if(fields[2].equalsIgnoreCase("cancel")){
+            if(fields[3].equalsIgnoreCase("unspecified")){
+                cancelAllOrders();
+            }
+            else{
+                cancelOrderSpecificExchange("");
+            }
+        }
+        else if(fields[2].equalsIgnoreCase("margin")){
+            marginOrderSpecificExchange(fields[0],fields[1],fields[3],fields[4],fields[5],fields[6],fields[7]);
+        }
+        else if(fields[2].equalsIgnoreCase("all")){
+            if(fields[1].equalsIgnoreCase("buy")){
+                liquidateAllCurrencyAssetsBuy(fields[0],fields[3]);
+            }
+            else{
+                liquidateAllCurrencyAssetsSell(fields[0]);
+            }
+        }
+        else{
+            if(fields.length == 6){
+                placeOrderPrice(fields[0],fields[1],fields[2],fields[3],fields[4],fields[5]);
+            }
+            else if(fields.length == 7){
+                placeOrderPriceStopLossPrice(fields[0],fields[1],fields[2],fields[3],fields[4],fields[5],fields[6]);
+            }
+            else{
+                placeOrder(fields[0],fields[1],fields[2],fields[3],fields[4]);
+            }
+        }
+
 
         //{"data":"TTTTTTEEEESSSTTTTT","ttl":60,"published_at":"2021-05-05T08:26:19.211Z","coreid":"api"}
 
