@@ -10,6 +10,7 @@ import com.example.nctai_trading.alpaca.alpacaAsset;
 import com.example.nctai_trading.alpaca.alpacaMethods;
 import com.example.nctai_trading.basefex.basefexAccountDepositWithdrawHistory;
 import com.example.nctai_trading.basefex.basefexGetAccountCashAndPositionDetail;
+import com.example.nctai_trading.basefex.basefexGetAccountCashAndPositionDetailCash;
 import com.example.nctai_trading.basefex.basefexMethods;
 import com.example.nctai_trading.basefex.basefexOrderListOrder;
 import com.example.nctai_trading.bibox.BiBoxHttpClient;
@@ -19,17 +20,28 @@ import com.example.nctai_trading.bibox.CTypeEnum;
 import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bidesk.domain.account.AssetBalance;
+import com.example.nctai_trading.bidesk.domain.account.DepositOrder;
+import com.example.nctai_trading.bidesk.domain.account.request.DepositOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
 import com.example.nctai_trading.bilaxy.bilaxyAccount;
+import com.example.nctai_trading.bilaxy.bilaxyAccountData;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.Client.BinanceClient;
+import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountBalance;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountInfo;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitMEX.userWalletHistory;
 import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
+import com.example.nctai_trading.bitforex.AccountAsset.AccountAssets;
+import com.example.nctai_trading.bitforex.AccountAsset.Datum;
 import com.example.nctai_trading.bitforex.bitforexMethods;
 import com.example.nctai_trading.bithumb.bithumbMethods;
+import com.example.nctai_trading.bithumb.bithumbVirtualCoinAsset;
+import com.example.nctai_trading.bithumb.bithumbVirtualCoinAssetData;
+import com.example.nctai_trading.bithumb.bithumbWithdrawResponse;
+import com.example.nctai_trading.bithumb.bithumbWithdrawResponseData;
+import com.example.nctai_trading.bithumb.bithumbmyTrades;
 import com.example.nctai_trading.bitrue.accountTradeList.accountTrade;
 import com.example.nctai_trading.bitrue.bitrueMethods;
 import com.example.nctai_trading.bittrex.ApiKeySecret;
@@ -75,6 +87,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,6 +113,7 @@ public class exchangeInterface {
      */
 
     currencyInfo currencyInfo = new currencyInfo();
+    Collection<String> currencySymbols = currencyInfo.currList.values();
 
     /*
 
@@ -236,6 +250,7 @@ public class exchangeInterface {
         accountHoldingsObj = new BasicDBObject();
         depositsObj = new BasicDBObject();
         withdrawlsObj = new BasicDBObject();
+        orderNumber = 0;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -1250,41 +1265,226 @@ public class exchangeInterface {
         basicDBObject.append("accHoldings",accountHoldingsObj);
         basicDBObject.append("withdrawls",withdrawlsObj);
         accountInfoCollection.insertOne(new Document(basicDBObject));
-
+        resetDBObjects();
 
         // basefex
 
+        basicDBObject.append("exchange","basefex");
+
+
         com.example.nctai_trading.basefex.basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
 
-        List<basefexAccountDepositWithdrawHistory> basefexAccountDepositWithdrawHistories = basefexAccountRequests.getDepositAndWithdrawHistory();
+        List<basefexAccountDepositWithdrawHistory> basefexAccountWithdrawHistories = basefexAccountRequests.getDepositAndWithdrawHistory("WITHDRAW");
+
+        for(basefexAccountDepositWithdrawHistory eachWithdrawl : basefexAccountWithdrawHistories){
+            withdrawlsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachWithdrawl.getCurrency()),
+                    new Document("amount",eachWithdrawl.getAmount())
+
+            });
+        }
+        orderNumber = 0;
+        List<basefexAccountDepositWithdrawHistory> basefexAccountDepositHistories = basefexAccountRequests.getDepositAndWithdrawHistory("DEPOSIT");
+
+        for(basefexAccountDepositWithdrawHistory eachDeposit: basefexAccountDepositHistories){
+            depositsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachDeposit.getCurrency()),
+                    new Document("amount",eachDeposit.getAmount())
+
+            });
+        }
+        orderNumber = 0;
 
         List<basefexGetAccountCashAndPositionDetail> basefexGetAccountCashAndPositionDetails = basefexAccountRequests.getCashAndPositionDetail();
+
+        for(basefexGetAccountCashAndPositionDetail eachAccountCashPosition: basefexGetAccountCashAndPositionDetails){
+            basefexGetAccountCashAndPositionDetailCash cashDetails = eachAccountCashPosition.getCash();
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+                new Document("currency",cashDetails.getCurrency()),
+                    new Document("amount",cashDetails.getAvailable())
+            });
+        }
+
+        orderNumber = 0;
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        basicDBObject.append("withdrawls",withdrawlsObj);
+        basicDBObject.append("deposits",depositsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // bidesk
 
         com.example.nctai_trading.bidesk.domain.account.Account biDeskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
 
+        List<DepositOrder> bideskDeposits = bideskClient.getDepositOrders(new DepositOrderRequest());
+
         List<AssetBalance> bideskBalances = biDeskAccount.getBalances();
 
+        basicDBObject.append("exchange","bidesk");
+
+        for(AssetBalance eachAsset : bideskBalances){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachAsset.getAsset()),
+                    new Document("free",eachAsset.getFree()),
+                    new Document("locked",eachAsset.getLocked())
+
+            });
+        }
+        orderNumber = 0;
+
+        for(DepositOrder eachDeposit : bideskDeposits){
+            depositsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency", eachDeposit.getToken()),
+                    new Document("amount",eachDeposit.getQuantity()),
+                    new Document("date",eachDeposit.getTime())
+
+            });
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        basicDBObject.append("deposits",depositsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // bilaxy
+
+        basicDBObject.append("exchange","bilaxy");
 
         com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyAccountRequests = bilaxyMethods.new interfaceRequests();
 
         List<bilaxyAccount> bilaxyAccounts = bilaxyAccountRequests.getAccountInfo();
 
+        for(bilaxyAccount eachAccount : bilaxyAccounts){
+            List<bilaxyAccountData> bilaxyAccountData = eachAccount.getData();
+            for(bilaxyAccountData eachBilaxyAccountData : bilaxyAccountData){
+                accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                        new Document("currency",eachBilaxyAccountData.getSymbol()),
+                        new Document("amount",eachBilaxyAccountData.getBalance()),
+                        new Document("frozen",eachBilaxyAccountData.getFrozen())
+
+                });
+
+            }
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // binance & binanceUS
 
 
+        basicDBObject.append("exchange","binance");
+
         AccountInfo binanceAccountInfo = binanceMethods.getAccountInformation(binanceMethods);
+
+        List<AccountBalance> binanceAccBalances = binanceAccountInfo.getBalances();
+
+        for(AccountBalance eachBinanceAccountBalance: binanceAccBalances){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachBinanceAccountBalance.getAsset()),
+                    new Document("free",eachBinanceAccountBalance.getFree()),
+                    new Document("locked",eachBinanceAccountBalance.getLocked())
+
+            });
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountInfo binanceUSAccountInfo = binanceUSMethods.getAccountInformation(binanceUSMethods);
+
+        basicDBObject.append("exchange","binanceUS");
+
+        List<com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountBalance> binanceUSAccBalances = binanceUSAccountInfo.getBalances();
+
+        for(com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountBalance eachBinanceAccountBalance: binanceUSAccBalances){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",eachBinanceAccountBalance.getAsset()),
+                    new Document("free",eachBinanceAccountBalance.getFree()),
+                    new Document("locked",eachBinanceAccountBalance.getLocked())
+
+            });
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // bitforex
 
         List<com.example.nctai_trading.bitforex.AccountAsset.AccountAssets> bitForexAccountAssets = bitforexMethods.getAccountAssets();
 
+        basicDBObject.append("exchange","bitforex");
+
+
+        for(AccountAssets eachBitForexAccAsset : bitForexAccountAssets){
+
+            List<Datum> bitforexAccDatum = eachBitForexAccAsset.getData();
+            for(Datum eachBitforexDatum : bitforexAccDatum){
+                accountHoldingsObj.append("" + orderNumber++, new Object[]{
+
+                        new Document("currency",eachBitforexDatum.getCurrency()),
+                        new Document("frozen",eachBitforexDatum.getFrozen()),
+                        new Document("fix",eachBitforexDatum.getFix()),
+                        new Document("active",eachBitforexDatum.getActive())
+
+                });
+            }
+        }
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
+
         // bithumb
 
-        com.example.nctai_trading.bithumb.bithumbMethods.tradeRecordRequests bithumbTradeRecordReq = bithumbMethods.new tradeRecordRequests();
+        com.example.nctai_trading.bithumb.bithumbMethods.historyRequests bithumbAccHistoryMethods = bithumbMethods.new historyRequests();
+        com.example.nctai_trading.bithumb.bithumbMethods.virtualCoinOrderRequests bithumbAssetMethods = bithumbMethods.new virtualCoinOrderRequests();
+
+        List<bithumbWithdrawResponseData> bithumbWithdrawResponse = bithumbAccHistoryMethods.getWithdrawHistory("90").getData();
+        List<bithumbWithdrawResponseData> bithumbDepositResponse = bithumbAccHistoryMethods.queryDepositHistory("90").getData();
+        List<bithumbVirtualCoinAssetData> bithumbVirtualCoinAsset = bithumbAssetMethods.queryVirtualCoinAccount("wallet").getData();
+
+        for(bithumbWithdrawResponseData bithumbWithdrawResponseData : bithumbWithdrawResponse){
+            withdrawlsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",bithumbWithdrawResponseData.getCoinType()),
+                    new Document("quantity",bithumbWithdrawResponseData.getQuantity()),
+                    new Document("date",bithumbWithdrawResponseData.getCreateTime())
+
+            });
+        }
+
+        orderNumber = 0;
+
+        for(bithumbWithdrawResponseData bithumbDepositData : bithumbDepositResponse){
+            depositsObj.append("" + orderNumber++, new Object[]{
+
+                    new Document("currency",bithumbDepositData.getCoinType()),
+                    new Document("quantity",bithumbDepositData.getQuantity()),
+                    new Document("date",bithumbDepositData.getCreateTime())
+
+            });
+        }
+
+        orderNumber = 0;
+
+        for(bithumbVirtualCoinAssetData bithumbVirtualCoinAssetData : bithumbVirtualCoinAsset){
+            accountHoldingsObj.append("" + orderNumber++, new Object[]{
+                    new Document("currency",bithumbVirtualCoinAssetData.getCoinType()),
+                    new Document("quantity",bithumbVirtualCoinAssetData.getBtcQuantity()),
+            });
+        }
+
+        basicDBObject.append("accHoldings",accountHoldingsObj);
+        basicDBObject.append("withdrawls",withdrawlsObj);
+        basicDBObject.append("deposits",depositsObj);
+        accountInfoCollection.insertOne(new Document(basicDBObject));
+        resetDBObjects();
 
         // bitmex
 

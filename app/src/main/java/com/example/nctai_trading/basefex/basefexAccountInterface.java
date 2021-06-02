@@ -5,6 +5,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Query;
 
 public interface basefexAccountInterface {
 
@@ -12,7 +13,7 @@ public interface basefexAccountInterface {
     Call<List<basefexGetAccountCashAndPositionDetail>> getAccountCashAndDetail(@Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature);
 
     @GET("https://api.basefex.com/accounts/transactions")
-    Call<List<basefexAccountDepositWithdrawHistory>> getAccountDepositWithdrawHistory(@Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature);
+    Call<List<basefexAccountDepositWithdrawHistory>> getAccountDepositWithdrawHistory(@Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature, @Query("type") String type);
 
     @GET("https://api.basefex.com/accounts/transactions/count")
     Call<basefexCountTransactions> getAccountTransactions(@Header("api-expires") String expires, @Header("api-key") String apiKey, @Header("api-signature") String signature);

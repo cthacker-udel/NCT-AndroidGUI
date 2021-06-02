@@ -11,6 +11,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,12 +141,13 @@ public class bithumbMethods {
 
             return result;
         }
+
     }
 
     public class historyRequests{
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public bithumbWithdrawResponse queryDepositHistory(String coin, String start) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        public bithumbWithdrawResponse queryDepositHistory(String start) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
             String url = baseUrl + "/wallet/depositHistory/";
 
@@ -158,7 +160,6 @@ public class bithumbMethods {
 
             Map<String,String> authHeader = new HashMap<>();
 
-            authHeader.put("coin",coin);
             authHeader.put("start",start);
             authHeader.put("timestamp",getTimeStamp());
             authHeader.put("signature",getSignature(authHeader));

@@ -79,7 +79,7 @@ public class basefexMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public List<basefexAccountDepositWithdrawHistory> getDepositAndWithdrawHistory() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        public List<basefexAccountDepositWithdrawHistory> getDepositAndWithdrawHistory(String type) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
             String url = baseUrl + "/accounts/transactions/";
 
@@ -92,7 +92,7 @@ public class basefexMethods {
 
             String expires = getTimeStamp();
 
-            Call<List<basefexAccountDepositWithdrawHistory>> call = basefexAccountInterface.getAccountDepositWithdrawHistory(expires,apiKey,generateSignature(secretKey,"GET","/accounts/transactions",expires,""));
+            Call<List<basefexAccountDepositWithdrawHistory>> call = basefexAccountInterface.getAccountDepositWithdrawHistory(expires,apiKey,generateSignature(secretKey,"GET","/accounts/transactions",expires,""),type);
 
             Response<List<basefexAccountDepositWithdrawHistory>> response = call.execute();
 
