@@ -268,6 +268,31 @@ public class basefexMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrderBatchNoArg() throws NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/orders/batch/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            basefexOrdersInterface basefexOrdersInterface = retrofit.create(com.example.nctai_trading.basefex.basefexOrdersInterface.class);
+
+            Map<String,Object> body = new LinkedHashMap<>();
+
+            String timestamp = getTimeStamp();
+            Response cancelOrderBatch = basefexOrdersInterface.cancelOrderBatch(timestamp,apiKey,generateSignature(secretKey,"DELETE","/orders/batch",timestamp,jsonStringifyMap(body)),body);
+
+            return cancelOrderBatch.isSuccessful();
+
+
+
+
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public List<basefexActiveOrderListOrder> getActiveOrderList(String symbol, String limit) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
             String url = baseUrl + "/orders/opening/";

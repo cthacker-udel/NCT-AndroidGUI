@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -49,6 +50,24 @@ public class bitcoincomMethods {
             Call<bitcoincomOrderResponse> call = bitcoincomOrderInterface.placeOrder(authHeader,params);
 
             Response<bitcoincomOrderResponse> response = call.execute();
+
+            return response.body();
+        }
+
+        public List<DeletedOrder> cancelAllOrders() throws IOException {
+
+            String url = baseUrl + "/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitcoincomOrderInterface bitcoincomOrderInterface = retrofit.create(com.example.nctai_trading.bitcoincom.bitcoincomOrderInterface.class);
+
+            Call<List<DeletedOrder>> call = bitcoincomOrderInterface.cancelAllOrders(authHeader);
+
+            Response<List<DeletedOrder>> response = call.execute();
 
             return response.body();
         }

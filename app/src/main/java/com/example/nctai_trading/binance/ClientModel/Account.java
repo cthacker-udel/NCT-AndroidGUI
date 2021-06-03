@@ -1,6 +1,7 @@
 package com.example.nctai_trading.binance.ClientModel;
 
-import Client.BinanceClient;
+
+import com.example.nctai_trading.binance.Client.BinanceClient;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

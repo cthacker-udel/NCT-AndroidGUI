@@ -21,6 +21,7 @@ import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bidesk.domain.account.AssetBalance;
 import com.example.nctai_trading.bidesk.domain.account.DepositOrder;
+import com.example.nctai_trading.bidesk.domain.account.request.CancelOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.DepositOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
@@ -28,6 +29,7 @@ import com.example.nctai_trading.bilaxy.bilaxyAccount;
 import com.example.nctai_trading.bilaxy.bilaxyAccountData;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
 import com.example.nctai_trading.binance.Client.BinanceClient;
+import com.example.nctai_trading.binance.ClientModel.Account;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountBalance;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountInfo;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
@@ -1694,8 +1696,59 @@ public class exchangeInterface {
 
     }
 
-    public void cancelOrderSpecificExchange(String exchange){
-
+    public void cancelOrderSpecificExchange(String exchange) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+        if(exchange.equalsIgnoreCase("alpaca")){
+            com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
+            alpacaOrderRequests.cancelAllOrders();
+        }
+        else if(exchange.equalsIgnoreCase("basefex")){
+            com.example.nctai_trading.basefex.basefexMethods.ordersRequests basefexOrderRequests = basefexMethods.new ordersRequests();
+            basefexOrderRequests.cancelOrderBatchNoArg();
+        }
+        else if(exchange.equalsIgnoreCase("bibox")){
+            for(String currency : currencySymbols){
+                biBoxHttpClient.cOrderCloseAll(currency);
+            }
+        }
+        else if(exchange.equalsIgnoreCase("bidesk")){
+            //bideskClient. only availability is with orderId
+        }
+        else if(exchange.equalsIgnoreCase("bilaxy")){
+            //bilaxyMethods. only availability is with orderId
+        }
+        else if(exchange.equalsIgnoreCase("binance")){
+            BinanceClient binanceClient = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
+            Account binanceAccount = binanceClient.getAccount();
+            for(String currency : currencySymbols){
+                binanceAccount.setSymbol(currency);
+                binanceClient.cancelAllOpenOrdersOnSymbol(binanceClient);
+                binanceAccount.clearQueries();
+            }
+        }
+        else if(exchange.equalsIgnoreCase("binanceus")){
+            com.example.nctai_trading.binanceUS.ClientModel.Account binanceUSAccount = binanceUSMethods.getAccount();
+            for(String currency: currencySymbols){
+                binanceUSAccount.setSymbol(currency);
+                binanceUSMethods.cancelAllOpenOrdersOnSymbol(binanceUSMethods);
+                binanceUSAccount.clearQueries();
+            }
+        }
+        else if(exchange.equalsIgnoreCase("bitcoincom")){
+            com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+            bitcoincomOrderRequests.cancelAllOrders();
+        }
+        else if(exchange.equalsIgnoreCase("bitforex")){
+            com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+            for(String currency: currencySymbols){
+                bitforexOrderRequests.cancelAllOrders(currency);
+            }
+        }
+        else if(exchange.equalsIgnoreCase("bithumb")){
+            com.example.nctai_trading.bithumb.bithumbMethods.virtualCoinOrderRequests bithumbVCOrderRequests = bithumbMethods.new virtualCoinOrderRequests();
+            for(String eachCurrency : currencySymbols) {
+                bithumbVCOrderRequests.batchCancelOrder(eachCurrency);
+            }
+        }
     }
 
     public void marginOrderSpecificExchange(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String limitPrice, String stopLossPrice){

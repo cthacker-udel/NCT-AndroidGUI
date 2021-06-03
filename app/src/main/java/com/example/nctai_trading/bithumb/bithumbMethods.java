@@ -394,7 +394,7 @@ public class bithumbMethods {
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
-        public boolean cancelVirtualCoinOrder(String orderId, String symbol) throws NoSuchAlgorithmException, InvalidKeyException {
+        public boolean cancelVirtualCoinOrder(String orderId, String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
 
             String url = baseUrl + "/spot/cancelOrder/";
 
@@ -411,9 +411,36 @@ public class bithumbMethods {
 
             bithumbOrderInterface bithumbOrderInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbOrderInterface.class);
 
-            Response cancelVirtualOrder = bithumbOrderInterface.cancelVirtualCoinOrder(authHeader);
+            Call<Void> cancelVirtualOrder = bithumbOrderInterface.cancelVirtualCoinOrder(authHeader);
 
-            return cancelVirtualOrder.errorBody().contentLength() < 1;
+            Response<Void> response = cancelVirtualOrder.execute();
+
+            return response.isSuccessful();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public boolean batchCancelOrder(String symbol) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/spot/cancelOrder/batch/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            Map<String,String> authHeader = new HashMap<>();
+
+            authHeader.put("symbol",symbol);
+            authHeader.put("signature",getSignature(authHeader));
+
+            bithumbOrderInterface bithumbOrderInterface = retrofit.create(com.example.nctai_trading.bithumb.bithumbOrderInterface.class);
+
+            Call<Void> call = bithumbOrderInterface.batchCancelOrders(authHeader);
+
+            Response<Void> response = call.execute();
+
+            return response.isSuccessful();
+
         }
 
         @RequiresApi(api = Build.VERSION_CODES.N)
