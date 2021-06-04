@@ -210,7 +210,7 @@ public class exchangeInterface {
 
     com.example.nctai_trading.digifinex.digifinexMethods digifinexMethods = new digifinexMethods(sharedPreferences.getString("digifinexApiKey",""),sharedPreferences.getString("digifinexSecretKey",""));
 
-    //com.example.nctai_trading.exante.exanteMethods exanteMethods = new exanteMethods(sharedPreferences.getString("exanteApiKey",""),sharedPreferences.getString("exanteSecretKey",""));
+    com.example.nctai_trading.exante.exanteMethods exanteMethods = new exanteMethods(sharedPreferences.getString("exanteApiKey",""),sharedPreferences.getString("exanteSecretKey",""));
 
     com.example.nctai_trading.huobi.Client.HuobiClient huobiClient = new HuobiClient(sharedPreferences.getString("huobiApiKey",""),sharedPreferences.getString("huobiSecretKey",""));
 
@@ -1697,6 +1697,7 @@ public class exchangeInterface {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void cancelOrderSpecificExchange(String exchange) throws InvalidKeyException, NoSuchAlgorithmException, IOException, URISyntaxException {
         if(exchange.equalsIgnoreCase("alpaca")){
             com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
@@ -1771,7 +1772,18 @@ public class exchangeInterface {
             }
         }
         else if(exchange.equalsIgnoreCase("coinbasepro")){
+            com.example.nctai_trading.coinbasePro.coinbaseProMethods.cancelOrder cancelOrders = coinbaseProMethods.new cancelOrder();
+            cancelOrders.cancelAll();
+        }
+        else if(exchange.equalsIgnoreCase("digifinex")){
 
+            com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrderRequests = digifinexMethods.new orderRequests();
+            // requires orderId
+
+        }
+        else if(exchange.equalsIgnoreCase("exante")){
+            exanteMethods.orderRequests orderRequests = exanteMethods.new orderRequests();
+            // requires orderId
         }
     }
 
