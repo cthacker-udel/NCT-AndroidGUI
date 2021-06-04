@@ -86,6 +86,7 @@ import org.json.JSONException;
 import org.spongycastle.asn1.cms.KeyAgreeRecipientIdentifier;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -1696,7 +1697,7 @@ public class exchangeInterface {
 
     }
 
-    public void cancelOrderSpecificExchange(String exchange) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+    public void cancelOrderSpecificExchange(String exchange) throws InvalidKeyException, NoSuchAlgorithmException, IOException, URISyntaxException {
         if(exchange.equalsIgnoreCase("alpaca")){
             com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
             alpacaOrderRequests.cancelAllOrders();
@@ -1749,6 +1750,29 @@ public class exchangeInterface {
                 bithumbVCOrderRequests.batchCancelOrder(eachCurrency);
             }
         }
+        else if(exchange.equalsIgnoreCase("bitmex")){
+            com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests bitmexInstrumentRequests = bitmexMethods.new instrumentRequests();
+            bitmexInstrumentRequests.cancelAllOrders(0);
+        }
+        else if(exchange.equalsIgnoreCase("bitrue")){
+            com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+            for(String currency : currencySymbols){
+                bitrueOrderRequests.cancelOrder(currency);
+            }
+        }
+        else if(exchange.equalsIgnoreCase("btse")){
+            com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
+            btseOrderRequests.cancelAllAfter(0);
+        }
+        else if(exchange.equalsIgnoreCase("bybit")){
+            com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitOrderRequests = bybitMethods.new orderRequests();
+            for(String currency : currencySymbols){
+                bybitOrderRequests.cancelAllActiveOrders(currency);
+            }
+        }
+        else if(exchange.equalsIgnoreCase("coinbasepro")){
+
+        }
     }
 
     public void marginOrderSpecificExchange(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String limitPrice, String stopLossPrice){
@@ -1780,7 +1804,7 @@ public class exchangeInterface {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void followParticleCommand() throws KiteException, NoSuchAlgorithmException, IOException, JSONException, HttpException, InvalidKeyException {
+    public void followParticleCommand() throws KiteException, NoSuchAlgorithmException, IOException, JSONException, HttpException, InvalidKeyException, URISyntaxException {
 
         String[] fields = getDataReceived().split(" ");
 

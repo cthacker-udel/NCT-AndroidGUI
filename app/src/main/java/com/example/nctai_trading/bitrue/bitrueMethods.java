@@ -291,6 +291,30 @@ public class bitrueMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelOrder(String symbol) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+
+            String url = baseUrl + "/api/v1/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            orderInterface orderInterface = retrofit.create(com.example.nctai_trading.bitrue.orderInterface.class);
+
+            Long timestamp = synchronize();
+
+            Map<String,Object> queries = new HashMap<>();
+            queries.put("symbol",symbol);
+
+            Call<bitrueCancelOrder> call = orderInterface.cancelOrder(apiKey,timestamp,symbol,generateSignature(generateQueryString(queries,timestamp)));
+
+            Response<bitrueCancelOrder> response = call.execute();
+
+            return response.isSuccessful();
+        }
+
 
     }
 

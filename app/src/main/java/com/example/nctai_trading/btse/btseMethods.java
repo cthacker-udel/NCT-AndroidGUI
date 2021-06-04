@@ -156,6 +156,31 @@ public class btseMethods {
 
         }
 
+        public boolean cancelAllAfter(Integer timeout) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+
+            String url = baseUrl + "/api/v3.2/order/cancelAllAfter/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            btseOrderInterface btseOrderInterface = retrofit.create(com.example.nctai_trading.btse.btseOrderInterface.class);
+
+            Long timestamp = generateTimestamp() * 1000;
+
+            Map<String,Object> params = new LinkedHashMap<>();
+
+            params.put("timeout",timeout);
+
+            Call<Void> call = btseOrderInterface.cancelAllAfter(timestamp,apiKey,generateSignature("/api/v3.2/order/cancelAllAfter",timestamp+"",params),params);
+
+            Response<Void> response = call.execute();
+
+            return response.isSuccessful();
+
+        }
+
 
 
 

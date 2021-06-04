@@ -23,6 +23,10 @@ public interface btseOrderInterface {
 
     @GET("https://api.btse.com/spot/api/v3.2/user/wallet_history")
     Call<List<walletHistory>> getWalletHistory(@Header("btse-nonce") Long timestamp, @Header("btse-api") String apiKey, @Header("btse-sign") String signature);
+
+    @POST("https://api.btse.com/spot/api/v3.2/order/cancelAllAfter")
+    Call<Void> cancelAllAfter(@Header("btse-nonce") Long timestamp, @Header("btse-api") String apiKey, @Header("btse-sign") String signature, @Body Map<String,Object> body);
+
 }
 
 

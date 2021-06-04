@@ -427,6 +427,33 @@ public class bitmexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public boolean cancelAllOrders(Integer timeout) throws IOException, URISyntaxException {
+
+            String url = baseUrl + "/order/cancelAllAfter/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexFundingInterface bitmexFundingInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexFundingInterface.class);
+
+            Map<String,Object> queryParams = new LinkedHashMap<>();
+            queryParams.put("timeout",timeout);
+
+            String timestamp = getTimeStamp();
+
+            Call<Void> call = bitmexFundingInterface.cancelAllOrders(timestamp,apikey,generateSignature("POST",temp("/api/v1/order/cancelAllAfter",generateSingleQueryParam(queryParams)),timestamp,""),timeout);
+
+            Response<Void> response = call.execute();
+
+            return response.isSuccessful();
+
+        }
+
+
+
     }
 
 }

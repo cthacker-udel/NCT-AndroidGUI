@@ -15,6 +15,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.example.nctai_trading.bybit.cancelAll.bybitCancelOrder;
 import com.example.nctai_trading.bybit.openOrders.openOrder;
 import com.example.nctai_trading.bybit.tradeRecords.tradeRecord;
 import com.example.nctai_trading.bybit.walletFunds.walletFund;
@@ -132,6 +134,39 @@ public class bybitMethods {
             return response.body();
 
 
+
+        }
+
+
+        public boolean cancelAllActiveOrders(String symbol) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+
+            String url = "https://api.bybit.com/v2/private/order/cancelAll/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bybitOrderInterface bybitOrderInterface = retrofit.create(com.example.nctai_trading.bybit.bybitOrderInterface.class);
+
+            TreeMap map = new TreeMap<String, String>(
+                    new Comparator<String>() {
+                        public int compare(String obj1, String obj2) {
+                            //sort in alphabet order
+                            return obj1.compareTo(obj2);
+                        }
+                    });
+
+            map.put("symbol",symbol);
+            map.put("timestamp",synchronize());
+
+            String signature = getSignature(map,secretKey);
+
+            Call<bybitCancelOrder> call = bybitOrderInterface.cancelAllActiveOrders(apiKey,map.get("timestamp"),signature,symbol);
+
+            Response<bybitCancelOrder> response = call.execute();
+
+            return response.isSuccessful();
 
         }
 

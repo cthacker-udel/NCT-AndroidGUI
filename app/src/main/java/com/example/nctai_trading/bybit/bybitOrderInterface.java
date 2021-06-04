@@ -10,6 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
+import com.example.nctai_trading.bybit.cancelAll.bybitCancelOrder;
 import com.example.nctai_trading.bybit.openOrders.openOrder;
 import com.example.nctai_trading.bybit.tradeRecords.tradeRecord;
 import com.example.nctai_trading.bybit.walletFunds.walletFund;
@@ -27,5 +28,8 @@ public interface bybitOrderInterface {
 
     @GET("https://api.bybit.com/v2/private/wallet/fund/records")
     Call<walletFund> getWalletFunds(@Header("api_key") String apiKey, @Header("timestamp") Object timestamp, @Header("sign") String signature);
+
+    @POST("https://api.bybit.com/v2/private/order/cancelAll")
+    Call<bybitCancelOrder> cancelAllActiveOrders(@Header("api_key") String apiKey, @Header("timestamp") Object timestamp, @Header("sign") String signature, @Body String symbol);
 
 }
