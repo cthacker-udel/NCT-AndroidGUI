@@ -1813,7 +1813,73 @@ public class exchangeInterface {
 
     }
 
-    public void cancelAllOrders(){
+    public void cancelAllOrders() throws InvalidKeyException, NoSuchAlgorithmException, IOException, URISyntaxException {
+        com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
+        alpacaOrderRequests.cancelAllOrders();
+        com.example.nctai_trading.basefex.basefexMethods.ordersRequests basefexOrderRequests = basefexMethods.new ordersRequests();
+        basefexOrderRequests.cancelOrderBatchNoArg();
+            for(String currency : currencySymbols){
+                biBoxHttpClient.cOrderCloseAll(currency);
+            }
+            //bideskClient. only availability is with orderId
+            //bilaxyMethods. only availability is with orderId
+
+            BinanceClient binanceClient = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
+            Account binanceAccount = binanceClient.getAccount();
+            for(String currency : currencySymbols){
+                binanceAccount.setSymbol(currency);
+                binanceClient.cancelAllOpenOrdersOnSymbol(binanceClient);
+                binanceAccount.clearQueries();
+            }
+            com.example.nctai_trading.binanceUS.ClientModel.Account binanceUSAccount = binanceUSMethods.getAccount();
+            for(String currency: currencySymbols){
+                binanceUSAccount.setSymbol(currency);
+                binanceUSMethods.cancelAllOpenOrdersOnSymbol(binanceUSMethods);
+                binanceUSAccount.clearQueries();
+            }
+            com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+            bitcoincomOrderRequests.cancelAllOrders();
+            com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+            for(String currency: currencySymbols){
+                bitforexOrderRequests.cancelAllOrders(currency);
+            }
+            com.example.nctai_trading.bithumb.bithumbMethods.virtualCoinOrderRequests bithumbVCOrderRequests = bithumbMethods.new virtualCoinOrderRequests();
+            for(String eachCurrency : currencySymbols) {
+                bithumbVCOrderRequests.batchCancelOrder(eachCurrency);
+            }
+            com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests bitmexInstrumentRequests = bitmexMethods.new instrumentRequests();
+            bitmexInstrumentRequests.cancelAllOrders(0);
+            com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+            for(String currency : currencySymbols){
+                bitrueOrderRequests.cancelOrder(currency);
+            }
+
+            com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
+            btseOrderRequests.cancelAllAfter(0);
+
+            com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitOrderRequests = bybitMethods.new orderRequests();
+            for(String currency : currencySymbols){
+                bybitOrderRequests.cancelAllActiveOrders(currency);
+            }
+
+            com.example.nctai_trading.coinbasePro.coinbaseProMethods.cancelOrder cancelOrders = coinbaseProMethods.new cancelOrder();
+            cancelOrders.cancelAll();
+
+            com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrderRequests = digifinexMethods.new orderRequests();
+            // requires orderId
+
+
+            exanteMethods.orderRequests orderRequests = exanteMethods.new orderRequests();
+            // requires orderId
+
+            huobiClient.cancelAllOrders(huobiClient);
+
+            krakenApi.queryPrivate(KrakenApi.Method.CANCEL_ALL);
+
+            com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
+            for(String eachSymbol : currencySymbols){
+                wbfTransactionRequests.cancelAllOrders(eachSymbol);
+            }
 
     }
 
