@@ -2042,6 +2042,7 @@ public class exchangeInterface {
             huobiClient.cancelAllOrders(huobiClient);
         }
         else if(exchange.equalsIgnoreCase("idcm")){
+            com.example.nctai_trading.idcm.idcmMethods.orderRequests idcmOrderRequests = idcmMethods.new orderRequests();
             // requires orderId
         }
         else if(exchange.equalsIgnoreCase("interactivebrokers")){
@@ -2051,11 +2052,10 @@ public class exchangeInterface {
             // requires orderId
         }
         else if(exchange.equalsIgnoreCase("kraken")){
-
+            krakenApi.queryPrivate(KrakenApi.Method.CANCEL_ALL);
         }
         else if(exchange.equalsIgnoreCase("wbf")){
             com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
-
         }
     }
 
