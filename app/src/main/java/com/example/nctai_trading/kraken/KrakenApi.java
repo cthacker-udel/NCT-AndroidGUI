@@ -178,6 +178,7 @@ public class KrakenApi {
         CANCEL_ORDER("CancelOrder", false),
         DEPOSIT_METHODS("DepositMethods", false),
         DEPOSIT_ADDRESSES("DepositAddresses", false),
+        CANCEL_ALL("CancelAll",false),
         DEPOSIT_STATUS("DepositStatus", false),
         WITHDRAW_INFO("WithdrawInfo", false),
         WITHDRAW("Withdraw", false),

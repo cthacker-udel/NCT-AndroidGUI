@@ -1785,7 +1785,29 @@ public class exchangeInterface {
             exanteMethods.orderRequests orderRequests = exanteMethods.new orderRequests();
             // requires orderId
         }
+        else if(exchange.equalsIgnoreCase("huobi")){
+            huobiClient.cancelAllOrders(huobiClient);
+        }
+        else if(exchange.equalsIgnoreCase("idcm")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("interactivebrokers")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("kiteconnect")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("kraken")){
+            krakenApi.queryPrivate(KrakenApi.Method.CANCEL_ALL);
+        }
+        else if(exchange.equalsIgnoreCase("wbf")){
+            com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
+            for(String eachSymbol : currencySymbols){
+                wbfTransactionRequests.cancelAllOrders(eachSymbol);
+            }
+        }
     }
+
 
     public void marginOrderSpecificExchange(String exchange, String fromCurrency, String toCurrency, String direction, String amount, String limitPrice, String stopLossPrice){
 

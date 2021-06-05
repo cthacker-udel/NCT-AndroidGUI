@@ -103,6 +103,29 @@ public class wbfMethods {
             return response.body();
         }
 
+        public boolean cancelAllOrders(String symbol) throws IOException {
+
+            String url = baseUrl + "/oepn/api/cancel_order_all";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            wbfTransactionInterface wbfTransactionInterface = retrofit.create(com.example.nctai_trading.wbf.wbfTransactionInterface.class);
+
+            TreeMap<String,String> queries = new TreeMap<>();
+            queries.put("symbol",symbol);
+            queries = generateSignature(queries);
+
+            Call<Void> call = wbfTransactionInterface.cancelAllOrders("application/x-www-form-urlencoded;charset=utf-8",queries.get("api_key"),queries.get("time"),queries.get("sign"), symbol);
+
+            Response<Void> response = call.execute();
+
+            return response.isSuccessful();
+
+        }
+
 
     }
 
