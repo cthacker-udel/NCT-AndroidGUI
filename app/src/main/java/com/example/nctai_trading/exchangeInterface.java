@@ -1969,9 +1969,29 @@ public class exchangeInterface {
         }
         else if(exchange.equalsIgnoreCase("binance")){
             BinanceClient binanceClient = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
+            Account binanceAccount = binanceClient.getAccount();
+            AccountInfo binanceAccInfo = binanceClient.getAccountInformation(binanceClient);
+            List<AccountBalance> binanceAccountBalances = binanceAccInfo.getBalances();
+            for(AccountBalance accBalance : binanceAccountBalances){
+                binanceAccount.setSymbol(accBalance.getAsset() + currency);
+                binanceAccount.setSide("buy");
+                binanceAccount.setType("market");
+                binanceClient.placeNewOrder(binanceClient);
+                binanceClient.getAccount().clearQueries();
+            }
         }
         else if(exchange.equalsIgnoreCase("binanceus")){
             com.example.nctai_trading.binanceUS.ClientModel.Account binanceUSAccount = binanceUSMethods.getAccount();
+            com.example.nctai_trading.binanceUS.ClientModel.Account binanceAccount = binanceUSAccount.getAccount();
+            com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountInfo binanceAccInfo = binanceUSAccount.getAccountInformation(binanceUSAccount);
+            List<com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountBalance> binanceAccountBalances = binanceAccInfo.getBalances();
+            for(com.example.nctai_trading.binanceUS.Controller.AccountAPI.AccountInfo.AccountBalance accBalance : binanceAccountBalances){
+                binanceAccount.setSymbol(accBalance.getAsset() + currency);
+                binanceAccount.setSide("buy");
+                binanceAccount.setType("market");
+                binanceUSAccount.placeNewOrder(binanceUSAccount);
+                binanceUSAccount.getAccount().clearQueries();
+            }
 
         }
         else if(exchange.equalsIgnoreCase("bitcoincom")){
