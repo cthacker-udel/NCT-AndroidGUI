@@ -24,4 +24,7 @@ public interface bilaxyInterfacesInterface {
 
     @POST("https://api.bilaxy.com/v1/trade")
     Call<bilaxyDepositAddress> placeOrder(@Field("symbol") String symbol, @Field("amount") String amount, @Field("price") Double price, @Field("type") String type, @Header("key") String apiKey, @Header("sign") String signature);
+
+
+
 }

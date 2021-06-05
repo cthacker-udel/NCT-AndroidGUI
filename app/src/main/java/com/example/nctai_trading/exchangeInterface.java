@@ -21,6 +21,10 @@ import com.example.nctai_trading.bidesk.BrokerApiClientFactory;
 import com.example.nctai_trading.bidesk.BrokerApiRestClient;
 import com.example.nctai_trading.bidesk.domain.account.AssetBalance;
 import com.example.nctai_trading.bidesk.domain.account.DepositOrder;
+import com.example.nctai_trading.bidesk.domain.account.NewOrder;
+import com.example.nctai_trading.bidesk.domain.account.OrderSide;
+import com.example.nctai_trading.bidesk.domain.account.OrderType;
+import com.example.nctai_trading.bidesk.domain.account.TimeInForce;
 import com.example.nctai_trading.bidesk.domain.account.request.CancelOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.DepositOrderRequest;
 import com.example.nctai_trading.bidesk.domain.account.request.HistoryOrderRequest;
@@ -28,6 +32,7 @@ import com.example.nctai_trading.bidesk.domain.account.request.OpenOrderRequest;
 import com.example.nctai_trading.bilaxy.bilaxyAccount;
 import com.example.nctai_trading.bilaxy.bilaxyAccountData;
 import com.example.nctai_trading.bilaxy.bilaxyMethods;
+import com.example.nctai_trading.bilaxy.bilaxyRecentTransaction;
 import com.example.nctai_trading.binance.Client.BinanceClient;
 import com.example.nctai_trading.binance.ClientModel.Account;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountBalance;
@@ -1907,23 +1912,60 @@ public class exchangeInterface {
                 List<PriceTicker> priceTickers = binanceMethods.getPriceTicker(binanceMethods);
                 for(PriceTicker eachPriceTicker : priceTickers){
                     if(eachPriceTicker.getSymbol().contains(currency) && eachPriceTicker.getSymbol().contains(cashDetails.getCurrency()) && !(eachPriceTicker.getSymbol().endsWith(currency) && eachPriceTicker.getSymbol().startsWith(cashDetails.getCurrency()))){
-                        price = Double.parseDouble(eachPriceTicker.getPrice());
+                        //price = Double.parseDouble(eachPriceTicker.getPrice());
+                        price = Double.parseDouble(binanceMethods.getPriceTicker(binanceMethods).get(0).getPrice());
                         basefexOrderRequests.placeOrder((int)price,eachPriceTicker.getSymbol() + currency,"market","buy");
                     }
                 }
+                binanceMethods.getMarket().clearQueries();
 
 
 
             }
         }
         else if(exchange.equalsIgnoreCase("bibox")){
-
+            String queryAssets = biBoxHttpClient.cQueryAssets();
         }
         else if(exchange.equalsIgnoreCase("bidesk")){
             //bideskClient. only availability is with orderId
+            com.example.nctai_trading.bidesk.domain.account.Account bideskAccount = bideskClient.getAccount(10000L,System.currentTimeMillis() * 1000);
+            List<AssetBalance> bideskBalances = bideskAccount.getBalances();
+            double price = 0;
+            for(AssetBalance eachAsset : bideskBalances){
+                binanceMethods.getMarket().setSymbol(eachAsset.getAsset() + currency);
+                if(eachAsset.getAsset().contains(currency) && eachAsset.getAsset().contains(eachAsset.getAsset()) && !(eachAsset.getAsset().endsWith(currency) && eachAsset.getAsset().startsWith(eachAsset.getAsset()))){
+                    price = Double.parseDouble(binanceMethods.getPriceTicker(binanceMethods).get(0).getPrice());
+                    bideskClient.newOrder(new NewOrder(eachAsset.getAsset() + currency, OrderSide.BUY, OrderType.MARKET, TimeInForce.GTC,price+""));
+                }
+            }
         }
         else if(exchange.equalsIgnoreCase("bilaxy")){
             //bilaxyMethods. only availability is with orderId
+            com.example.nctai_trading.bilaxy.bilaxyMethods.interfaceRequests bilaxyInterfaceRequests = bilaxyMethods.new interfaceRequests();
+            com.example.nctai_trading.bilaxy.bilaxyMethods.transactionRequests bilaxyTransactionRequests = bilaxyMethods.new transactionRequests();
+            List<bilaxyAccount> bilaxyAccountAssets = bilaxyInterfaceRequests.getAccountInfo();
+            double price = 0;
+            for(bilaxyAccount eachAsset : bilaxyAccountAssets){
+
+                List<bilaxyAccountData> bilaxyAccountData = eachAsset.getData();
+
+                for(bilaxyAccountData eachData : bilaxyAccountData){
+
+                    binanceMethods.getMarket().setSymbol(eachData.getName() + currency);
+                    List<PriceTicker> priceTickers = binanceMethods.getPriceTicker(binanceMethods);
+                    for(PriceTicker eachPriceTicker : priceTickers){
+                        if(eachPriceTicker.getSymbol().contains(currency) && eachPriceTicker.getSymbol().contains(eachData.getName()) && !(eachPriceTicker.getSymbol().endsWith(currency) && eachPriceTicker.getSymbol().startsWith(eachData.getName()))){
+                            //price = Double.parseDouble(eachPriceTicker.getPrice());
+                            price = Double.parseDouble(binanceMethods.getPriceTicker(binanceMethods).get(0).getPrice());
+                            bilaxyInterfaceRequests.placeOrder(eachData.getName() + currency, price + "",1.0,"market");
+                        }
+                    }
+
+                }
+
+            }
+
+            //List<bilaxyTransactionData> bilaxyTransactionData = bilaxyTransactionRequests.getRecentTransactions()
         }
         else if(exchange.equalsIgnoreCase("binance")){
             BinanceClient binanceClient = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
