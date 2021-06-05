@@ -32,6 +32,7 @@ import com.example.nctai_trading.binance.Client.BinanceClient;
 import com.example.nctai_trading.binance.ClientModel.Account;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountBalance;
 import com.example.nctai_trading.binance.Controller.AccountAPI.AccountInfo.AccountInfo;
+import com.example.nctai_trading.binance.Controller.MarketAPI.PriceTicker;
 import com.example.nctai_trading.bitMEX.bitmexMethods;
 import com.example.nctai_trading.bitMEX.userWalletHistory;
 import com.example.nctai_trading.bitcoincom.bitcoincomMethods;
@@ -1813,6 +1814,7 @@ public class exchangeInterface {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void cancelAllOrders() throws InvalidKeyException, NoSuchAlgorithmException, IOException, URISyntaxException {
         com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
         alpacaOrderRequests.cancelAllOrders();
@@ -1883,8 +1885,114 @@ public class exchangeInterface {
 
     }
 
-    public void liquidateAllCurrencyAssetsBuy(String exchange, String currency){
+    public void liquidateAllCurrencyAssetsBuy(String exchange, String currency) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         // buy all currency from exchange as possible
+        if(exchange.equalsIgnoreCase("alpaca")){
+            alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
+            com.example.nctai_trading.alpaca.alpacaMethods.orderRequests alpacaOrderRequests = alpacaMethods.new orderRequests();
+            List<alpacaAsset> alpacaAssets = alpacaAccountRequests.getAssets();
+            for(alpacaAsset eachAsset : alpacaAssets){
+                alpacaOrderRequests.placeOrder(eachAsset + currency, 1,"buy","market","day");
+            }
+        }
+        else if(exchange.equalsIgnoreCase("basefex")){
+            basefexMethods.accountRequests basefexAccountRequests = basefexMethods.new accountRequests();
+            com.example.nctai_trading.basefex.basefexMethods.ordersRequests basefexOrderRequests = basefexMethods.new ordersRequests();
+            List<basefexGetAccountCashAndPositionDetail> basefexAssets = basefexAccountRequests.getCashAndPositionDetail();
+            double price = 0;
+            for(basefexGetAccountCashAndPositionDetail eachAccountCashPosition: basefexAssets){
+
+                basefexGetAccountCashAndPositionDetailCash cashDetails = eachAccountCashPosition.getCash();
+                binanceMethods.getMarket().setSymbol(cashDetails.getCurrency() + currency);
+                List<PriceTicker> priceTickers = binanceMethods.getPriceTicker(binanceMethods);
+                for(PriceTicker eachPriceTicker : priceTickers){
+                    if(eachPriceTicker.getSymbol().contains(currency) && eachPriceTicker.getSymbol().contains(cashDetails.getCurrency()) && !(eachPriceTicker.getSymbol().endsWith(currency) && eachPriceTicker.getSymbol().startsWith(cashDetails.getCurrency()))){
+                        price = Double.parseDouble(eachPriceTicker.getPrice());
+                        basefexOrderRequests.placeOrder((int)price,eachPriceTicker.getSymbol() + currency,"market","buy");
+                    }
+                }
+
+
+
+            }
+        }
+        else if(exchange.equalsIgnoreCase("bibox")){
+
+        }
+        else if(exchange.equalsIgnoreCase("bidesk")){
+            //bideskClient. only availability is with orderId
+        }
+        else if(exchange.equalsIgnoreCase("bilaxy")){
+            //bilaxyMethods. only availability is with orderId
+        }
+        else if(exchange.equalsIgnoreCase("binance")){
+            BinanceClient binanceClient = new BinanceClient(sharedPreferences.getString("binanceApiKey",""),sharedPreferences.getString("binanceSecretKey",""));
+        }
+        else if(exchange.equalsIgnoreCase("binanceus")){
+            com.example.nctai_trading.binanceUS.ClientModel.Account binanceUSAccount = binanceUSMethods.getAccount();
+
+        }
+        else if(exchange.equalsIgnoreCase("bitcoincom")){
+            com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("bitforex")){
+            com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("bithumb")){
+            com.example.nctai_trading.bithumb.bithumbMethods.virtualCoinOrderRequests bithumbVCOrderRequests = bithumbMethods.new virtualCoinOrderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("bitmex")){
+            com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests bitmexInstrumentRequests = bitmexMethods.new instrumentRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("bitrue")){
+            com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("btse")){
+            com.example.nctai_trading.btse.btseMethods.orderRequests btseOrderRequests = btseMethods.new orderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("bybit")){
+            com.example.nctai_trading.bybit.bybitMethods.orderRequests bybitOrderRequests = bybitMethods.new orderRequests();
+
+        }
+        else if(exchange.equalsIgnoreCase("coinbasepro")){
+            com.example.nctai_trading.coinbasePro.coinbaseProMethods.cancelOrder cancelOrders = coinbaseProMethods.new cancelOrder();
+
+        }
+        else if(exchange.equalsIgnoreCase("digifinex")){
+
+            com.example.nctai_trading.digifinex.digifinexMethods.orderRequests digifinexOrderRequests = digifinexMethods.new orderRequests();
+            // requires orderId
+
+        }
+        else if(exchange.equalsIgnoreCase("exante")){
+            exanteMethods.orderRequests orderRequests = exanteMethods.new orderRequests();
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("huobi")){
+
+        }
+        else if(exchange.equalsIgnoreCase("idcm")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("interactivebrokers")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("kiteconnect")){
+            // requires orderId
+        }
+        else if(exchange.equalsIgnoreCase("kraken")){
+
+        }
+        else if(exchange.equalsIgnoreCase("wbf")){
+            com.example.nctai_trading.wbf.wbfMethods.transactionRequests wbfTransactionRequests = wbfMethods.new transactionRequests();
+
+        }
     }
 
     public void liquidateAllCurrencyAssetsSell(String exchange){
