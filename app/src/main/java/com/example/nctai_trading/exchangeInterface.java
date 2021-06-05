@@ -72,6 +72,7 @@ import com.example.nctai_trading.coinbasePro.coinbaseProWithdrawl;
 import com.example.nctai_trading.digifinex.digifinexMethods;
 import com.example.nctai_trading.exante.exanteMethods;
 import com.example.nctai_trading.huobi.Client.HuobiClient;
+import com.example.nctai_trading.huobi.ClientModel.Trade;
 import com.example.nctai_trading.idcm.idcmMethods;
 import com.example.nctai_trading.interactiveBrokers.interactiveBrokersMethods;
 import com.example.nctai_trading.kiteConnect.KiteConnect;
@@ -2037,7 +2038,8 @@ public class exchangeInterface {
             // requires orderId
         }
         else if(exchange.equalsIgnoreCase("huobi")){
-
+            Trade huobiTrade = huobiClient.getTrade();
+            huobiClient.cancelAllOrders(huobiClient);
         }
         else if(exchange.equalsIgnoreCase("idcm")){
             // requires orderId
