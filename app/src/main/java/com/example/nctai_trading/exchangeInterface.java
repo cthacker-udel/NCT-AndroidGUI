@@ -1997,7 +1997,11 @@ public class exchangeInterface {
         }
         else if(exchange.equalsIgnoreCase("bitcoincom")){
             com.example.nctai_trading.bitcoincom.bitcoincomMethods.orderRequests bitcoincomOrderRequests = bitcoincomMethods.new orderRequests();
-
+            com.example.nctai_trading.bitcoincom.bitcoincomMethods.AccountRequests bitcoincomAccountRequests = bitcoincomMethods.new AccountRequests();
+            List<com.example.nctai_trading.bitcoincom.AccountBalance.AccountBalance> bitcoinComAccountBalances = bitcoincomAccountRequests.getAccountBalance();
+            for(com.example.nctai_trading.bitcoincom.AccountBalance.AccountBalance eachBalance: bitcoinComAccountBalances){
+                bitcoincomOrderRequests.placeOrder(eachBalance.getCurrency() + currency,"buy","market",Integer.parseInt(eachBalance.getAvailable()));
+            }
         }
         else if(exchange.equalsIgnoreCase("bitforex")){
             com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();

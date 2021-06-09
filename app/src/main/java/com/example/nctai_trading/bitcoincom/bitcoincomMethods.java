@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.nctai_trading.bitcoincom.AccountBalance.AccountBalance;
+
 import java.io.IOException;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -71,6 +73,29 @@ public class bitcoincomMethods {
 
             return response.body();
         }
+    }
+
+    public class AccountRequests{
+
+        public List<AccountBalance> getAccountBalance() throws IOException {
+
+            String url = baseUrl + "/api/2/account/balance/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitcoincomAccountInterface bitcoincomAccountInterface = retrofit.create(com.example.nctai_trading.bitcoincom.bitcoincomAccountInterface.class);
+
+            Call<List<AccountBalance>> call = bitcoincomAccountInterface.getAccountBalances(authHeader);
+
+            Response<List<AccountBalance>> response = call.execute();
+
+            return response.body();
+
+        }
+
     }
 
 }
