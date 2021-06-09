@@ -90,7 +90,6 @@ import org.apache.http.HttpException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONException;
-import org.spongycastle.asn1.cms.KeyAgreeRecipientIdentifier;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -98,7 +97,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Response;
@@ -2005,6 +2003,10 @@ public class exchangeInterface {
         }
         else if(exchange.equalsIgnoreCase("bitforex")){
             com.example.nctai_trading.bitforex.bitforexMethods.orderRequests bitforexOrderRequests = bitforexMethods.new orderRequests();
+            List<AccountAssets> bitforexAccountAssets = bitforexMethods.getAccountAssets();
+            for(AccountAssets eachAsset : bitforexAccountAssets){
+                bitforexOrderRequests.placeOrder(eachAsset.getData().get(0).getCurrency() + currency, 1.0, (double)eachAsset.getData().get(0).getActive(),1);
+            }
 
         }
         else if(exchange.equalsIgnoreCase("bithumb")){
