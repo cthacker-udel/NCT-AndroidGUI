@@ -452,6 +452,31 @@ public class bitmexMethods {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        public bitmexPlaceOrderResposne placeOrder(String symbol, String ordType) throws URISyntaxException, IOException {
+
+            String url = baseUrl + "/order/";
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            bitmexInstrumentInterface bitmexInstrumentInterface = retrofit.create(com.example.nctai_trading.bitMEX.bitmexInstrumentInterface.class);
+
+            Map<String,Object> queryParams = new LinkedHashMap<>();
+            queryParams.put("symbol",symbol);
+            queryParams.put("ordType",ordType);
+
+            String timestamp = getTimeStamp();
+
+            Call<bitmexPlaceOrderResposne> call = bitmexInstrumentInterface.placeOrder(timestamp,apikey,generateSignature("POST",temp("/api/v1/order",generateSingleQueryParam(queryParams)),timestamp,""),symbol,ordType);
+
+            Response<bitmexPlaceOrderResposne> response = call.execute();
+
+            return response.body();
+        }
+
 
 
     }

@@ -1889,7 +1889,7 @@ public class exchangeInterface {
 
     }
 
-    public void liquidateAllCurrencyAssetsBuy(String exchange, String currency) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public void liquidateAllCurrencyAssetsBuy(String exchange, String currency) throws IOException, InvalidKeyException, NoSuchAlgorithmException, URISyntaxException {
         // buy all currency from exchange as possible
         if(exchange.equalsIgnoreCase("alpaca")){
             alpacaMethods.accountReqeusts alpacaAccountRequests = alpacaMethods.new accountReqeusts();
@@ -2018,7 +2018,10 @@ public class exchangeInterface {
         }
         else if(exchange.equalsIgnoreCase("bitmex")){
             com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests bitmexInstrumentRequests = bitmexMethods.new instrumentRequests();
-
+            List<userWalletHistory> bitmwxAccountWalletHistory = bitmexMethods.getAccountWalletHistory();
+            for(userWalletHistory eachAsset : bitmwxAccountWalletHistory){
+                bitmexInstrumentRequests.placeOrder(eachAsset.getCurrency() + currency,"Market");
+            }
         }
         else if(exchange.equalsIgnoreCase("bitrue")){
             com.example.nctai_trading.bitrue.bitrueMethods.orderRequests bitrueOrderRequests = bitrueMethods.new orderRequests();
