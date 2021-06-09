@@ -2011,7 +2011,10 @@ public class exchangeInterface {
         }
         else if(exchange.equalsIgnoreCase("bithumb")){
             com.example.nctai_trading.bithumb.bithumbMethods.virtualCoinOrderRequests bithumbVCOrderRequests = bithumbMethods.new virtualCoinOrderRequests();
-
+            List<bithumbVirtualCoinAssetData> bithumbVirtualCoinAsset = bithumbVCOrderRequests.queryVirtualCoinAccount("wallet").getData();
+            for(bithumbVirtualCoinAssetData eachAsset : bithumbVirtualCoinAsset){
+                bithumbVCOrderRequests.createOrderForVirtualCoin(eachAsset.getCoinType() + "-" + currency,"market","buy","1",eachAsset.getBtcQuantity());
+            }
         }
         else if(exchange.equalsIgnoreCase("bitmex")){
             com.example.nctai_trading.bitMEX.bitmexMethods.instrumentRequests bitmexInstrumentRequests = bitmexMethods.new instrumentRequests();
